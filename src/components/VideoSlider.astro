@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 
+
 const slides = [
   {
     desktopVideo: "/videos/video1.mp4",
@@ -27,13 +28,13 @@ const slides = [
   <div class="absolute inset-0 bg-black/40"></div>
 
   <div class="absolute inset-0 flex flex-col items-center justify-center space-y-6 md:space-y-12 text-center">
-    <p class="text-4xl md:text-6xl text-white font-bold animate-fade-in">
+    <p  class="title dancing-script text-4xl md:text-6xl text-white font-bold animate-fade-in ">
       {slides[0].title}
     </p>
     
     <a href="#categorie" class="flex flex-col items-center animate-bounce cursor-pointer">
       <Icon name="mdi:chevron-down" size="40" class="text-white" />
-      <span class="text-2xl md:text-3xl font-medium mt-1 bg-gradient-to-r from-white to-[#af7749] bg-clip-text text-transparent">
+      <span class="text-2xl dancing-script md:text-3xl font-medium mt-1 bg-gradient-to-r from-white to-[#af7749] bg-clip-text text-transparent">
         Voir la galerie
       </span>
     </a>
@@ -45,6 +46,34 @@ const slides = [
     </a>
   </div>
 </div>
+
+<script type="module" client:load>
+  let currentSlide = 0;
+  const slides = [
+    {
+      desktopVideo: "/videos/video1.mp4",
+      poster: "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1741095968/images_optimisees/eg6uel7edyjaa2dz4u4n.jpg",
+      title: "Nouvelle Collection",
+      link: "/robes-de-mariee",
+    },
+    {
+      desktopVideo: "/videos/video2.mp4",
+      poster: "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1741095968/images_optimisees/eg6uel7edyjaa2dz4u4n.jpg",
+      title: "Déstockage",
+      link: "/promo",
+    },
+  ];
+
+  function changeSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    const videoElement = document.querySelector('video');
+    videoElement.setAttribute('poster', slides[currentSlide].poster);
+    videoElement.querySelector('source').setAttribute('src', slides[currentSlide].desktopVideo);
+    document.querySelector('.title').textContent = slides[currentSlide].title;
+  }
+
+  setInterval(changeSlide, 4000); // Change slide every 5 seconds
+</script>
 
 <style>
   @keyframes fade-in {
