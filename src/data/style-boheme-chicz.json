@@ -1,0 +1,542 @@
+[
+  {
+    "dressName": "Myrtille",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_e715cddff8564e10b26fc5e94794fc96~mv2.jpg",
+    "width": 1333,
+    "height": 2000,
+    "id": 5
+  },
+  {
+    "dressName": "Myrtille",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_cd9ffeb7f4e2454b9f5cfe85170d2594~mv2.jpg",
+    "width": 1333,
+    "height": 2000,
+    "id": 6
+  },
+  {
+    "dressName": "Myrtille",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_56a8b716a9914c9798f3c2f493239e97~mv2.jpg",
+    "width": 1333,
+    "height": 2000,
+    "id": 7
+  },
+  {
+    "dressName": "RUSINA",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_999bc7e5222743938c0b8aeb353668a3~mv2.jpg",
+    "width": 1200,
+    "height": 1800,
+    "id": 8
+  },
+  {
+    "dressName": "RUSINA",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_902366e40f94463281f0f1085fc4a7b5~mv2.jpg",
+    "width": 1200,
+    "height": 1800,
+    "id": 9
+  },
+  {
+    "dressName": "RUSINA",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_d300aacd63a54e47912f381c2972bb68~mv2.jpg",
+    "width": 1200,
+    "height": 1800,
+    "id": 10
+  },
+  {
+    "dressName": "Ione",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_2443bd642322420ba4a15c390f242306~mv2.jpg",
+    "width": 2100,
+    "height": 2800,
+    "id": 11
+  },
+  {
+    "dressName": "Ione",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_fdd56169342849f59f264881b67faa6e~mv2.jpg",
+    "width": 2100,
+    "height": 2800,
+    "id": 12
+  },
+  {
+    "dressName": "Ione",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_aacc02bb69a54e1fa405553a9fb3c47a~mv2.jpg",
+    "width": 2100,
+    "height": 2800,
+    "id": 13
+  },
+  {
+    "dressName": "Tina",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_eeb3d005b5e346648d4b867a3d2a277f~mv2.jpg",
+    "width": 1333,
+    "height": 1682,
+    "id": 14
+  },
+  {
+    "dressName": "Tina",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_3f2129ac88db442e8f7defab3cd644d0~mv2.jpg",
+    "width": 1333,
+    "height": 2000,
+    "id": 15
+  },
+  {
+    "dressName": "Tina",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_110fa87c423d482d99026643c6b143dd~mv2.jpg",
+    "width": 1333,
+    "height": 2000,
+    "id": 16
+  },
+  {
+    "dressName": "KEME",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_9a14afc5d3294c07901195378147867c~mv2.jpg",
+    "width": 800,
+    "height": 1200,
+    "id": 17
+  },
+  {
+    "dressName": "KEME",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_72cd0deaf4e54171b1eed5567bb032af~mv2.jpg",
+    "width": 800,
+    "height": 1200,
+    "id": 18
+  },
+  {
+    "dressName": "MINELLY",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_1e84261252d04a97aacf72593a839f09~mv2.jpg",
+    "width": 1707,
+    "height": 2560,
+    "id": 19
+  },
+  {
+    "dressName": "MINELLY",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_969f2c10f45a45169fe8ee9c49f20778~mv2.jpg",
+    "width": 1200,
+    "height": 1800,
+    "id": 20
+  },
+  {
+    "dressName": "Doridis",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_de2115998b3a4b2f960f49781cc20dd8~mv2.jpg",
+    "width": 800,
+    "height": 1067,
+    "id": 21
+  },
+  {
+    "dressName": "Doridis",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_2bd99e866856460196defd3aed4255ef~mv2.jpg",
+    "width": 800,
+    "height": 1067,
+    "id": 22
+  },
+  {
+    "dressName": "Beryl",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_2b2e57ed59a24327b3cab2988b702559~mv2.jpg",
+    "width": 800,
+    "height": 1067,
+    "id": 23
+  },
+  {
+    "dressName": "Beryl",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_1f6d68c5ea034ffface181aa4ca099a5~mv2.jpg",
+    "width": 800,
+    "height": 1067,
+    "id": 24
+  },
+  {
+    "dressName": "​Poella",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_a3892c99c4844fcfbc2f285908b0254e~mv2.jpg",
+    "width": 1200,
+    "height": 1800,
+    "id": 25
+  },
+  {
+    "dressName": "​Poella",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_764434cd9bb949e387a54108dbc77a61~mv2.jpg",
+    "width": 562,
+    "height": 800,
+    "id": 26
+  },
+  {
+    "dressName": "SYULI",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_8832e8e291214f77818d683b1bc730df~mv2.jpg",
+    "width": 800,
+    "height": 1200,
+    "id": 27
+  },
+  {
+    "dressName": "SYULI",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_f1bc25c136d14dffabafde120879dd8b~mv2.jpg",
+    "width": 800,
+    "height": 1200,
+    "id": 28
+  },
+  {
+    "dressName": "Agathe",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_ef947d80ed744d829b105a9fba4fa12a~mv2.jpg",
+    "width": 1333,
+    "height": 2000,
+    "id": 29
+  },
+  {
+    "dressName": "Agathe",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_188edfadd7ec4a66b49b7698e4277ca5~mv2.jpg",
+    "width": 1333,
+    "height": 2000,
+    "id": 30
+  },
+  {
+    "dressName": "Chanel",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_90c4f453709f419e9a794678ca8d65ba~mv2.jpg",
+    "width": 4915,
+    "height": 7372,
+    "id": 31
+  },
+  {
+    "dressName": "Chanel",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_7b8073cc2898480d834f9d022944d262~mv2.jpg",
+    "width": 5504,
+    "height": 8256,
+    "id": 32
+  },
+  {
+    "dressName": "AZORINA",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_a13553fd48904854bc546f736e6b371d~mv2.jpg",
+    "width": 1333,
+    "height": 2000,
+    "id": 33
+  },
+  {
+    "dressName": "AZORINA",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_1479f39e369040548df343414643229e~mv2.jpg",
+    "width": 1333,
+    "height": 2000,
+    "id": 34
+  },
+  {
+    "dressName": "Roméso",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_112e491108cd47cc8c3563c82d6cec60~mv2.jpg",
+    "width": 800,
+    "height": 1200,
+    "id": 35
+  },
+  {
+    "dressName": "Roméso",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_e578e55c8e314997b586e96ac03f6c69~mv2.jpg",
+    "width": 800,
+    "height": 1200,
+    "id": 36
+  },
+  {
+    "dressName": "Venus",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_e73ec9a58eaf4c789707358f68cbb672~mv2.jpg",
+    "width": 800,
+    "height": 1200,
+    "id": 37
+  },
+  {
+    "dressName": "Venus",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_dd2b8db4e5c74bdbb49eb45415bb4369~mv2.jpg",
+    "width": 800,
+    "height": 1200,
+    "id": 38
+  },
+  {
+    "dressName": "Venus",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_f8fc8e428891476ab1e82d5478affd26~mv2.jpg",
+    "width": 800,
+    "height": 1200,
+    "id": 39
+  },
+  {
+    "dressName": "Lamagie",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_f1031722762e4fcd940aa6e157e002af~mv2.jpg",
+    "width": 800,
+    "height": 1200,
+    "id": 40
+  },
+  {
+    "dressName": "Lamagie",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_25fda21adfa3439a9fa95d7a01eeb49d~mv2.jpg",
+    "width": 619,
+    "height": 908,
+    "id": 41
+  },
+  {
+    "dressName": "Lamagie",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_553d51dcbea34f06af0f5dc1c181fa2d~mv2.png/v1/fill/w_195,h_525,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/176703_553d51dcbea34f06af0f5dc1c181fa2d~mv2.png.jpg",
+    "width": 685,
+    "height": 1025,
+    "id": 42
+  },
+  {
+    "dressName": "Simbelly",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_c14b8fcce31e43f58cb5569c1620d8fc~mv2.jpg",
+    "width": 1333,
+    "height": 2000,
+    "id": 43
+  },
+  {
+    "dressName": "Simbelly",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_eedae96614e1473bb2758f36d126c08a~mv2.jpg",
+    "width": 1333,
+    "height": 2000,
+    "id": 44
+  },
+  {
+    "dressName": "Ambre",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_b8b82f0084a342c29df670a46499c8a1~mv2.jpg",
+    "width": 3169,
+    "height": 4226,
+    "id": 45
+  },
+  {
+    "dressName": "Ambre",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_e82e86085b3f48dbb23fef78e19fdd6e~mv2.jpg",
+    "width": 3325,
+    "height": 4433,
+    "id": 46
+  },
+  {
+    "dressName": "Lucy",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_6655bf4cda944a94a0102d7ee2c4bfbb~mv2.jpg",
+    "width": 1333,
+    "height": 2000,
+    "id": 47
+  },
+  {
+    "dressName": "Lucy",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_c835ea7808f14256b22baf741e901815~mv2.jpg",
+    "width": 1333,
+    "height": 2000,
+    "id": 48
+  },
+  {
+    "dressName": "Melissa",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_5ba637ff9fbe4ae4ab219f1555d9296a~mv2.jpg",
+    "width": 4160,
+    "height": 6240,
+    "id": 49
+  },
+  {
+    "dressName": "Melissa",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_abfcb06a6b654af2b4ca7b6228675a68~mv2.jpg",
+    "width": 4002,
+    "height": 6003,
+    "id": 50
+  },
+  {
+    "dressName": "fluorite",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_7619ebe6da1a4b2a90de8cd73e9a20a4~mv2.jpg",
+    "width": 2100,
+    "height": 2800,
+    "id": 51
+  },
+  {
+    "dressName": "fluorite",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_e7c76014a08e4abc8eaec3730dd049c3~mv2.jpg",
+    "width": 800,
+    "height": 1067,
+    "id": 52
+  },
+  {
+    "dressName": "Lolita",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_32e1d936861145ed84fffcfd3641450f~mv2.jpg",
+    "width": 1040,
+    "height": 1560,
+    "id": 53
+  },
+  {
+    "dressName": "Lolita",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_ad931b5ebea64427bc53b1639a5f790e~mv2.jpg",
+    "width": 1040,
+    "height": 1560,
+    "id": 54
+  },
+  {
+    "dressName": "Tara",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_717ab0f654aa49d398acfe31c9e897ea~mv2.jpg",
+    "width": 1040,
+    "height": 1560,
+    "id": 55
+  },
+  {
+    "dressName": "Tara",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_bf06bffa677a45ddb58b742d804bf96e~mv2.jpg",
+    "width": 1040,
+    "height": 1560,
+    "id": 56
+  },
+  {
+    "dressName": "Turquoise",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_a312ad4645d74e66a8e10f148ee7dbc8~mv2.jpg",
+    "width": 2100,
+    "height": 2800,
+    "id": 57
+  },
+  {
+    "dressName": "Turquoise",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_15ad4f660d044bd98820c8acd9aa9ed2~mv2.jpg",
+    "width": 2100,
+    "height": 2800,
+    "id": 58
+  },
+  {
+    "dressName": "AISEL",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_e2f93a6906b9470b9763a48a359cb24a~mv2.jpg",
+    "width": 1040,
+    "height": 1560,
+    "id": 59
+  },
+  {
+    "dressName": "AISE",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_be777578e07d43a488fb20df8f99547b~mv2.jpg",
+    "width": 1040,
+    "height": 1560,
+    "id": 60
+  },
+  {
+    "dressName": "Anelisa",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_a071a0e38a28420d9bfc79652d275fd6~mv2.jpg",
+    "width": 1080,
+    "height": 1294,
+    "id": 61
+  },
+  {
+    "dressName": "Anelisa",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_3ae954ce39464188ab6da51ff1bd3850~mv2.jpg",
+    "width": 1080,
+    "height": 1271,
+    "id": 62
+  },
+  {
+    "dressName": "Ally",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_f848a4a7cab04f3ba4d49507c1870b89~mv2.jpg",
+    "width": 2100,
+    "height": 2800,
+    "id": 63
+  },
+  {
+    "dressName": "Ally",
+    "price": "",
+    "category": "style-boheme-chic",
+    "imageUrl": "https://static.wixstatic.com/media/176703_758440ffd8b847ea8422acd44268a7b6~mv2.jpg",
+    "width": 2100,
+    "height": 2800,
+    "id": 64
+  }
+]

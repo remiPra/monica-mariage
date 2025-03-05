@@ -1,0 +1,50 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+
+const hadson = {
+  "dressName": "Hadson",
+  "price": "",
+  "category": "forme-sirene",
+  "imageUrl": "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1741182124/images_optimisees/jzsgjviy00uvs4cjujvs.jpg",
+  "width": 1333,
+  "height": 2000,
+  "id": 5,
+  "optimizedImages": {
+    "slider": {
+      "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-sirene-hadson-5-slider-desktop.webp",
+      "mobile": "/images/robes/slider/mobile/monica-mariage-robe-de-mariee-sirene-hadson-5-slider-mobile.webp"
+    },
+    "gallery": {
+      "desktop": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-sirene-hadson-5-gallery-desktop.webp",
+      "tablet": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-hadson-5-gallery-tablet.webp",
+      "mobile": "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-sirene-hadson-5-gallery-mobile.webp"
+    },
+    "thumbnail": "/images/robes/thumbnails/monica-mariage-robe-de-mariee-sirene-hadson-5-thumb.webp"
+  },
+  "urlBest": "monica-mariage-robe-de-mariee-sirene-hadson-5",
+  "title": "Robe Sirène Dentelle Monica Mariage Toulouse",
+  "metaDescription": "Sublimez votre mariage avec cette robe sirène en dentelle, une création Monica Mariage près de Toulouse.",
+  "descriptionCourte": "Craquez pour cette sublime robe de mariée sirène signée Monica Mariage, près de Toulouse.",
+  "altOptimized": "robe de mariée sirène Monica Mariage Toulouse"
+};
+---
+
+<Layout title={hadson.title} description={hadson.metaDescription}>
+  <section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="font-cursive text-5xl font-semibold text-[#af7749] mb-4">{hadson.dressName}</h1>
+      <img
+
+        src={hadson.imageUrl}
+        alt={hadson.altOptimized}
+        class="w-full max-h-[500px] object-contain rounded-lg shadow-lg"
+      />
+      <p class="mt-4 text-lg text-black">{hadson.descriptionCourte}</p>
+      <a href="/prendre-rendez-vous">
+        <button class="mt-6 bg-[#af7749] text-white py-2 px-6 rounded-lg shadow-lg hover:bg-[#925c36] transition duration-300">
+          Prendre rendez-vous
+        </button>
+      </a>
+    </div>
+  </section>
+</Layout>

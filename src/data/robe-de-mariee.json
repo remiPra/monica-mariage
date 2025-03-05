@@ -1,0 +1,34 @@
+[
+  {
+    "dressName": "Princesse et évasée",
+    "imageUrl": "https://res.cloudinary.com/dkbsvrpdc/image/upload/f_avif,q_auto,w_400/images_optimisees/pv6jegxq4czwic8v2fsr.avif",
+    "width": 400,
+    "height": 600,
+    "id": 1,
+    "link": "/robes-de-mariee/forme-princesse"
+  },
+  {
+    "dressName": "Boheme et champetre",
+    "imageUrl": "https://res.cloudinary.com/dkbsvrpdc/image/upload/f_avif,q_auto,w_400/images_optimisees/p6fbetvyzdk0habh32vp.avif",
+    "width": 400,
+    "height": 600,
+    "id": 2,
+    "link": "/robes-de-mariee/style-boheme-chic"
+  },
+  {
+    "dressName": "Sirène et Fourreau",
+    "imageUrl": "https://res.cloudinary.com/dkbsvrpdc/image/upload/f_avif,q_auto,w_400/images_optimisees/k1xrphk7he911wwzmyfr.avif",
+    "width": 400,
+    "height": 600,
+    "id": 3,
+    "link": "/robes-de-mariee/forme-sirene"
+  },
+  {
+    "dressName": "Minimaliste",
+    "imageUrl": "https://res.cloudinary.com/dkbsvrpdc/image/upload/f_avif,q_auto,w_400/images_optimisees/kybbybbhpeascoggumlp.avif",
+    "width": 400,
+    "height": 600,
+    "id": 4,
+    "link": "/robes-de-mariee/minimaliste"
+  }
+]

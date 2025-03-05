@@ -1,0 +1,26 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  center?: boolean;
+  iconColor?: string;
+}
+
+const { center = false, iconColor = "#7a5c4b" } = Astro.props;
+const iconSize = "30px";
+---
+
+<div class:list={["flex", "gap-5", { "justify-center": center }]}> 
+  <a href="https://wa.me/33668300960" target="_blank" rel="noopener noreferrer" class="cursor-pointer">
+    <Icon name="mdi:whatsapp" size={iconSize} color={iconColor} />
+  </a>
+  <a href="https://www.instagram.com/monicamariage/" target="_blank" rel="noopener noreferrer" class="cursor-pointer">
+    <Icon name="mdi:instagram" size={iconSize} color={iconColor} />
+  </a>
+  <a href="https://m.me/votre_profil" target="_blank" rel="noopener noreferrer" class="cursor-pointer">
+    <Icon name="mdi:facebook-messenger" size={iconSize} color={iconColor} />
+  </a>
+  <a href="tel:33668300960" class="cursor-pointer">
+    <Icon name="mdi:phone" size={iconSize} color={iconColor} />
+  </a>
+</div>

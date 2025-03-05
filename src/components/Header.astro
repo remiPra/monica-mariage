@@ -1,0 +1,146 @@
+---
+import { Icon } from "astro-icon/components";
+import SocialIcons from "./SocialIcons.astro";
+---
+
+<header class="fixed top-0 w-full z-30">
+  <!-- Barre de contact mobile -->
+  <div class="bg-[#A37B63] text-white text-sm py-2 px-4 flex justify-center lg:hidden">
+    <div class="flex items-center gap-2">
+      <!-- Lien WhatsApp -->
+      <a href="https://wa.me/33668300960" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1">
+        <Icon name="mdi:whatsapp" class="text-2xl" />
+      </a>
+      <a href="https://wa.me/33668300960" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-xl">
+        06 68 30 09 60
+      </a>
+      <!-- Lien téléphone -->
+      <a href="tel:+33668300960" class="flex items-center gap-1">
+        <Icon name="mdi:phone" class="text-2xl" />
+      </a>
+    </div>
+  </div>
+
+  <!-- Navigation Desktop -->
+  <nav class="hidden lg:flex bg-[#FDE9E6] items-center justify-between px-8 h-20">
+    <!-- Menu gauche -->
+    <div class="flex items-center space-x-8">
+      <a href="/" class="flex items-center gap-1 text-[#7A5C4B] hover:text-[#A37B63]">
+        <Icon name="mdi:home-outline" />
+        Accueil
+      </a>
+      <a href="/robes-de-mariee" class="text-[#7A5C4B] hover:text-[#A37B63]">
+        Robes de Mariée
+      </a>
+      <a href="/promo" class="text-[#7A5C4B] hover:text-[#A37B63]">
+        Promotion
+      </a>
+      <a href="/toutes-nos-robes" class="text-[#7A5C4B] hover:text-[#A37B63]">
+        Toutes nos robes
+      </a>
+    </div>
+
+    <!-- Logo central modifié -->
+    <div class="absolute flex items-center text-center left-1/2 transform -translate-x-1/2">
+      <p class="text-[#7A5C4B] font-cursive italic text-4xl mr-2">
+        MonicaMariage
+      </p>
+      <span class="text-[#7A5C4B] italic text-md">Since 2014</span>
+    </div>
+
+    <!-- Menu droit -->
+    <div class="flex items-center space-x-8">
+      <a href="/prendre-rendez-vous">
+        <button class="bg-[#7A5C4B] text-white hover:text-[#A37B63] transition-all duration-300 ease-in-out transform hover:scale-105 rounded-md py-2 px-4 shadow-lg">
+          Contactez Nous
+        </button>
+      </a>
+      <a href="/trouver-le-showroom" class="text-[#7A5C4B] hover:text-[#A37B63]">
+        Trouver le showroom
+      </a>
+      <a href="/favoris">
+        <Icon name="mdi:heart" class="w-5 h-5 text-[#7A5C4B] hover:text-[#A37B63]" />
+      </a>
+    </div>
+  </nav>
+
+  <!-- Navigation Mobile -->
+  <div class="lg:hidden bg-white shadow-md px-4 py-3 flex justify-between items-center">
+    <button class="text-[#7A5C4B]" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+      <Icon name="mdi:menu" class="w-8 h-8" />
+    </button>
+    <a href="/" class="text-primary">
+      MonicaMariage
+    </a>
+    <div class="flex gap-4">
+      <a href="/trouver-le-showroom">
+        <Icon name="mdi:map-marker" class="text-[#7A5C4B]" />
+      </a>
+      <a href="/favoris">
+        <Icon name="mdi:heart" class="text-[#7A5C4B]" />
+      </a>
+    </div>
+  </div>
+
+  <!-- Menu Mobile -->
+  <div id="mobile-menu" class="fixed inset-0 bg-[#FDE9E6] z-50 p-4 hidden">
+    <button class="absolute top-4 right-4 text-[#7A5C4B]" onclick="document.getElementById('mobile-menu').classList.add('hidden')">
+      <Icon name="mdi:close" size="24px" />
+    </button>
+    <div class="flex flex-col items-center justify-center h-full space-y-6">
+      <div class="text-center w-full">
+        <span class="text-[#7A5C4B] block mt-[10px] font-cursive italic text-[40px]">
+          MonicaMariage <br />
+        </span>
+        <span class="mb-3 mt-[-20px] text-[#7A5C4B] font-cursive text-[20px] block w-full text-center">
+          Since 2014
+        </span>
+      </div>
+      <!-- Séparateur et icônes sociales -->
+      <div class="w-full mt-auto flex flex-col items-center">
+        <div class="w-1/2 h-[1px] bg-[#7A5C4B] opacity-30 mb-6"></div>
+        
+{/* Menu Links - Remontés avec espace réduit */}
+<div class="flex flex-col items-center space-y-6">
+    <a href="/" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
+      <Icon name="mdi:home-outline" class="text-2xl" />
+      <span class="block">Accueil</span>
+    </a>
+  
+    <a href="/robes-de-mariee" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
+      <!-- <Icon name="mdi:dress" class="text-2xl" /> -->
+      <span class="block">Robes de Mariée</span>
+    </a>
+  
+    <a href="/promo" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
+      <!-- <Icon name="mdi:percent" class="text-2xl" /> -->
+      <span class="block">Promotion</span>
+    </a>
+    
+    <a href="/toutes-nos-robes" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
+      <!-- <Icon name="mdi:dress-variant" class="text-2xl" /> -->
+      <span class="block">Toutes nos robes</span>
+    </a>
+  
+    <a href="/favoris" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
+      <Icon name="mdi:heart" class="text-2xl" />
+      <span class="block">Ma Selection</span>
+    </a>
+  
+    <a href="/prendre-rendez-vous" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
+      <!-- <Icon name="mdi:calendar-check" class="text-2xl" /> -->
+      <span class="block">Prendre Rendez-Vous</span>
+    </a>
+  
+    <a href="/trouver-le-showroom" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
+      <!-- <Icon name="mdi:map-marker" class="text-2xl" /> -->
+      <span class="block">Trouver le showroom</span>
+    </a>
+  </div>
+        <div class="mb-8">
+          <SocialIcons center={true} />
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

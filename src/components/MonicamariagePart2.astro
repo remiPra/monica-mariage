@@ -1,0 +1,74 @@
+---
+const bestSellers = [
+  {
+    src: "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-princesse-emile-5-gallery-mobile.webp",
+    alt: "Robe de mariée Emil - Monica Mariage Toulouse",
+    label: "Emil",
+    link: "/robes-de-mariee/forme-princesse/dress/5",
+  },
+  {
+    src: "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-tina-14-gallery-mobile.webp",
+    alt: "Robe de mariée Tina - Monica Mariage Toulouse",
+    label: "Tina",
+    link: "/robes-de-mariee/style-boheme-chic/dress/14",
+  },
+  {
+    src: "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-princesse-kapella-9-gallery-desktop.webp",
+    alt: "Robe de mariée Kapella - Monica Mariage Toulouse",
+    label: "Kapella",
+    link: "/robes-de-mariee/forme-princesse/dress/9",
+  },
+  {
+    src: "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-sirene-vegas-9-gallery-desktop.webp",
+    alt: "Robe de mariée Vegas - Monica Mariage Toulouse",
+    label: "Vegas",
+    link: "/robes-de-mariee/style-sirene/dress/9",
+  },
+];
+---
+
+<section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
+  <h2 class="font-cursive text-center text-5xl font-semibold text-[#af7749] mb-8">
+    Meilleures ventes chez Monica Mariage&nbsp;: Des robes de mariée incontournables à Toulouse
+  </h2>
+
+  <div class="flex justify-center px-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl w-full">
+      {bestSellers.map((item) => (
+        <a href={item.link} class="text-center cursor-pointer">
+          <div class="relative">
+            <div class="absolute inset-0 bg-[#af7749] opacity-20 z-10"></div>
+            <img
+              src={item.src}
+              alt={item.alt}
+              width="300"
+              height="400"
+              class="w-full object-cover rounded max-h-96"
+              loading="lazy"
+            />
+          </div>
+          <p class="mt-2 pb-2 text-[#af7749] font-cursive text-3xl">
+            {item.label}
+          </p>
+          <button class="bg-[#af7749] text-white py-1 px-3 sm:py-2 sm:px-4 rounded-lg shadow-lg hover:bg-[#925c36] transition duration-300 text-sm sm:text-base">
+            Voir plus
+          </button>
+          </a>
+           
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col items-center mt-8 px-4">
+    <p class="max-w-2xl mx-auto text-lg text-black leading-relaxed mb-6 text-center">
+      Découvrez notre sélection de best-sellers, conçus pour sublimer chaque future mariée à la recherche d’une robe de mariée à Toulouse.
+      Nous proposons des coupes variées (princesse, sirène, bohème, etc.) afin de répondre à tous les styles et toutes les silhouettes.
+      Profitez de nos conseils d’experts pour trouver la robe parfaite qui vous fera rayonner le jour de votre mariage.
+    </p>
+    <a href="/robes-de-mariee" class="bg-[#af7749] text-white py-2 px-6 rounded-lg shadow hover:bg-[#925c36] transition duration-300">
+      Voir plus de robes
+    </a>
+  </div>
+</section>
