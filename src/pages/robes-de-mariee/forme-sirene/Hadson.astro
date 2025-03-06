@@ -1,11 +1,11 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 
-const hadson = {
+const robe = {
   "dressName": "Hadson",
   "price": "",
   "category": "forme-sirene",
-  "imageUrl": "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1741182124/images_optimisees/jzsgjviy00uvs4cjujvs.jpg",
+  "imageUrl": "https://res.cloudinary.com/dkbsvrpdc/image/upload/c_fill,ar_9:16,q_auto/v1741182124/images_optimisees/jzsgjviy00uvs4cjujvs.webp",
   "width": 1333,
   "height": 2000,
   "id": 5,
@@ -29,17 +29,33 @@ const hadson = {
 };
 ---
 
-<Layout title={hadson.title} description={hadson.metaDescription}>
-  <section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
-    <div class="max-w-3xl mx-auto text-center">
-      <h1 class="font-cursive text-5xl font-semibold text-[#af7749] mb-4">{hadson.dressName}</h1>
-      <img
+<Layout title={robe.title} description={robe.metaDescription}>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.css"
+  />
 
-        src={hadson.imageUrl}
-        alt={hadson.altOptimized}
-        class="w-full max-h-[500px] object-contain rounded-lg shadow-lg"
-      />
-      <p class="mt-4 text-lg text-black">{hadson.descriptionCourte}</p>
+  <section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
+    <div class="mx-auto text-center px-4 lg:max-w-3xl">
+      <h1 class="font-cursive text-5xl font-semibold text-[#af7749] mb-4">{robe.dressName}</h1>
+      
+      <!-- ✅ Le slider prend toute la largeur -->
+      <div id="my-keen-slider" class="keen-slider w-full">
+        <div class="keen-slider__slide slide1">
+          <img class="w-full h-auto object-cover" src={robe.imageUrl} alt={robe.altOptimized} />
+        </div>
+        <div class="keen-slider__slide slide2">
+          <img class="w-full h-auto object-cover" src={robe.imageUrl} alt={robe.altOptimized} />
+        </div>
+        <div class="keen-slider__slide slide3">
+          <img class="w-full h-auto object-cover" src={robe.imageUrl} alt={robe.altOptimized} />
+        </div>
+        <div class="keen-slider__slide slide4">
+          <img class="w-full h-auto object-cover" src={robe.imageUrl} alt={robe.altOptimized} />
+        </div>
+      </div>
+      
+      <p class="mt-4 text-lg text-black">{robe.descriptionCourte}</p>
       <a href="/prendre-rendez-vous">
         <button class="mt-6 bg-[#af7749] text-white py-2 px-6 rounded-lg shadow-lg hover:bg-[#925c36] transition duration-300">
           Prendre rendez-vous
@@ -47,4 +63,50 @@ const hadson = {
       </a>
     </div>
   </section>
+
+  <script is:inline src="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.js"></script>
+  <script is:inline>
+    var slider = new KeenSlider("#my-keen-slider", {
+      loop: true,
+    })
+  </script>
+
+  <style>
+    .keen-slider {
+      height: 500px;
+    }
+    
+    .keen-slider__slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+      color: white;
+      font-weight: 500;
+    }
+    
+    .keen-slider__slide img {
+      max-height: 600px;
+      width: auto;
+      object-fit: contain;
+    }
+    
+    .slide1 {
+      background: linear-gradient(135deg, #FDE9E6 0%, #f8d1ca 100%);
+    }
+    
+    .slide2 {
+      background: linear-gradient(135deg, #f8d1ca 0%, #f3b9af 100%);
+    }
+    
+    .slide3 {
+      background: linear-gradient(135deg, #f3b9af 0%, #eea194 100%);
+    }
+    
+    .slide4 {
+      background: linear-gradient(135deg, #eea194 0%, #e98979 100%);
+    }
+    
+    
+  </style>
 </Layout>

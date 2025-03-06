@@ -2,7 +2,7 @@
 // Layout.astro
 import Header from '../components/Header.astro';
 import "../styles/global.css";
-
+import FloatingButton from '../components/FloatingButton.astro'
 const { title = "Monica Mariage - Boutique de Robes de Mariée", description = "Découvrez nos robes de mariée sur-mesure à Toulouse." } = Astro.props;
 ---
 
@@ -17,13 +17,14 @@ const { title = "Monica Mariage - Boutique de Robes de Mariée", description = "
     <meta property="og:description" content={description} />
     <meta property="og:image" content="/images/cover-robes.jpg" />
     <meta property="og:url" content={Astro.url} />
-    <head>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+
 </head>
 
   </head>
   <body>
     <Header/>
     <slot />
+    <FloatingButton client:idle  />
   </body>
 </html>

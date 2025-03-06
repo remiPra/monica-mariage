@@ -3,25 +3,24 @@ import { Icon } from "astro-icon/components";
 import SocialIcons from "./SocialIcons.astro";
 ---
 
-<header class="fixed top-0 w-full z-30">
-  <!-- Barre de contact mobile -->
+<header x-data="{ mobileMenuOpen: false }" class="fixed top-0 w-full z-30 bg-[#FDE9E6] shadow-md">
+  
+  <!-- ✅ Barre de contact Mobile uniquement -->
   <div class="bg-[#A37B63] text-white text-sm py-2 px-4 flex justify-center lg:hidden">
     <div class="flex items-center gap-2">
-      <!-- Lien WhatsApp -->
       <a href="https://wa.me/33668300960" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1">
         <Icon name="mdi:whatsapp" class="text-2xl" />
       </a>
       <a href="https://wa.me/33668300960" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-xl">
         06 68 30 09 60
       </a>
-      <!-- Lien téléphone -->
       <a href="tel:+33668300960" class="flex items-center gap-1">
         <Icon name="mdi:phone" class="text-2xl" />
       </a>
     </div>
   </div>
 
-  <!-- Navigation Desktop -->
+  <!-- ✅ Navigation Desktop -->
   <nav class="hidden lg:flex bg-[#FDE9E6] items-center justify-between px-8 h-20">
     <!-- Menu gauche -->
     <div class="flex items-center space-x-8">
@@ -40,9 +39,9 @@ import SocialIcons from "./SocialIcons.astro";
       </a>
     </div>
 
-    <!-- Logo central modifié -->
+    <!-- ✅ Logo central -->
     <div class="absolute flex items-center text-center left-1/2 transform -translate-x-1/2">
-      <p class="text-[#7A5C4B] font-cursive italic text-4xl mr-2">
+      <p class="text-[#7A5C4B] font-vibes italic text-4xl mr-2">
         MonicaMariage
       </p>
       <span class="text-[#7A5C4B] italic text-md">Since 2014</span>
@@ -64,12 +63,12 @@ import SocialIcons from "./SocialIcons.astro";
     </div>
   </nav>
 
-  <!-- Navigation Mobile -->
+  <!-- ✅ Navigation Mobile -->
   <div class="lg:hidden bg-white shadow-md px-4 py-3 flex justify-between items-center">
-    <button class="text-[#7A5C4B]" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+    <button class="text-[#7A5C4B]" @click="mobileMenuOpen = !mobileMenuOpen">
       <Icon name="mdi:menu" class="w-8 h-8" />
     </button>
-    <a href="/" class="dancing-script text-2xl text-[#7A5C4B]">
+    <a href="/" class="font-vibes text-2xl text-[#7A5C4B]">
       MonicaMariage
     </a>
     <div class="flex gap-4">
@@ -82,65 +81,49 @@ import SocialIcons from "./SocialIcons.astro";
     </div>
   </div>
 
-  <!-- Menu Mobile -->
-  <div id="mobile-menu" class="fixed inset-0 bg-[#FDE9E6] z-50 p-4 hidden">
-    <button class="absolute top-4 right-4 text-[#7A5C4B]" onclick="document.getElementById('mobile-menu').classList.add('hidden')">
+  <!-- ✅ Menu Mobile avec animation fluide -->
+  <div x-show="mobileMenuOpen"
+       x-cloak
+       x-transition:enter="transition-transform duration-300 ease-out"
+       x-transition:enter-start="translate-y-full opacity-0"
+       x-transition:enter-end="translate-y-0 opacity-100"
+       x-transition:leave="transition-transform duration-300 ease-in"
+       x-transition:leave-start="translate-y-0 opacity-100"
+       x-transition:leave-end="translate-y-full opacity-0"
+       class="fixed inset-0 bg-[#FDE9E6] z-50 p-4 flex flex-col items-center justify-center space-y-6 shadow-lg">
+    
+    <button class="absolute top-4 right-4 text-[#7A5C4B]" @click="mobileMenuOpen = false">
       <Icon name="mdi:close" size="24px" />
     </button>
-    <div class="flex flex-col items-center justify-center h-full space-y-6">
-      <div class="text-center w-full">
-        <span class="text-[#7A5C4B] block mt-[10px] font-cursive italic text-[40px]">
-          MonicaMariage <br />
-        </span>
-        <span class="mb-3 mt-[-20px] text-[#7A5C4B] font-cursive text-[20px] block w-full text-center">
-          Since 2014
-        </span>
-      </div>
-      <!-- Séparateur et icônes sociales -->
-      <div class="w-full mt-auto flex flex-col items-center">
-        <div class="w-1/2 h-[1px] bg-[#7A5C4B] opacity-30 mb-6"></div>
-        
-{/* Menu Links - Remontés avec espace réduit */}
-<div class="flex flex-col items-center space-y-6">
-    <a href="/" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
-      <Icon name="mdi:home-outline" class="text-2xl" />
-      <span class="block">Accueil</span>
-    </a>
-  
-    <a href="/robes-de-mariee" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
-      <!-- <Icon name="mdi:dress" class="text-2xl" /> -->
-      <span class="block">Robes de Mariée</span>
-    </a>
-  
-    <a href="/promo" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
-      <!-- <Icon name="mdi:percent" class="text-2xl" /> -->
-      <span class="block">Promotion</span>
-    </a>
-    
-    <a href="/toutes-nos-robes" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
-      <!-- <Icon name="mdi:dress-variant" class="text-2xl" /> -->
-      <span class="block">Toutes nos robes</span>
-    </a>
-  
-    <a href="/favoris" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
-      <Icon name="mdi:heart" class="text-2xl" />
-      <span class="block">Ma Selection</span>
-    </a>
-  
-    <a href="/prendre-rendez-vous" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
-      <!-- <Icon name="mdi:calendar-check" class="text-2xl" /> -->
-      <span class="block">Prendre Rendez-Vous</span>
-    </a>
-  
-    <a href="/trouver-le-showroom" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
-      <!-- <Icon name="mdi:map-marker" class="text-2xl" /> -->
-      <span class="block">Trouver le showroom</span>
-    </a>
-  </div>
-        <div class="mb-8">
-          <SocialIcons center={true} />
-        </div>
-      </div>
+
+    <div class="text-center w-full">
+      <span class="text-[#7A5C4B] block mt-[10px] font-vibes italic text-[40px]">
+        MonicaMariage <br />
+      </span>
+      <span class="mb-3 mt-[-20px] text-[#7A5C4B] font-vibes text-[20px] block w-full text-center">
+        Since 2014
+      </span>
+    </div>
+
+    <!-- Menu Links -->
+    <div class="flex flex-col items-center space-y-6">
+      <a href="/" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
+        <Icon name="mdi:home-outline" class="text-2xl" />
+        <span class="block">Accueil</span>
+      </a>
+      <a href="/robes-de-mariee" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
+        <span class="block">Robes de Mariée</span>
+      </a>
+      <a href="/promo" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
+        <span class="block">Promotion</span>
+      </a>
+      <a href="/toutes-nos-robes" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
+        <span class="block">Toutes nos robes</span>
+      </a>
+    </div>
+
+    <div class="mb-8">
+      <SocialIcons center={true} />
     </div>
   </div>
 </header>

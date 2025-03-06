@@ -1,0 +1,65 @@
+---
+import robes from '../data/robes';
+---
+
+<div id="my-keen-slider" class="keen-slider">
+  {robes.map((robe, index) => (
+    <div class="keen-slider__slide" key={index}>
+      <img src={robe.imageUrl} alt={robe.dressName} loading="eager" />
+      <p>{robe.dressName}</p>
+    </div>
+  ))}
+</div>
+
+<!-- Load the CSS from CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.css" />
+
+<!-- Load the JS from CDN and initialize the slider -->
+<script is:inline>
+  // Load the script
+  document.addEventListener('DOMContentLoaded', function() {
+    // Create script element
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.js';
+    script.onload = function() {
+      // Initialize slider after script is loaded
+      var slider = new KeenSlider("#my-keen-slider", {
+        loop: true,
+        mode: "free",
+        slides: { perView: 4, spacing: 1 },
+      });
+      console.log("Slider initialized successfully");
+    };
+    document.body.appendChild(script);
+  });
+</script>
+<style>
+.keen-slider {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    
+  }
+  
+  .keen-slider__slide {
+    min-width: 100%;
+    max-width: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .keen-slider__slide img {
+    width: 100%;
+    max-width: 600px; /* Limite la largeur */
+    height: 800px; /* Hauteur fixe pour toutes les images */
+    object-fit: cover; /* Coupe l'image pour qu'elle remplisse la hauteur définie */
+    display: block;
+  }
+  
+  .keen-slider__slide p {
+    text-align: center;
+    padding: 10px;
+    margin: 0;
+  }
+</style>

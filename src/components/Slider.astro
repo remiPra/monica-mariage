@@ -1,0 +1,47 @@
+---
+import { onMount } from 'astro/client';
+import robes from '../data/robes.js';
+import 'keen-slider/keen-slider.min.css';
+
+let slider;
+
+onMount(() => {
+  import('keen-slider').then((module) => {
+    const KeenSlider = module.default;
+    slider = new KeenSlider("#my-keen-slider", {
+      loop: true,
+      mode: "free",
+      slides: { perView: 1.5, spacing: 10 },
+    });
+  });
+});
+---
+
+<!-- Affichage statique pour accélérer le LCP -->
+<div id="my-keen-slider" class="keen-slider">
+  {robes.map((robe) => (
+    <div class="keen-slider__slide">
+      <img src={robe.image} alt={robe.dressName} loading="eager" />
+      <p>{robe.dressName}</p>
+    </div>
+  ))}
+</div>
+
+<style>
+  /* Assurer un affichage fluide AVANT le chargement de KeenSlider */
+  .keen-slider {
+    display: flex;
+    overflow: hidden;
+  }
+
+  .keen-slider__slide {
+    min-width: 100%;
+    transition: transform 0.3s ease;
+  }
+
+  .keen-slider img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+</style>

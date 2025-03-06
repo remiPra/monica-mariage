@@ -1,45 +1,32 @@
 ---
 import { Icon } from "astro-icon/components";
-
-
-const slides = [
-  {
-    desktopVideo: "/videos/video1.mp4",
-    poster: "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1741095968/images_optimisees/eg6uel7edyjaa2dz4u4n.jpg",
-    title: "Nouvelle Collection",
-    link: "/robes-de-mariee",
-  },
-  {
-    desktopVideo: "/videos/video2.mp4",
-    poster: "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1741095968/images_optimisees/eg6uel7edyjaa2dz4u4n.jpg",
-    title: "Déstockage",
-    link: "/promo",
-  },
-];
 ---
 
 <div class="relative h-screen mt-20 overflow-hidden">
-  <div class="absolute inset-0 w-full h-full">
-    <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline preload="metadata" poster={slides[0].poster}>
-      <source src={slides[0].desktopVideo} type="video/mp4" />
-    </video>
-  </div>
-  
+  <!-- ✅ Une seule vidéo fusionnée -->
+  <video 
+    class="absolute inset-0 w-full h-full object-cover"
+    autoplay muted loop playsinline preload="auto">
+    <source src="/videos/final.mp4" type="video/mp4" />
+  </video>
+
+  <!-- Overlay pour améliorer la lisibilité du texte -->
   <div class="absolute inset-0 bg-black/40"></div>
 
+  <!-- Texte et CTA -->
   <div class="absolute inset-0 flex flex-col items-center justify-center space-y-6 md:space-y-12 text-center">
-    <p  class="title dancing-script text-4xl md:text-6xl text-white font-bold animate-fade-in ">
-      {slides[0].title}
+    <p class="title font-vibes text-4xl md:text-6xl text-white font-bold animate-fade-in">
+      Nouvelle Collection & Déstockage
     </p>
     
     <a href="#categorie" class="flex flex-col items-center animate-bounce cursor-pointer">
       <Icon name="mdi:chevron-down" size="40" class="text-white" />
-      <span class="text-2xl dancing-script md:text-3xl font-medium mt-1 bg-gradient-to-r from-white to-[#af7749] bg-clip-text text-transparent">
+      <span class="text-2xl font-vibes md:text-3xl font-medium mt-1 bg-gradient-to-r from-white to-[#af7749] bg-clip-text text-transparent">
         Voir la galerie
       </span>
     </a>
     
-    <a href={slides[0].link}>
+    <a href="/robes-de-mariee">
       <button class="px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-[#8B6F5C] to-[#9a7d6a] text-white font-medium rounded-3xl hover:from-[#7c6351] hover:to-[#8B6F5C] transition-all duration-200 shadow-md min-w-[160px] md:min-w-[200px]">
         Découvrez nos robes
       </button>
@@ -47,34 +34,7 @@ const slides = [
   </div>
 </div>
 
-<script type="module" client:load>
-  let currentSlide = 0;
-  const slides = [
-    {
-      desktopVideo: "/videos/video1.mp4",
-      poster: "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1741095968/images_optimisees/eg6uel7edyjaa2dz4u4n.jpg",
-      title: "Nouvelle Collection",
-      link: "/robes-de-mariee",
-    },
-    {
-      desktopVideo: "/videos/video2.mp4",
-      poster: "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1741095968/images_optimisees/eg6uel7edyjaa2dz4u4n.jpg",
-      title: "Déstockage",
-      link: "/promo",
-    },
-  ];
-
-  function changeSlide() {
-    currentSlide = (currentSlide + 1) % slides.length;
-    const videoElement = document.querySelector('video');
-    videoElement.setAttribute('poster', slides[currentSlide].poster);
-    videoElement.querySelector('source').setAttribute('src', slides[currentSlide].desktopVideo);
-    document.querySelector('.title').textContent = slides[currentSlide].title;
-  }
-
-  setInterval(changeSlide, 4000); // Change slide every 5 seconds
-</script>
-
+<!-- ✅ Ajout d'un style pour l'effet de fondu -->
 <style>
   @keyframes fade-in {
     from { opacity: 0; }

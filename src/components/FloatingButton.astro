@@ -1,0 +1,158 @@
+---
+// FloatingButtonMainPage.astro
+import { Icon } from "astro-icon/components";
+
+// État initial (côté serveur)
+const icons = ["mdi:facebook", "mdi:whatsapp", "mdi:instagram", "mdi:message"];
+const colors = [
+  "bg-[#a77c60]",
+  "bg-green-600",
+  "bg-[#d2b48c]",
+  "bg-[#b29079]",
+];
+---
+
+<div class="fixed bottom-24 right-6 z-[500]">
+  <button
+    data-track="ouverture-floating-button"
+    id="floating-button"
+    class="w-14 h-14 flex items-center justify-center rounded-full text-white text-2xl shadow-lg transition-all transform hover:scale-110 fade-in bg-[#a77c60]"
+  >
+    <Icon name="mdi:phone" class="icon-element transition-opacity duration-1000 ease-in-out" />
+  </button>
+
+  <div
+    id="contact-modal"
+    class="fixed inset-0 h-full bg-white text-[#a77c60] flex flex-col items-center 
+    z-[500] justify-center p-6 
+    transition-transform transform hidden"
+  >
+    <button
+      id="close-modal-button"
+      class="absolute top-6 right-6 text-3xl text-[#a77c60] transition-opacity duration-500 hover:opacity-70"
+    >
+      <Icon name="mdi:close" />
+    </button>
+    <h2 class="text-3xl font-bold mb-6">Prenons contact !</h2>
+    <p class="text-lg mb-8">
+      Nous sommes disponible sur plusieurs plateformes, choisissez votre
+      moyen de communication préféré :
+    </p>
+    <div class="space-y-4 w-full max-w-xs">
+      <a
+        target="_blank"
+        href="tel:+33668300960"
+        class="flex items-center justify-center bg-[#a77c60] text-white p-3 rounded-full text-xl w-full transition-transform transform hover:scale-105"
+      >
+        <Icon name="mdi:phone" class="mr-2" /> Appelez moi
+      </a>
+      <a
+        target="_blank"
+        href="https://wa.me/33668300960?text=Bonjour%20Monica%20Mariage%20!"
+        class="flex items-center justify-center bg-[#a77c60] text-white p-3 rounded-full text-xl w-full transition-transform transform hover:scale-105"
+      >
+        <Icon name="mdi:whatsapp" class="mr-2" /> Ecrivez Moi
+      </a>
+      <a
+        target="_blank"
+        href="https://www.instagram.com/monicamariage/"
+        class="flex items-center justify-center bg-[#a77c60] text-white p-3 rounded-full text-xl w-full transition-transform transform hover:scale-105"
+      >
+        <Icon name="mdi:instagram" class="mr-2" /> Voir notre Instagram
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Gestion côté client
+  let currentIconIndex = 0;
+  const icons = ["mdi:facebook", "mdi:whatsapp", "mdi:instagram", "mdi:message"];
+  const colors = [
+    "bg-[#a77c60]",
+    "bg-green-600",
+    "bg-[#d2b48c]",
+    "bg-[#b29079]",
+  ];
+  
+  const floatingButton = document.getElementById('floating-button');
+  const modal = document.getElementById('contact-modal');
+  const closeButton = document.getElementById('close-modal-button');
+  const iconElement = document.querySelector('.icon-element');
+  
+  // Fonction pour changer l'icône et la couleur
+  function updateIconAndColor() {
+    // Suppression de la classe de couleur précédente
+    colors.forEach(color => {
+      floatingButton?.classList.remove(...color.split(' '));
+    });
+    
+    // Ajout de la nouvelle classe de couleur
+    floatingButton?.classList.add(...colors[currentIconIndex].split(' '));
+    
+    // Mise à jour de l'icône
+    if (iconElement) {
+      iconElement.setAttribute('name', icons[currentIconIndex]);
+    }
+    
+    // Préparation pour la prochaine mise à jour
+    currentIconIndex = (currentIconIndex + 1) % icons.length;
+  }
+  
+  // Lancer le changement d'icône à intervalles réguliers
+  const interval = setInterval(updateIconAndColor, 4000);
+  
+  // Gestion de l'ouverture du modal
+  floatingButton?.addEventListener('click', () => {
+    modal?.classList.remove('hidden');
+    modal?.classList.add('slide-in');
+    modal?.classList.remove('slide-out');
+  });
+  
+  // Gestion de la fermeture du modal
+  closeButton?.addEventListener('click', () => {
+    modal?.classList.add('slide-out');
+    modal?.classList.remove('slide-in');
+    
+    // Attendre que l'animation se termine avant de cacher le modal
+    setTimeout(() => {
+      modal?.classList.add('hidden');
+    }, 600);
+  });
+  
+  // Nettoyage des intervalles lors du démontage
+  document.addEventListener('astro:page-load', () => {
+    return () => {
+      clearInterval(interval);
+    };
+  });
+</script>
+
+<style>
+  /* Vous pouvez intégrer le contenu de FloatingButton.css ici ou le garder comme fichier séparé */
+  .slide-in {
+    animation: slideIn 0.6s forwards;
+  }
+  
+  .slide-out {
+    animation: slideOut 0.6s forwards;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideOut {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+</style>

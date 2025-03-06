@@ -1,3 +1,24 @@
-.dancing-script {
-  font-family: "Dancing Script", cursive;
+@font-face {
+  font-family: "Dancing Script";
+  src: url("/fonts/dancing-script-v25-latin-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* great-vibes-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Great Vibes";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/great-vibes-v19-latin-regular.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+[x-cloak] {
+  display: none !important;
+}
+
+.font-vibes {
+  font-family: "Great Vibes", cursive !important;
 }
