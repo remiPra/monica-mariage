@@ -30,7 +30,7 @@ const robe = {
 ---
 
 <Layout title={robe.title} description={robe.metaDescription}>
-  <!-- ✅ Précharge l'image principale pour améliorer le LCP -->
+  <!-- ✅ Précharge l'image principale pour éviter un saut de mise en page -->
   <link rel="preload" as="image" href={robe.optimizedImages.gallery.desktop} type="image/webp" />
 
   <!-- ✅ Chargement de KeenSlider et Alpine.js -->
@@ -50,17 +50,17 @@ const robe = {
         <div class="loader"></div>
       </div>
 
-      <!-- ✅ Correction : Le slider doit être affiché uniquement quand il est chargé -->
+      <!-- ✅ Correction : Attendre que le slider soit chargé avant d'afficher -->
       <div id="slider-wrapper" x-show="!isLoading" x-transition.opacity>
         <div id="my-keen-slider" class="keen-slider">
           <div class="keen-slider__slide">
-            <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} width="1333" height="2000" />
+            <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} width="1333" height="2000" loading="lazy" />
           </div>
           <div class="keen-slider__slide">
-            <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} width="1333" height="2000" />
+            <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} width="1333" height="2000" loading="lazy" />
           </div>
           <div class="keen-slider__slide">
-            <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} width="1333" height="2000" />
+            <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} width="1333" height="2000" loading="lazy" />
           </div>
         </div>
       </div>
@@ -74,22 +74,26 @@ const robe = {
     </div>
   </section>
 
-  <!-- ✅ Correction : Attendre que tout soit prêt avant de lancer KeenSlider -->
+  <!-- ✅ Correction : Vérification avant de lancer KeenSlider -->
   <script is:inline src="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.js"></script>
   <script is:inline>
     document.addEventListener("DOMContentLoaded", function () {
       setTimeout(() => {
         console.log("🔥 Initialisation KeenSlider...");
+        
+        // Vérifie si l'élément existe avant d'initialiser
         const sliderElement = document.getElementById("my-keen-slider");
+
         if (sliderElement) {
+          console.log("✅ KeenSlider trouvé, initialisation...");
           new KeenSlider(sliderElement, {
             loop: true,
             slides: { perView: 1, spacing: 10 }
           });
         } else {
-          console.error("⚠️ Erreur: KeenSlider introuvable !");
+          console.error("❌ Erreur: KeenSlider introuvable !");
         }
-      }, 200);
+      }, 300);
     });
   </script>
 
