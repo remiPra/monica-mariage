@@ -30,47 +30,38 @@ const robe = {
 ---
 
 <Layout title={robe.title} description={robe.metaDescription}>
+  <!-- ✅ Précharge l'image principale pour améliorer le LCP -->
   <link rel="preload" as="image" href={robe.optimizedImages.gallery.desktop} type="image/webp" />
+
+  <!-- ✅ Chargement de KeenSlider et Alpine.js -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.css" />
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
 
-  <section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]" x-data="{ isLoading: true }" x-init="setTimeout(() => isLoading = false, 100)">
+  <section 
+    class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]"
+    x-data="{ isLoading: true }"
+    x-init="setTimeout(() => isLoading = false, 200)">
+    
     <div class="max-w-3xl mx-auto text-center">
       <h1 class="font-cursive text-5xl font-semibold text-[#af7749] mb-4">{robe.dressName}</h1>
 
-      <!-- ✅ Loader visible au début -->
+      <!-- ✅ Mini-loader pour éviter un flash blanc -->
       <div x-show="isLoading" class="flex justify-center items-center h-[500px]">
         <div class="loader"></div>
       </div>
 
-      <!-- ✅ Keen Slider (caché tant que le loader est visible) -->
-      <div id="my-keen-slider" class="keen-slider" x-show="!isLoading" x-transition.opacity>
-        <div class="keen-slider__slide">
-          <img 
-            src={robe.optimizedImages.gallery.desktop} 
-            alt={robe.altOptimized} 
-            width="1333" 
-            height="2000" 
-            loading="lazy"
-          />
-        </div>
-        <div class="keen-slider__slide">
-          <img 
-            src={robe.optimizedImages.gallery.desktop} 
-            alt={robe.altOptimized} 
-            width="1333" 
-            height="2000" 
-            loading="lazy"
-          />
-        </div>
-        <div class="keen-slider__slide">
-          <img 
-            src={robe.optimizedImages.gallery.desktop} 
-            alt={robe.altOptimized} 
-            width="1333" 
-            height="2000" 
-            loading="lazy"
-          />
+      <!-- ✅ Correction : Le slider doit être affiché uniquement quand il est chargé -->
+      <div id="slider-wrapper" x-show="!isLoading" x-transition.opacity>
+        <div id="my-keen-slider" class="keen-slider">
+          <div class="keen-slider__slide">
+            <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} width="1333" height="2000" />
+          </div>
+          <div class="keen-slider__slide">
+            <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} width="1333" height="2000" />
+          </div>
+          <div class="keen-slider__slide">
+            <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} width="1333" height="2000" />
+          </div>
         </div>
       </div>
 
@@ -83,20 +74,27 @@ const robe = {
     </div>
   </section>
 
+  <!-- ✅ Correction : Attendre que tout soit prêt avant de lancer KeenSlider -->
   <script is:inline src="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.js"></script>
   <script is:inline>
     document.addEventListener("DOMContentLoaded", function () {
       setTimeout(() => {
-        var slider = new KeenSlider("#my-keen-slider", {
-          loop: true,
-          slides: { perView: 1, spacing: 10 }
-        });
+        console.log("🔥 Initialisation KeenSlider...");
+        const sliderElement = document.getElementById("my-keen-slider");
+        if (sliderElement) {
+          new KeenSlider(sliderElement, {
+            loop: true,
+            slides: { perView: 1, spacing: 10 }
+          });
+        } else {
+          console.error("⚠️ Erreur: KeenSlider introuvable !");
+        }
       }, 200);
     });
   </script>
 
   <style>
-    /* ✅ Loader animé */
+    /* ✅ Mini-loader pour éviter un flash blanc */
     .loader {
       border: 4px solid rgba(255, 255, 255, 0.3);
       border-top: 4px solid #af7749;
@@ -111,11 +109,16 @@ const robe = {
       100% { transform: rotate(360deg); }
     }
 
-    /* ✅ Fixe la hauteur du slider pour éviter le décalage */
-    .keen-slider {
+    /* ✅ Fixe la hauteur du slider dès le début */
+    #slider-wrapper {
       min-height: 500px;
       max-height: 90vh;
       overflow: hidden;
+    }
+
+    .keen-slider {
+      min-height: 500px; /* Empêche le saut de contenu */
+      max-height: 90vh;
     }
 
     .keen-slider__slide {
@@ -133,7 +136,12 @@ const robe = {
       aspect-ratio: 1333 / 2000;
     }
 
-    /* ✅ Style pour la typographie */
+    /* ✅ Ajout d'une animation de fade-in */
+    [x-show="!isLoading"] {
+      transition: opacity 0.4s ease-in-out;
+    }
+
+    /* ✅ Typographie */
     .font-cursive {
       font-family: 'Playfair Display', serif;
     }
