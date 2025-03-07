@@ -30,122 +30,84 @@ const robe = {
 ---
 
 <Layout title={robe.title} description={robe.metaDescription}>
-  <!-- ✅ Précharge l'image principale pour éviter un saut de mise en page -->
-  <link rel="preload" as="image" href={robe.optimizedImages.gallery.desktop} type="image/webp" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.css"
+  />
 
-  <!-- ✅ Chargement de KeenSlider et Alpine.js -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.css" />
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
-
-  <section 
-    class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]"
-    x-data="{ isLoading: true }"
-    x-init="setTimeout(() => isLoading = false, 200)">
-    
-    <div class="max-w-3xl mx-auto text-center">
-      <h1 class="font-cursive text-5xl font-semibold text-[#af7749] mb-4">{robe.dressName}</h1>
-
-      <!-- ✅ Mini-loader pour éviter un flash blanc -->
-      <div x-show="isLoading" class="flex justify-center items-center h-[500px]">
-        <div class="loader"></div>
-      </div>
-
-      <!-- ✅ Correction : Attendre que le slider soit chargé avant d'afficher -->
-      <div id="slider-wrapper" x-show="!isLoading" x-transition.opacity>
-        <div id="my-keen-slider" class="keen-slider">
-          <div class="keen-slider__slide">
-            <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} width="1333" height="2000" loading="lazy" />
-          </div>
-          <div class="keen-slider__slide">
-            <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} width="1333" height="2000" loading="lazy" />
-          </div>
-          <div class="keen-slider__slide">
-            <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} width="1333" height="2000" loading="lazy" />
-          </div>
+  <section class="mt-[100px]   md:flex bg-gradient-to-b from-white to-[#FDE9E6]">
+    <div class="w-full md:w-2/3">
+    <div class="max-w-[400px] mx-auto text-center">
+      
+      <div id="my-keen-slider" class="keen-slider">
+        <div class="keen-slider__slide">
+          <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} />
+        </div>
+        <div class="keen-slider__slide">
+          <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} />
+        </div>
+        <div class="keen-slider__slide">
+          <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} />
+        </div>
+        <div class="keen-slider__slide">
+          <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} />
         </div>
       </div>
-
-      <p class="mt-4 text-lg text-black">{robe.descriptionCourte}</p>
-      <a href="/prendre-rendez-vous">
-        <button class="mt-6 bg-[#af7749] text-white py-2 px-6 rounded-lg shadow-lg hover:bg-[#925c36] transition duration-300">
-          Prendre rendez-vous
-        </button>
-      </a>
     </div>
+  </div>
+  <div class="w-full md:w-1/3">
+    blblassss
+  </div>
+
   </section>
 
-  <!-- ✅ Correction : Vérification avant de lancer KeenSlider -->
   <script is:inline src="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.js"></script>
   <script is:inline>
-    document.addEventListener("DOMContentLoaded", function () {
-      setTimeout(() => {
-        console.log("🔥 Initialisation KeenSlider...");
-        
-        // Vérifie si l'élément existe avant d'initialiser
-        const sliderElement = document.getElementById("my-keen-slider");
-
-        if (sliderElement) {
-          console.log("✅ KeenSlider trouvé, initialisation...");
-          new KeenSlider(sliderElement, {
-            loop: true,
-            slides: { perView: 1, spacing: 10 }
-          });
-        } else {
-          console.error("❌ Erreur: KeenSlider introuvable !");
-        }
-      }, 300);
-    });
+    var slider = new KeenSlider("#my-keen-slider", {
+      loop: true,
+    })
   </script>
 
   <style>
-    /* ✅ Mini-loader pour éviter un flash blanc */
-    .loader {
-      border: 4px solid rgba(255, 255, 255, 0.3);
-      border-top: 4px solid #af7749;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* ✅ Fixe la hauteur du slider dès le début */
-    #slider-wrapper {
-      min-height: 500px;
-      max-height: 90vh;
-      overflow: hidden;
-    }
-
     .keen-slider {
-      min-height: 500px; /* Empêche le saut de contenu */
-      max-height: 90vh;
-    }
+  height: auto; /* Laisse la hauteur s'adapter */
+  max-height: 90vh; /* Évite que le slider ne prenne trop de place */
+  overflow: hidden;
 
-    .keen-slider__slide {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-    }
+}
 
-    .keen-slider__slide img {
-      width: 100%;
-      height: auto;
-      max-height: 100vh;
-      object-fit: contain;
-      aspect-ratio: 1333 / 2000;
-    }
+.keen-slider__slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
 
-    /* ✅ Ajout d'une animation de fade-in */
-    [x-show="!isLoading"] {
-      transition: opacity 0.4s ease-in-out;
-    }
+.keen-slider__slide img {
+  width: 100%;
+  height: auto;
+  object-fit: contain; /* Évite le recadrage de l'image */
+  max-height: 100vh; /* Garde un bon ratio sans couper */
+}
 
-    /* ✅ Typographie */
+    
+    .slide1 {
+      background: linear-gradient(135deg, #FDE9E6 0%, #f8d1ca 100%);
+    }
+    
+    .slide2 {
+      background: linear-gradient(135deg, #f8d1ca 0%, #f3b9af 100%);
+    }
+    
+    .slide3 {
+      background: linear-gradient(135deg, #f3b9af 0%, #eea194 100%);
+    }
+    
+    .slide4 {
+      background: linear-gradient(135deg, #eea194 0%, #e98979 100%);
+    }
+    
+    /* Font for the cursive title */
     .font-cursive {
       font-family: 'Playfair Display', serif;
     }
