@@ -30,30 +30,50 @@ const robe = {
 ---
 
 <Layout title={robe.title} description={robe.metaDescription}>
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.css"
-  />
+  <link rel="preload" as="image" href={robe.optimizedImages.gallery.desktop} type="image/webp" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
 
-  <section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
+  <section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]" x-data="{ isLoading: true }" x-init="setTimeout(() => isLoading = false, 100)">
     <div class="max-w-3xl mx-auto text-center">
       <h1 class="font-cursive text-5xl font-semibold text-[#af7749] mb-4">{robe.dressName}</h1>
-      
-      <div id="my-keen-slider" class="keen-slider">
+
+      <!-- ✅ Loader visible au début -->
+      <div x-show="isLoading" class="flex justify-center items-center h-[500px]">
+        <div class="loader"></div>
+      </div>
+
+      <!-- ✅ Keen Slider (caché tant que le loader est visible) -->
+      <div id="my-keen-slider" class="keen-slider" x-show="!isLoading" x-transition.opacity>
         <div class="keen-slider__slide">
-          <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} />
+          <img 
+            src={robe.optimizedImages.gallery.desktop} 
+            alt={robe.altOptimized} 
+            width="1333" 
+            height="2000" 
+            loading="lazy"
+          />
         </div>
         <div class="keen-slider__slide">
-          <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} />
+          <img 
+            src={robe.optimizedImages.gallery.desktop} 
+            alt={robe.altOptimized} 
+            width="1333" 
+            height="2000" 
+            loading="lazy"
+          />
         </div>
         <div class="keen-slider__slide">
-          <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} />
-        </div>
-        <div class="keen-slider__slide">
-          <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} />
+          <img 
+            src={robe.optimizedImages.gallery.desktop} 
+            alt={robe.altOptimized} 
+            width="1333" 
+            height="2000" 
+            loading="lazy"
+          />
         </div>
       </div>
-      
+
       <p class="mt-4 text-lg text-black">{robe.descriptionCourte}</p>
       <a href="/prendre-rendez-vous">
         <button class="mt-6 bg-[#af7749] text-white py-2 px-6 rounded-lg shadow-lg hover:bg-[#925c36] transition duration-300">
@@ -65,50 +85,55 @@ const robe = {
 
   <script is:inline src="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.js"></script>
   <script is:inline>
-    var slider = new KeenSlider("#my-keen-slider", {
-      loop: true,
-    })
+    document.addEventListener("DOMContentLoaded", function () {
+      setTimeout(() => {
+        var slider = new KeenSlider("#my-keen-slider", {
+          loop: true,
+          slides: { perView: 1, spacing: 10 }
+        });
+      }, 200);
+    });
   </script>
 
   <style>
+    /* ✅ Loader animé */
+    .loader {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid #af7749;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ✅ Fixe la hauteur du slider pour éviter le décalage */
     .keen-slider {
-  height: auto; /* Laisse la hauteur s'adapter */
-  max-height: 90vh; /* Évite que le slider ne prenne trop de place */
-  overflow: hidden;
-}
+      min-height: 500px;
+      max-height: 90vh;
+      overflow: hidden;
+    }
 
-.keen-slider__slide {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
+    .keen-slider__slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
 
-.keen-slider__slide img {
-  width: 100%;
-  height: auto;
-  object-fit: contain; /* Évite le recadrage de l'image */
-  max-height: 100vh; /* Garde un bon ratio sans couper */
-}
+    .keen-slider__slide img {
+      width: 100%;
+      height: auto;
+      max-height: 100vh;
+      object-fit: contain;
+      aspect-ratio: 1333 / 2000;
+    }
 
-    
-    .slide1 {
-      background: linear-gradient(135deg, #FDE9E6 0%, #f8d1ca 100%);
-    }
-    
-    .slide2 {
-      background: linear-gradient(135deg, #f8d1ca 0%, #f3b9af 100%);
-    }
-    
-    .slide3 {
-      background: linear-gradient(135deg, #f3b9af 0%, #eea194 100%);
-    }
-    
-    .slide4 {
-      background: linear-gradient(135deg, #eea194 0%, #e98979 100%);
-    }
-    
-    /* Font for the cursive title */
+    /* ✅ Style pour la typographie */
     .font-cursive {
       font-family: 'Playfair Display', serif;
     }
