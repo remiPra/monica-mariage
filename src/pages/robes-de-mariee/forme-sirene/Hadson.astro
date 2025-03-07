@@ -3,113 +3,93 @@ import Layout from '../../../layouts/Layout.astro';
 
 const robe = {
   "dressName": "Hadson",
-  "price": "",
   "category": "forme-sirene",
   "imageUrl": "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1741182124/images_optimisees/jzsgjviy00uvs4cjujvs.webp",
   "width": 1333,
   "height": 2000,
-  "id": 5,
   "optimizedImages": {
     "slider": {
-      "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-sirene-hadson-5-slider-desktop.webp",
-      "mobile": "/images/robes/slider/mobile/monica-mariage-robe-de-mariee-sirene-hadson-5-slider-mobile.webp"
+      "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-sirene-hadson-5-slider-desktop.webp"
     },
     "gallery": {
       "desktop": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-sirene-hadson-5-gallery-desktop.webp",
-      "tablet": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-hadson-5-gallery-tablet.webp",
-      "mobile": "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-sirene-hadson-5-gallery-mobile.webp"
-    },
-    "thumbnail": "/images/robes/thumbnails/monica-mariage-robe-de-mariee-sirene-hadson-5-thumb.webp"
+      "extra1": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-sirene-hadson-6-gallery-desktop.webp",
+      "extra2": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-sirene-hadson-7-gallery-desktop.webp",
+      "extra3": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-sirene-hadson-8-gallery-desktop.webp"
+    }
   },
-  "urlBest": "monica-mariage-robe-de-mariee-sirene-hadson-5",
   "title": "Robe Sirène Dentelle Monica Mariage Toulouse",
   "metaDescription": "Sublimez votre mariage avec cette robe sirène en dentelle, une création Monica Mariage près de Toulouse.",
-  "descriptionCourte": "Craquez pour cette sublime robe de mariée sirène signée Monica Mariage, près de Toulouse.",
   "altOptimized": "robe de mariée sirène Monica Mariage Toulouse"
 };
 ---
-
 <Layout title={robe.title} description={robe.metaDescription}>
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.css"
-  />
-
-  <section class="mt-[100px]   md:flex bg-gradient-to-b from-white to-[#FDE9E6]">
-    <div class="w-full md:w-2/3">
-    <div class="max-w-[400px] mx-auto text-center">
-      
-      <div id="my-keen-slider" class="keen-slider">
-        <div class="keen-slider__slide">
-          <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} />
-        </div>
-        <div class="keen-slider__slide">
-          <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} />
-        </div>
-        <div class="keen-slider__slide">
-          <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} />
-        </div>
-        <div class="keen-slider__slide">
-          <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} />
+  <link rel="preload" as="image" href={robe.optimizedImages.gallery.desktop} type="image/webp" fetchpriority="high" />
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  
+  <div class="mt-20 max-w-7xl mx-auto px-2 flex flex-col lg:flex-row gap-10">
+    <section class="w-full lg:w-[70%] bg-gradient-to-b from-white to-[#FDE9E6]">
+      <div class="max-w-3xl mx-auto text-center">
+        <div id="slider-wrapper" class="relative w-full h-[500px] flex items-center justify-center overflow-hidden">
+          <div class="swiper-container">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} width="1333" height="2000" class="object-contain w-full h-auto" loading="lazy" />
+              </div>
+              <div class="swiper-slide">
+                <img src={robe.optimizedImages.gallery.extra1} alt={robe.altOptimized} class="object-contain w-full h-auto" loading="lazy" />
+              </div>
+              <div class="swiper-slide">
+                <img src={robe.optimizedImages.gallery.extra2} alt={robe.altOptimized} class="object-contain w-full h-auto" loading="lazy" />
+              </div>
+              <div class="swiper-slide">
+                <img src={robe.optimizedImages.gallery.extra3} alt={robe.altOptimized} class="object-contain w-full h-auto" loading="lazy" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="w-full md:w-1/3">
-    blblassss
-  </div>
+    </section>
 
-  </section>
-
-  <script is:inline src="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.js"></script>
+    <section class="w-full lg:w-[30%] flex flex-col justify-center">
+      <h1 class="text-3xl font-bold text-[#af7749] mb-4">Robe de mariée {robe.dressName}</h1>
+      <p class="text-gray-700 text-xl leading-relaxed">Sublime robe sirène signée Monica Mariage.</p>
+      <a href="#" class="mt-6 block w-full text-center bg-[#af7749] text-white py-3 rounded-lg font-medium hover:bg-[#925c36] transition-all duration-300">
+        PRENDRE RENDEZ-VOUS
+      </a>
+    </section>
+  </div>
+  
   <script is:inline>
-    var slider = new KeenSlider("#my-keen-slider", {
-      loop: true,
-    })
+    document.addEventListener("DOMContentLoaded", function () {
+      new Swiper(".swiper-container", {
+        loop: true,
+        slidesPerView: 1,
+        spaceBetween: 10,
+        autoplay: { delay: 3000 },
+      });
+    });
   </script>
 
   <style>
-    .keen-slider {
-  height: auto; /* Laisse la hauteur s'adapter */
-  max-height: 90vh; /* Évite que le slider ne prenne trop de place */
-  overflow: hidden;
-
-}
-
-.keen-slider__slide {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-.keen-slider__slide img {
-  width: 100%;
-  height: auto;
-  object-fit: contain; /* Évite le recadrage de l'image */
-  max-height: 100vh; /* Garde un bon ratio sans couper */
-}
-
-    
-    .slide1 {
-      background: linear-gradient(135deg, #FDE9E6 0%, #f8d1ca 100%);
+    .swiper-container {
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      overflow: hidden;
     }
-    
-    .slide2 {
-      background: linear-gradient(135deg, #f8d1ca 0%, #f3b9af 100%);
+    .swiper-slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
     }
-    
-    .slide3 {
-      background: linear-gradient(135deg, #f3b9af 0%, #eea194 100%);
-    }
-    
-    .slide4 {
-      background: linear-gradient(135deg, #eea194 0%, #e98979 100%);
-    }
-    
-    /* Font for the cursive title */
-    .font-cursive {
-      font-family: 'Playfair Display', serif;
+    .swiper-slide img {
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
     }
   </style>
 </Layout>
