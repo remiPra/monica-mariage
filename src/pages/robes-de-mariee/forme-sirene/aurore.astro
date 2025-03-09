@@ -15,25 +15,23 @@ const randomDresses = randomDressesz.reduce((acc, robe) => {
 }, []);
 
 const robe = {
-  "dressName": "Hadson",
+  "dressName": "Aurore (Taille disponible 38-40)",
   "category": "forme-sirene",
-  "imageUrl": "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1741182124/images_optimisees/jzsgjviy00uvs4cjujvs.webp",
-  "width": 1333,
-  "height": 2000,
+  "imageUrl": "https://static.wixstatic.com/media/176703_9c9e98c3459f40dd985964555b7f31a0~mv2.jpg",
+  "width": 4000,
+  "height": 6000,
   "optimizedImages": {
     "slider": {
-      "desktop": "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-sirene-hadson-5-slider-tablet.webp"
+      "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-sirene-aurore-taille-disponible-38-40-18-slider-desktop.webp"
     },
     "gallery": {
-      "desktop": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-hadson-5-gallery-tablet.webp",
-      "extra1": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-hadson-6-gallery-tablet.webp",
-      "extra2": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-hadson-7-gallery-tablet.webp",
-      "extra3": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-hadson-8-gallery-tablet.webp"
+      "desktop": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-aurore-taille-disponible-38-40-18-gallery-tablet.webp",
+      "extra1": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-aurore-taille-disponible-38-40-19-gallery-tablet.webp"
     }
   },
-  "title": "Robe Sirène Dentelle Monica Mariage Toulouse",
-  "metaDescription": "Sublimez votre mariage avec cette robe sirène en dentelle, une création Monica Mariage près de Toulouse.",
-  "altOptimized": "robe de mariée sirène Monica Mariage Toulouse"
+  "title": "Robe Bohème Chic de Mariée | Monica Mariage Toulouse",
+  "metaDescription": "Découvrez la sublime robe bohème chic de Monica Mariage, près de Toulouse. Une création élégante et raffinée pour votre grand jour.",
+  "altOptimized": "robe de mariée bohème chic Monica Mariage Toulouse"
 };
 ---
 <Layout title={robe.title} description={robe.metaDescription}>
@@ -57,12 +55,7 @@ const robe = {
             <div class="swiper-slide">
               <img src={robe.optimizedImages.gallery.extra1} alt={robe.altOptimized} class="object-cover w-full h-full rounded-2xl" loading="lazy" />
             </div>
-            <div class="swiper-slide">
-              <img src={robe.optimizedImages.gallery.extra2} alt={robe.altOptimized} class="object-cover w-full h-full rounded-2xl" loading="lazy" />
-            </div>
-            <div class="swiper-slide">
-              <img src={robe.optimizedImages.gallery.extra3} alt={robe.altOptimized} class="object-cover w-full h-full rounded-2xl" loading="lazy" />
-            </div>
+         
           </div>
 
           {/* Navigation Arrows */}

@@ -1,0 +1,54 @@
+---
+const { collection = "robes-de-mariee", currentDressId, dresses, categorie } = Astro.props;
+
+// Fonction pour créer un slug propre
+const slugify = (text) => {
+  return text
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "");
+};
+
+// Filtrer la robe en cours
+const filteredDresses = dresses.filter((dress) => dress.id !== currentDressId);
+
+// Sélectionner 6 robes aléatoires (fait à la génération du site)
+const randomDresses = filteredDresses.sort(() => 0.5 - Math.random()).slice(0, 6);
+---
+
+<div class="max-w-7xl mb-20 mx-auto px-6 mt-20">
+  <h2 class="text-[50px] font-cursive md:text-3xl font-playfair text-[#af7749] mb-8 text-center">
+    Vous pourriez aussi aimer
+  </h2>
+  
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+    {randomDresses.map((dress) => (
+      <a
+        key={dress.id}
+        href={`/${collection}/${categorie}/${slugify(dress.dressName)}`}
+        class="group relative overflow-hidden rounded-lg shadow-md cursor-pointer"
+      >
+        <div class="relative aspect-[3/4]">
+          <img
+            src={dress.imageUrl}
+            alt={dress.altOptimised || dress.dressName}
+            class="object-cover transition-transform duration-300 group-hover:scale-105 w-full h-full"
+            loading="lazy"
+          />
+        </div>
+        <div class="p-2 bg-white text-center">
+          <h3 class="text-[#af7749] text-sm font-medium">
+            {dress.dressName}
+          </h3>
+        </div>
+        <div class="flex justify-center mb-2">
+          <button
+            class="bg-[#af7749] text-white text-xs px-3 py-1.5 rounded-full hover:bg-[#825c4b] transition-colors"
+          >
+            Découvrir plus
+          </button>
+        </div>
+      </a>
+    ))}
+  </div>
+</div>

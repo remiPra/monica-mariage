@@ -15,26 +15,26 @@ const randomDresses = randomDressesz.reduce((acc, robe) => {
 }, []);
 
 const robe = {
-  "dressName": "Hadson",
+  "dressName": "Nireus",
   "category": "forme-sirene",
-  "imageUrl": "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1741182124/images_optimisees/jzsgjviy00uvs4cjujvs.webp",
-  "width": 1333,
-  "height": 2000,
+  "imageUrl": "https://static.wixstatic.com/media/176703_80e8d3003f814c329e653e4a782f0b72~mv2.jpg",
+  "width": 800,
+  "height": 1067,
   "optimizedImages": {
     "slider": {
-      "desktop": "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-sirene-hadson-5-slider-tablet.webp"
+      "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-sirene-nireus-20-slider-desktop.webp"
     },
     "gallery": {
-      "desktop": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-hadson-5-gallery-tablet.webp",
-      "extra1": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-hadson-6-gallery-tablet.webp",
-      "extra2": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-hadson-7-gallery-tablet.webp",
-      "extra3": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-hadson-8-gallery-tablet.webp"
+      "desktop": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-nireus-20-gallery-tablet.webp",
+      "extra1": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-nireus-21-gallery-tablet.webp",
+      "extra2": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-nireus-22-gallery-tablet.webp"
     }
   },
   "title": "Robe Sirène Dentelle Monica Mariage Toulouse",
-  "metaDescription": "Sublimez votre mariage avec cette robe sirène en dentelle, une création Monica Mariage près de Toulouse.",
-  "altOptimized": "robe de mariée sirène Monica Mariage Toulouse"
+  "metaDescription": "Sublimez votre mariage avec cette magnifique robe sirène en dentelle, proposée par Monica Mariage près de Toulouse.",
+  "altOptimized": "Robe de mariée sirène dentelle Monica Mariage Toulouse"
 };
+
 ---
 <Layout title={robe.title} description={robe.metaDescription}>
   <link rel="preload" as="image" href={robe.optimizedImages.gallery.desktop} type="image/webp" fetchpriority="high" />
@@ -60,9 +60,7 @@ const robe = {
             <div class="swiper-slide">
               <img src={robe.optimizedImages.gallery.extra2} alt={robe.altOptimized} class="object-cover w-full h-full rounded-2xl" loading="lazy" />
             </div>
-            <div class="swiper-slide">
-              <img src={robe.optimizedImages.gallery.extra3} alt={robe.altOptimized} class="object-cover w-full h-full rounded-2xl" loading="lazy" />
-            </div>
+            
           </div>
 
           {/* Navigation Arrows */}
