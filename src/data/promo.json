@@ -7,7 +7,7 @@
     "width": 1333,
     "height": 2000,
     "id": 1,
-    "link": "robes-de-mariee-promotion"
+    "link": "/promo/robes-de-mariee-promotion"
   },
   {
     "dressName": "Promo Bohème Chic ",
@@ -17,7 +17,7 @@
     "width": 1333,
     "height": 2000,
     "id": 2,
-    "link": "robes-de-mariee-boheme-chic"
+    "link": "/promo/robes-de-mariee-boheme-chic"
   },
   {
     "dressName": "Sirène & Fourreau",
@@ -27,7 +27,7 @@
     "width": 1200,
     "height": 1800,
     "id": 3,
-    "link": "promo-sirene"
+    "link": "/promo/promo-sirene"
   },
   {
     "dressName": "Déstockage",
@@ -37,6 +37,6 @@
     "width": 1200,
     "height": 1800,
     "id": 4,
-    "link": "robes-de-mariee-destockage"
+    "link": "/promo/robes-de-mariee-destockage"
   }
 ]

@@ -1,0 +1,70 @@
+---
+import { Icon } from "astro-icon/components";
+import SocialIcons from "./SocialIcons.astro";
+---
+
+<footer class="bg-[#925c36] text-white py-10">
+  <div class="container mx-auto flex flex-wrap justify-between px-4">
+    <!-- 📍 LOGO + CONTACT -->
+    <div class="w-full md:w-1/4 mb-6">
+      <img
+        src="/logo-new.png"
+        alt="Monica Mariage Logo"
+        width="128"
+        height="128"
+        class="w-32 mb-4 bg-white rounded-full"
+      />
+      <p class="text-lg font-medium">+33 6 68 30 09 60</p>
+      <p class="text-lg">
+        <a href="mailto:monicamariage@hotmail.com" class="underline hover:text-[#af7749]">
+          monicamariage@hotmail.com
+        </a>
+      </p>
+    </div>
+
+    <!-- 📌 INFORMATIONS -->
+    <div class="w-full md:w-1/4 mb-6">
+      <h4 class="text-xl font-semibold text-[#af7749] mb-4">Informations</h4>
+      <ul>
+        <li class="mb-2">
+          <a href="/trouver-le-showroom" class="hover:text-[#af7749]">Trouver le showroom</a>
+        </li>
+        <li class="mb-2">
+          <a href="/prendre-rendez-vous" class="hover:text-[#af7749]">Prendre rendez-vous</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 👗 PRODUITS -->
+    <div class="w-full md:w-1/4 mb-6">
+      <h4 class="text-xl font-semibold text-[#af7749] mb-4">Nos Produits</h4>
+      <ul>
+        <li class="mb-2">
+          <a href="/robes-de-mariee" class="hover:text-[#af7749]">Robes de mariée</a>
+        </li>
+        <li class="mb-2">
+          <a href="/promo" class="hover:text-[#af7749]">Promotions</a>
+        </li>
+        <li class="mb-2">
+          <a href="/toutes-nos-robes" class="hover:text-[#af7749]">Toutes nos robes</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 📢 RÉSEAUX SOCIAUX -->
+    <div class="w-full md:w-1/4 mb-6">
+      <h4 class="text-xl font-semibold text-[#af7749] mb-4">Nous suivre</h4>
+      <SocialIcons iconColor="white" center="flex-start" />
+      <p class="mt-3 text-sm">
+        📍 Situé au sud de Toulouse (Seysses), à proximité de Montauban (40 min), Albi (1h), 
+        Castres (1h15), Carcassonne (1h), Narbonne (1h40), Tarbes (1h40), Béziers (1h55), Pau (2h10), 
+        Perpignan (2h15), Montpellier (2h30), Bordeaux (2h30).
+      </p>
+    </div>
+  </div>
+
+  <!-- 📜 COPYRIGHT -->
+  <div class="border-t border-gray-600 mt-6 pt-4 text-center text-sm">
+    <p>&copy; 2014 - 2025 Monica Mariage Showroom – Tous droits réservés</p>
+  </div>
+</footer>

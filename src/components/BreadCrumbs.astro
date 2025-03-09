@@ -1,0 +1,30 @@
+---
+import { Icon } from "astro-icon/components";
+
+const pathname = Astro.url.pathname;
+const pathSegments = pathname.split("/").filter((segment) => segment);
+---
+
+<nav class="items-baseline   text-wrap mt-8  text-[#5e3c21] text-lg md:text-xl font-vibes my-4">
+  <ul class="flex space-x-2">
+    <li>
+      <a href="/" class="hover:underline">
+        <Icon name="mdi:home" />
+      </a>
+    </li>
+    {pathSegments.map((segment, index) => {
+      const href = "/" + pathSegments.slice(0, index + 1).join("/");
+      const isLast = index === pathSegments.length - 1;
+      return (
+        <li key={href} class="flex items-center">
+          <span class="mx-2">/</span>
+          {isLast ? (
+            <span class="text-gray-500">{decodeURIComponent(segment)}</span>
+          ) : (
+            <a href={href} class="hover:underline">{decodeURIComponent(segment)}</a>
+          )}
+        </li>
+      );
+    })}
+  </ul>
+</nav>

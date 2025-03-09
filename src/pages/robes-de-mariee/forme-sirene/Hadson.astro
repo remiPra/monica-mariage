@@ -1,112 +1,113 @@
 ---
+import BreadCrumbs from '../../../components/BreadCrumbs.astro';
 import Layout from '../../../layouts/Layout.astro';
 
 const robe = {
   "dressName": "Hadson",
-  "price": "",
   "category": "forme-sirene",
-  "imageUrl": "https://res.cloudinary.com/dkbsvrpdc/image/upload/c_fill,ar_9:16,q_auto/v1741182124/images_optimisees/jzsgjviy00uvs4cjujvs.webp",
+  "imageUrl": "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1741182124/images_optimisees/jzsgjviy00uvs4cjujvs.webp",
   "width": 1333,
   "height": 2000,
-  "id": 5,
   "optimizedImages": {
     "slider": {
-      "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-sirene-hadson-5-slider-desktop.webp",
-      "mobile": "/images/robes/slider/mobile/monica-mariage-robe-de-mariee-sirene-hadson-5-slider-mobile.webp"
+      "desktop": "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-sirene-hadson-5-slider-tablet.webp"
     },
     "gallery": {
-      "desktop": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-sirene-hadson-5-gallery-desktop.webp",
-      "tablet": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-hadson-5-gallery-tablet.webp",
-      "mobile": "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-sirene-hadson-5-gallery-mobile.webp"
-    },
-    "thumbnail": "/images/robes/thumbnails/monica-mariage-robe-de-mariee-sirene-hadson-5-thumb.webp"
+      "desktop": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-hadson-5-gallery-tablet.webp",
+      "extra1": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-hadson-6-gallery-tablet.webp",
+      "extra2": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-hadson-7-gallery-tablet.webp",
+      "extra3": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-sirene-hadson-8-gallery-tablet.webp"
+    }
   },
-  "urlBest": "monica-mariage-robe-de-mariee-sirene-hadson-5",
   "title": "Robe Sirène Dentelle Monica Mariage Toulouse",
   "metaDescription": "Sublimez votre mariage avec cette robe sirène en dentelle, une création Monica Mariage près de Toulouse.",
-  "descriptionCourte": "Craquez pour cette sublime robe de mariée sirène signée Monica Mariage, près de Toulouse.",
   "altOptimized": "robe de mariée sirène Monica Mariage Toulouse"
 };
 ---
-
 <Layout title={robe.title} description={robe.metaDescription}>
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.css"
-  />
+  <link rel="preload" as="image" href={robe.optimizedImages.gallery.desktop} type="image/webp" fetchpriority="high" />
 
-  <section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
-    <div class="mx-auto text-center px-4 lg:max-w-3xl">
-      <h1 class="font-cursive text-5xl font-semibold text-[#af7749] mb-4">{robe.dressName}</h1>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+  <div class="mt-20 max-w-7xl mx-auto px-4 lg:px-6 flex flex-col lg:flex-row gap-10">
+    
+    {/* Section Image - Slider */}
+    <section class="w-full lg:w-[60%]">
+      <BreadCrumbs />
       
-      <!-- ✅ Le slider prend toute la largeur -->
-      <div id="my-keen-slider" class="keen-slider w-full">
-        <div class="keen-slider__slide slide1">
-          <img class="w-full h-auto object-cover" src={robe.imageUrl} alt={robe.altOptimized} />
-        </div>
-        <div class="keen-slider__slide slide2">
-          <img class="w-full h-auto object-cover" src={robe.imageUrl} alt={robe.altOptimized} />
-        </div>
-        <div class="keen-slider__slide slide3">
-          <img class="w-full h-auto object-cover" src={robe.imageUrl} alt={robe.altOptimized} />
-        </div>
-        <div class="keen-slider__slide slide4">
-          <img class="w-full h-auto object-cover" src={robe.imageUrl} alt={robe.altOptimized} />
+      <div class="relative w-full max-w-[500px] h-[600px] mx-auto overflow-hidden">
+        <div class="swiper-container rounded-2xl shadow-lg border border-[#C5A880]">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <img src={robe.optimizedImages.gallery.desktop} alt={robe.altOptimized} class="object-cover w-full h-full rounded-2xl" loading="lazy" />
+            </div>
+            <div class="swiper-slide">
+              <img src={robe.optimizedImages.gallery.extra1} alt={robe.altOptimized} class="object-cover w-full h-full rounded-2xl" loading="lazy" />
+            </div>
+            <div class="swiper-slide">
+              <img src={robe.optimizedImages.gallery.extra2} alt={robe.altOptimized} class="object-cover w-full h-full rounded-2xl" loading="lazy" />
+            </div>
+            <div class="swiper-slide">
+              <img src={robe.optimizedImages.gallery.extra3} alt={robe.altOptimized} class="object-cover w-full h-full rounded-2xl" loading="lazy" />
+            </div>
+          </div>
+
+          {/* Navigation Arrows */}
+        
         </div>
       </div>
-      
-      <p class="mt-4 text-lg text-black">{robe.descriptionCourte}</p>
-      <a href="/prendre-rendez-vous">
-        <button class="mt-6 bg-[#af7749] text-white py-2 px-6 rounded-lg shadow-lg hover:bg-[#925c36] transition duration-300">
-          Prendre rendez-vous
-        </button>
-      </a>
-    </div>
-  </section>
+    </section>
 
-  <script is:inline src="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.js"></script>
+    {/* Section Info */}
+    <section class="w-full lg:w-[40%] flex flex-col justify-center">
+      <h1 class="text-4xl font-vibes text-[#af7749] mb-4">Robe de Mariée {robe.dressName}</h1>
+      <p class="text-gray-700 text-lg leading-relaxed">
+        Craquez pour cette sublime robe de mariée sirène signée Monica Mariage, près de Toulouse. 
+        Dentelle raffinée, manches longues transparentes ornées de motifs floraux, décolleté plongeant délicat et 
+        traîne discrète pour un look à la fois romantique et moderne.
+      </p>
+      <a href="#" class="mt-6 block w-full text-center bg-[#af7749] text-white py-4 px-6 rounded-lg font-medium hover:bg-[#925c36] transition-all duration-300 text-lg">
+        PRENDRE RENDEZ-VOUS
+      </a>
+    </section>
+  </div>
+
+  {/* SwiperJS Initialisation */}
   <script is:inline>
-    var slider = new KeenSlider("#my-keen-slider", {
-      loop: true,
-    })
+    document.addEventListener("DOMContentLoaded", function () {
+      new Swiper(".swiper-container", {
+        loop: true,
+        slidesPerView: 1,
+        spaceBetween: 10,
+        autoplay: { delay: 3000 },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+      });
+    });
   </script>
 
+  {/* Custom Styles */}
   <style>
-    .keen-slider {
-      height: 500px;
+    .swiper-container {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
     }
-    
-    .keen-slider__slide {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 50px;
-      color: white;
-      font-weight: 500;
+    .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
-    
-    .keen-slider__slide img {
-      max-height: 600px;
-      width: auto;
-      object-fit: contain;
+    .swiper-button-next, .swiper-button-prev {
+      color: #C5A880;
+      transition: all 0.3s;
     }
-    
-    .slide1 {
-      background: linear-gradient(135deg, #FDE9E6 0%, #f8d1ca 100%);
+    .swiper-button-next:hover, .swiper-button-prev:hover {
+      color: #925c36;
     }
-    
-    .slide2 {
-      background: linear-gradient(135deg, #f8d1ca 0%, #f3b9af 100%);
-    }
-    
-    .slide3 {
-      background: linear-gradient(135deg, #f3b9af 0%, #eea194 100%);
-    }
-    
-    .slide4 {
-      background: linear-gradient(135deg, #eea194 0%, #e98979 100%);
-    }
-    
-    
   </style>
 </Layout>
