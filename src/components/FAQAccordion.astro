@@ -1,0 +1,166 @@
+---
+// FAQAccordion.astro
+const faqItems = [
+  {
+    question: "Quand faut-il prendre rendez-vous ?",
+    answer:
+      "Pour une expérience sereine, nous vous conseillons de prendre rendez-vous 8 à 12 mois avant votre mariage. Pour les robes sur-mesure, nous avons besoin d'un délai de confection de 4 à 6 mois, suivi des essayages et des ajustements. Cela nous permet de vous livrer votre robe environ un mois avant le grand jour.",
+  },
+  {
+    question: "Comment se déroule le premier rendez-vous ?",
+    answer: `Votre rendez-vous se déroule dans notre showroom privé à Seysses, près de Toulouse, dans une atmosphère intime et chaleureuse. Lors de ce moment privilégié, nous échangerons sur :
+      • Vos inspirations et le style recherché
+      • Votre budget (nos robes sont disponibles entre 750€ et 1850€)
+      • Vos contraintes de date
+      • Vos préférences en termes de style
+      
+      Chaque essayage est une expérience unique où vous êtes notre seule priorité.`,
+  },
+  {
+    question: "Que faut-il prévoir pour l'essayage ?",
+    answer: `Pour un essayage optimal, nous vous recommandons :
+      • Des sous-vêtements nude sans couture
+      • Vos chaussures de mariage ou des chaussures avec la hauteur de talon souhaitée
+      
+      N'hésitez pas à prendre des photos pendant vos essayages, tout en gardant à l'esprit que les modèles d'exposition peuvent nécessiter des ajustements pour correspondre parfaitement à vos mesures.`,
+  },
+  {
+    question: "Quelles sont les modalités de paiement ?",
+    answer: `Pour faciliter votre achat, nous proposons un paiement en trois fois :
+      • 50% à la commande
+      • 25% au premier essayage
+      • 25% à la récupération de la robe
+      
+      Nous adaptons nos créations jusqu'à la taille 44 pour que chaque mariée trouve la robe de ses rêves.`,
+  },
+];
+---
+
+<div class="max-w-4xl mx-auto px-4 py-12 fade-in">
+  <h2 class="text-4xl text-[#B17A55] text-center mb-12 fade-in-up">
+    Questions Fréquentes
+  </h2>
+
+  <div class="space-y-6">
+    {
+      faqItems.map((item, index) => (
+        <div
+          class="border-2 border-[#B17A55] rounded-lg overflow-hidden fade-in-up"
+          style={`animation-delay: ${index * 100}ms`}
+          data-faq-index={index}
+        >
+          <button
+            class="faq-toggle w-full text-left px-8 py-6 text-xl bg-[#FFF5F5] hover:bg-[#FFE4E4] text-[#B17A55] flex justify-between items-center"
+            aria-expanded="false"
+            aria-controls={`faq-content-${index}`}
+          >
+            <span class="font-medium">{item.question}</span>
+            <span class="text-2xl toggle-icon">+</span>
+          </button>
+
+          <div
+            id={`faq-content-${index}`}
+            class="faq-content bg-white overflow-hidden"
+            aria-hidden="true"
+            style="height: 0; opacity: 0;"
+          >
+            <div class="px-8 py-6">
+              <p class="text-gray-700 whitespace-pre-line text-lg leading-relaxed">
+                {item.answer}
+              </p>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+    animation-delay: 0.1s;
+  }
+
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease-in-out forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .faq-content {
+    transition:
+      height 0.4s ease,
+      opacity 0.3s ease;
+  }
+
+  .toggle-icon {
+    transition: transform 0.4s ease-in-out;
+  }
+
+  button[aria-expanded="true"] {
+    background-color: rgb(255, 228, 228);
+  }
+
+  button[aria-expanded="true"] .toggle-icon {
+    transform: rotate(180deg);
+  }
+</style>
+
+<script defer>
+  document.addEventListener("DOMContentLoaded", () => {
+    const faqToggles = document.querySelectorAll(".faq-toggle");
+
+    faqToggles.forEach((toggle) => {
+      toggle.addEventListener("click", () => {
+        const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+        const contentId = toggle.getAttribute("aria-controls");
+        const content = document.getElementById(contentId);
+
+        // Fermer tous les autres accordions
+        faqToggles.forEach((otherToggle) => {
+          if (otherToggle !== toggle) {
+            otherToggle.setAttribute("aria-expanded", "false");
+            const otherId = otherToggle.getAttribute("aria-controls");
+            const otherContent = document.getElementById(otherId);
+            otherContent.style.height = "0";
+            otherContent.style.opacity = "0";
+            otherContent.setAttribute("aria-hidden", "true");
+          }
+        });
+
+        // Toggle de l'accordion actuel
+        if (isExpanded) {
+          toggle.setAttribute("aria-expanded", "false");
+          content.style.height = "0";
+          content.style.opacity = "0";
+          content.setAttribute("aria-hidden", "true");
+        } else {
+          toggle.setAttribute("aria-expanded", "true");
+          content.style.height = content.scrollHeight + "px";
+          content.style.opacity = "1";
+          content.setAttribute("aria-hidden", "false");
+
+          // Redimensionner si le contenu change
+          setTimeout(() => {
+            content.style.height = "auto";
+          }, 400); // Même durée que la transition
+        }
+      });
+    });
+  });
+</script>

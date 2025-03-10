@@ -1,0 +1,42 @@
+---
+import { Icon } from "astro-icon/components";
+
+const navigationLinks = [
+  {
+    name: "Waze",
+    href: "https://www.waze.com/ul?ll=43.507672,1.326138&navigate=yes",
+    icon: "mdi:waze",
+    ariaLabel: "Ouvrir dans Waze",
+  },
+  {
+    name: "Google Maps",
+    href: "https://www.google.com/maps/search/?api=1&query=43.507672,1.326138",
+    icon: "mdi:google-maps",
+    ariaLabel: "Ouvrir dans Google Maps",
+  },
+  {
+    name: "Apple Maps",
+    href: "http://maps.apple.com/?q=Monica+Mariage&ll=43.507672,1.326138",
+    icon: "mdi:apple",
+    ariaLabel: "Ouvrir dans Apple Maps",
+  },
+];
+---
+
+<div class="flex justify-center gap-6 mt-10">
+  {
+    navigationLinks.map((link, index) => (
+      <a
+        key={index}
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex flex-col items-center text-7xl md:text-3xl text-[#53240f] hover:opacity-80"
+        aria-label={link.ariaLabel}
+      >
+        <Icon name={link.icon} class="w-10 h-10 md:w-8 md:h-8" />
+        <span class="text-sm mt-1">{link.name}</span>
+      </a>
+    ))
+  }
+</div>

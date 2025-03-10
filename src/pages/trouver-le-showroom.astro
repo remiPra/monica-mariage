@@ -1,0 +1,121 @@
+---
+import Header from "../components/Header.astro";
+import SocialIcons from "../components/SocialIcons.astro";
+import NavigationLinks from "../components/NavigationLinks.astro";
+import { Icon } from "astro-icon/components";
+import Layout from "../layouts/Layout.astro";
+
+// Données pour les jours d'ouverture
+const joursSemaine = [
+  "Lundi",
+  "Mardi",
+  "Mercredi",
+  "Jeudi",
+  "Vendredi",
+  "Samedi",
+];
+---
+
+<Layout>
+  <section class="mx-auto px-4 py-8">
+    <!-- Modification de flex-col en flex sur tout le bloc et ajout de flex-wrap -->
+    <div class="mt100 flex md:flex w-full">
+      <!-- Section gauche - modification width à 100% sur mobile et exactement 50% sur md -->
+      <div class="w-full md:w-1/2 bg-white p-4">
+        <div
+          class="bg-[#FDF8F5] rounded-lg shadow-md p-8 max-w-xl mx-auto fade-in"
+        >
+          <h1
+            class="font-vibes text-center text-5xl font-script text-[#53240f] mb-2"
+          >
+            Monica Mariage
+          </h1>
+
+          <!-- Carte avec les informations principales -->
+          <div class="bg-white rounded-lg p-6 shadow-sm mb-2">
+            <div class="text-center text-[#53240f] space-y-2">
+              <p class="font-medium">1220 Chemin de Brouquère</p>
+              <p>31600 Seysses</p>
+              <div class="my-4 border-t border-[#53240f]/20 pt-4">
+                <p class="font-medium">06 68 30 09 60</p>
+                <p class="text-sm">(Heure d'appel 9h-20h)</p>
+              </div>
+              <a
+                href="mailto:monicamariage@hotmail.com"
+                class="text-[#53240f]
+              hover:text-[#8B4513] underline decoration-dotted"
+              >
+                monicamariage@hotmail.com
+              </a>
+            </div>
+          </div>
+
+          <!-- Carte des horaires -->
+          <div class="bg-white rounded-lg p-6 shadow-sm">
+            <h2 class="text-center text-[#53240f] font-semibold text-xl mb-4">
+              Horaires d'ouverture
+            </h2>
+            <div class="grid grid-cols-1 gap-2 text-[#53240f]">
+              {
+                joursSemaine.map((jour) => (
+                  <div class="flex justify-between items-center py-2 border-b border-[#53240f]/10">
+                    <span class="font-medium">{jour}</span>
+                    <span class="text-sm">9h30-19h (sur RDV)</span>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section droite - modification width à 100% sur mobile et exactement 50% sur md -->
+      <div class="w-full md:w-1/2 p-4 fade-in">
+        <h2
+          class="font-vibes mt-3 text-center text-[50px] font-script text-[#53240f] mb-6"
+        >
+          Où nous trouver
+        </h2>
+
+        <div class="relative">
+          <!-- Overlay -->
+          <div
+            class="absolute inset-0 bg-[#53240f]/50 pointer-events-none z-10 rounded-lg"
+          >
+          </div>
+
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2893.7441859891446!2d1.323562676013496!3d43.50767187110942!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aeba19e17ca76b%3A0x179ca88590319aa3!2sMonica%20Mariage%20-%20boutique%20robe%20de%20mari%C3%A9e%20Toulouse!5e0!3m2!1sfr!2sfr!4v1739277867420!5m2!1sfr!2sfr"
+            width="100%"
+            height="350"
+            class="rounded-lg"
+            style="border: 0"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Localisation de Monica Mariage"></iframe>
+        </div>
+
+        <NavigationLinks />
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .mt100 {
+      margin-top: 100px;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 0.5s ease-in-out forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</Layout>

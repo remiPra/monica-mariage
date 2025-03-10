@@ -1,0 +1,382 @@
+---
+import Header from "../components/Header.astro";
+import SocialIcons from "../components/SocialIcons.astro";
+import FAQAccordion from "../components/FAQAccordion.astro";
+import Layout from "../layouts/Layout.astro";
+
+// Jours d'ouverture pour la carte des horaires
+const joursSemaine = [
+  "Lundi",
+  "Mardi",
+  "Mercredi",
+  "Jeudi",
+  "Vendredi",
+  "Samedi",
+];
+---
+
+<Layout>
+  <Header />
+  <!-- Container principal -->
+  <div class="container mx-auto my-[70px]">
+    <!-- Flex container pour les deux colonnes -->
+    <div class="flex flex-col md:flex-row">
+      <!-- COLONNE GAUCHE -->
+      <div
+        class="w-full md:w-1/2 relative overflow-hidden"
+        style="background-image: url('/contact.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;"
+      >
+        <!-- Overlay marron -->
+        <div
+          class="absolute top-0 left-0 w-full h-full"
+          style="background-color: rgba(181, 116, 75, 0.7);"
+        >
+        </div>
+
+        <div class="relative z-10 p-6">
+          <SocialIcons iconColor="white" center="center" />
+        </div>
+
+        <div class="rounded-lg shadow-md p-8 max-w-xl mx-auto relative z-10">
+          <h1
+            class="hidden md:block font-vibes text-center text-5xl font-script text-white mb-2"
+          >
+            Monica Mariage
+          </h1>
+
+          <div class="rounded-lg p-6 shadow-sm mb-2">
+            <div class="text-center text-white space-y-2">
+              <p class="font-medium">1220 Chemin de Brouquère</p>
+              <p>31600 Seysses</p>
+              <div class="my-4 border-t border-[#53240f]/20 pt-4">
+                <p class="font-medium">06 68 30 09 60</p>
+                <p class="text-sm">(Heure d'appel 9h-20h)</p>
+              </div>
+              <a
+                href="mailto:monicamariage@hotmail.com"
+                class="text-white hover:text-[#8B4513] mt-8 underline decoration-dotted"
+              >
+                monicamariage@hotmail.com</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="rounded-lg p-6 shadow-sm relative z-10">
+          <h2 class="text-center text-white font-semibold text-xl mb-4">
+            Horaires d'ouverture
+          </h2>
+          <div
+            class="grid grid-cols-1 gap-2 text-white items-center justify-items-center"
+          >
+            <div
+              class="flex justify-between items-center py-2 border-b border-[#53240f]/10 w-[300px]"
+            >
+              <span class="font-medium text-lg">Lundi</span>
+              <span class="text-lg">9h30-19h (sur RDV)</span>
+            </div>
+            <div
+              class="flex justify-between items-center py-2 border-b border-[#53240f]/10 w-[300px]"
+            >
+              <span class="font-medium text-lg">Mardi</span>
+              <span class="text-lg">9h30-19h (sur RDV)</span>
+            </div>
+            <div
+              class="flex justify-between items-center py-2 border-b border-[#53240f]/10 w-[300px]"
+            >
+              <span class="font-medium text-lg">Mercredi</span>
+              <span class="text-lg">9h30-19h (sur RDV)</span>
+            </div>
+            <div
+              class="flex justify-between items-center py-2 border-b border-[#53240f]/10 w-[300px]"
+            >
+              <span class="font-medium text-lg">Jeudi</span>
+              <span class="text-lg">9h30-19h (sur RDV)</span>
+            </div>
+            <div
+              class="flex justify-between items-center py-2 border-b border-[#53240f]/10 w-[300px]"
+            >
+              <span class="font-medium text-lg">Vendredi</span>
+              <span class="text-lg">9h30-19h (sur RDV)</span>
+            </div>
+            <div
+              class="flex justify-between items-center py-2 border-b border-[#53240f]/10 w-[300px]"
+            >
+              <span class="font-medium text-lg">Samedi</span>
+              <span class="text-lg">9h30-19h (sur RDV)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLONNE DROITE -->
+      <div
+        class="w-full md:w-1/2 relative bg-[rgba(181,116,75,0.7)] p-6 rounded-lg"
+      >
+        <h1 class="md:hidden text-center text-5xl font-script text-white mb-6">
+          Monica Mariage
+        </h1>
+        <h2 class="text-center text-2xl font-script text-white mb-6">
+          Contactez-moi
+        </h2>
+
+        <form id="contactForm" class="space-y-4">
+          <input
+            type="text"
+            placeholder="Nom *"
+            class="w-full p-2 border border-gray-300 rounded"
+            name="name"
+            required
+          />
+          <input
+            type="email"
+            placeholder="Email *"
+            class="w-full p-2 border border-gray-300 rounded"
+            name="email"
+            required
+          />
+          <input
+            type="tel"
+            placeholder="Portable *"
+            class="w-full p-2 border border-gray-300 rounded"
+            name="phone"
+            required
+          />
+          <input
+            type="text"
+            placeholder="Date du mariage *"
+            class="w-full p-2 border border-gray-300 rounded"
+            name="dateMariage"
+            required
+          />
+          <input
+            type="text"
+            placeholder="Taille"
+            class="w-full p-2 border border-gray-300 rounded"
+            readonly
+          />
+          <input
+            type="text"
+            placeholder="Forme préférée"
+            class="w-full p-2 border border-gray-300 rounded"
+            name="forme"
+          />
+          <input
+            type="text"
+            placeholder="Budget défini *"
+            class="w-full p-2 border border-gray-300 rounded"
+            name="budget"
+            required
+          />
+          <textarea
+            placeholder="Message *"
+            class="w-full p-2 border border-gray-300 rounded h-32"
+            name="message"
+            required></textarea>
+          <button
+            type="submit"
+            class="bg-[#53240f] text-white px-6 py-2 rounded hover:bg-[#6b2f13] w-full"
+          >
+            Envoyer
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <FAQAccordion />
+</Layout>
+
+<!-- Modal pour le tableau des tailles -->
+<div
+  id="tailleModal"
+  class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden"
+>
+  <div class="bg-white p-6 rounded-lg max-w-xl w-full mx-4">
+    <h2 class="font-vibes text-center text-4xl font-script text-[#53240f] mb-4">
+      Tableau de mensuration
+    </h2>
+
+    <div class="mb-4">
+      <img src="/taille.jpg" alt="Tableau des tailles" class="w-full h-auto" />
+    </div>
+
+    <form id="tailleForm" class="space-y-4">
+      <input
+        type="text"
+        id="tailleValue"
+        placeholder="Entrez votre taille"
+        class="w-full p-2 border border-gray-300 rounded"
+      />
+
+      <div class="flex justify-end space-x-4">
+        <button
+          type="button"
+          id="cancelTaille"
+          class="px-4 py-2 text-gray-600 hover:text-gray-800"
+        >
+          Annuler
+        </button>
+        <button
+          type="submit"
+          class="bg-[#53240f] text-white px-6 py-2 rounded hover:bg-[#6b2f13]"
+        >
+          Confirmer
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal de succès -->
+<div
+  id="successModal"
+  class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden"
+>
+  <div class="bg-white p-6 rounded-lg max-w-xl w-full mx-4 relative">
+    <button
+      id="closeSuccessModal"
+      class="absolute top-2 right-3 text-gray-600 hover:text-gray-900 text-lg"
+    >
+      ✖
+    </button>
+    <h2 class="font-vibes text-center text-4xl font-script text-[#53240f] mb-4">
+      Merci !
+    </h2>
+    <p class="text-center mb-4">
+      Votre demande a été envoyée avec succès. Vous allez être redirigé vers
+      WhatsApp.
+    </p>
+    <div class="flex justify-center">
+      <button
+        id="closeSuccessBtn"
+        class="mt-4 px-4 py-2 bg-[#53240f] text-white rounded hover:bg-[#6b2f13]"
+      >
+        Fermer
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease-in-out forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Ajout de styles personnalisés qui étaient dans le CSS global */
+  .bg-customBrown {
+    background-color: rgba(181, 116, 75, 0.7);
+  }
+</style>
+
+<script defer>
+  // Script côté client pour les fonctionnalités interactives
+  document.addEventListener("DOMContentLoaded", () => {
+    // Éléments du DOM
+    const tailleInput = document.getElementById("taille-input");
+    const tailleModal = document.getElementById("tailleModal");
+    const tailleForm = document.getElementById("tailleForm");
+    const tailleValue = document.getElementById("tailleValue");
+    const cancelTaille = document.getElementById("cancelTaille");
+    const contactForm = document.getElementById("contactForm");
+    const successModal = document.getElementById("successModal");
+    const closeSuccessModal = document.getElementById("closeSuccessModal");
+    const closeSuccessBtn = document.getElementById("closeSuccessBtn");
+
+    // Gestion de l'ouverture de la modal de taille
+    tailleInput?.addEventListener("click", () => {
+      tailleModal?.classList.remove("hidden");
+    });
+
+    // Fermeture de la modal de taille
+    cancelTaille?.addEventListener("click", () => {
+      tailleModal?.classList.add("hidden");
+    });
+
+    // Soumission du formulaire de taille
+    tailleForm?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (tailleInput && tailleValue) {
+        tailleInput.value = tailleValue.value;
+      }
+      tailleModal?.classList.add("hidden");
+    });
+
+    // Fermeture de la modal de succès
+    closeSuccessModal?.addEventListener("click", () => {
+      successModal?.classList.add("hidden");
+    });
+
+    closeSuccessBtn?.addEventListener("click", () => {
+      successModal?.classList.add("hidden");
+    });
+
+    // Gestion de l'envoi du formulaire
+    contactForm?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Récupération des valeurs du formulaire
+      const name = document.getElementById("name-input")?.value || "";
+      const email = document.getElementById("email-input")?.value || "";
+      const phone = document.getElementById("phone-input")?.value || "";
+      const dateMariage = document.getElementById("date-input")?.value || "";
+      const taille = document.getElementById("taille-input")?.value || "";
+      const forme = document.getElementById("forme-input")?.value || "";
+      const budget = document.getElementById("budget-input")?.value || "";
+      const message = document.getElementById("message-input")?.value || "";
+
+      // Changer le texte du bouton pour indiquer le chargement
+      const submitButton = document.getElementById("submit-button");
+      if (submitButton) {
+        submitButton.textContent = "Envoi en cours...";
+        submitButton.disabled = true;
+      }
+
+      try {
+        // Simuler un envoi réussi
+        setTimeout(() => {
+          // Afficher la modal de succès
+          successModal?.classList.remove("hidden");
+
+          if (submitButton) {
+            submitButton.textContent = "Envoyer";
+            submitButton.disabled = false;
+          }
+
+          // Préparer le message WhatsApp
+          const whatsappMessage = encodeURIComponent(
+            `Bonjour Monica Mariage,\n\nJe suis ${name},\nEmail: ${email},\nDate du mariage: ${dateMariage},\nForme préférée: ${forme},\nBudget: ${budget},\nMessage: ${message}`
+          );
+
+          // Construire l'URL WhatsApp
+          const whatsappURL = `https://wa.me/33668300960?text=${whatsappMessage}`;
+
+          // Rediriger vers WhatsApp après 3 secondes
+          setTimeout(() => {
+            window.open(whatsappURL, "_blank");
+          }, 3000);
+
+          // Réinitialiser le formulaire
+          contactForm?.reset();
+        }, 1500);
+      } catch (error) {
+        console.error("Erreur lors de l'envoi du formulaire :", error);
+        if (submitButton) {
+          submitButton.textContent = "Envoyer";
+          submitButton.disabled = false;
+        }
+        alert(
+          "Une erreur s'est produite lors de l'envoi du formulaire. Veuillez réessayer."
+        );
+      }
+    });
+  });
+</script>

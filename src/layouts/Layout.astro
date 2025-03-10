@@ -1,12 +1,16 @@
 ---
 // Layout.astro
-import Header from '../components/Header.astro';
+import Header from "../components/Header.astro";
 import "../styles/global.css";
-import FloatingButton from '../components/FloatingButton.astro'
-const { title = "Monica Mariage - Boutique de Robes de Mariée", description = "Découvrez nos robes de mariée sur-mesure à Toulouse." } = Astro.props;
+import FloatingButton from "../components/FloatingButton.astro";
+import Footer from "../components/Footer.astro";
+const {
+  title = "Monica Mariage - Boutique de Robes de Mariée",
+  description = "Découvrez nos robes de mariée sur-mesure à Toulouse.",
+} = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
@@ -17,14 +21,15 @@ const { title = "Monica Mariage - Boutique de Robes de Mariée", description = "
     <meta property="og:description" content={description} />
     <meta property="og:image" content="/images/cover-robes.jpg" />
     <meta property="og:url" content={Astro.url} />
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
-
-</head>
-
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"
+    ></script>
   </head>
-  <body>
-    <Header/>
-    <slot />
-    <!-- <FloatingButton client:load  /> -->
-  </body>
 </html>
+<body>
+  <Header />
+  <slot />
+  <!-- <FloatingButton client:load  /> -->
+  <Footer />
+</body>
