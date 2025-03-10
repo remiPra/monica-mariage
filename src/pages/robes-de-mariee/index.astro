@@ -2,7 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 
 import sirene from "../../data/robe-de-mariee.json";
-
+import HeroSection from "../../components/HeroSection.astro";
 
 // Fusionner tous les fichiers JSON et enlever les doublons
 const allRobes = [...sirene];
@@ -18,40 +18,52 @@ const robes = allRobes.reduce((acc, robe) => {
   title="Toutes nos robes de mariée | Monica Mariage"
   description="Découvrez notre collection de robes de mariée, disponibles dans différents styles et tailles. Trouvez la robe parfaite pour votre mariage à Toulouse."
 >
-  <section style='margin-top: 120px;' class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]">
+  <section
+    style="margin-top: 120px;"
+    class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]"
+  >
+    <HeroSection
+      title="Découvrez Nos Sublimes Robes de Mariée"
+      subtitle="Laissez-vous séduire par nos collections élégantes et raffinées, conçues pour sublimer votre mariage."
+      buttonText="Explorer la Collection"
+      iconSrc="/image/iconerobe.png"
+    />
     <div class="flex justify-center px-4">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full">
-        {robes.map((robe, index) => (
-    <a
-  href={robe.link}
-  class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] shadow-md"
-  data-index={index}
->
-  {/* Overlay dégradé */}
-  <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10"></div>
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full"
+      >
+        {
+          robes.map((robe, index) => (
+            <a
+              href={robe.link}
+              class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] shadow-md"
+              data-index={index}
+            >
+              {/* Overlay dégradé */}
+              <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
 
-  {/* Image */}
-  <img
-    src={robe.imageUrl}
-    alt={robe.dressName}
-    width="300"
-    height="400"
-    class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
-    loading="lazy"
-  />
+              {/* Image */}
+              <img
+                src={robe.imageUrl}
+                alt={robe.dressName}
+                width="300"
+                height="400"
+                class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
+                loading="lazy"
+              />
 
-  {/* Nouveau contenu en bas */}
-  <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
-    <p class="text-white font-vibes text-4xl mb-4 drop-shadow-lg">
-      {robe.dressName}
-    </p>
-    <button class="bg-[#C5A880]  text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
-      Chosir cette collection 
-    </button>
-  </div>
-</a>
-
-        ))}
+              {/* Nouveau contenu en bas */}
+              <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
+                <p class="text-white font-vibes text-4xl mb-4 drop-shadow-lg">
+                  {robe.dressName}
+                </p>
+                <button class="bg-[#C5A880]  text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
+                  Chosir cette collection
+                </button>
+              </div>
+            </a>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -72,7 +84,9 @@ const robes = allRobes.reduce((acc, robe) => {
     .fade-in {
       opacity: 0;
       transform: translateY(10px);
-      transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+      transition:
+        opacity 0.6s ease-in-out,
+        transform 0.6s ease-in-out;
     }
     .fade-in.active {
       opacity: 1;

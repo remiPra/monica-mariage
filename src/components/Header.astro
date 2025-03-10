@@ -3,15 +3,26 @@ import { Icon } from "astro-icon/components";
 import SocialIcons from "./SocialIcons.astro";
 ---
 
-<header x-data="{ mobileMenuOpen: false }" class="fixed top-0 w-full z-30 bg-[#FDE9E6] shadow-md">
-  
+<header id="header" class="fixed top-0 w-full z-30 bg-[#FDE9E6] shadow-md">
   <!-- ✅ Barre de contact Mobile uniquement -->
-  <div class="bg-[#A37B63] text-white text-sm py-2 px-4 flex justify-center lg:hidden">
+  <div
+    class="bg-[#A37B63] text-white text-sm py-2 px-4 flex justify-center lg:hidden"
+  >
     <div class="flex items-center gap-2">
-      <a href="https://wa.me/33668300960" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1">
+      <a
+        href="https://wa.me/33668300960"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-1"
+      >
         <Icon name="mdi:whatsapp" class="text-2xl" />
       </a>
-      <a href="https://wa.me/33668300960" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-xl">
+      <a
+        href="https://wa.me/33668300960"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-1 text-xl"
+      >
         06 68 30 09 60
       </a>
       <a href="tel:+33668300960" class="flex items-center gap-1">
@@ -21,10 +32,14 @@ import SocialIcons from "./SocialIcons.astro";
   </div>
 
   <!-- ✅ Navigation Desktop -->
-  <nav class="hidden lg:flex bg-[#FDE9E6] items-center justify-between px-8 h-20">
-    <!-- Menu gauche -->
+  <nav
+    class="hidden lg:flex bg-[#FDE9E6] items-center justify-between px-8 h-20"
+  >
     <div class="flex items-center space-x-8">
-      <a href="/" class="flex items-center gap-1 text-[#7A5C4B] hover:text-[#A37B63]">
+      <a
+        href="/"
+        class="flex items-center gap-1 text-[#7A5C4B] hover:text-[#A37B63]"
+      >
         <Icon name="mdi:home-outline" />
         Accueil
       </a>
@@ -39,38 +54,46 @@ import SocialIcons from "./SocialIcons.astro";
       </a>
     </div>
 
-    <!-- ✅ Logo central -->
-    <div class="absolute flex items-center text-center left-1/2 transform -translate-x-1/2">
+    <div
+      class="absolute flex items-center text-center left-1/2 transform -translate-x-1/2"
+    >
       <p class="text-[#7A5C4B] font-vibes italic text-4xl mr-2">
         MonicaMariage
       </p>
       <span class="text-[#7A5C4B] italic text-md">Since 2014</span>
     </div>
 
-    <!-- Menu droit -->
     <div class="flex items-center space-x-8">
       <a href="/prendre-rendez-vous">
-        <button class="bg-[#7A5C4B] text-white hover:text-[#A37B63] transition-all duration-300 ease-in-out transform hover:scale-105 rounded-md py-2 px-4 shadow-lg">
+        <button
+          class="bg-[#7A5C4B] text-white hover:text-[#A37B63] transition-all duration-300 ease-in-out transform hover:scale-105 rounded-md py-2 px-4 shadow-lg"
+        >
           Contactez Nous
         </button>
       </a>
-      <a href="/trouver-le-showroom" class="text-[#7A5C4B] hover:text-[#A37B63]">
+      <a
+        href="/trouver-le-showroom"
+        class="text-[#7A5C4B] hover:text-[#A37B63]"
+      >
         Trouver le showroom
       </a>
       <a href="/favoris">
-        <Icon name="mdi:heart" class="w-5 h-5 text-[#7A5C4B] hover:text-[#A37B63]" />
+        <Icon
+          name="mdi:heart"
+          class="w-5 h-5 text-[#7A5C4B] hover:text-[#A37B63]"
+        />
       </a>
     </div>
   </nav>
 
   <!-- ✅ Navigation Mobile -->
-  <div class="lg:hidden bg-white shadow-md px-4 py-3 flex justify-between items-center">
-    <button class="text-[#7A5C4B]" @click="mobileMenuOpen = !mobileMenuOpen">
+  <div
+    class="lg:hidden bg-white shadow-md px-4 py-3 flex justify-between items-center"
+  >
+    <button id="mobileMenuBtn" class="text-[#7A5C4B]">
       <Icon name="mdi:menu" class="w-8 h-8" />
     </button>
-    <a href="/" class="font-vibes text-2xl text-[#7A5C4B]">
-      MonicaMariage
-    </a>
+    <a href="/" class="font-vibes text-2xl text-[#7A5C4B]"> MonicaMariage </a>
     <div class="flex gap-4">
       <a href="/trouver-le-showroom">
         <Icon name="mdi:map-marker" class="text-[#7A5C4B]" />
@@ -82,48 +105,118 @@ import SocialIcons from "./SocialIcons.astro";
   </div>
 
   <!-- ✅ Menu Mobile avec animation fluide -->
-  <div x-show="mobileMenuOpen"
-       x-cloak
-       x-transition:enter="transition-transform duration-300 ease-out"
-       x-transition:enter-start="translate-y-full opacity-0"
-       x-transition:enter-end="translate-y-0 opacity-100"
-       x-transition:leave="transition-transform duration-300 ease-in"
-       x-transition:leave-start="translate-y-0 opacity-100"
-       x-transition:leave-end="translate-y-full opacity-0"
-       class="fixed inset-0 bg-[#FDE9E6] z-50 p-4 flex flex-col items-center justify-center space-y-6 shadow-lg">
-    
-    <button class="absolute top-4 right-4 text-[#7A5C4B]" @click="mobileMenuOpen = false">
+  <!-- ✅ Menu Mobile -->
+  <div
+    id="mobileMenu"
+    class="fixed inset-0 bg-[#FDE9E6] z-50 p-4 flex flex-col items-center justify-center space-y-6 shadow-lg transform translate-y-full opacity-0 transition-all duration-500 ease-in-out"
+  >
+    <!-- Bouton de fermeture -->
+    <button id="closeMobileMenu" class="absolute top-4 right-4 text-[#7A5C4B]">
       <Icon name="mdi:close" size="24px" />
     </button>
 
+    <!-- ✅ Logo -->
     <div class="text-center w-full">
-      <span class="text-[#7A5C4B] block mt-[10px] font-vibes italic text-[40px]">
-        MonicaMariage <br />
+      <span
+        class="text-[#7A5C4B] block mt-[10px] font-vibes italic text-[40px]"
+      >
+        MonicaMariage
       </span>
-      <span class="mb-3 mt-[-20px] text-[#7A5C4B] font-vibes text-[20px] block w-full text-center">
+      <span
+        class="mb-3 mt-[-10px] text-[#7A5C4B] text-[18px] block w-full text-center"
+      >
         Since 2014
       </span>
     </div>
 
-    <!-- Menu Links -->
-    <div class="flex flex-col items-center space-y-6">
-      <a href="/" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
+    <!-- ✅ Liens du Menu avec icônes -->
+    <div class="flex flex-col items-center space-y-4 text-[#7A5C4B] text-xl">
+      <a
+        href="/"
+        class="flex items-center gap-3 hover:text-[#A37B63] transition"
+      >
         <Icon name="mdi:home-outline" class="text-2xl" />
-        <span class="block">Accueil</span>
+        <span>Accueil</span>
       </a>
-      <a href="/robes-de-mariee" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
-        <span class="block">Robes de Mariée</span>
+      <a
+        href="/robes-de-mariee"
+        class="flex items-center gap-3 hover:text-[#A37B63] transition"
+      >
+        <Icon name="mdi:hanger" class="text-2xl" />
+        <span>Robes de Mariée</span>
       </a>
-      <a href="/promo" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
-        <span class="block">Promotion</span>
+      <a
+        href="/promo"
+        class="flex items-center gap-3 hover:text-[#A37B63] transition"
+      >
+        <Icon name="mdi:percent-outline" class="text-2xl" />
+        <span>Promotion</span>
       </a>
-      <a href="/toutes-nos-robes" class="group text-[#7A5C4B] text-xl flex items-center gap-4 transform transition-transform hover:-translate-y-1">
-        <span class="block">Toutes nos robes</span>
+      <a
+        href="/toutes-nos-robes"
+        class="flex items-center gap-3 hover:text-[#A37B63] transition"
+      >
+        <Icon name="mdi:human-female-dance" class="text-2xl" />
+        <span>Toutes nos robes</span>
+      </a>
+      <!-- <a
+        href="/favoris"
+        class="flex items-center gap-3 hover:text-[#A37B63] transition"
+      >
+        <Icon name="mdi:heart-outline" class="text-2xl" />
+        <span>Ma Sélection</span>
+      </a> -->
+      <a
+        href="/prendre-rendez-vous"
+        class="flex items-center gap-3 hover:text-[#A37B63] transition"
+      >
+        <Icon name="mdi:calendar-check-outline" class="text-2xl" />
+        <span>Prendre Rendez-Vous</span>
+      </a>
+      <a
+        href="/trouver-le-showroom"
+        class="flex items-center gap-3 hover:text-[#A37B63] transition"
+      >
+        <Icon name="mdi:map-marker-outline" class="text-2xl" />
+        <span>Trouver le showroom</span>
       </a>
     </div>
 
-    <div class="mb-8">
-      <SocialIcons center={true} />
+    <!-- ✅ Réseaux Sociaux -->
+    <div class="flex gap-6 mt-6 text-[#7A5C4B] text-2xl">
+      <a href="https://wa.me/33668300960" target="_blank">
+        <Icon name="mdi:whatsapp" />
+      </a>
+      <a href="https://www.instagram.com" target="_blank">
+        <Icon name="mdi:instagram" />
+      </a>
+      <a href="https://www.messenger.com" target="_blank">
+        <Icon name="mdi:facebook-messenger" />
+      </a>
+      <a href="tel:+33668300960">
+        <Icon name="mdi:phone" />
+      </a>
     </div>
   </div>
 </header>
+
+<!-- ✅ JavaScript pur en defer -->
+<script defer>
+  document.addEventListener("DOMContentLoaded", () => {
+    const mobileMenu = document.getElementById("mobileMenu");
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const closeMobileMenu = document.getElementById("closeMobileMenu");
+
+    mobileMenuBtn.addEventListener("click", () => {
+      mobileMenu.classList.remove("translate-y-full", "opacity-0");
+      mobileMenu.classList.add("translate-y-0", "opacity-100");
+      document.body.style.overflow = "hidden"; // Bloque le scroll en arrière-plan
+    });
+
+    closeMobileMenu.addEventListener("click", () => {
+      mobileMenu.classList.remove("translate-y-0", "opacity-100");
+      mobileMenu.classList.add("translate-y-full", "opacity-0");
+      document.body.style.overflow = ""; // Réactive le scroll après fermeture
+    });
+  });
+</script>

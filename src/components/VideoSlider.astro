@@ -3,44 +3,99 @@ import { Icon } from "astro-icon/components";
 ---
 
 <div class="relative h-screen mt-20 overflow-hidden">
-  <!-- ✅ Une seule vidéo fusionnée -->
-  <video 
+  <!-- ✅ Vidéo de fond -->
+  <video
     class="absolute inset-0 w-full h-full object-cover"
-    autoplay muted loop playsinline preload="auto">
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+  >
     <source src="/videos/final.mp4" type="video/mp4" />
   </video>
 
-  <!-- Overlay pour améliorer la lisibilité du texte -->
+  <!-- ✅ Overlay pour lisibilité -->
   <div class="absolute inset-0 bg-black/40"></div>
 
-  <!-- Texte et CTA -->
-  <div class="absolute inset-0 flex flex-col items-center justify-center space-y-6 md:space-y-12 text-center">
-    <p class="title font-vibes text-4xl md:text-6xl text-white font-bold animate-fade-in">
+  <!-- ✅ Contenu principal -->
+  <div
+    class="absolute inset-0 flex flex-col items-center justify-center space-y-6 md:space-y-12 text-center"
+  >
+    <!-- ✅ Titre animé -->
+    <p
+      class="title font-vibes text-4xl md:text-6xl text-white font-bold animate-fade-in slide-up"
+    >
       Nouvelle Collection & Déstockage
     </p>
-    
-    <a href="#categorie" class="flex flex-col items-center animate-bounce cursor-pointer">
+
+    <!-- ✅ Icône animée -->
+    <a
+      href="#categorie"
+      class="flex flex-col items-center cursor-pointer animate-bounce-in"
+    >
       <Icon name="mdi:chevron-down" size="40" class="text-white" />
-      <span class="text-2xl font-vibes md:text-3xl font-medium mt-1 bg-gradient-to-r from-white to-[#af7749] bg-clip-text text-transparent">
+      <span
+        class="text-2xl font-vibes md:text-3xl font-medium mt-1 bg-gradient-to-r from-white to-[#af7749] bg-clip-text text-transparent"
+      >
         Voir la galerie
       </span>
     </a>
-    
+
+    <!-- ✅ Bouton avec animation fluide -->
     <a href="/robes-de-mariee">
-      <button class="px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-[#8B6F5C] to-[#9a7d6a] text-white font-medium rounded-3xl hover:from-[#7c6351] hover:to-[#8B6F5C] transition-all duration-200 shadow-md min-w-[160px] md:min-w-[200px]">
+      <button
+        class="px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-[#8B6F5C] to-[#9a7d6a] text-white font-medium rounded-3xl hover:from-[#7c6351] hover:to-[#8B6F5C] transition-all duration-300 shadow-md min-w-[160px] md:min-w-[200px] animate-fade-in slide-up"
+      >
         Découvrez nos robes
       </button>
     </a>
   </div>
 </div>
 
-<!-- ✅ Ajout d'un style pour l'effet de fondu -->
+<!-- ✅ Ajout d'animations CSS -->
 <style>
   @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes bounce-in {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
   .animate-fade-in {
     animation: fade-in 1s ease-in-out;
+  }
+
+  .slide-up {
+    animation: slide-up 0.8s ease-out;
+  }
+
+  .animate-bounce-in {
+    animation: bounce-in 1.5s infinite ease-in-out;
   }
 </style>
