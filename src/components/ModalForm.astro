@@ -1,0 +1,201 @@
+---
+import { Icon } from "astro-icon/components";
+const { isVisible } = Astro.props;
+---
+
+<!-- ✅ Overlay -->
+<div
+  id="contact-overlay"
+  class={`fixed inset-0 bg-black/50 flex items-center justify-center z-50 transition-opacity duration-500 ease-in-out ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+>
+  <!-- ✅ Contenu du Modal -->
+  <div
+    id="modal-content"
+    class="relative bg-white p-6 rounded-xl w-full max-w-lg shadow-lg transform transition-transform duration-500 ease-in-out ${isVisible ? 'scale-100' : 'scale-95'}"
+  >
+    <!-- ❌ Bouton de fermeture -->
+    <button
+      id="close-overlay"
+      class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl"
+    >
+      <Icon name="mdi:close" />
+    </button>
+
+    <!-- 🏆 Titre -->
+    <h2 class="text-[#af7749] text-2xl font-bold text-center">
+      VOUS RÊVEZ DE LA ROBE PARFAITE ?
+    </h2>
+    <p class="text-gray-600 text-center mt-2">
+      Laissez-nous vos coordonnées pour vous aider à trouver la robe de vos
+      rêves.
+    </p>
+
+    <!-- 📞 Boutons rapides -->
+    <div class="flex justify-center gap-4 my-4">
+      <button
+        id="call-button"
+        class="flex items-center gap-2 px-4 py-2 bg-[#af7749] text-white rounded-md shadow-md hover:bg-[#8b5e3a] transition"
+      >
+        <Icon name="mdi:phone" class="text-lg" /> Appeler
+      </button>
+      <button
+        id="chat-button"
+        class="flex items-center gap-2 px-4 py-2 bg-gray-300 text-gray-800 rounded-md shadow-md hover:bg-gray-400 transition"
+      >
+        <Icon name="mdi:chat" class="text-lg" /> Chatter
+      </button>
+    </div>
+
+    <!-- 📝 Formulaire -->
+    <form id="contact-form" class="space-y-4">
+      <div>
+        <label class="block text-gray-700 font-medium">Prénom *</label>
+        <input
+          id="prenom"
+          name="prenom"
+          type="text"
+          placeholder="Votre prénom"
+          required
+          class="w-full p-2 border border-gray-300 rounded-md"
+        />
+      </div>
+      <div>
+        <label class="block text-gray-700 font-medium">Nom *</label>
+        <input
+          id="nom"
+          name="nom"
+          type="text"
+          placeholder="Votre nom"
+          required
+          class="w-full p-2 border border-gray-300 rounded-md"
+        />
+      </div>
+      <div>
+        <label class="block text-gray-700 font-medium">Email *</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="Votre email"
+          required
+          class="w-full p-2 border border-gray-300 rounded-md"
+        />
+      </div>
+      <div>
+        <label class="block text-gray-700 font-medium">Téléphone *</label>
+        <input
+          id="telephone"
+          name="telephone"
+          type="text"
+          placeholder="+33 6 12 34 56 78"
+          required
+          class="w-full p-2 border border-gray-300 rounded-md"
+        />
+      </div>
+      <div>
+        <label class="block text-gray-700 font-medium"
+          >Message (optionnel)</label
+        >
+        <textarea
+          id="message"
+          name="message"
+          rows="3"
+          placeholder="Votre message"
+          class="w-full p-2 border border-gray-300 rounded-md"></textarea>
+      </div>
+
+      <!-- 🎯 Boutons d'action -->
+      <div class="flex justify-between mt-4">
+        <button
+          type="submit"
+          class="px-6 py-2 bg-[#af7749] text-white rounded-md shadow-md hover:bg-[#8b5e3a] transition"
+        >
+          ENVOYER
+        </button>
+        <button
+          type="button"
+          id="no-thanks-btn"
+          class="px-6 py-2 bg-gray-300 text-gray-800 rounded-md shadow-md hover:bg-gray-400 transition"
+        >
+          Non merci
+        </button>
+      </div>
+
+      <!-- ✅ Message de confirmation -->
+      <p
+        id="submission-message"
+        class="text-center text-gray-700 font-semibold mt-4 hidden"
+      >
+        Merci, votre message a bien été envoyé !
+      </p>
+    </form>
+  </div>
+</div>
+
+<!-- ✅ Gestion de l'affichage et de l'envoi -->
+<script defer>
+  document.addEventListener("DOMContentLoaded", function () {
+    const overlay = document.getElementById("contact-overlay");
+    const closeButton = document.getElementById("close-overlay");
+    const noThanksButton = document.getElementById("no-thanks-btn");
+    const form = document.getElementById("contact-form");
+    const submissionMessage = document.getElementById("submission-message");
+
+    // ✅ Affichage après 20 secondes
+    setTimeout(() => {
+      overlay.classList.remove("opacity-0", "pointer-events-none");
+      overlay.classList.add("opacity-100");
+    }, 20000);
+
+    // ❌ Fermeture du modal
+    const hideOverlay = () => {
+      overlay.classList.add("opacity-0", "pointer-events-none");
+    };
+    closeButton.addEventListener("click", hideOverlay);
+    noThanksButton.addEventListener("click", hideOverlay);
+
+    // 📤 Gestion de la soumission du formulaire
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      submissionMessage.classList.add("hidden");
+
+      const formData = new FormData(form);
+      const values = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await fetch("http://localhost:3000/api/send-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        });
+
+        if (response.ok) {
+          submissionMessage.textContent =
+            "Merci, votre message a bien été envoyé !";
+          submissionMessage.classList.remove("hidden");
+          setTimeout(hideOverlay, 3000);
+        } else {
+          submissionMessage.textContent =
+            "Erreur lors de l'envoi du formulaire.";
+          submissionMessage.classList.remove("hidden");
+        }
+      } catch (error) {
+        console.error("Erreur lors de la soumission :", error);
+        submissionMessage.textContent = "Erreur réseau : " + error.message;
+        submissionMessage.classList.remove("hidden");
+      }
+    });
+
+    // 📞 Actions des boutons Appel et Chat
+    document
+      .getElementById("call-button")
+      .addEventListener("click", function () {
+        window.location.href = "tel:+33612345678";
+      });
+    document
+      .getElementById("chat-button")
+      .addEventListener("click", function () {
+        window.location.href = "/chat";
+      });
+  });
+</script>

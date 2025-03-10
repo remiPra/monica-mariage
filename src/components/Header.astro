@@ -90,8 +90,11 @@ import SocialIcons from "./SocialIcons.astro";
   <div
     class="lg:hidden bg-white shadow-md px-4 py-3 flex justify-between items-center"
   >
-    <button id="mobileMenuBtn" class="text-[#7A5C4B]">
-      <Icon name="mdi:menu" class="w-8 h-8" />
+    <button
+      id="mobileMenuBtn"
+      class="text-[#7A5C4B] p-1 border border-[#7A5C4B] rounded-full"
+    >
+      <Icon name="mdi:menu" class="w-8 h-8 text-[28px]" />
     </button>
     <a href="/" class="font-vibes text-2xl text-[#7A5C4B]"> MonicaMariage </a>
     <div class="flex gap-4">
@@ -111,8 +114,11 @@ import SocialIcons from "./SocialIcons.astro";
     class="fixed inset-0 bg-[#FDE9E6] z-50 p-4 flex flex-col items-center justify-center space-y-6 shadow-lg transform translate-y-full opacity-0 transition-all duration-500 ease-in-out"
   >
     <!-- Bouton de fermeture -->
-    <button id="closeMobileMenu" class="absolute top-4 right-4 text-[#7A5C4B]">
-      <Icon name="mdi:close" size="24px" />
+    <button
+      id="closeMobileMenu"
+      class="border border-[#7A5C4B] rounded-full absolute top-4 right-4 text-[#7A5C4B]"
+    >
+      <Icon name="mdi:close" size="28px" />
     </button>
 
     <!-- ✅ Logo -->

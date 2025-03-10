@@ -2,8 +2,9 @@
 import Layout from "../../../layouts/Layout.astro";
 
 // Importer directement votre fichier JSON avec la nouvelle structure
-import robes from "../../../data/promo-sirene-dynamique.json"; // Assurez-vous que le chemin est correct
+import robes from "../../../data/robes-de-mariee-promotion-dynamique.json"; // Assurez-vous que le chemin est correct
 // Fonction de création de slug au cas où
+
 function slugify(text) {
   // Convertir en minuscules et enlever les caractères spéciaux
   return text
@@ -29,7 +30,7 @@ function slugify(text) {
         {
           robes.map((robe, index) => (
             <a
-              href={`./${robe.category}/${typeof robe.slug === "string" ? robe.slug : robe.dressName.toLowerCase().trim()}`}
+              href={`/promo/${robe.category}/${robe.slug}`}
               class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] shadow-md"
               data-index={index}
             >
@@ -37,14 +38,19 @@ function slugify(text) {
               <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
 
               {/* Image */}
-              <img
-                src={robe.images[0].optimizedImages.gallery.desktop}
-                alt={robe.dressName}
-                width="300"
-                height="400"
-                class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
-                loading="lazy"
-              />
+              {robe.images &&
+              robe.images.length > 0 &&
+              robe.images[0].optimizedImages &&
+              robe.images[0].optimizedImages.gallery ? (
+                <img
+                  src={robe.images[0].optimizedImages.gallery.desktop}
+                  alt={robe.dressName || "Image de robe de mariée"}
+                />
+              ) : (
+                <div class="w-full h-full flex items-center justify-center bg-gray-200">
+                  <p>Image non disponible</p>
+                </div>
+              )}
 
               {/* Nouveau contenu en bas */}
               <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">

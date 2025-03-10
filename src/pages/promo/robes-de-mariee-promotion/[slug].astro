@@ -1,0 +1,171 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import BreadCrumbs from "../../../components/BreadCrumbs.astro";
+import sirene from "../../../data/robes-de-mariee-promotion-dynamique.json"; // Assurez-vous que le chemin est correct
+
+// Génère tous les chemins statiques à partir du JSON
+// Génère tous les chemins statiques à partir du JSON
+export async function getStaticPaths() {
+  const paths = sirene.map((robe) => ({
+    params: { slug: robe.slug }, // Utilisation du slug pour générer l'URL
+    props: {
+      robe,
+      randomDresses: sirene
+        .filter((r) => r.slug !== robe.slug) // Exclure la robe courante
+        .sort(() => 0.5 - Math.random()) // Mélange
+        .slice(0, 4), // Sélection de 4 robes aléatoires
+    },
+  }));
+
+  console.log(
+    "Routes générées :",
+    paths.map((p) => p.params.slug)
+  ); // Vérification des slugs
+  return paths;
+}
+
+// Récupération des données depuis les props Astro
+const { robe, randomDresses } = Astro.props;
+---
+
+<Layout title={robe.title} description={robe.metaDescription}>
+  <!-- Préchargement éventuel de la première image du slider -->
+  <link
+    rel="preload"
+    as="image"
+    href={robe.images &&
+    robe.images[0] &&
+    robe.images[0].optimizedImages &&
+    robe.images[0].optimizedImages.gallery
+      ? robe.images[0].optimizedImages.gallery.desktop
+      : ""}
+    type="image/webp"
+    fetchpriority="high"
+  />
+  <!-- Swiper CSS + JS (version 10) -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+  />
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+  <!-- Contenu principal -->
+  <div
+    class="mt-20 max-w-7xl mx-auto px-4 lg:px-6 flex flex-col lg:flex-row gap-10"
+  >
+    <!-- Section gauche: slider -->
+    <section class="w-full lg:w-[60%]">
+      <BreadCrumbs />
+
+      <div
+        class="relative w-full max-w-[500px] h-[600px] mx-auto overflow-hidden"
+      >
+        <div
+          class="swiper-container rounded-2xl shadow-lg border border-[#C5A880]"
+        >
+          <div class="swiper-wrapper">
+            {
+              robe.images &&
+                robe.images.length > 0 &&
+                robe.images.map((img) => (
+                  <div class="swiper-slide" key={img.id}>
+                    <img
+                      src={img.optimizedImages?.gallery?.desktop || ""}
+                      alt={img.altOptimized || robe.dressName}
+                      class="object-cover w-full h-full rounded-2xl"
+                      loading="lazy"
+                    />
+                  </div>
+                ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section droite: infos robe -->
+    <section class="w-full lg:w-[40%] flex flex-col justify-center">
+      <h1 class="text-4xl font-vibes text-[#af7749] mb-4">
+        Robe de Mariée {robe.dressName}
+      </h1>
+      <p class="text-gray-700 text-lg leading-relaxed">
+        {robe.descriptionCourte}
+      </p>
+      <a
+        href="#"
+        class="mt-6 block w-full text-center bg-[#af7749] text-white py-4
+      px-6 rounded-lg font-medium hover:bg-[#925c36] transition-all duration-300
+      text-lg"
+      >
+        PRENDRE RENDEZ-VOUS
+      </a>
+    </section>
+  </div>
+
+  <!-- "Vous pourriez aussi aimer" -->
+  <div class="max-w-7xl mb-20 mx-auto px-6 mt-20">
+    <h2
+      class="text-[50px] font-cursive md:text-3xl font-playfair text-[#af7749] mb-8 text-center"
+    >
+      Vous pourriez aussi aimer
+    </h2>
+
+    <div
+      class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4"
+    >
+      {
+        randomDresses &&
+          randomDresses.map((dress) => (
+            <a
+              key={
+                dress.images && dress.images[0]
+                  ? dress.images[0].id
+                  : dress.dressName
+              }
+              href={`/promo/${dress.category}/${dress.slug}`}
+              class="relative text-center overflow-hidden border-[#322d25] cursor-pointer fade-in border rounded-2xl h-[300px] shadow-md"
+            >
+              <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
+              {dress.images &&
+              dress.images[0] &&
+              dress.images[0].optimizedImages &&
+              dress.images[0].optimizedImages.gallery ? (
+                <img
+                  src={dress.images[0].optimizedImages.gallery.mobile}
+                  alt={dress.images[0].altOptimized || dress.dressName}
+                  class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="absolute top-0 w-full h-full bg-gray-200 flex items-center justify-center z-[-1]">
+                  <p class="text-gray-600">Image non disponible</p>
+                </div>
+              )}
+              <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
+                <p class="text-white font-vibes text-xl md:text-2xl mb-4 drop-shadow-lg">
+                  {dress.dressName}
+                </p>
+                <button class="bg-[#C5A880] hidden md:block text-sm text-white font-semibold px-2 md:px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
+                  Découvrir cette robe
+                </button>
+              </div>
+            </a>
+          ))
+      }
+    </div>
+  </div>
+
+  <!-- Init du slider Swiper -->
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", function () {
+      new Swiper(".swiper-container", {
+        loop: true,
+        slidesPerView: 1,
+        spaceBetween: 10,
+        autoplay: { delay: 3000 },
+      });
+    });
+  </script>
+</Layout>
