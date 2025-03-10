@@ -1,0 +1,62 @@
+---
+// AppointmentBar.astro
+import { Icon } from "astro-icon/components";
+
+// Palette de couleurs Monica Mariage
+const primaryColor = "bg-[#a77c60]"; // Marron principal
+const secondaryColor = "bg-[#d2b48c]"; // Beige plus clair
+---
+
+<div
+  id="appointment-bar"
+  class="fixed bottom-0 left-0 right-0 bg-white shadow-lg transform translate-y-full transition-transform duration-500 ease-out z-[400]"
+>
+  <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+    <div class="flex items-center">
+      <Icon name="mdi:calendar-check" class="w-6 h-6 text-[#a77c60] mr-3" />
+      <span class="text-[#6d584a] font-medium"
+        >Vous cherchez votre robe de mariée?</span
+      >
+    </div>
+    <a
+      href="/rendez-vous"
+      class={`${primaryColor} text-white px-5 py-2.5 rounded-lg font-medium text-sm shadow-sm transition-all hover:shadow-md hover:brightness-105 flex items-center`}
+    >
+      <Icon name="mdi:calendar-clock" class="w-4 h-4 mr-2" />
+      Prendre rendez-vous
+    </a>
+  </div>
+</div>
+
+<script defer>
+  // Afficher la barre de rendez-vous après 5 secondes
+  const appointmentBar = document.getElementById("appointment-bar");
+
+  setTimeout(() => {
+    appointmentBar?.classList.remove("translate-y-full");
+  }, 5000);
+
+  // Ajouter un bouton de fermeture
+  const closeButtonElement = document.createElement("button");
+  closeButtonElement.innerHTML = "×";
+  closeButtonElement.className =
+    "absolute top-1 right-2 text-2xl text-[#a77c60] hover:text-[#6d584a] transition-colors";
+  closeButtonElement.setAttribute("aria-label", "Fermer");
+  appointmentBar?.querySelector(".container")?.appendChild(closeButtonElement);
+
+  // Permettre de fermer la barre avec le bouton
+  closeButtonElement.addEventListener("click", () => {
+    appointmentBar?.classList.add("translate-y-full");
+
+    // Stocker dans sessionStorage pour ne pas réafficher pendant cette session
+    sessionStorage.setItem("appointmentBarClosed", "true");
+  });
+
+  // Vérifier si la barre a déjà été fermée pendant cette session
+  window.addEventListener("DOMContentLoaded", () => {
+    if (sessionStorage.getItem("appointmentBarClosed") === "true") {
+      // Ne pas afficher la barre
+      clearTimeout(setTimeout);
+    }
+  });
+</script>

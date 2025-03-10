@@ -6,19 +6,22 @@ const { isVisible } = Astro.props;
 <!-- ✅ Overlay -->
 <div
   id="contact-overlay"
-  class={`fixed inset-0 bg-black/50 flex items-center justify-center z-50 transition-opacity duration-500 ease-in-out ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+  class={`fixed inset-0 bg-black/50 flex items-center justify-center z-50 transition-opacity duration-500 ease-in-out
+    ${isVisible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
 >
   <!-- ✅ Contenu du Modal -->
   <div
     id="modal-content"
-    class="relative bg-white p-6 rounded-xl w-full max-w-lg shadow-lg transform transition-transform duration-500 ease-in-out ${isVisible ? 'scale-100' : 'scale-95'}"
+    class="relative bg-white p-6 rounded-xl w-full max-w-lg shadow-lg transform transition-transform duration-500 ease-in-out
+      ${isVisible ? 'scale-100' : 'scale-95'}"
   >
     <!-- ❌ Bouton de fermeture -->
     <button
       id="close-overlay"
+      type="button"
       class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl"
     >
-      <Icon name="mdi:close" />
+      ❌ <!-- Remplacement temporaire de l'icône -->
     </button>
 
     <!-- 🏆 Titre -->
@@ -36,13 +39,13 @@ const { isVisible } = Astro.props;
         id="call-button"
         class="flex items-center gap-2 px-4 py-2 bg-[#af7749] text-white rounded-md shadow-md hover:bg-[#8b5e3a] transition"
       >
-        <Icon name="mdi:phone" class="text-lg" /> Appeler
+        📞 Appeler
       </button>
       <button
         id="chat-button"
         class="flex items-center gap-2 px-4 py-2 bg-gray-300 text-gray-800 rounded-md shadow-md hover:bg-gray-400 transition"
       >
-        <Icon name="mdi:chat" class="text-lg" /> Chatter
+        💬 Chatter
       </button>
     </div>
 
@@ -132,70 +135,77 @@ const { isVisible } = Astro.props;
   </div>
 </div>
 
-<!-- ✅ Gestion de l'affichage et de l'envoi -->
+<!-- ✅ Gestion de l'affichage avec LocalStorage -->
 <script defer>
   document.addEventListener("DOMContentLoaded", function () {
     const overlay = document.getElementById("contact-overlay");
     const closeButton = document.getElementById("close-overlay");
     const noThanksButton = document.getElementById("no-thanks-btn");
-    const form = document.getElementById("contact-form");
-    const submissionMessage = document.getElementById("submission-message");
+    const callButton = document.getElementById("call-button");
+    const chatButton = document.getElementById("chat-button");
+    const contactForm = document.getElementById("contact-form");
 
-    // ✅ Affichage après 20 secondes
-    setTimeout(() => {
+    const showOverlay = () => {
       overlay.classList.remove("opacity-0", "pointer-events-none");
-      overlay.classList.add("opacity-100");
-    }, 20000);
-
-    // ❌ Fermeture du modal
-    const hideOverlay = () => {
-      overlay.classList.add("opacity-0", "pointer-events-none");
+      overlay.classList.add("opacity-100", "pointer-events-auto");
     };
-    closeButton.addEventListener("click", hideOverlay);
-    noThanksButton.addEventListener("click", hideOverlay);
 
-    // 📤 Gestion de la soumission du formulaire
-    form.addEventListener("submit", async function (e) {
-      e.preventDefault();
-      submissionMessage.classList.add("hidden");
+    const hideOverlay = (durationMinutes) => {
+      overlay.classList.add("opacity-0", "pointer-events-none");
+      overlay.classList.remove("opacity-100", "pointer-events-auto");
 
-      const formData = new FormData(form);
-      const values = Object.fromEntries(formData.entries());
+      const nextDisplayTime = Date.now() + durationMinutes * 60 * 1000;
+      localStorage.setItem("modalNextDisplayTime", nextDisplayTime);
+    };
 
-      try {
-        const response = await fetch("http://localhost:3000/api/send-email", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
-        });
+    const hideOverlayPermanently = () => {
+      overlay.classList.add("opacity-0", "pointer-events-none");
+      overlay.classList.remove("opacity-100", "pointer-events-auto");
 
-        if (response.ok) {
-          submissionMessage.textContent =
-            "Merci, votre message a bien été envoyé !";
-          submissionMessage.classList.remove("hidden");
-          setTimeout(hideOverlay, 3000);
-        } else {
-          submissionMessage.textContent =
-            "Erreur lors de l'envoi du formulaire.";
-          submissionMessage.classList.remove("hidden");
-        }
-      } catch (error) {
-        console.error("Erreur lors de la soumission :", error);
-        submissionMessage.textContent = "Erreur réseau : " + error.message;
-        submissionMessage.classList.remove("hidden");
-      }
+      localStorage.setItem("modalPermanentlyClosed", "true");
+    };
+
+    closeButton.addEventListener("click", () => {
+      const closeCount =
+        parseInt(localStorage.getItem("closeCount") || "0", 10) + 1;
+      localStorage.setItem("closeCount", closeCount);
+
+      if (closeCount === 1) hideOverlay(3);
+      else hideOverlay(6);
     });
 
-    // 📞 Actions des boutons Appel et Chat
-    document
-      .getElementById("call-button")
-      .addEventListener("click", function () {
-        window.location.href = "tel:+33612345678";
-      });
-    document
-      .getElementById("chat-button")
-      .addEventListener("click", function () {
-        window.location.href = "/chat";
-      });
+    noThanksButton.addEventListener("click", () => {
+      const closeCount =
+        parseInt(localStorage.getItem("closeCount") || "0", 10) + 1;
+      localStorage.setItem("closeCount", closeCount);
+
+      if (closeCount === 1) hideOverlay(3);
+      else hideOverlay(6);
+    });
+
+    callButton.addEventListener("click", hideOverlayPermanently);
+    chatButton.addEventListener("click", hideOverlayPermanently);
+
+    contactForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      document.getElementById("submission-message").classList.remove("hidden");
+      hideOverlayPermanently();
+    });
+
+    const checkOverlayVisibility = () => {
+      const permanentlyClosed = localStorage.getItem("modalPermanentlyClosed");
+      const nextDisplayTime = parseInt(
+        localStorage.getItem("modalNextDisplayTime"),
+        10
+      );
+
+      if (permanentlyClosed === "true") return;
+
+      if (!nextDisplayTime || Date.now() > nextDisplayTime) {
+        setTimeout(showOverlay, 20000); // Affiche après 20 secondes
+      }
+    };
+
+    checkOverlayVisibility();
   });
 </script>
