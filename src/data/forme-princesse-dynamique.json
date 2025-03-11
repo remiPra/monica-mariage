@@ -110,7 +110,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-emile-8",
         "altOptimized": "robe de mariée bohème Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "emile"
   },
   {
     "dressName": "KAPELLA",
@@ -202,7 +203,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-kapella-11",
         "altOptimized": "Robe de mariée A-line Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "kapella"
   },
   {
     "dressName": "BRENDA",
@@ -294,7 +296,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-brenda-14",
         "altOptimized": "robe de mariée bohème chic Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "brenda"
   },
   {
     "dressName": "FLOTTA",
@@ -386,7 +389,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-flotta-17",
         "altOptimized": "Robe de mariée princesse Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "flotta"
   },
   {
     "dressName": "SONET",
@@ -499,7 +503,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-sonet-21",
         "altOptimized": "Robe de mariée satinée Noeud Papillon Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "sonet"
   },
   {
     "dressName": "TASIGO",
@@ -591,7 +596,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-tasigo-27",
         "altOptimized": "robe de mariée A-line romantique Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "tasigo"
   },
   {
     "dressName": "Cornella",
@@ -662,7 +668,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-cornella-30",
         "altOptimized": "Robe de mariée bohème chic Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "cornella"
   },
   {
     "dressName": "Perlina",
@@ -733,7 +740,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-perlina-32",
         "altOptimized": "robe de mariée princesse Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "perlina"
   },
   {
     "dressName": "Coquelicot",
@@ -804,7 +812,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-coquelicot-34",
         "altOptimized": "robe de mariée Fleur de Printemps Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "coquelicot"
   },
   {
     "dressName": "Menthe",
@@ -875,7 +884,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-menthe-36",
         "altOptimized": "robe de mariée A-line Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "menthe"
   },
   {
     "dressName": "Morgan",
@@ -946,7 +956,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-morgan-38",
         "altOptimized": "robe de mariée bohème Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "morgan"
   },
   {
     "dressName": "Glycine",
@@ -1059,7 +1070,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-glycine-42",
         "altOptimized": "robe de mariée bohème Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "glycine"
   },
   {
     "dressName": "AMBER",
@@ -1130,7 +1142,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-amber-44",
         "altOptimized": "robe de mariée princesse Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "amber"
   },
   {
     "dressName": "Marianna",
@@ -1180,7 +1193,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-marianna-45",
         "altOptimized": "robe de mariée bohème chic Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "marianna"
   },
   {
     "dressName": "Robe Miranda",
@@ -1272,7 +1286,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-robe-miranda-50",
         "altOptimized": "robe de mariée princesse bohème Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "robemiranda"
   },
   {
     "dressName": "VENTURA",
@@ -1343,7 +1358,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-ventura-52",
         "altOptimized": "robe de mariée bohème chic Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "ventura"
   },
   {
     "dressName": "LISMA",
@@ -1393,7 +1409,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-lisma-53",
         "altOptimized": "robe de mariée bohème chic Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "lisma"
   },
   {
     "dressName": "LISMA-2",
@@ -1443,7 +1460,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-lisma-2-54",
         "altOptimized": "robe de mariée bohème Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "lisma2"
   },
   {
     "dressName": "Sofia",
@@ -1513,7 +1531,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-sofia-58",
         "altOptimized": "Robe de mariée princesse Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "sofia"
   },
   {
     "dressName": "FIAMMA",
@@ -1583,7 +1602,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-fiamma-62",
         "altOptimized": "robe de mariée Noeud Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "fiamma"
   },
   {
     "dressName": "Alice",
@@ -1653,6 +1673,7 @@
         "urlBest": "monica-mariage-robe-de-mariee-princesse-alice-64",
         "altOptimized": "robe de mariée A-line satinée Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "alice"
   }
 ]

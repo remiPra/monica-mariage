@@ -1,82 +1,90 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 
-import sirene from "../../../data/forme-sirene.json";
-
-
-// Fusionner tous les fichiers JSON et enlever les doublons
-const allRobes = [...sirene];
-const robes = allRobes.reduce((acc, robe) => {
-  if (!acc.some((r) => r.dressName === robe.dressName)) {
-    acc.push(robe);
-  }
-  return acc;
-}, []);
+// Importer directement votre fichier JSON avec la nouvelle structure
+import robes from "../../../data/forme-sirene-dynamique.json"; // Assurez-vous que le chemin est correct
+// Fonction de création de slug au cas où
+function slugify(text) {
+  // Convertir en minuscules et enlever les caractères spéciaux
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
 ---
 
 <Layout
   title="Toutes nos robes de mariée | Monica Mariage"
   description="Découvrez notre collection de robes de mariée, disponibles dans différents styles et tailles. Trouvez la robe parfaite pour votre mariage à Toulouse."
 >
-  <section style='margin-top: 120px;' class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]">
+  <section
+    style="margin-top: 120px;"
+    class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]"
+  >
     <div class="flex justify-center px-4">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full">
-        {robes.map((robe, index) => (
-    <a
-  href={`/robes-de-mariee/${robe.category}/${robe.dressName.replace(/\s+/g, "-").toLowerCase()}`}
-  class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] shadow-md"
-  data-index={index}
->
-  {/* Overlay dégradé */}
-  <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10"></div>
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full"
+      >
+        {
+          robes.map((robe, index) => (
+            <a
+              href={`/robes-de-mariee/${robe.category}/${robe.slug}`}
+              class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] shadow-md"
+              data-index={index}
+            >
+              {/* Overlay dégradé */}
+              <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
 
-  {/* Image */}
-  <img
-    src={robe.optimizedImages.gallery.desktop}
-    alt={robe.dressName}
-    width="300"
-    height="400"
-    class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
-    loading="lazy"
-  />
+              {/* Image */}
+              <img
+                src={robe.images[0].optimizedImages.gallery.desktop}
+                alt={robe.dressName}
+                width="300"
+                height="400"
+                class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
+                loading="lazy"
+              />
 
-  {/* Nouveau contenu en bas */}
-  <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
-    <p class="text-white font-vibes text-4xl mb-4 drop-shadow-lg">
-      {robe.dressName}
-    </p>
-    <button class="bg-[#C5A880]  text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
-      Découvrir cette robe
-    </button>
-  </div>
-</a>
-
-        ))}
+              {/* Nouveau contenu en bas */}
+              <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
+                <p class="text-white font-vibes text-4xl mb-4 drop-shadow-lg">
+                  {robe.dressName}
+                </p>
+                <button class="bg-[#C5A880] text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
+                  Découvrir cette robe
+                </button>
+              </div>
+            </a>
+          ))
+        }
       </div>
-    </div>
-  </section>
 
-  <script defer>
-    document.addEventListener("DOMContentLoaded", () => {
-      setTimeout(() => {
-        document.querySelectorAll(".fade-in").forEach((el, index) => {
+      <script defer>
+        document.addEventListener("DOMContentLoaded", () => {
           setTimeout(() => {
-            el.classList.add("active");
-          }, index * 200); // Délai progressif de 200ms par robe
+            document.querySelectorAll(".fade-in").forEach((el, index) => {
+              setTimeout(() => {
+                el.classList.add("active");
+              }, index * 200); // Délai progressif de 200ms par robe
+            });
+          }, 500);
         });
-      }, 500);
-    });
-  </script>
+      </script>
 
-  <style>
-    .fade-in {
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
-    }
-    .fade-in.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  </style>
-</Layout>
+      <style>
+        .fade-in {
+          opacity: 0;
+          transform: translateY(10px);
+          transition:
+            opacity 0.6s ease-in-out,
+            transform 0.6s ease-in-out;
+        }
+        .fade-in.active {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      </style>
+    </div>
+  </section></Layout
+>

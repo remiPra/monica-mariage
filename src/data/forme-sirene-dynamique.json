@@ -105,7 +105,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-sirene-hadson-8",
         "altOptimized": "robe de mariée sirène Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "hadson"
   },
   {
     "dressName": "Vegas",
@@ -213,7 +214,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-sirene-vegas-12",
         "altOptimized": "robe de mariée sirène dentelle Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "vegas"
   },
   {
     "dressName": "Mirallo",
@@ -321,7 +323,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-sirene-mirallo-16",
         "altOptimized": "robe de mariée sirène Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "mirallo"
   },
   {
     "dressName": "Aurore (Taille disponible 38-40)",
@@ -389,7 +392,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-sirene-aurore-taille-disponible-38-40-19",
         "altOptimized": "robe de mariée bohème chic Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "aurore"
   },
   {
     "dressName": "Nireus",
@@ -477,7 +481,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-sirene-nireus-22",
         "altOptimized": "robe de mariée sirène Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "nireus"
   },
   {
     "dressName": "Mona",
@@ -525,7 +530,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-sirene-mona-24",
         "altOptimized": "robe de mariée sirène Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "mona"
   },
   {
     "dressName": "ACCADIA",
@@ -613,7 +619,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-sirene-accadia-28",
         "altOptimized": "Robe de mariée sirène dentelle Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "accadia"
   },
   {
     "dressName": "Charlène",
@@ -701,7 +708,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-sirene-charlene-31",
         "altOptimized": "robe de mariée sirène Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "charlene"
   },
   {
     "dressName": "Autumn",
@@ -829,7 +837,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-sirene-autumn-36",
         "altOptimized": "robe de mariée sirène Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "autumn"
   },
   {
     "dressName": "Jade",
@@ -937,7 +946,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-sirene-jade-40",
         "altOptimized": "robe de mariée sirène Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "jade"
   },
   {
     "dressName": "Sélina",
@@ -1045,6 +1055,7 @@
         "urlBest": "monica-mariage-robe-de-mariee-sirene-selina-44",
         "altOptimized": "robe de mariée sirène Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "selina"
   }
 ]

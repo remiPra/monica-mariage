@@ -109,7 +109,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-minimaliste-sonet-8",
         "altOptimized": "robe de mariée satinée Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "sonet"
   },
   {
     "dressName": "BRENDA",
@@ -221,7 +222,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-minimaliste-brenda-12",
         "altOptimized": "Robe de mariée princesse Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "brenda"
   },
   {
     "dressName": "FIAMMA (Taille 40)",
@@ -333,7 +335,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-minimaliste-fiamma-taille-40-16",
         "altOptimized": "robe de mariée noeud papillon Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "fiamma"
   },
   {
     "dressName": "Alice",
@@ -424,7 +427,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-minimaliste-alice-19",
         "altOptimized": "robe de mariée A-line satinée Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "alice"
   },
   {
     "dressName": "Ambre",
@@ -515,7 +519,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-minimaliste-ambre-23",
         "altOptimized": "robe de mariée bohème chic Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "ambre"
   },
   {
     "dressName": "idalia",
@@ -564,7 +569,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-minimaliste-idalia-24",
         "altOptimized": "robe de mariée A-ligne satinée Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "idalia"
   },
   {
     "dressName": "Lavende",
@@ -634,7 +640,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-minimaliste-lavende-27",
         "altOptimized": "Robe de mariée A-line Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "lavende"
   },
   {
     "dressName": "Myrtille",
@@ -725,7 +732,8 @@
         "urlBest": "monica-mariage-robe-de-mariee-minimaliste-myrtille-30",
         "altOptimized": "robe de mariée bohème chic Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "myrtille"
   },
   {
     "dressName": "Vivian (taille 40)",
@@ -774,6 +782,7 @@
         "urlBest": "monica-mariage-robe-de-mariee-minimaliste-vivian-taille-40-34",
         "altOptimized": "robe de mariée bohème chic Monica Mariage Toulouse"
       }
-    ]
+    ],
+    "slug": "vivian"
   }
 ]
