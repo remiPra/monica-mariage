@@ -17,7 +17,7 @@ const { title, subtitle, buttonText, scrollTarget, iconSrc } = Astro.props;
 
     {/* H1 Principal */}
     <h1
-      class="text-4xl font-vibes sm:text-5xl lg:text-6xl font-playfair text-[#af7749] font-semibold mb-6 leading-tight"
+      class="text-4xl font-vibes sm:text-5xl lg:text-6xl text-[#af7749] font-semibold mb-6 leading-tight"
     >
       {title}
     </h1>
@@ -60,7 +60,12 @@ const { title, subtitle, buttonText, scrollTarget, iconSrc } = Astro.props;
 <script defer>
   document.addEventListener("DOMContentLoaded", function () {
     const scrollButton = document.getElementById("scroll-button");
-
+    setTimeout(() => {
+      const targetSection = document.querySelector("#robes");
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 5000);
     if (scrollButton) {
       scrollButton.addEventListener("click", function () {
         const targetSection = document.querySelector("#robes");

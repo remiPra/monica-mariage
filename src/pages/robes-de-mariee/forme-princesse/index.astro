@@ -3,6 +3,7 @@ import Layout from "../../../layouts/Layout.astro";
 
 // Importer directement votre fichier JSON avec la nouvelle structure
 import robes from "../../../data/forme-princesse-dynamique.json"; // Assurez-vous que le chemin est correct
+import HeroSection from "../../../components/HeroSection.astro";
 // Fonction de création de slug au cas où
 function slugify(text) {
   // Convertir en minuscules et enlever les caractères spéciaux
@@ -22,8 +23,16 @@ function slugify(text) {
     style="margin-top: 120px;"
     class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]"
   >
+    <HeroSection
+      title="Nos Offres Exceptionnelles"
+      subtitle="Profitez de réductions exclusives sur nos plus belles robes de mariée. Offre limitée, ne passez pas à côté de votre robe de rêve."
+      buttonText="Voir les Promotions"
+      scrollTarget="#robes"
+      iconSrc="/image/iconerobe.png"
+    />
     <div class="flex justify-center px-4">
       <div
+        id="robes"
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full"
       >
         {

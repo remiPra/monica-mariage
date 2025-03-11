@@ -27,10 +27,12 @@ const robes = allRobes.reduce((acc, robe) => {
       subtitle="Laissez-vous séduire par nos collections élégantes et raffinées, conçues pour sublimer votre mariage."
       buttonText="Explorer la Collection"
       iconSrc="/image/iconerobe.png"
+      scrollTarget="#robes"
     />
     <div class="flex justify-center px-4">
       <div
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full"
+        id="robes"
       >
         {
           robes.map((robe, index) => (
