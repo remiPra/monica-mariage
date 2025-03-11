@@ -1,7 +1,7 @@
-import boheme from "./style-boheme-chic.json";
-import princesse from "./forme-princesse.json";
-import minimaliste from "./minimaliste.json";
-import sirene from "./forme-princesse.json";
+import boheme from "./style-boheme-chic-dynamique.json";
+import princesse from "./forme-princesse-dynamique.json";
+import minimaliste from "./minimaliste-dynamique.json";
+import sirene from "./forme-princesse-dynamique.json";
 
 // Sélectionner uniquement les 4 premières robes du style "princesse"
 const princessRobes = princesse.slice(0, 4);
