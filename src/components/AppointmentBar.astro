@@ -1,62 +1,140 @@
 ---
-// AppointmentBar.astro
 import { Icon } from "astro-icon/components";
 
 // Palette de couleurs Monica Mariage
 const primaryColor = "bg-[#a77c60]"; // Marron principal
-const secondaryColor = "bg-[#d2b48c]"; // Beige plus clair
 ---
 
 <div
   id="appointment-bar"
-  class="fixed bottom-0 left-0 right-0 bg-white shadow-lg transform translate-y-full transition-transform duration-500 ease-out z-[400]"
+  class="fixed bottom-0 left-0 right-0 bg-white shadow-lg transform translate-y-full transition-transform duration-500 ease-out z-[400] flex justify-between items-center px-4 py-3"
 >
-  <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-    <div class="flex items-center">
-      <Icon name="mdi:calendar-check" class="w-6 h-6 text-[#a77c60] mr-3" />
-      <span class="text-[#6d584a] font-medium"
-        >Vous cherchez votre robe de mariée?</span
-      >
-    </div>
-    <a
-      href="/rendez-vous"
-      class={`${primaryColor} text-white px-5 py-2.5 rounded-lg font-medium text-sm shadow-sm transition-all hover:shadow-md hover:brightness-105 flex items-center`}
+  <!-- Bouton pour ouvrir le modal -->
+  <button
+    class={`${primaryColor} text-white px-5 py-2.5 rounded-lg font-medium text-sm shadow-sm transition-all hover:shadow-md hover:brightness-105 flex items-center mx-auto`}
+  >
+    <Icon name="mdi:calendar-clock" class="w-4 h-4 mr-2" />
+    <span class="hidden md:inline"
+      >Prendre rendez-vous pour essayer nos robes</span
     >
-      <Icon name="mdi:calendar-clock" class="w-4 h-4 mr-2" />
-      Prendre rendez-vous
+    <span class="md:hidden">Prendre rendez-vous</span>
+  </button>
+
+  <!-- Icône pour fermer la barre -->
+  <button
+    id="close-appointment-bar"
+    class="text-[#a77c60] text-2xl transition-opacity duration-500 hover:opacity-70"
+    aria-label="Fermer la barre"
+  >
+    <Icon name="mdi:close-circle-outline" />
+  </button>
+</div>
+
+<!-- Fenêtre modale -->
+<div
+  id="contact-modal"
+  class="fixed inset-0 h-full bg-white text-[#a77c60] flex flex-col items-center z-[500] justify-center p-6 transition-transform transform hidden"
+>
+  <button
+    id="close-modal-button"
+    class="absolute top-6 right-6 text-3xl text-[#a77c60] transition-opacity duration-500 hover:opacity-70"
+  >
+    <Icon name="mdi:close" />
+  </button>
+  <h2 class="text-3xl font-bold mb-6">Prenons contact !</h2>
+  <p class="text-lg mb-8">
+    Nous sommes disponibles sur plusieurs plateformes, choisissez votre moyen de
+    communication préféré :
+  </p>
+  <div class="space-y-4 w-full max-w-xs">
+    <a
+      target="_blank"
+      href="tel:+33668300960"
+      class="flex items-center justify-center bg-[#a77c60] text-white p-3 rounded-full text-xl w-full transition-transform transform hover:scale-105"
+    >
+      <Icon name="mdi:phone" class="mr-2" /> Appelez-moi
+    </a>
+    <a
+      target="_blank"
+      href="https://wa.me/33668300960?text=Bonjour%20Monica%20Mariage%20!"
+      class="flex items-center justify-center bg-[#a77c60] text-white p-3 rounded-full text-xl w-full transition-transform transform hover:scale-105"
+    >
+      <Icon name="mdi:whatsapp" class="mr-2" /> Écrivez-moi
+    </a>
+    <a
+      target="_blank"
+      href="https://www.instagram.com/monicamariage/"
+      class="flex items-center justify-center bg-[#a77c60] text-white p-3 rounded-full text-xl w-full transition-transform transform hover:scale-105"
+    >
+      <Icon name="mdi:instagram" class="mr-2" /> Voir notre Instagram
     </a>
   </div>
 </div>
 
 <script defer>
-  // Afficher la barre de rendez-vous après 5 secondes
-  const appointmentBar = document.getElementById("appointment-bar");
+  document.addEventListener("DOMContentLoaded", () => {
+    const appointmentBar = document.getElementById("appointment-bar");
+    const closeButton = document.getElementById("close-appointment-bar");
+    const modal = document.getElementById("contact-modal");
+    const closeModalBtn = document.getElementById("close-modal-button");
 
-  setTimeout(() => {
-    appointmentBar?.classList.remove("translate-y-full");
-  }, 5000);
-
-  // Ajouter un bouton de fermeture
-  const closeButtonElement = document.createElement("button");
-  closeButtonElement.innerHTML = "×";
-  closeButtonElement.className =
-    "absolute top-1 right-2 text-2xl text-[#a77c60] hover:text-[#6d584a] transition-colors";
-  closeButtonElement.setAttribute("aria-label", "Fermer");
-  appointmentBar?.querySelector(".container")?.appendChild(closeButtonElement);
-
-  // Permettre de fermer la barre avec le bouton
-  closeButtonElement.addEventListener("click", () => {
-    appointmentBar?.classList.add("translate-y-full");
-
-    // Stocker dans sessionStorage pour ne pas réafficher pendant cette session
-    sessionStorage.setItem("appointmentBarClosed", "true");
-  });
-
-  // Vérifier si la barre a déjà été fermée pendant cette session
-  window.addEventListener("DOMContentLoaded", () => {
-    if (sessionStorage.getItem("appointmentBarClosed") === "true") {
-      // Ne pas afficher la barre
-      clearTimeout(setTimeout);
+    // Affichage automatique après 10s
+    if (sessionStorage.getItem("appointmentBarClosed") !== "true") {
+      setTimeout(() => {
+        appointmentBar?.classList.remove("translate-y-full");
+      }, 10000);
     }
+
+    // Cacher la barre quand on clique sur la croix
+    closeButton?.addEventListener("click", () => {
+      appointmentBar?.classList.add("translate-y-full");
+      //   sessionStorage.setItem("appointmentBarClosed", "true");
+    });
+
+    // Ouvrir le modal en cliquant sur la barre
+    appointmentBar?.addEventListener("click", (event) => {
+      if (event.target.tagName !== "BUTTON") return; // Évite d'ouvrir en cliquant sur la croix
+      modal?.classList.remove("hidden");
+      modal?.classList.add("slide-in");
+      modal?.classList.remove("slide-out");
+    });
+
+    // Fermer le modal
+    closeModalBtn?.addEventListener("click", () => {
+      modal?.classList.add("slide-out");
+      modal?.classList.remove("slide-in");
+
+      setTimeout(() => {
+        modal?.classList.add("hidden");
+      }, 600);
+    });
   });
 </script>
+
+<style>
+  .slide-in {
+    animation: slideIn 0.6s forwards;
+  }
+
+  .slide-out {
+    animation: slideOut 0.6s forwards;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideOut {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+</style>

@@ -2,153 +2,161 @@
 // FloatingButtonMainPage.astro
 import { Icon } from "astro-icon/components";
 
-// Palette de couleurs raffinée pour Monica Mariage
-const primaryColor = "bg-[#a77c60]"; // Marron principal
-const secondaryColor = "bg-[#d2b48c]"; // Beige plus clair
-const accentColor = "bg-[#e8d9cf]"; // Beige très clair pour contraste
+// État initial (côté serveur)
+const icons = ["mdi:facebook", "mdi:whatsapp", "mdi:instagram", "mdi:message"];
+const colors = ["bg-[#a77c60]", "bg-green-600", "bg-[#d2b48c]", "bg-[#b29079]"];
 ---
 
-<div class="fixed bottom-16 right-6 z-[500]">
-  <!-- Bouton flottant principal avec animation douce -->
+<div class="fixed bottom-24 right-6 z-[500]">
   <button
     data-track="ouverture-floating-button"
     id="floating-button"
-    class=`w-16 h-16 flex items-center justify-center rounded-full text-white shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl fade-in group ${primaryColor}`
-    aria-label="Ouvrir le modal de contact"
+    class="w-14 h-14 flex items-center justify-center rounded-full text-white text-2xl shadow-lg transition-all transform hover:scale-110 fade-in bg-[#a77c60]"
   >
     <Icon
-      name="mdi:message-outline"
-      class="icon-element w-7 h-7 transition-all duration-300 group-hover:scale-110"
+      name="mdi:phone"
+      class="icon-element transition-opacity duration-1000 ease-in-out"
     />
   </button>
 
-  <!-- Modal de contact avec animation d'entrée élégante -->
   <div
     id="contact-modal"
-    class="fixed inset-0 bg-white/50 backdrop-blur-sm text-[#7a5c45] flex flex-col items-center
-    z-[500] justify-center p-6 md:p-8
+    class="fixed inset-0 h-full bg-white text-[#a77c60] flex flex-col items-center
+    z-[500] justify-center p-6
     transition-transform transform hidden"
   >
-    <div
-      class="max-w-md w-full bg-white rounded-2xl shadow-md p-6 md:p-8 relative"
+    <button
+      id="close-modal-button"
+      class="absolute top-6 right-6 text-3xl text-[#a77c60] transition-opacity duration-500 hover:opacity-70"
     >
-      <!-- Bouton de fermeture élégant -->
-      <button
-        id="close-modal-button"
-        class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full text-[#a77c60] hover:bg-[#f8f3ef] transition-all duration-300"
-        aria-label="Fermer le modal de contact"
+      <Icon name="mdi:close" />
+    </button>
+    <h2 class="text-3xl font-bold mb-6">Prenons contact !</h2>
+    <p class="text-lg mb-8">
+      Nous sommes disponible sur plusieurs plateformes, choisissez votre moyen
+      de communication préféré :
+    </p>
+    <div class="space-y-4 w-full max-w-xs">
+      <a
+        target="_blank"
+        href="tel:+33668300960"
+        class="flex items-center justify-center bg-[#a77c60] text-white p-3 rounded-full text-xl w-full transition-transform transform hover:scale-105"
       >
-        <Icon name="mdi:close" class="w-6 h-6" />
-      </button>
-
-      <!-- En-tête stylisé -->
-      <div class="text-center mb-8">
-        <h2 class="text-3xl font-serif mb-3 text-[#a77c60]">
-          Prenons contact !
-        </h2>
-        <div class="w-16 h-0.5 bg-[#d2b48c] mx-auto mb-4"></div>
-        <p class="text-lg text-[#6d584a]">
-          Nous sommes disponible sur plusieurs plateformes, choisissez votre
-          moyen de communication préféré :
-        </p>
-      </div>
-
-      <!-- Options de contact stylisées -->
-      <div class="space-y-3 w-full">
-        <a
-          target="_blank"
-          href="tel:+33668300960"
-          class=`flex items-center
-        justify-center ${primaryColor} text-white p-4 rounded-xl text-lg w-full transition-all
-        transform hover:shadow-md hover:brightness-105`
-          aria-label="Appelez moi"
-        >
-          <Icon name="mdi:phone" class="mr-3 w-5 h-5" /> Appelez moi
-        </a>
-        <a
-          target="_blank"
-          href="https://wa.me/33668300960?text=Bonjour%20Monica%20Mariage%20!"
-          class=`flex items-center justify-center ${secondaryColor} text-white p-4 rounded-xl
-      text-lg w-full transition-all transform hover:shadow-md hover:brightness-105"
-          aria-label="Ecrivez moi sur WhatsApp`
-        >
-          <Icon name="mdi:whatsapp" class="mr-3 w-5 h-5 text-" /> Ecrivez Moi
-        </a>
-        <a
-          target="_blank"
-          href="https://www.instagram.com/monicamariage/"
-          class=`flex
-    items-center justify-center ${accentColor} text-[#a77c60] p-4 rounded-xl text-lg
-    w-full transition-all transform hover:shadow-md hover:brightness-95`
-          aria-label="Voir notre Instagram"
-        >
-          <Icon name="mdi:instagram" class="mr-3 w-5 h-5" /> Voir notre Instagram
-        </a>
-      </div>
+        <Icon name="mdi:phone" class="mr-2" /> Appelez moi
+      </a>
+      <a
+        target="_blank"
+        href="https://wa.me/33668300960?text=Bonjour%20Monica%20Mariage%20!"
+        class="flex items-center justify-center bg-[#a77c60] text-white p-3 rounded-full text-xl w-full transition-transform transform hover:scale-105"
+      >
+        <Icon name="mdi:whatsapp" class="mr-2" /> Ecrivez Moi
+      </a>
+      <a
+        target="_blank"
+        href="https://www.instagram.com/monicamariage/"
+        class="flex items-center justify-center bg-[#a77c60] text-white p-3 rounded-full text-xl w-full transition-transform transform hover:scale-105"
+      >
+        <Icon name="mdi:instagram" class="mr-2" /> Voir notre Instagram
+      </a>
     </div>
   </div>
 </div>
 
-<script>
+<script defer>
+  // Gestion côté client
+  let currentIconIndex = 0;
+  const icons = [
+    "mdi:facebook",
+    "mdi:whatsapp",
+    "mdi:instagram",
+    "mdi:message",
+  ];
+  const colors = [
+    "bg-[#a77c60]",
+    "bg-green-600",
+    "bg-[#d2b48c]",
+    "bg-[#b29079]",
+  ];
+
   const floatingButton = document.getElementById("floating-button");
   const modal = document.getElementById("contact-modal");
   const closeButton = document.getElementById("close-modal-button");
+  const iconElement = document.querySelector(".icon-element");
+
+  // Fonction pour changer l'icône et la couleur
+  function updateIconAndColor() {
+    // Suppression de la classe de couleur précédente
+    colors.forEach((color) => {
+      floatingButton?.classList.remove(...color.split(" "));
+    });
+
+    // Ajout de la nouvelle classe de couleur
+    floatingButton?.classList.add(...colors[currentIconIndex].split(" "));
+
+    // Mise à jour de l'icône
+    if (iconElement) {
+      iconElement.setAttribute("name", icons[currentIconIndex]);
+    }
+
+    // Préparation pour la prochaine mise à jour
+    currentIconIndex = (currentIconIndex + 1) % icons.length;
+  }
+
+  // Lancer le changement d'icône à intervalles réguliers
+  const interval = setInterval(updateIconAndColor, 4000);
 
   // Gestion de l'ouverture du modal
   floatingButton?.addEventListener("click", () => {
     modal?.classList.remove("hidden");
-    modal?.classList.add("modal-fade-in");
-    document.body.classList.add("overflow-hidden");
+    modal?.classList.add("slide-in");
+    modal?.classList.remove("slide-out");
   });
 
   // Gestion de la fermeture du modal
   closeButton?.addEventListener("click", () => {
-    modal?.classList.add("modal-fade-out");
+    modal?.classList.add("slide-out");
+    modal?.classList.remove("slide-in");
 
     // Attendre que l'animation se termine avant de cacher le modal
     setTimeout(() => {
       modal?.classList.add("hidden");
-      modal?.classList.remove("modal-fade-in", "modal-fade-out");
-      document.body.classList.remove("overflow-hidden");
-    }, 300);
+    }, 600);
   });
 
-  // Fermer le modal si on clique en dehors du contenu
-  modal?.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      closeButton?.click();
-    }
+  // Nettoyage des intervalles lors du démontage
+  document.addEventListener("astro:page-load", () => {
+    return () => {
+      clearInterval(interval);
+    };
   });
 </script>
 
 <style>
-  .modal-fade-in {
-    animation: modalFadeIn 0.3s forwards ease-out;
+  /* Vous pouvez intégrer le contenu de FloatingButton.css ici ou le garder comme fichier séparé */
+  .slide-in {
+    animation: slideIn 0.6s forwards;
   }
 
-  .modal-fade-out {
-    animation: modalFadeOut 0.3s forwards ease-in;
+  .slide-out {
+    animation: slideOut 0.6s forwards;
   }
 
-  @keyframes modalFadeIn {
+  @keyframes slideIn {
     from {
-      opacity: 0;
-      transform: scale(0.95);
+      transform: translateY(100%);
     }
     to {
-      opacity: 1;
-      transform: scale(1);
+      transform: translateY(0);
     }
   }
 
-  @keyframes modalFadeOut {
+  @keyframes slideOut {
     from {
-      opacity: 1;
-      transform: scale(1);
+      transform: translateY(0);
     }
     to {
-      opacity: 0;
-      transform: scale(0.95);
+      transform: translateY(100%);
     }
   }
 </style>
+

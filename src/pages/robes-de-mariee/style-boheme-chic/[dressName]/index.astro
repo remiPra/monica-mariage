@@ -138,20 +138,67 @@ console.log(robe.optimizedImages);
                   loading="lazy"
                 />
               )}
-              <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
-                <p class="text-white font-vibes text-4xl mb-4 drop-shadow-lg">
-                  {dress.dressName}
-                </p>
-                <button class="bg-[#C5A880] text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
-                  Découvrir cette robe
-                </button>
-              </div>
+          <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
+  <p class="text-white font-vibes text-xl md:text-2xl mb-4 drop-shadow-lg">
+    {dress.dressName}
+  </p>
+  <!-- Bouton mobile (visible uniquement sur mobile) -->
+  <button class="bg-[#C5A880] hidden text-sm text-white font-semibold px-5 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] active:scale-95 transition-all duration-300 btn-shine">
+    Découvrir cette robe
+  </button>
+  
+  <!-- Bouton desktop (visible uniquement sur desktop) -->
+  <button class="bg-[#C5A880] mx-auto hidden md:block text-sm text-white font-semibold px-2 md:px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] hover:scale-105 transition-all duration-300 ">
+    Découvrir cette robe
+  </button>
+</div>
             </a>
           ))
       }
     </div>
   </div>
-
+  <style>
+    /* Effet de brillance pour les boutons */
+    .btn-shine {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-shine::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right, 
+        rgba(255,255,255,0) 0%, 
+        rgba(255,255,255,0.3) 50%, 
+        rgba(255,255,255,0) 100%
+      );
+      transform: rotate(30deg);
+      transition: transform 0.5s;
+    }
+    
+    .btn-shine:hover::after {
+      transform: translateX(100%) rotate(30deg);
+      transition: transform 0.7s;
+    }
+    
+    /* Animation tactile spécifique pour mobile */
+    @media (max-width: 768px) {
+      .btn-shine::after {
+        animation: shine-mobile 3s infinite ease-in-out;
+        animation-delay: 1s;
+      }
+    }
+    
+    @keyframes shine-mobile {
+      0% { transform: translateX(-100%) rotate(30deg); }
+      20%, 100% { transform: translateX(100%) rotate(30deg); }
+    }
+  </style>
   <!-- Init du slider Swiper -->
   <script is:inline>
     document.addEventListener("DOMContentLoaded", function () {
