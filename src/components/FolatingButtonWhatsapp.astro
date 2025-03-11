@@ -27,7 +27,7 @@
     <div class="bg-[#00a884] text-white p-3 pr-8 flex items-center relative">
       <div class="w-10 h-10 rounded-full bg-white flex-shrink-0 mr-3">
         <img
-          src="/public/logo-new.png"
+          src="/logo-new.png"
           alt="Monica Mariage"
           class="w-full h-full rounded-full object-cover"
         />
@@ -75,6 +75,7 @@
     <div class="p-2 bg-[#f0f2f5] flex items-center border-t border-gray-200">
       <div class="relative flex-1">
         <input
+          tabindex="-1"
           type="text"
           id="whatsapp-input"
           placeholder="Tapez un message..."
@@ -107,6 +108,17 @@
       </a>
     </div>
   </div>
+  <script>
+    document.addEventListener(
+      "focus",
+      function (event) {
+        if (event.target.tagName === "INPUT") {
+          event.preventDefault(); // Empêche l'autofocus
+        }
+      },
+      true
+    );
+  </script>
 
   <script>
     // JavaScript pour gérer les interactions
@@ -117,6 +129,10 @@
       const messageInput = document.getElementById("whatsapp-input");
       const whatsappSend = document.getElementById("whatsapp-send");
       const chatMessages = document.getElementById("chat-messages");
+
+      setTimeout(() => {
+        document.activeElement?.blur(); // Retire le focus de l'élément actif
+      }, 100); //
 
       // Ouvrir la fenêtre de chat
       floatingBtn.addEventListener("click", () => {

@@ -7,7 +7,7 @@ const primaryColor = "bg-[#a77c60]"; // Marron principal
 
 <div
   id="appointment-bar"
-  class="fixed bottom-0 left-0 right-0 bg-white shadow-lg transform translate-y-full transition-transform duration-500 ease-out z-[400] flex justify-between items-center px-4 py-3"
+  class="fixed bottom-0 left-0 right-0 bg-white shadow-lg transform translate-y-full transition-transform duration-500 ease-out z-[40] flex justify-between items-center px-4 py-3"
 >
   <!-- Bouton pour ouvrir le modal -->
   <button
@@ -93,7 +93,6 @@ const primaryColor = "bg-[#a77c60]"; // Marron principal
 
     // Ouvrir le modal en cliquant sur la barre
     appointmentBar?.addEventListener("click", (event) => {
-      if (event.target.tagName !== "BUTTON") return; // Évite d'ouvrir en cliquant sur la croix
       modal?.classList.remove("hidden");
       modal?.classList.add("slide-in");
       modal?.classList.remove("slide-out");
