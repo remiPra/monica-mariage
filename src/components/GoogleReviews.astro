@@ -250,37 +250,33 @@ const reviews = reviewsData.avis_top;
         document.body.appendChild(script);
 
         function initCarousel() {
-          // Configuration de l'autoplay
-          let autoplayTimer = null;
-          let isAutoPlaying = true;
-          const autoplaySpeed = 4000;
-          const initialDelay = 6000;
+          // Configuration pour le défilement continu
+          const animation = { duration: 40000, easing: (t) => t };
 
           // Initialiser le carousel
           const carousel = new KeenSlider("#reviews-carousel", {
             loop: true,
+            renderMode: "performance",
             drag: true,
+            mode: "free",
             slides: {
               perView: () => getResponsiveSlideCount(),
               spacing: 16,
             },
-            created: () => {
+            created(s) {
+              s.moveToIdx(5, true, animation);
               createDots();
-              setTimeout(startAutoplay, initialDelay);
 
               // Ajouter une classe pour indiquer un carousel actif
               document
                 .getElementById("reviews-carousel")
                 .classList.add("carousel-active");
-
-              // Masquer les indicateurs de swipe après un délai
-              setTimeout(() => {
-                const hintElements = document.querySelectorAll(".swipe-hint");
-                hintElements.forEach((el) => {
-                  el.classList.add("opacity-0");
-                  setTimeout(() => el.remove(), 500);
-                });
-              }, 5000);
+            },
+            updated(s) {
+              s.moveToIdx(s.track.details.abs + 5, true, animation);
+            },
+            animationEnded(s) {
+              s.moveToIdx(s.track.details.abs + 5, true, animation);
             },
             slideChanged: (s) => {
               updateDots(s.track.details.rel);
@@ -295,20 +291,26 @@ const reviews = reviewsData.avis_top;
             return 3; // Maximum 3 avis visibles même sur grands écrans
           }
 
-          // Contrôles d'autoplay
-          function startAutoplay() {
-            if (!isAutoPlaying) return;
-            autoplayTimer = setInterval(() => carousel.next(), autoplaySpeed);
-          }
+          // Variable pour suivre l'état de l'animation
+          let isAutoPlaying = true;
 
+          // Fonctions pour contrôler l'autoplay
           function stopAutoplay() {
-            clearInterval(autoplayTimer);
-            isAutoPlaying = false;
+            if (carousel && carousel.animator) {
+              carousel.animator.stop();
+              isAutoPlaying = false;
+            }
           }
 
           function resumeAutoplay() {
-            isAutoPlaying = true;
-            setTimeout(startAutoplay, autoplaySpeed * 1.5);
+            if (carousel && !isAutoPlaying) {
+              isAutoPlaying = true;
+              carousel.moveToIdx(
+                carousel.track.details.abs + 5,
+                true,
+                animation
+              );
+            }
           }
 
           // Navigation avec feedback visuel
@@ -376,6 +378,13 @@ const reviews = reviewsData.avis_top;
           carouselElement.addEventListener("touchstart", stopAutoplay, {
             passive: true,
           });
+          carouselElement.addEventListener(
+            "touchend",
+            () => {
+              setTimeout(resumeAutoplay, 3000); // Reprendre après 3 secondes d'inactivité
+            },
+            { passive: true }
+          );
 
           // Adaptations de fenêtre et visibilité
           window.addEventListener("resize", () => {
