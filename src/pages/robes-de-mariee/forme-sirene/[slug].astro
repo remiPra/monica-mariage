@@ -191,16 +191,16 @@ const { robe, randomDresses } = Astro.props;
             overlay.style.justifyContent = "center";
             overlay.style.alignItems = "center";
             overlay.style.zIndex = "9999";
+            overlay.style.overflow = "hidden"; // Permet le déplacement
 
             // Create zoomed image
             const zoomedImg = document.createElement("img");
             zoomedImg.src = this.src;
             zoomedImg.alt = this.alt;
-            zoomedImg.style.maxWidth = "90%";
-            zoomedImg.style.maxHeight = "90%";
-            zoomedImg.style.transform = "scale(1)";
-            zoomedImg.style.transition = "transform 0.2s ease";
-            zoomedImg.style.touchAction = "none";
+            zoomedImg.style.maxWidth = "none";
+            zoomedImg.style.height = "auto";
+            zoomedImg.style.transformOrigin = "center";
+            zoomedImg.style.position = "absolute";
 
             // Create close button
             const closeButton = document.createElement("button");
@@ -228,9 +228,14 @@ const { robe, randomDresses } = Astro.props;
               }
             });
 
-            // Pinch-to-Zoom on mobile
-            let scale = 1;
-            let startDistance = 0;
+            // Pinch-to-Zoom + Déplacement
+            let scale = 1,
+              startDistance = 0,
+              lastX = 0,
+              lastY = 0,
+              startX = 0,
+              startY = 0;
+            let isPanning = false;
 
             zoomedImg.addEventListener("touchstart", function (e) {
               if (e.touches.length === 2) {
@@ -238,11 +243,16 @@ const { robe, randomDresses } = Astro.props;
                   e.touches[0].pageX - e.touches[1].pageX,
                   e.touches[0].pageY - e.touches[1].pageY
                 );
+              } else if (e.touches.length === 1) {
+                isPanning = true;
+                startX = e.touches[0].pageX - lastX;
+                startY = e.touches[0].pageY - lastY;
               }
             });
 
             zoomedImg.addEventListener("touchmove", function (e) {
               if (e.touches.length === 2) {
+                // Gestion du zoom
                 const newDistance = Math.hypot(
                   e.touches[0].pageX - e.touches[1].pageX,
                   e.touches[0].pageY - e.touches[1].pageY
@@ -251,12 +261,17 @@ const { robe, randomDresses } = Astro.props;
                   3,
                   Math.max(1, (newDistance / startDistance) * scale)
                 );
-                zoomedImg.style.transform = `scale(${scale})`;
+                zoomedImg.style.transform = `scale(${scale}) translate(${lastX}px, ${lastY}px)`;
+              } else if (e.touches.length === 1 && isPanning && scale > 1) {
+                // Gestion du déplacement
+                lastX = e.touches[0].pageX - startX;
+                lastY = e.touches[0].pageY - startY;
+                zoomedImg.style.transform = `scale(${scale}) translate(${lastX}px, ${lastY}px)`;
               }
             });
 
             zoomedImg.addEventListener("touchend", function () {
-              startDistance = 0;
+              isPanning = false;
             });
           });
         });
