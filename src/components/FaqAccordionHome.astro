@@ -1,0 +1,178 @@
+---
+import PrendreRendezVousButtonHome from "./PrendreRendezVousButtonHome.astro";
+
+// FAQ Accordion Component pour Astro
+const faqItems = [
+  {
+    question: "Quand faut-il prendre rendez-vous ?",
+    answer:
+      "Pour une expérience sereine, nous vous conseillons de prendre rendez-vous 8 à 12 mois avant votre mariage. Pour les robes sur-mesure, nous avons besoin d'un délai de confection de 4 à 6 mois, suivi des essayages et des ajustements. Cela nous permet de vous livrer votre robe environ un mois avant le grand jour.",
+  },
+  {
+    question: "Comment se déroule le premier rendez-vous ?",
+    answer: `Votre rendez-vous se déroule dans notre showroom privé à Seysses, près de Toulouse, dans une atmosphère intime et chaleureuse. Lors de ce moment privilégié, nous échangerons sur :
+      • Vos inspirations et le style recherché
+      • Votre budget (nos robes sont disponibles entre 750€ et 1850€)
+      • Vos contraintes de date
+      • Vos préférences en termes de style
+      
+      Chaque essayage est une expérience unique où vous êtes notre seule priorité.`,
+  },
+  {
+    question: "Que faut-il prévoir pour l'essayage ?",
+    answer: `Pour un essayage optimal, nous vous recommandons :
+      • Des sous-vêtements nude sans couture
+      • Vos chaussures de mariage ou des chaussures avec la hauteur de talon souhaitée
+      
+      N'hésitez pas à prendre des photos pendant vos essayages, tout en gardant à l'esprit que les modèles d'exposition peuvent nécessiter des ajustements pour correspondre parfaitement à vos mesures.`,
+  },
+  {
+    question: "Quelles sont les modalités de paiement ?",
+    answer: `Pour faciliter votre achat, nous proposons un paiement en trois fois :
+      • 50% à la commande
+      • 25% au premier essayage
+      • 25% à la récupération de la robe
+      
+      Nous adaptons nos créations jusqu'à la taille 44 pour que chaque mariée trouve la robe de ses rêves.`,
+  },
+];
+---
+
+<section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
+  <div class="container mx-auto px-4 max-w-6xl">
+    <!-- En-tête avec icône et titre -->
+    <div class="flex flex-col items-center mb-8">
+      <!-- Icône FAQ -->
+      <div
+        class="w-20 h-20 mb-6 flex items-center justify-center bg-[#FDF8F7] rounded-full border-2 border-[#F0E6E2] shadow-sm"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="36"
+          height="36"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#B68E75"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+      </div>
+
+      <!-- Titre principal avec police script -->
+      <h2
+        class="font-vibes text-center text-4xl md:text-5xl text-[#af7749] mb-2"
+      >
+        Questions Fréquentes
+      </h2>
+
+      <!-- Sous-titre décoratif -->
+      <div class="flex items-center justify-center gap-4 mb-8">
+        <span class="h-px w-12 bg-[#C5A880]"></span>
+        <p class="text-[#8B7569] text-sm text-center font-medium">
+          TOUT CE QUE VOUS DEVEZ SAVOIR
+        </p>
+        <span class="h-px w-12 bg-[#C5A880]"></span>
+      </div>
+    </div>
+
+    <!-- Section des accordéons FAQ -->
+    <div class="max-w-3xl mx-auto">
+      <div class="space-y-4" id="faq-accordion">
+        {
+          faqItems.map((item, index) => (
+            <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-[#F0E6E2] hover:shadow-md transition-all duration-300">
+              <button
+                class="w-full text-left px-6 py-5 text-[#5F4B3F] flex justify-between items-center faq-trigger"
+                data-index={index}
+                aria-expanded="false"
+              >
+                <span class="font-lora text-[#5F4B3F] font-medium text-lg">
+                  {item.question}
+                </span>
+                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-[#FDF8F7] border border-[#F0E6E2] text-[#af7749] transition-transform duration-300">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                </span>
+              </button>
+
+              <div class="faq-content max-h-0 opacity-0 overflow-hidden transition-all duration-300">
+                <div class="px-6 py-5 border-t border-[#F0E6E2] bg-[#FEFBFA]">
+                  <p class="text-[#5F4B3F] whitespace-pre-line leading-relaxed font-lora text-lg">
+                    {item.answer}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <!-- Bouton d'action -->
+      <div class="text-center mt-10">
+        <PrendreRendezVousButtonHome />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const faqTriggers = document.querySelectorAll(".faq-trigger");
+
+      faqTriggers.forEach((trigger) => {
+        trigger.addEventListener("click", () => {
+          const expanded = trigger.getAttribute("aria-expanded") === "true";
+          const content = trigger.nextElementSibling;
+          const icon = trigger.querySelector("span:last-child");
+
+          // Fermer tous les autres accordéons
+          faqTriggers.forEach((otherTrigger) => {
+            if (
+              otherTrigger !== trigger &&
+              otherTrigger.getAttribute("aria-expanded") === "true"
+            ) {
+              otherTrigger.setAttribute("aria-expanded", "false");
+              const otherContent = otherTrigger.nextElementSibling;
+              const otherIcon = otherTrigger.querySelector("span:last-child");
+
+              otherContent.style.maxHeight = "0";
+              otherContent.style.opacity = "0";
+              otherIcon.style.transform = "rotate(0deg)";
+            }
+          });
+
+          // Ouvrir/fermer l'accordéon actuel
+          if (expanded) {
+            // Fermer
+            trigger.setAttribute("aria-expanded", "false");
+            content.style.maxHeight = "0";
+            content.style.opacity = "0";
+            icon.style.transform = "rotate(0deg)";
+          } else {
+            // Ouvrir
+            trigger.setAttribute("aria-expanded", "true");
+            content.style.maxHeight = content.scrollHeight + "px";
+            content.style.opacity = "1";
+            icon.style.transform = "rotate(45deg)";
+          }
+        });
+      });
+    });
+  </script>
+</section>

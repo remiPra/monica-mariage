@@ -1,6 +1,7 @@
 ---
 // Importation des données
 import reviewsData from "../data/top_reviews.json";
+import PrendreRendezVousButtonHome from "./PrendreRendezVousButtonHome.astro";
 
 // Extraction des informations
 const business = reviewsData.établissement;
@@ -14,7 +15,7 @@ const reviews = reviewsData.avis_top;
     <!-- En-tête avec informations sur l'établissement -->
     <div class="text-center mb-8">
       <h2 class="font-vibes mt-8 text-5xl font-normal text-[#B68E75] mb-2">
-        {business.nom}
+        L'expérience Monica Mariage racontée par nos clientes
       </h2>
       <p class="text-[#8B7569] text-lg mb-4">
         <span class="text-[#B68E75]">★★★★</span><span class="text-[#B68E75]"
@@ -160,12 +161,7 @@ const reviews = reviewsData.avis_top;
 
     <!-- Bouton d'action -->
     <div class="text-center mt-8">
-      <a
-        href="/"
-        class="bg-[#af7749] text-white py-3 px-8 rounded-full shadow-lg hover:bg-[#925c36] hover:scale-105 transition-all duration-300"
-      >
-        prendre rendez vous
-      </a>
+      <PrendreRendezVousButtonHome />
     </div>
 
     <!-- CSS pour Keen Slider -->

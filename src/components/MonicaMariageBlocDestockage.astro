@@ -1,4 +1,6 @@
 ---
+import PrendreRendezVousButtonHome from "./PrendreRendezVousButtonHome.astro";
+
 // Composant Astro pour la section Destockage de robes de mariée
 const destockageRobes = [
   {
@@ -64,7 +66,7 @@ const destockageRobes = [
             </button> */}
             
             <!-- Bouton visible sur desktop -->
-            <button class="bg-[#C5A880] hidden md:block text-sm text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] hover:scale-105 transition-all duration-300">
+            <button class="w-[200px] mx-auto  bg-[#C5A880] hidden md:block text-sm text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] hover:scale-105 transition-all duration-300">
               Voir cette robe
             </button>
           </div>
@@ -77,10 +79,12 @@ const destockageRobes = [
     <p class="max-w-2xl mx-auto text-[#5F4B3F] leading-relaxed mb-6 text-center">
       Profitez de notre sélection de robes de mariée en déstockage pour bénéficier de tarifs avantageux tout en conservant l'élégance et la qualité d'une robe de mariée à Toulouse. Nous mettons régulièrement à jour cette rubrique afin de vous proposer des modèles issus de nos collections antérieures, toujours disponibles en quantités limitées.
     </p>
-    
+<!--     
     <a href="/promo" class="bg-[#af7749] text-white py-3 px-8 rounded-full shadow-lg hover:bg-[#925c36] hover:scale-105 transition-all duration-300">
       Voir toutes nos promos
-    </a>
+    </a> -->
+    <PrendreRendezVousButtonHome/>
+
   </div>
 </section>
 
