@@ -201,76 +201,13 @@ console.log(robe.optimizedImages);
   </style>
   <!-- Init du slider Swiper -->
   <script is:inline>
-document.addEventListener("DOMContentLoaded", function () {
-  // Initialiser Swiper
-  const swiper = new Swiper(".swiper-container", {
-    loop: true,
-    slidesPerView: 1,
-    spaceBetween: 10,
-    autoplay: { delay: 3000 },
-  });
-  
-  // Attendre que Swiper soit initialisé et que les images soient chargées
-  window.addEventListener('load', function() {
-    // Sélectionner toutes les images de slides
-    const sliderImages = document.querySelectorAll('.swiper-slide img');
-    
-    // Pour chaque image
-    sliderImages.forEach(img => {
-      // Rendre l'image cliquable
-      img.style.cursor = 'zoom-in';
-      
-      // Ajouter l'événement de clic
-      img.addEventListener('click', function() {
-        // Arrêter l'autoplay
-        if (swiper.autoplay && swiper.autoplay.running) {
-          swiper.autoplay.stop();
-        }
-        
-        // Créer l'overlay
-        const overlay = document.createElement('div');
-        overlay.style.position = 'fixed';
-        overlay.style.top = '0';
-        overlay.style.left = '0';
-        overlay.style.width = '100%';
-        overlay.style.height = '100%';
-        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-        overlay.style.display = 'flex';
-        overlay.style.justifyContent = 'center';
-        overlay.style.alignItems = 'center';
-        overlay.style.zIndex = '9999';
-        overlay.style.cursor = 'zoom-out';
-        
-        // Créer l'image agrandie
-        const zoomedImg = document.createElement('img');
-        zoomedImg.src = this.src;
-        zoomedImg.alt = this.alt;
-        zoomedImg.style.maxWidth = '90%';
-        zoomedImg.style.maxHeight = '90%';
-        
-        // Ajouter l'image à l'overlay
-        overlay.appendChild(zoomedImg);
-        
-        // Ajouter l'overlay au body
-        document.body.appendChild(overlay);
-        document.body.style.overflow = 'hidden';
-        
-        // Fermer au clic
-        overlay.addEventListener('click', function() {
-          document.body.removeChild(overlay);
-          document.body.style.overflow = '';
-          
-          // Redémarrer l'autoplay
-          if (swiper.autoplay) {
-            swiper.autoplay.start();
-          }
-        });
+    document.addEventListener("DOMContentLoaded", function () {
+      new Swiper(".swiper-container", {
+        loop: true,
+        slidesPerView: 1,
+        spaceBetween: 10,
+        autoplay: { delay: 3000 },
       });
     });
-  });
-});
   </script>
-  <style>
-    
-  </style>
 </Layout>
