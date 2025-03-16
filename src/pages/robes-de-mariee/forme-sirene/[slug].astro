@@ -160,7 +160,7 @@ const { robe, randomDresses } = Astro.props;
   <!-- Init du slider Swiper -->
   <script is:inline>
     document.addEventListener("DOMContentLoaded", function () {
-      // Initialiser Swiper
+      // Initialize Swiper
       const swiper = new Swiper(".swiper-container", {
         loop: true,
         slidesPerView: 1,
@@ -168,24 +168,24 @@ const { robe, randomDresses } = Astro.props;
         autoplay: { delay: 3000 },
       });
 
-      // Attendre que Swiper soit initialisé et que les images soient chargées
-      window.addEventListener("load", function () {
-        // Sélectionner toutes les images de slides
+      // Setup zoom functionality without nesting it in another event listener
+      function setupZoom() {
+        // Select all slider images
         const sliderImages = document.querySelectorAll(".swiper-slide img");
 
-        // Pour chaque image
+        // For each image
         sliderImages.forEach((img) => {
-          // Rendre l'image cliquable
+          // Make the image clickable
           img.style.cursor = "zoom-in";
 
-          // Ajouter l'événement de clic
+          // Add click event
           img.addEventListener("click", function () {
-            // Arrêter l'autoplay
+            // Stop autoplay
             if (swiper.autoplay && swiper.autoplay.running) {
               swiper.autoplay.stop();
             }
 
-            // Créer l'overlay
+            // Create overlay
             const overlay = document.createElement("div");
             overlay.style.position = "fixed";
             overlay.style.top = "0";
@@ -199,33 +199,36 @@ const { robe, randomDresses } = Astro.props;
             overlay.style.zIndex = "9999";
             overlay.style.cursor = "zoom-out";
 
-            // Créer l'image agrandie
+            // Create zoomed image
             const zoomedImg = document.createElement("img");
             zoomedImg.src = this.src;
             zoomedImg.alt = this.alt;
             zoomedImg.style.maxWidth = "90%";
             zoomedImg.style.maxHeight = "90%";
 
-            // Ajouter l'image à l'overlay
+            // Add image to overlay
             overlay.appendChild(zoomedImg);
 
-            // Ajouter l'overlay au body
+            // Add overlay to body
             document.body.appendChild(overlay);
             document.body.style.overflow = "hidden";
 
-            // Fermer au clic
+            // Close on click
             overlay.addEventListener("click", function () {
               document.body.removeChild(overlay);
               document.body.style.overflow = "";
 
-              // Redémarrer l'autoplay
+              // Restart autoplay
               if (swiper.autoplay) {
                 swiper.autoplay.start();
               }
             });
           });
         });
-      });
+      }
+
+      // Call setupZoom after a small delay to ensure Swiper has fully initialized
+      setTimeout(setupZoom, 500);
     });
   </script>
 </Layout>
