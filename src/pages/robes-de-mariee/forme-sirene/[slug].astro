@@ -168,19 +168,13 @@ const { robe, randomDresses } = Astro.props;
         autoplay: { delay: 3000 },
       });
 
-      // Setup zoom functionality without nesting it in another event listener
       function setupZoom() {
-        // Select all slider images
         const sliderImages = document.querySelectorAll(".swiper-slide img");
 
-        // For each image
         sliderImages.forEach((img) => {
-          // Make the image clickable
           img.style.cursor = "zoom-in";
 
-          // Add click event
           img.addEventListener("click", function () {
-            // Stop autoplay
             if (swiper.autoplay && swiper.autoplay.running) {
               swiper.autoplay.stop();
             }
@@ -197,7 +191,6 @@ const { robe, randomDresses } = Astro.props;
             overlay.style.justifyContent = "center";
             overlay.style.alignItems = "center";
             overlay.style.zIndex = "9999";
-            overlay.style.cursor = "zoom-out";
 
             // Create zoomed image
             const zoomedImg = document.createElement("img");
@@ -205,29 +198,70 @@ const { robe, randomDresses } = Astro.props;
             zoomedImg.alt = this.alt;
             zoomedImg.style.maxWidth = "90%";
             zoomedImg.style.maxHeight = "90%";
+            zoomedImg.style.transform = "scale(1)";
+            zoomedImg.style.transition = "transform 0.2s ease";
+            zoomedImg.style.touchAction = "none";
 
-            // Add image to overlay
+            // Create close button
+            const closeButton = document.createElement("button");
+            closeButton.innerHTML = "✖";
+            closeButton.style.position = "absolute";
+            closeButton.style.top = "20px";
+            closeButton.style.right = "20px";
+            closeButton.style.fontSize = "24px";
+            closeButton.style.color = "#fff";
+            closeButton.style.background = "none";
+            closeButton.style.border = "none";
+            closeButton.style.cursor = "pointer";
+
             overlay.appendChild(zoomedImg);
-
-            // Add overlay to body
+            overlay.appendChild(closeButton);
             document.body.appendChild(overlay);
             document.body.style.overflow = "hidden";
 
             // Close on click
-            overlay.addEventListener("click", function () {
+            closeButton.addEventListener("click", function () {
               document.body.removeChild(overlay);
               document.body.style.overflow = "";
-
-              // Restart autoplay
               if (swiper.autoplay) {
                 swiper.autoplay.start();
               }
+            });
+
+            // Pinch-to-Zoom on mobile
+            let scale = 1;
+            let startDistance = 0;
+
+            zoomedImg.addEventListener("touchstart", function (e) {
+              if (e.touches.length === 2) {
+                startDistance = Math.hypot(
+                  e.touches[0].pageX - e.touches[1].pageX,
+                  e.touches[0].pageY - e.touches[1].pageY
+                );
+              }
+            });
+
+            zoomedImg.addEventListener("touchmove", function (e) {
+              if (e.touches.length === 2) {
+                const newDistance = Math.hypot(
+                  e.touches[0].pageX - e.touches[1].pageX,
+                  e.touches[0].pageY - e.touches[1].pageY
+                );
+                scale = Math.min(
+                  3,
+                  Math.max(1, (newDistance / startDistance) * scale)
+                );
+                zoomedImg.style.transform = `scale(${scale})`;
+              }
+            });
+
+            zoomedImg.addEventListener("touchend", function () {
+              startDistance = 0;
             });
           });
         });
       }
 
-      // Call setupZoom after a small delay to ensure Swiper has fully initialized
       setTimeout(setupZoom, 500);
     });
   </script>
