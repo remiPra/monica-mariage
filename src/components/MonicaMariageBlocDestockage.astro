@@ -31,11 +31,23 @@ const destockageRobes = [
 ---
 
 <section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
-  <h2 class="font-vibes text-center text-4xl md:text-5xl font-normal text-[#af7749] mb-8">
-    Destockage de robes de mariée
-  </h2>
+  <div class="container mx-auto px-4 max-w-6xl">
+    <!-- En-tête raffiné avec titre et éléments décoratifs -->
+    <div class="flex flex-col items-center mb-10">
+      <!-- Titre élégant -->
+      <h2 class="font-vibes text-center text-4xl md:text-5xl text-[#af7749] mb-2">
+        Destockage de Robes de Mariée
+      </h2>
+      
+      <!-- Trait décoratif -->
+      <div class="flex items-center justify-center gap-4 mb-6">
+        <span class="h-px w-16 bg-[#C5A880]"></span>
+        <p class="text-[#8B7569] text-xs font-medium">PRIX AVANTAGEUX</p>
+        <span class="h-px w-16 bg-[#C5A880]"></span>
+      </div>
+    </div>
   
-  <div class="px-4 max-w-6xl mx-auto">
+    <!-- Collection de robes en déstockage -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       {destockageRobes.map((dress) => (
         <a 
@@ -43,6 +55,12 @@ const destockageRobes = [
           class="relative text-center overflow-hidden cursor-pointer fade-in rounded-2xl h-[300px] sm:h-[400px] shadow-md"
         >
           <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
+          
+          <!-- Badge "Promotion" -->
+          <div class="absolute top-4 right-4 bg-[#E07A5F] text-white text-xs font-medium px-2 py-1 rounded-full z-30 shadow-sm">
+            PROMO
+          </div>
+          
           <img
             src={dress.src}
             alt={dress.alt}
@@ -55,36 +73,28 @@ const destockageRobes = [
               {dress.label}
             </p>
             
-            {/* <!-- Badge de prix spécial -->
+            <!-- Badge de prix spécial -->
             <div class="bg-white text-[#af7749] font-medium text-sm px-3 py-1 rounded-full inline-block mb-2 md:mb-3 shadow-sm">
               Prix réduit
-            </div> */}
-            
-            {/* <!-- Bouton visible sur mobile et tablette -->
-            <button class="bg-[#C5A880] block md:hidden text-sm text-white font-semibold px-4 py-2 rounded-full shadow-lg hover:bg-[#A27E5D] active:scale-95 transition-all duration-300">
-              Voir plus
-            </button> */}
+            </div>
             
             <!-- Bouton visible sur desktop -->
-            <button class="w-[200px] mx-auto  bg-[#C5A880] hidden md:block text-sm text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] hover:scale-105 transition-all duration-300">
+            <button class="w-[200px] mx-auto bg-[#C5A880] hidden md:block text-sm text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] hover:scale-105 transition-all duration-300">
               Voir cette robe
             </button>
           </div>
         </a>
       ))}
     </div>
-  </div>
   
-  <div class="flex flex-col items-center mt-10 px-4">
-    <p class="max-w-2xl mx-auto text-[#5F4B3F] leading-relaxed mb-6 text-center">
-      Profitez de notre sélection de robes de mariée en déstockage pour bénéficier de tarifs avantageux tout en conservant l'élégance et la qualité d'une robe de mariée à Toulouse. Nous mettons régulièrement à jour cette rubrique afin de vous proposer des modèles issus de nos collections antérieures, toujours disponibles en quantités limitées.
-    </p>
-<!--     
-    <a href="/promo" class="bg-[#af7749] text-white py-3 px-8 rounded-full shadow-lg hover:bg-[#925c36] hover:scale-105 transition-all duration-300">
-      Voir toutes nos promos
-    </a> -->
-    <PrendreRendezVousButtonHome/>
-
+    <!-- Texte descriptif et bouton d'action -->
+    <div class="flex flex-col items-center mt-10 px-4">
+      <p class="max-w-2xl mx-auto text-[#5F4B3F] leading-relaxed mb-8 text-center">
+        Profitez de notre sélection de robes de mariée en déstockage pour bénéficier de tarifs avantageux tout en conservant l'élégance et la qualité d'une robe de mariée à Toulouse. Nous mettons régulièrement à jour cette rubrique pour vous proposer des modèles issus de nos collections antérieures.
+      </p>
+      
+      <PrendreRendezVousButtonHome />
+    </div>
   </div>
 </section>
 

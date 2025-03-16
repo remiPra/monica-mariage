@@ -109,9 +109,8 @@ const reviews = reviewsData.avis_top;
             </div>
           ))
         }
-      </div>
+        <!-- </div>
 
-      <!-- Boutons de navigation améliorés -->
       <div class="flex justify-between items-center mt-6 relative">
         <button
           id="carousel-prev"
@@ -134,274 +133,261 @@ const reviews = reviewsData.avis_top;
         </button>
 
         <div id="carousel-dots" class="flex gap-3 items-center">
-          <!-- Points de navigation générés par JS -->
-        </div>
-
-        <button
-          id="carousel-next"
-          class="bg-[#B68E75] text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#9E7962] hover:scale-110 active:scale-95 transition-all shadow-md"
-          aria-label="Avis suivant"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M9 18l6-6-6-6"></path>
-          </svg>
-        </button>
       </div>
-    </div>
 
-    <!-- Bouton d'action -->
-    <div class="text-center mt-8">
-      <PrendreRendezVousButtonHome />
-    </div>
+      <button
+        id="carousel-next"
+        class="bg-[#B68E75] text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#9E7962] hover:scale-110 active:scale-95 transition-all shadow-md"
+        aria-label="Avis suivant"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M9 18l6-6-6-6"></path>
+        </svg>
+      </button>
+    </div> -->
+      </div>
 
-    <!-- CSS pour Keen Slider -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.css"
-    />
+      <!-- Bouton d'action -->
+      <div class="text-center my-16">
+        <PrendreRendezVousButtonHome />
+      </div>
 
-    <style>
-      /* @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Cormorant+Garamond:wght@300;400;500&display=swap"); */
+      <!-- CSS pour Keen Slider -->
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.css"
+      />
 
-      /* Style pour les dots */
-      .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #d1bdb4;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
+      <style>
+        /* @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Cormorant+Garamond:wght@300;400;500&display=swap"); */
 
-      .dot.active {
-        width: 12px;
-        height: 12px;
-        background: #b68e75;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Animation pour indiquer que c'est un slider */
-      @keyframes slideHint {
-        0%,
-        100% {
-          opacity: 0.8;
+        /* Style pour les dots */
+        .dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #d1bdb4;
+          cursor: pointer;
+          transition: all 0.3s ease;
         }
-        50% {
-          opacity: 0.3;
+
+        .dot.active {
+          width: 12px;
+          height: 12px;
+          background: #b68e75;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-      }
 
-      .keen-slider {
-        position: relative;
-      }
-
-      .keen-slider::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 30px;
-        background: linear-gradient(
-          90deg,
-          rgba(253, 248, 247, 0) 0%,
-          rgba(253, 248, 247, 0.8) 100%
-        );
-        z-index: 5;
-        pointer-events: none;
-        animation: slideHint 2s infinite;
-      }
-
-      .keen-slider::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: 30px;
-        background: linear-gradient(
-          270deg,
-          rgba(253, 248, 247, 0) 0%,
-          rgba(253, 248, 247, 0.8) 100%
-        );
-        z-index: 5;
-        pointer-events: none;
-        animation: slideHint 2s infinite;
-      }
-    </style>
-
-    <script is:inline>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Charger Keen Slider
-        const script = document.createElement("script");
-        script.src =
-          "https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.js";
-        script.onload = initCarousel;
-        document.body.appendChild(script);
-
-        function initCarousel() {
-          // Configuration pour le défilement continu
-          const animation = { duration: 40000, easing: (t) => t };
-
-          // Initialiser le carousel
-          const carousel = new KeenSlider("#reviews-carousel", {
-            loop: true,
-            renderMode: "performance",
-            drag: true,
-            mode: "free",
-            slides: {
-              perView: () => getResponsiveSlideCount(),
-              spacing: 16,
-            },
-            created(s) {
-              s.moveToIdx(5, true, animation);
-              createDots();
-
-              // Ajouter une classe pour indiquer un carousel actif
-              document
-                .getElementById("reviews-carousel")
-                .classList.add("carousel-active");
-            },
-            updated(s) {
-              s.moveToIdx(s.track.details.abs + 5, true, animation);
-            },
-            animationEnded(s) {
-              s.moveToIdx(s.track.details.abs + 5, true, animation);
-            },
-            slideChanged: (s) => {
-              updateDots(s.track.details.rel);
-            },
-          });
-
-          // Nombre de slides en fonction de la taille d'écran
-          function getResponsiveSlideCount() {
-            if (window.innerWidth < 640) return 1;
-            if (window.innerWidth < 1024) return 2;
-            if (window.innerWidth < 1280) return 3;
-            return 3; // Maximum 3 avis visibles même sur grands écrans
+        /* Animation pour indiquer que c'est un slider */
+        @keyframes slideHint {
+          0%,
+          100% {
+            opacity: 0.8;
           }
-
-          // Variable pour suivre l'état de l'animation
-          let isAutoPlaying = true;
-
-          // Fonctions pour contrôler l'autoplay
-          function stopAutoplay() {
-            if (carousel && carousel.animator) {
-              carousel.animator.stop();
-              isAutoPlaying = false;
-            }
+          50% {
+            opacity: 0.3;
           }
+        }
 
-          function resumeAutoplay() {
-            if (carousel && !isAutoPlaying) {
-              isAutoPlaying = true;
-              carousel.moveToIdx(
-                carousel.track.details.abs + 5,
-                true,
-                animation
-              );
-            }
-          }
+        .keen-slider {
+          position: relative;
+        }
 
-          // Navigation avec feedback visuel
-          const prevButton = document.getElementById("carousel-prev");
-          const nextButton = document.getElementById("carousel-next");
+        .keen-slider::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: 30px;
+          background: linear-gradient(
+            90deg,
+            rgba(253, 248, 247, 0) 0%,
+            rgba(253, 248, 247, 0.8) 100%
+          );
+          z-index: 5;
+          pointer-events: none;
+          animation: slideHint 2s infinite;
+        }
 
-          prevButton.addEventListener("click", () => {
-            carousel.prev();
-            stopAutoplay();
+        .keen-slider::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          width: 30px;
+          background: linear-gradient(
+            270deg,
+            rgba(253, 248, 247, 0) 0%,
+            rgba(253, 248, 247, 0.8) 100%
+          );
+          z-index: 5;
+          pointer-events: none;
+          animation: slideHint 2s infinite;
+        }
+      </style>
 
-            // Feedback visuel lors du clic
-            prevButton.classList.add("bg-[#8D6E59]");
-            setTimeout(() => prevButton.classList.remove("bg-[#8D6E59]"), 150);
-          });
+      <script is:inline>
+        document.addEventListener("DOMContentLoaded", function () {
+          // Charger Keen Slider
+          const script = document.createElement("script");
+          script.src =
+            "https://cdn.jsdelivr.net/npm/keen-slider@6.8.5/keen-slider.min.js";
+          script.onload = initCarousel;
+          document.body.appendChild(script);
 
-          nextButton.addEventListener("click", () => {
-            carousel.next();
-            stopAutoplay();
+          function initCarousel() {
+            // Configuration pour le défilement continu
+            const animation = { duration: 40000, easing: (t) => t };
 
-            // Feedback visuel lors du clic
-            nextButton.classList.add("bg-[#8D6E59]");
-            setTimeout(() => nextButton.classList.remove("bg-[#8D6E59]"), 150);
-          });
+            // Initialiser le carousel
+            // Initialiser le carousel
+            const carousel = new KeenSlider("#reviews-carousel", {
+              loop: true,
+              renderMode: "performance",
+              drag: true,
+              // mode: "free",
+              slides: {
+                perView: () => getResponsiveSlideCount(),
+                spacing: 16,
+              },
+              created(s) {
+                s.moveToIdx(5, true, animation);
+                createDots();
 
-          // Points de navigation améliorés
-          function createDots() {
-            const dotsContainer = document.getElementById("carousel-dots");
-            const slidesCount = carousel.track.details.slides.length;
-
-            // Limiter le nombre de points pour éviter l'encombrement
-            const maxDots = window.innerWidth < 640 ? 5 : slidesCount;
-            const visibleDots = Math.min(slidesCount, maxDots);
-
-            for (let i = 0; i < visibleDots; i++) {
-              const dot = document.createElement("button");
-              dot.classList.add("dot");
-              dot.setAttribute("aria-label", `Aller à l'avis ${i + 1}`);
-
-              if (i === 0) dot.classList.add("active");
-
-              dot.addEventListener("click", () => {
-                carousel.moveToIdx(i);
+                // Ajouter une classe pour indiquer un carousel actif
+                document
+                  .getElementById("reviews-carousel")
+                  .classList.add("carousel-active");
+              },
+              updated(s) {
+                s.moveToIdx(s.track.details.abs + 5, true, animation);
+              },
+              animationEnded(s) {
+                s.moveToIdx(s.track.details.abs + 5, true, animation);
+              },
+              slideChanged: (s) => {
+                updateDots(s.track.details.rel);
+              },
+              // Arrêter l'animation quand l'utilisatrice commence à glisser
+              dragStart: () => {
                 stopAutoplay();
+              },
+              // Reprendre l'animation quelques secondes après la fin du glissement
+              dragEnd: () => {
+                setTimeout(resumeAutoplay, 5000); // 5 secondes avant de reprendre
+              },
+            });
 
-                // Animation de feedback au clic
-                dot.classList.add("scale-125");
-                setTimeout(() => dot.classList.remove("scale-125"), 200);
-              });
-
-              dotsContainer.appendChild(dot);
+            // Nombre de slides en fonction de la taille d'écran
+            function getResponsiveSlideCount() {
+              if (window.innerWidth < 640) return 1;
+              if (window.innerWidth < 1024) return 2;
+              if (window.innerWidth < 1280) return 3;
+              return 3; // Maximum 3 avis visibles même sur grands écrans
             }
-          }
 
-          function updateDots(currentIndex) {
-            const dots = document.querySelectorAll(".dot");
-            dots.forEach((dot, i) => {
-              dot.classList.toggle("active", i === currentIndex);
+            // Variable pour suivre l'état de l'animation
+            let isAutoPlaying = true;
+
+            // Fonctions pour contrôler l'autoplay
+            function stopAutoplay() {
+              if (carousel && carousel.animator) {
+                carousel.animator.stop();
+                isAutoPlaying = false;
+              }
+            }
+
+            function resumeAutoplay() {
+              if (carousel && !isAutoPlaying) {
+                isAutoPlaying = true;
+                carousel.moveToIdx(
+                  carousel.track.details.abs + 5,
+                  true,
+                  animation
+                );
+              }
+            }
+
+            // Points de navigation améliorés
+            function createDots() {
+              const dotsContainer = document.getElementById("carousel-dots");
+              const slidesCount = carousel.track.details.slides.length;
+
+              // Limiter le nombre de points pour éviter l'encombrement
+              const maxDots = window.innerWidth < 640 ? 5 : slidesCount;
+              const visibleDots = Math.min(slidesCount, maxDots);
+
+              for (let i = 0; i < visibleDots; i++) {
+                const dot = document.createElement("button");
+                dot.classList.add("dot");
+                dot.setAttribute("aria-label", `Aller à l'avis ${i + 1}`);
+
+                if (i === 0) dot.classList.add("active");
+
+                dot.addEventListener("click", () => {
+                  carousel.moveToIdx(i);
+                  stopAutoplay();
+
+                  // Animation de feedback au clic
+                  dot.classList.add("scale-125");
+                  setTimeout(() => dot.classList.remove("scale-125"), 200);
+                });
+
+                dotsContainer.appendChild(dot);
+              }
+            }
+
+            function updateDots(currentIndex) {
+              const dots = document.querySelectorAll(".dot");
+              dots.forEach((dot, i) => {
+                dot.classList.toggle("active", i === currentIndex);
+              });
+            }
+
+            // Gestion des interactions
+            const carouselElement = document.getElementById("reviews-carousel");
+            carouselElement.addEventListener("mouseenter", stopAutoplay);
+            carouselElement.addEventListener("mouseleave", resumeAutoplay);
+            carouselElement.addEventListener("touchstart", stopAutoplay, {
+              passive: true,
+            });
+            carouselElement.addEventListener(
+              "touchend",
+              () => {
+                setTimeout(resumeAutoplay, 3000); // Reprendre après 3 secondes d'inactivité
+              },
+              { passive: true }
+            );
+
+            // Adaptations de fenêtre et visibilité
+            window.addEventListener("resize", () => {
+              carousel.refresh();
+              // Recréer les points si nécessaire lors du redimensionnement
+              const dotsContainer = document.getElementById("carousel-dots");
+              if (dotsContainer) {
+                dotsContainer.innerHTML = "";
+                createDots();
+              }
+            });
+
+            document.addEventListener("visibilitychange", () => {
+              document.hidden ? stopAutoplay() : resumeAutoplay();
             });
           }
-
-          // Gestion des interactions
-          const carouselElement = document.getElementById("reviews-carousel");
-          carouselElement.addEventListener("mouseenter", stopAutoplay);
-          carouselElement.addEventListener("mouseleave", resumeAutoplay);
-          carouselElement.addEventListener("touchstart", stopAutoplay, {
-            passive: true,
-          });
-          carouselElement.addEventListener(
-            "touchend",
-            () => {
-              setTimeout(resumeAutoplay, 3000); // Reprendre après 3 secondes d'inactivité
-            },
-            { passive: true }
-          );
-
-          // Adaptations de fenêtre et visibilité
-          window.addEventListener("resize", () => {
-            carousel.refresh();
-            // Recréer les points si nécessaire lors du redimensionnement
-            const dotsContainer = document.getElementById("carousel-dots");
-            if (dotsContainer) {
-              dotsContainer.innerHTML = "";
-              createDots();
-            }
-          });
-
-          document.addEventListener("visibilitychange", () => {
-            document.hidden ? stopAutoplay() : resumeAutoplay();
-          });
-        }
-      });
-    </script>
+        });
+      </script>
+    </div>
   </div>
 </section>

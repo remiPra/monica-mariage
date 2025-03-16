@@ -28,11 +28,23 @@ const bestSellers = [
 ---
 
 <section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
-  <h2 class="font-vibes text-center text-4xl md:text-5xl font-normal text-[#af7749] mb-8">
-    Meilleures ventes chez Monica Mariage
-  </h2>
-  
-  <div class="px-4 max-w-6xl mx-auto">
+  <div class="container mx-auto px-4 max-w-6xl">
+    <!-- En-tête avec titre et éléments décoratifs -->
+    <div class="flex flex-col items-center mb-10">
+      <!-- Titre élégant -->
+      <h2 class="font-vibes text-center text-4xl md:text-5xl text-[#af7749] mb-2">
+        Nos Robes Préférées
+      </h2>
+      
+      <!-- Trait décoratif -->
+      <div class="flex items-center justify-center gap-4 mb-6">
+        <span class="h-px w-16 bg-[#C5A880]"></span>
+        <p class="text-[#8B7569] text-xs font-medium">SÉLECTION EXCLUSIVE</p>
+        <span class="h-px w-16 bg-[#C5A880]"></span>
+      </div>
+    </div>
+
+    <!-- Contenu - cartes des robes -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       {bestSellers.map((dress) => (
         <a 
@@ -52,32 +64,28 @@ const bestSellers = [
               {dress.label}
             </p>
             
-            <!-- Bouton visible sur mobile et tablette -->
-            <button class="bg-[#C5A880]  hidden  md:hidden text-sm text-white font-semibold px-4 py-2 rounded-full shadow-lg hover:bg-[#A27E5D] active:scale-95 transition-all duration-300">
-              Voir plus
-            </button>
-            
-            <!-- Bouton visible sur desktop -->
-            <button class="bg-[#C5A880] mx-auto hidden text-center w-[200px] md:block text-sm text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] hover:scale-105 transition-all duration-300">
+            <!-- Bouton visible sur desktop uniquement -->
+            <button class="bg-[#C5A880] mx-auto hidden md:block text-sm text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] hover:scale-105 transition-all duration-300">
               Découvrir cette robe
             </button>
           </div>
         </a>
       ))}
     </div>
-  </div>
   
-  <div class="flex flex-col items-center mt-10 px-4">
-    <p class="max-w-2xl mx-auto text-center text-[#5F4B3F] leading-relaxed mb-8 text-base md:text-lg">
-      Découvrez notre sélection de best-sellers, conçus pour sublimer chaque future mariée à la recherche d'une robe de mariée à Toulouse.
-      Nous proposons des coupes variées (princesse, sirène, bohème, etc.) afin de répondre à tous les styles et toutes les silhouettes.
-    </p>
-    
-    <a
+    <!-- Pied de section -->
+    <div class="flex flex-col items-center mt-12 px-4">
+      <p class="max-w-2xl mx-auto text-center text-[#5F4B3F] leading-relaxed mb-8">
+        Découvrez notre sélection de robes emblématiques, conçues pour sublimer chaque future mariée.
+        Nos créations s'adaptent à tous les styles et toutes les silhouettes.
+      </p>
+      
+      <a
         href="/robes-de-mariee"
-        class="inline-block bg-[#C99A9A] text-white py-3 px-8 rounded-full shadow-lg hover:bg-[#925c36] hover:scale-105 transition-all duration-300"
+        class="inline-block bg-[#C99A9A] text-white py-3 px-8 rounded-full shadow-md hover:bg-[#BA8B8B] hover:scale-105 transition-all duration-300"
       >
-        Voir nos robes de mariées
+        Voir toutes nos robes
       </a>
+    </div>
   </div>
 </section>

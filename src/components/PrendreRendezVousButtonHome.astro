@@ -7,16 +7,15 @@ const primaryColor = "bg-[#a77c60]"; // Marron principal
 
 <!-- Bouton pour ouvrir le modal -->
 <button
-  id="open-modal-button"
-  class="inline-block px-8 py-4 bg-[#C99A9A] text-white font-medium text-lg
+  class="open-modal-button inline-block px-8 py-4 bg-[#C99A9A] text-white font-medium text-lg
   rounded-full shadow-md hover:shadow-lg hover:scale-105 hover:bg-[#C27C74]
   transition-all duration-300"
 >
-  Prendre rendez-vous
+  <span>Prendre rendez-vous</span>
 </button>
 
 <!-- Fenêtre modale de contact -->
-<div id="contact-modal" class="fixed inset-0 z-[500] hidden">
+<div class="contact-modal fixed inset-0 z-[500] hidden">
   <!-- Overlay avec flou -->
   <div class="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
 
@@ -30,8 +29,7 @@ const primaryColor = "bg-[#a77c60]"; // Marron principal
     >
       <h2 class="font-vibes text-3xl text-[#af7749]">Prenons contact</h2>
       <button
-        id="close-modal-button"
-        class="rounded-full w-8 h-8 flex items-center justify-center text-[#8B7569] hover:bg-[#FDF8F7] transition-colors"
+        class="close-modal-button rounded-full w-8 h-8 flex items-center justify-center text-[#8B7569] hover:bg-[#FDF8F7] transition-colors"
         aria-label="Fermer"
       >
         <svg
@@ -59,7 +57,6 @@ const primaryColor = "bg-[#a77c60]"; // Marron principal
         <p class="text-[#8B7569] text-xs font-medium">CONTACTEZ-NOUS</p>
         <span class="h-px w-12 bg-[#C5A880]"></span>
       </div>
-
       <p class="text-[#5F4B3F] leading-relaxed mb-6 text-base md:text-lg">
         Nous sommes disponibles sur plusieurs plateformes, choisissez votre
         moyen de communication préféré :
@@ -71,9 +68,7 @@ const primaryColor = "bg-[#a77c60]"; // Marron principal
       <a
         target="_blank"
         href="tel:+33668300960"
-        class="flex items-center
-      justify-center bg-[#af7749] text-white p-4 rounded-full w-full
-      hover:bg-[#925c36] transition-all duration-300 group"
+        class="flex items-center justify-center bg-[#af7749] text-white p-4 rounded-full w-full hover:bg-[#925c36] transition-all duration-300 group"
       >
         <div
           class="w-8 h-8 mr-3 flex items-center justify-center bg-white/20 rounded-full"
@@ -96,12 +91,10 @@ const primaryColor = "bg-[#a77c60]"; // Marron principal
         </div>
         <span class="font-medium">Appelez-moi</span>
       </a>
-
       <a
         target="_blank"
         href="https://wa.me/33668300960?text=Bonjour%20Monica%20Mariage%20!"
-        class="flex items-center justify-center bg-[#25D366] text-white p-4
-      rounded-full w-full hover:bg-[#1faa54] transition-all duration-300 group"
+        class="flex items-center justify-center bg-[#25D366] text-white p-4 rounded-full w-full hover:bg-[#1faa54] transition-all duration-300 group"
       >
         <div
           class="w-8 h-8 mr-3 flex items-center justify-center bg-white/20 rounded-full"
@@ -124,14 +117,10 @@ const primaryColor = "bg-[#a77c60]"; // Marron principal
         </div>
         <span class="font-medium">WhatsApp</span>
       </a>
-
       <a
         target="_blank"
         href="https://www.instagram.com/monicamariage/"
-        class="flex
-    items-center justify-center bg-gradient-to-r from-[#833AB4] via-[#FD1D1D]
-    to-[#FCAF45] text-white p-4 rounded-full w-full hover:opacity-90
-    transition-all duration-300 group"
+        class="flex items-center justify-center bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45] text-white p-4 rounded-full w-full hover:opacity-90 transition-all duration-300 group"
       >
         <div
           class="w-8 h-8 mr-3 flex items-center justify-center bg-white/20 rounded-full"
@@ -161,94 +150,84 @@ const primaryColor = "bg-[#a77c60]"; // Marron principal
           Nous répondons généralement dans les 24 heures
         </p>
       </div>
-
-      <style>
-        /* Animation d'entrée et de sortie */
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
-        @keyframes scaleIn {
-          from {
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(0.9);
-          }
-          to {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-          }
-        }
-        .btn-shine {
-          position: relative;
-        }
-
-        .pulse-effect {
-          animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-          0% {
-            box-shadow: 0 0 0 0 rgba(175, 119, 73, 0.4);
-          }
-          70% {
-            box-shadow: 0 0 0 10px rgba(175, 119, 73, 0);
-          }
-          100% {
-            box-shadow: 0 0 0 0 rgba(175, 119, 73, 0);
-          }
-        }
-        #contact-modal.active {
-          display: block;
-          animation: fadeIn 0.3s ease forwards;
-        }
-
-        #contact-modal.active > div:last-child {
-          animation: scaleIn 0.3s ease forwards;
-        }
-      </style>
-
-      <script>
-        document.addEventListener("DOMContentLoaded", () => {
-          const modal = document.getElementById("contact-modal");
-          const openButton = document.getElementById("open-modal-button");
-          const closeButton = document.getElementById("close-modal-button");
-
-          // Fonction pour ouvrir la modale
-          function openModal() {
-            modal.classList.add("active");
-            document.body.style.overflow = "hidden"; // Empêcher le défilement
-          }
-
-          // Fonction pour fermer la modale
-          function closeModal() {
-            modal.classList.remove("active");
-            document.body.style.overflow = ""; // Réactiver le défilement
-          }
-
-          // Gestionnaires d'événements
-          openButton.addEventListener("click", openModal);
-          closeButton.addEventListener("click", closeModal);
-
-          // Fermer en cliquant sur l'overlay
-          modal.addEventListener("click", (e) => {
-            if (e.target === modal || e.target === modal.firstElementChild) {
-              closeModal();
-            }
-          });
-
-          // Fermer avec la touche Echap
-          document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape" && modal.classList.contains("active")) {
-              closeModal();
-            }
-          });
-        });
-      </script>
     </div>
   </div>
 </div>
+
+<style>
+  /* Animation d'entrée et de sortie */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  .contact-modal.active {
+    display: block;
+    animation: fadeIn 0.3s ease forwards;
+  }
+  .contact-modal.active > div:last-child {
+    animation: scaleIn 0.3s ease forwards;
+  }
+</style>
+
+<script client:load>
+  document.addEventListener("DOMContentLoaded", () => {
+    const modals = document.querySelectorAll(".contact-modal");
+    const openButtons = document.querySelectorAll(".open-modal-button");
+    const closeButtons = document.querySelectorAll(".close-modal-button");
+
+    openButtons.forEach((btn, index) => {
+      btn.addEventListener("click", () => {
+        const modal = modals[index];
+        if (modal) {
+          modal.classList.add("active");
+          document.body.style.overflow = "hidden";
+        }
+      });
+    });
+
+    closeButtons.forEach((btn, index) => {
+      btn.addEventListener("click", () => {
+        const modal = modals[index];
+        if (modal) {
+          modal.classList.remove("active");
+          document.body.style.overflow = "";
+        }
+      });
+    });
+
+    modals.forEach((modal) => {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal || e.target === modal.firstElementChild) {
+          modal.classList.remove("active");
+          document.body.style.overflow = "";
+        }
+      });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        modals.forEach((modal) => {
+          if (modal.classList.contains("active")) {
+            modal.classList.remove("active");
+            document.body.style.overflow = "";
+          }
+        });
+      }
+    });
+  });
+</script>
