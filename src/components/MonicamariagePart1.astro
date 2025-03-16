@@ -1,36 +1,59 @@
 ---
-/* Composant Astro pur, sans React ni Next.js */
+/* Section d'introduction Monica Mariage */
 ---
 
-<section class="text-center mt-[50px] py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
-    <!-- Titre principal -->
-    <h1 class="dancing-script text-5xl text-[#af7749] mb-4">
-      Monica Mariage Toulouse
-    </h1>
-  
-    <!-- Icône robe de mariée optimisée -->
-    <div class="w-36 mx-auto mb-4">
-      <img
-        src="/image/iconerobe.png"
-        alt="Robes de mariée icon"
-        width="144"
-        height="144"
-        class="rounded-full"
-        loading="lazy"
-      />
+<section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
+  <div class="container mx-auto px-4 max-w-6xl">
+    <!-- En-tête avec logo et titre -->
+    <div class="flex flex-col items-center mb-8">
+      <!-- Image de logo circulaire -->
+      <div class="w-32 h-32 mb-6">
+        <img
+          src="/image/iconerobe.png"
+          alt="Robes de mariée icon"
+          width="128"
+          height="128"
+          class="w-full h-full object-cover rounded-full border-2 border-[#F0E6E2] shadow-sm"
+          loading="lazy"
+        />
+      </div>
+
+      <!-- Titre principal avec police script -->
+      <h1
+        class="font-vibes text-center text-4xl md:text-5xl text-[#af7749] mb-2"
+      >
+        Monica Mariage Toulouse
+      </h1>
+
+      <!-- Sous-titre décoratif -->
+      <div class="flex items-center justify-center gap-4 mb-6">
+        <span class="h-px w-12 bg-[#C5A880]"></span>
+        <p class="text-[#8B7569] text-sm text-center font-medium">
+          BOUTIQUE DE ROBES DE MARIÉE
+        </p>
+        <span class="h-px w-12 bg-[#C5A880]"></span>
+      </div>
     </div>
-  
-    <!-- Texte d’introduction -->
-    <p class="max-w-3xl mx-auto text-lg text-black leading-relaxed mb-8">
-      La boutique de mariage est conçue comme un showroom privé à Seysses près
-      de Toulouse. Nous sommes heureux de vous accompagner pour la confection
-      des robes de mariée sur-mesure et personnalisable jusqu'à la taille 44.
-      Le tarif d'une robe de mariée sur-mesure se situe entre 750€ et 1850€.
-    </p>
-  
-    <!-- Bouton vers les robes de mariée -->
-    <a href="/robes-de-mariee" class="bg-[#af7749] text-white py-2 px-6 rounded-lg shadow-lg hover:bg-[#925c36] transition duration-300">
-      Voir nos robes de mariées
-    </a>
-  </section>
-  
+
+    <!-- Texte de présentation -->
+    <div class="max-w-3xl mx-auto text-center">
+      <p class="text-[#5F4B3F] leading-relaxed mb-8 text-base md:text-lg">
+        La boutique de mariage est conçue comme un showroom privé à Seysses près
+        de Toulouse. Nous sommes heureux de vous accompagner pour la confection
+        des robes de mariée sur-mesure et personnalisable jusqu'à la taille 44.
+        <span class="font-medium"
+          >Le tarif d'une robe de mariée sur-mesure se situe entre 750€ et
+          1850€.</span
+        >
+      </p>
+
+      <!-- Bouton d'action principal -->
+      <a
+        href="/robes-de-mariee"
+        class="inline-block bg-[#af7749] text-white py-3 px-8 rounded-full shadow-lg hover:bg-[#925c36] hover:scale-105 transition-all duration-300"
+      >
+        Voir nos robes de mariées
+      </a>
+    </div>
+  </div>
+</section>

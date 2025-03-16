@@ -28,47 +28,53 @@ const bestSellers = [
 ---
 
 <section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
-  <h2 class="font-cursive text-center text-5xl font-semibold text-[#af7749] mb-8">
-    Meilleures ventes chez Monica Mariage&nbsp;: Des robes de mariée incontournables à Toulouse
+  <h2 class="font-vibes text-center text-4xl md:text-5xl font-normal text-[#af7749] mb-8">
+    Meilleures ventes chez Monica Mariage
   </h2>
-
-  <div class="flex justify-center px-4">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl w-full">
-      {bestSellers.map((item) => (
-        <a href={item.link} class="text-center cursor-pointer">
-          <div class="relative">
-            <div class="absolute inset-0 bg-[#af7749] opacity-20 z-10"></div>
-            <img
-              src={item.src}
-              alt={item.alt}
-              width="300"
-              height="400"
-              class="w-full object-cover rounded max-h-96"
-              loading="lazy"
-            />
+  
+  <div class="px-4 max-w-6xl mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {bestSellers.map((dress) => (
+        <a 
+          href={dress.link} 
+          class="relative text-center overflow-hidden cursor-pointer fade-in rounded-2xl h-[300px] sm:h-[400px] shadow-md"
+        >
+          <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
+          <img
+            src={dress.src}
+            alt={dress.alt}
+            class="absolute top-0 w-full h-full object-cover hover:scale-105 transition-transform duration-300 z-0"
+            loading="lazy"
+          />
+          
+          <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-4 md:p-6 rounded-b-2xl z-20">
+            <p class="text-white font-vibes text-2xl md:text-3xl mb-2 md:mb-4 drop-shadow-lg">
+              {dress.label}
+            </p>
+            
+            <!-- Bouton visible sur mobile et tablette -->
+            <button class="bg-[#C5A880]  hidden  md:hidden text-sm text-white font-semibold px-4 py-2 rounded-full shadow-lg hover:bg-[#A27E5D] active:scale-95 transition-all duration-300">
+              Voir plus
+            </button>
+            
+            <!-- Bouton visible sur desktop -->
+            <button class="bg-[#C5A880] mx-auto hidden text-center w-[200px] md:block text-sm text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] hover:scale-105 transition-all duration-300">
+              Découvrir cette robe
+            </button>
           </div>
-          <p class="mt-2 pb-2 text-[#af7749] font-cursive text-3xl">
-            {item.label}
-          </p>
-          <button class="bg-[#af7749] text-white py-1 px-3 sm:py-2 sm:px-4 rounded-lg shadow-lg hover:bg-[#925c36] transition duration-300 text-sm sm:text-base">
-            Voir plus
-          </button>
-          </a>
-           
-          ))}
-        </div>
-      </div>
+        </a>
+      ))}
     </div>
   </div>
-
-  <div class="flex flex-col items-center mt-8 px-4">
-    <p class="max-w-2xl mx-auto text-lg text-black leading-relaxed mb-6 text-center">
-      Découvrez notre sélection de best-sellers, conçus pour sublimer chaque future mariée à la recherche d’une robe de mariée à Toulouse.
+  
+  <div class="flex flex-col items-center mt-10 px-4">
+    <p class="max-w-2xl mx-auto text-center text-[#5F4B3F] leading-relaxed mb-8 text-base md:text-lg">
+      Découvrez notre sélection de best-sellers, conçus pour sublimer chaque future mariée à la recherche d'une robe de mariée à Toulouse.
       Nous proposons des coupes variées (princesse, sirène, bohème, etc.) afin de répondre à tous les styles et toutes les silhouettes.
-      Profitez de nos conseils d’experts pour trouver la robe parfaite qui vous fera rayonner le jour de votre mariage.
     </p>
-    <a href="/robes-de-mariee" class="bg-[#af7749] text-white py-2 px-6 rounded-lg shadow hover:bg-[#925c36] transition duration-300">
-      Voir plus de robes
+    
+    <a href="/robes-de-mariee" class="bg-[#af7749]  text-white py-2 px-6 rounded-full shadow-lg hover:bg-[#925c36] transition duration-300">
+      Voir toutes nos robes
     </a>
   </div>
 </section>

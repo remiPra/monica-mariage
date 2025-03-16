@@ -1,0 +1,97 @@
+---
+// Composant Astro pour la section Destockage de robes de mariée
+const destockageRobes = [
+  {
+    src: "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-sirene-accadia-26-gallery-desktop.webp",
+    alt: "Robe de mariée Accadia en déstockage - Toulouse",
+    label: "Accadia",
+    link: "/promo",
+  },
+  {
+    src: "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-robes-de-mariee-boheme-chic-venus-40-42-8-gallery-desktop.webp",
+    alt: "Robe de mariée Venus en déstockage - Toulouse",
+    label: "Venus",
+    link: "/promo",
+  },
+  {
+    src: "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1742146786/images_optimisees/ft4pibwu9sox5crbnu7h.webp",
+    alt: "Robe de mariée Mykonos en déstockage - Toulouse",
+    label: "Mykonos",
+    link: "/promo",
+  },
+  {
+    src: "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1742146668/images_optimisees/uyxia6aemdpldqlceh6k.webp",
+    alt: "Robe de mariée Fiamma en déstockage - Toulouse",
+    label: "Fiamma",
+    link: "/promo",
+  },
+];
+---
+
+<section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
+  <h2 class="font-vibes text-center text-4xl md:text-5xl font-normal text-[#af7749] mb-8">
+    Destockage de robes de mariée
+  </h2>
+  
+  <div class="px-4 max-w-6xl mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {destockageRobes.map((dress) => (
+        <a 
+          href={dress.link} 
+          class="relative text-center overflow-hidden cursor-pointer fade-in rounded-2xl h-[300px] sm:h-[400px] shadow-md"
+        >
+          <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
+          <img
+            src={dress.src}
+            alt={dress.alt}
+            class="absolute top-0 w-full h-full object-cover hover:scale-105 transition-transform duration-300 z-0"
+            loading="lazy"
+          />
+          
+          <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-4 md:p-6 rounded-b-2xl z-20">
+            <p class="text-white font-vibes text-2xl md:text-3xl mb-2 md:mb-4 drop-shadow-lg">
+              {dress.label}
+            </p>
+            
+            {/* <!-- Badge de prix spécial -->
+            <div class="bg-white text-[#af7749] font-medium text-sm px-3 py-1 rounded-full inline-block mb-2 md:mb-3 shadow-sm">
+              Prix réduit
+            </div> */}
+            
+            {/* <!-- Bouton visible sur mobile et tablette -->
+            <button class="bg-[#C5A880] block md:hidden text-sm text-white font-semibold px-4 py-2 rounded-full shadow-lg hover:bg-[#A27E5D] active:scale-95 transition-all duration-300">
+              Voir plus
+            </button> */}
+            
+            <!-- Bouton visible sur desktop -->
+            <button class="bg-[#C5A880] hidden md:block text-sm text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] hover:scale-105 transition-all duration-300">
+              Voir cette robe
+            </button>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+  
+  <div class="flex flex-col items-center mt-10 px-4">
+    <p class="max-w-2xl mx-auto text-[#5F4B3F] leading-relaxed mb-6 text-center">
+      Profitez de notre sélection de robes de mariée en déstockage pour bénéficier de tarifs avantageux tout en conservant l'élégance et la qualité d'une robe de mariée à Toulouse. Nous mettons régulièrement à jour cette rubrique afin de vous proposer des modèles issus de nos collections antérieures, toujours disponibles en quantités limitées.
+    </p>
+    
+    <a href="/promo" class="bg-[#af7749] text-white py-3 px-8 rounded-full shadow-lg hover:bg-[#925c36] hover:scale-105 transition-all duration-300">
+      Voir toutes nos promos
+    </a>
+  </div>
+</section>
+
+<style>
+  /* Animation de fade-in */
+  .fade-in {
+    animation: fadeIn 0.6s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

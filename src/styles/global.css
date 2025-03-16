@@ -1,3 +1,13 @@
+/* cormorant-garamond-regular - latin */
+@font-face {
+  font-display: swap;
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/cormorant-garamond-v19-latin-regular.woff2") format("woff2");
+}
+
+/* Vos autres déclarations de polices existantes */
 @font-face {
   font-family: "Dancing Script";
   src: url("/fonts/dancing-script-v25-latin-regular.woff2") format("woff2");
@@ -8,29 +18,35 @@
 
 /* lora-regular - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Lora";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/lora-v35-latin-regular.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url("../fonts/lora-v35-latin-regular.woff2") format("woff2");
 }
 
 /* great-vibes-regular - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Great Vibes";
   font-style: normal;
   font-weight: 400;
-  src: url("/fonts/great-vibes-v19-latin-regular.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url("/fonts/great-vibes-v19-latin-regular.woff2") format("woff2");
 }
 
 [x-cloak] {
   display: none !important;
 }
 
+/* Ajoutez cette classe pour utiliser la police Cormorant */
+.font-cormorant {
+  font-family: "Cormorant Garamond", serif !important;
+}
+
 .font-vibes {
   font-family: "Great Vibes", cursive !important;
 }
+
 a,
 h2,
 p,
