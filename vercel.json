@@ -1,0 +1,7 @@
+{
+  "build": {
+    "env": {
+      "VERCEL_FORCE_RUN_INSTALL": "1"
+    }
+  }
+}
