@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Référence au sitemap
+Sitemap: https://www.monica-mariage.vercel.app/sitemap.xml
+
+# Dossiers ou pages à ne pas indexer (optionnel)
+# Disallow: /admin/
+# Disallow: /brouillons/
+# Disallow: /test/
