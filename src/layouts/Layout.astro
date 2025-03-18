@@ -34,18 +34,17 @@ const {
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"
     ></script>
   </head>
+  <body>
+    <Header />
+    <slot />
+    <!-- <FloatingButton /> -->
+    <FolatingButtonWhatsapp />
+    <Footer />
+    <AppointmentBar />
+    <ModalForm isVisible={false} />
+    <WhatsAppModalForm />
+    <script src="/registerServiceWorker.js" defer></script>
+    <PwaBanner />
+    <!-- <AppointmentBar /> -->
+  </body>
 </html>
-<body>
-  <Header />
-  <slot />
-  <!-- <FloatingButton /> -->
-  <FolatingButtonWhatsapp />
-  <Footer />
-  <AppointmentBar />
-  <ModalForm isVisible={false} />
-  <WhatsAppModalForm />
-  <PwaBanner />
-  <script src="/registerServiceWorker.js" defer></script>
-
-  <!-- <AppointmentBar /> -->
-</body>
