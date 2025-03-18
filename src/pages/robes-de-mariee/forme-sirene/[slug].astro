@@ -38,7 +38,7 @@ const { robe, randomDresses } = Astro.props;
     robe.images[0] &&
     robe.images[0].optimizedImages &&
     robe.images[0].optimizedImages.gallery
-      ? robe.images[0].optimizedImages.gallery.desktop
+      ? robe.images[0].optimizedImages.gallery.tablet
       : ""}
     type="image/webp"
     fetchpriority="high"
@@ -73,7 +73,7 @@ const { robe, randomDresses } = Astro.props;
                 robe.images.map((img) => (
                   <div class="swiper-slide" key={img.id}>
                     <img
-                      src={img.optimizedImages?.gallery?.desktop || ""}
+                      src={img.optimizedImages?.gallery?.tablet || ""}
                       alt={img.altOptimized || robe.dressName}
                       class="object-cover w-full h-full rounded-2xl"
                       loading="lazy"
