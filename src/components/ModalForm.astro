@@ -431,7 +431,7 @@ const { isVisible } = Astro.props;
             }
             // Calculer si 30 secondes se sont écoulées depuis la première visite
             const timeSinceFirstVisit = Date.now() - parseInt(modalTimerSet);
-            const thirtySecondsInMs = 5000;
+            const thirtySecondsInMs = 10000;
             console.log(timeSinceFirstVisit);
 
             if (timeSinceFirstVisit >= thirtySecondsInMs) {
