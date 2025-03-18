@@ -10,9 +10,21 @@ import { Icon } from "astro-icon/components";
     muted
     loop
     playsinline
-    preload="auto"
+    preload="metadata"
+    poster="/videos/poster1.webp"
   >
-    <source src="/videos/final.mp4" type="video/mp4" />
+    <!-- Utilisation de la bonne vidéo selon le dispositif -->
+    <source
+      src="/videos/final.mp4"
+      type="video/mp4"
+      media="(min-width: 768px)"
+    />
+    <!-- Version mobile fusionnée si nécessaire -->
+    <source
+      src="/videos/video-mobile.mp4"
+      type="video/mp4"
+      media="(max-width: 767px)"
+    />
   </video>
 
   <!-- ✅ Overlay pour lisibilité -->
