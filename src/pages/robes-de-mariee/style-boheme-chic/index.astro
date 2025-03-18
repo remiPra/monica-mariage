@@ -1,16 +1,17 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 
-import sirene from "../../../data/style-boheme-chic.json";
-
-// Fusionner tous les fichiers JSON et enlever les doublons
-const allRobes = [...sirene];
-const robes = allRobes.reduce((acc, robe) => {
-  if (!acc.some((r) => r.dressName === robe.dressName)) {
-    acc.push(robe);
-  }
-  return acc;
-}, []);
+// Importer directement votre fichier JSON avec la nouvelle structure
+import robes from "../../../data/style-boheme-chic-dynamique.json"; // Assurez-vous que le chemin est correct
+// Fonction de création de slug au cas où
+function slugify(text) {
+  // Convertir en minuscules et enlever les caractères spéciaux
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
 ---
 
 <Layout
@@ -28,7 +29,7 @@ const robes = allRobes.reduce((acc, robe) => {
         {
           robes.map((robe, index) => (
             <a
-              href={`/robes-de-mariee/${robe.category}/${robe.dressName.replace(/\s+/g, "-").toLowerCase()}`}
+              href={`/robes-de-mariee/${robe.category}/${robe.slug}`}
               class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] shadow-md"
               data-index={index}
             >
@@ -37,7 +38,7 @@ const robes = allRobes.reduce((acc, robe) => {
 
               {/* Image */}
               <img
-                src={robe.optimizedImages.gallery.desktop}
+                src={robe.images[0].optimizedImages.gallery.desktop}
                 alt={robe.dressName}
                 width="300"
                 height="400"
@@ -50,7 +51,7 @@ const robes = allRobes.reduce((acc, robe) => {
                 <p class="text-white font-vibes text-4xl mb-4 drop-shadow-lg">
                   {robe.dressName}
                 </p>
-                <button class="bg-[#C5A880]  text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
+                <button class="bg-[#C5A880] text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
                   Découvrir cette robe
                 </button>
               </div>
@@ -58,32 +59,32 @@ const robes = allRobes.reduce((acc, robe) => {
           ))
         }
       </div>
-    </div>
-  </section>
 
-  <script defer>
-    document.addEventListener("DOMContentLoaded", () => {
-      setTimeout(() => {
-        document.querySelectorAll(".fade-in").forEach((el, index) => {
+      <script defer>
+        document.addEventListener("DOMContentLoaded", () => {
           setTimeout(() => {
-            el.classList.add("active");
-          }, index * 100); // Délai progressif de 200ms par robe
+            document.querySelectorAll(".fade-in").forEach((el, index) => {
+              setTimeout(() => {
+                el.classList.add("active");
+              }, index * 200); // Délai progressif de 200ms par robe
+            });
+          }, 500);
         });
-      }, 300);
-    });
-  </script>
+      </script>
 
-  <style>
-    .fade-in {
-      opacity: 0;
-      transform: translateY(10px);
-      transition:
-        opacity 0.6s ease-in-out,
-        transform 0.6s ease-in-out;
-    }
-    .fade-in.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  </style>
-</Layout>
+      <style>
+        .fade-in {
+          opacity: 0;
+          transform: translateY(10px);
+          transition:
+            opacity 0.6s ease-in-out,
+            transform 0.6s ease-in-out;
+        }
+        .fade-in.active {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      </style>
+    </div>
+  </section></Layout
+>

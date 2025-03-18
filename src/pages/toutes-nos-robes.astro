@@ -1,16 +1,30 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
-import sirene from "../data/forme-sirene.json";
-import princesse from "../data/forme-princesse.json";
-import minimaliste from "../data/minimaliste.json";
-import boheme from "../data/style-boheme-chic.json";
+import sirene from "../data/forme-sirene-dynamique.json";
+import princesse from "../data/forme-princesse-dynamique.json";
+import minimaliste from "../data/minimaliste-dynamique.json";
+import boheme from "../data/style-boheme-chic-dynamique.json";
 import HeroSection from "../components/HeroSection.astro";
 
+// Vérifier et transformer les données JSON en tableaux utilisables
+let sireneRobes = Array.isArray(sirene) ? sirene : Object.values(sirene);
+let princesseRobes = Array.isArray(princesse)
+  ? princesse
+  : Object.values(princesse);
+let minimalisteRobes = Array.isArray(minimaliste)
+  ? minimaliste
+  : Object.values(minimaliste);
+let bohemeRobes = Array.isArray(boheme) ? boheme : Object.values(boheme);
+
 // Fusionner tous les fichiers JSON et enlever les doublons
-const allRobes = [...sirene, ...princesse, ...minimaliste, ...boheme];
+const allRobes = [
+  ...sireneRobes,
+  ...princesseRobes,
+  ...minimalisteRobes,
+  ...bohemeRobes,
+];
 const robes = allRobes.reduce((acc, robe) => {
-  if (!acc.some((r) => r.dressName === robe.dressName)) {
+  if (!acc.some((r) => r.slug === robe.slug)) {
     acc.push(robe);
   }
   return acc;
@@ -41,7 +55,7 @@ const robes = allRobes.reduce((acc, robe) => {
         {
           robes.map((robe, index) => (
             <a
-              href={`/robes-de-mariee/${robe.category}/${robe.dressName.replace(/\s+/g, "-").toLowerCase()}`}
+              href={`/robes-de-mariee/${robe.category || "collection"}/${robe.slug}`}
               class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] shadow-md"
               data-index={index}
             >
@@ -49,21 +63,30 @@ const robes = allRobes.reduce((acc, robe) => {
               <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
 
               {/* Image */}
-              <img
-                src={robe.optimizedImages.gallery.desktop}
-                alt={robe.dressName}
-                width="300"
-                height="400"
-                class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
-                loading="lazy"
-              />
+              {robe.images && robe.images.length > 0 ? (
+                <img
+                  src={
+                    robe.images[0].optimizedImages?.gallery?.desktop ||
+                    "/images/placeholder-dress.jpg"
+                  }
+                  alt={robe.dressName || "Robe de mariée Monica Mariage"}
+                  width="300"
+                  height="400"
+                  class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="absolute top-0 w-full h-full bg-[#f5e8e2] flex items-center justify-center z-[-1]">
+                  <span class="text-[#af7749]">Image non disponible</span>
+                </div>
+              )}
 
-              {/* Nouveau contenu en bas */}
+              {/* Contenu en bas */}
               <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
                 <p class="text-white font-vibes text-4xl mb-4 drop-shadow-lg">
-                  {robe.dressName}
+                  {robe.dressName || robe.slug || "Robe de mariée"}
                 </p>
-                <button class="bg-[#C5A880]  text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
+                <button class="bg-[#C5A880] text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
                   Découvrir cette robe
                 </button>
               </div>
@@ -74,15 +97,20 @@ const robes = allRobes.reduce((acc, robe) => {
     </div>
   </section>
 
-  <script defer>
+  <script>
     document.addEventListener("DOMContentLoaded", () => {
-      setTimeout(() => {
-        document.querySelectorAll(".fade-in").forEach((el, index) => {
-          setTimeout(() => {
-            el.classList.add("active");
-          }, index * 200); // Délai progressif de 200ms par robe
-        });
-      }, 500);
+      // Vérifier s'il y a des éléments à animer
+      const fadeElements = document.querySelectorAll(".fade-in");
+
+      if (fadeElements.length > 0) {
+        setTimeout(() => {
+          fadeElements.forEach((el, index) => {
+            setTimeout(() => {
+              el.classList.add("active");
+            }, index * 200); // Délai progressif de 200ms par robe
+          });
+        }, 500);
+      }
     });
   </script>
 

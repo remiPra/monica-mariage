@@ -2,6 +2,7 @@
 import Layout from "../../../layouts/Layout.astro";
 import BreadCrumbs from "../../../components/BreadCrumbs.astro";
 import sirene from "../../../data/forme-princesse-dynamique.json"; // Assurez-vous que le chemin est correct
+import PrendreRendezVousButtonHome from "../../../components/PrendreRendezVousButtonHome.astro";
 
 // Génère tous les chemins statiques à partir du JSON
 // Génère tous les chemins statiques à partir du JSON
@@ -93,14 +94,7 @@ const { robe, randomDresses } = Astro.props;
       <p class="text-gray-700 text-lg leading-relaxed">
         {robe.descriptionCourte}
       </p>
-      <a
-        href="#"
-        class="mt-6 block w-full text-center bg-[#af7749] text-white py-4
-      px-6 rounded-lg font-medium hover:bg-[#925c36] transition-all duration-300
-      text-lg"
-      >
-        PRENDRE RENDEZ-VOUS
-      </a>
+      <PrendreRendezVousButtonHome />
     </section>
   </div>
 
