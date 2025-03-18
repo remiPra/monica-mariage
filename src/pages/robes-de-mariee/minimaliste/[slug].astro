@@ -154,7 +154,7 @@ const { robe, randomDresses } = Astro.props;
   </div>
 
   <!-- Init du slider Swiper -->
-  <script is:inline>
+  <script defer>
     document.addEventListener("DOMContentLoaded", function () {
       new Swiper(".swiper-container", {
         loop: true,
