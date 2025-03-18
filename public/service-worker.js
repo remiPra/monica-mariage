@@ -22,10 +22,22 @@ self.addEventListener("fetch", (event) => {
         return (
           cachedResponse ||
           fetch(event.request).then((networkResponse) => {
-            return caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, networkResponse.clone());
+            // Vérifier si la réponse peut être mise en cache
+            // Ne pas mettre en cache les réponses partielles (206)
+            if (networkResponse.ok && networkResponse.status !== 206) {
+              return caches.open(CACHE_NAME).then((cache) => {
+                // Tentative de mise en cache
+                try {
+                  cache.put(event.request, networkResponse.clone());
+                } catch (error) {
+                  console.error("Erreur lors de la mise en cache:", error);
+                }
+                return networkResponse;
+              });
+            } else {
+              // Retourner la réponse sans la mettre en cache
               return networkResponse;
-            });
+            }
           })
         );
       })
