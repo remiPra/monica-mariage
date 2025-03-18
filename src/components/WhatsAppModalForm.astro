@@ -73,7 +73,9 @@
     // Fonction pour masquer la pop-up
     const hideOverlay = () => {
       overlay.classList.add("opacity-0", "pointer-events-none");
+      overlay.classList.remove("opacity-100", "pointer-events-auto");
       modalContent.classList.add("scale-95", "translate-y-4");
+      modalContent.classList.remove("scale-100", "translate-y-0");
       document.body.style.overflow = "";
       sessionStorage.setItem("whatsappModalClosed", "true");
     };
