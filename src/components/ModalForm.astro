@@ -111,7 +111,7 @@ const { isVisible } = Astro.props;
 
     <!-- Formulaire de contact élégant -->
     <form id="contact-form" class="space-y-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-[#5F4B3F] font-medium text-sm mb-1"
             >Prénom *</label
@@ -140,7 +140,7 @@ const { isVisible } = Astro.props;
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-[#5F4B3F] font-medium text-sm mb-1"
             >Email *</label
@@ -191,286 +191,291 @@ const { isVisible } = Astro.props;
           Envoyer ma demande
         </button>
         <button
+          id="close-later-btn"
+          type="button"
+          class="px-6 py-3 bg-transparent text-[#8B7569] hover:text-[#5F4B3F] transition-colors underline font-medium"
+        >
+          Pas maintenant, je reviendrai plus tard
+        </button>
+
+        <!-- <button
           type="button"
           id="no-thanks-btn"
           class="px-6 py-3 bg-[#F8F2F0] text-[#8B7569] rounded-full shadow-sm hover:bg-[#F0E6E2] transition-all duration-300"
         >
           Pas maintenant
         </button>
-      </div>
+      </div> -->
 
-      <!-- Message de confirmation avec animation -->
-      <div
-        id="submission-message"
-        class="hidden mt-4 p-4 bg-[#F3FAF3] border border-[#D1EAD1] rounded-lg text-center text-[#4B8B55]"
-      >
-        <svg
-          class="w-6 h-6 mx-auto mb-2"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
+        <!-- Message de confirmation avec animation -->
+        <div
+          id="submission-message"
+          class="hidden mt-4 p-4 bg-[#F3FAF3] border border-[#D1EAD1] rounded-lg text-center text-[#4B8B55]"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M5 13l4 4L19 7"></path>
-        </svg>
-        <p class="font-medium">Merci ! Votre message a bien été envoyé.</p>
-        <p class="text-sm mt-1">
-          Nous vous répondrons dans les plus brefs délais.
-        </p>
+          <svg
+            class="w-6 h-6 mx-auto mb-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"></path>
+          </svg>
+          <p class="font-medium">Merci ! Votre message a bien été envoyé.</p>
+          <p class="text-sm mt-1">
+            Nous vous répondrons dans les plus brefs délais.
+          </p>
+        </div>
       </div>
-    </form>
-    <div class="text-center mt-4">
-      <button
-        id="close-later-btn"
-        type="button"
-        class="px-6 py-3 bg-transparent text-[#8B7569] hover:text-[#5F4B3F] transition-colors underline font-medium"
-      >
-        Pas maintenant, je reviendrai plus tard
-      </button>
-    </div>
-    <!-- Note de confidentialité -->
-    <p class="text-[#8B7569] text-xs text-center mt-6">
-      En soumettant ce formulaire, vous acceptez que vos données soient
-      utilisées exclusivement pour répondre à votre demande.
-    </p>
 
-    <script defer>
-      document.addEventListener("DOMContentLoaded", function () {
-        const overlay = document.getElementById("contact-overlay");
-        const modalContent = document.getElementById("modal-content");
-        const closeButton = document.getElementById("close-overlay");
-        const noThanksButton = document.getElementById("no-thanks-btn");
-        const callButton = document.getElementById("call-button");
-        const chatButton = document.getElementById("chat-button");
-        const contactForm = document.getElementById("contact-form");
-        const submissionMessage = document.getElementById("submission-message");
-        // Ajouter avec les autres gestionnaires d'événements
-        const closeLaterBtn = document.getElementById("close-later-btn");
+      <!-- Note de confidentialité -->
+      <p class="text-[#8B7569] text-xs text-center mt-6">
+        En soumettant ce formulaire, vous acceptez que vos données soient
+        utilisées exclusivement pour répondre à votre demande.
+      </p>
 
-        // Fonction pour afficher la modale avec animation
-        const showOverlay = () => {
-          overlay.classList.remove("opacity-0", "pointer-events-none");
-          overlay.classList.add("opacity-100", "pointer-events-auto");
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const overlay = document.getElementById("contact-overlay");
+          const modalContent = document.getElementById("modal-content");
+          const closeButton = document.getElementById("close-overlay");
+          // const noThanksButton = document.getElementById("no-thanks-btn");
+          const callButton = document.getElementById("call-button");
+          const chatButton = document.getElementById("chat-button");
+          const contactForm = document.getElementById("contact-form");
+          const submissionMessage =
+            document.getElementById("submission-message");
+          // Ajouter avec les autres gestionnaires d'événements
+          const closeLaterBtn = document.getElementById("close-later-btn");
 
-          // Animation d'entrée plus élégante
-          modalContent.classList.remove("scale-95", "translate-y-4");
-          modalContent.classList.add("scale-100", "translate-y-0");
+          // Fonction pour afficher la modale avec animation
+          const showOverlay = () => {
+            overlay.classList.remove("opacity-0", "pointer-events-none");
+            overlay.classList.add("opacity-100", "pointer-events-auto");
 
-          // Accessibilité - piéger le focus
-          document.body.style.overflow = "hidden";
-        };
+            // Animation d'entrée plus élégante
+            modalContent.classList.remove("scale-95", "translate-y-4");
+            modalContent.classList.add("scale-100", "translate-y-0");
 
-        // Fonction pour masquer la modale avec animation
-        const hideOverlay = (permanent = false) => {
-          overlay.classList.add("opacity-0", "pointer-events-none");
-          overlay.classList.remove("opacity-100", "pointer-events-auto");
-
-          // Animation de sortie
-          modalContent.classList.add("scale-95", "translate-y-4");
-          modalContent.classList.remove("scale-100", "translate-y-0");
-
-          // Restaurer le scroll
-          document.body.style.overflow = "";
-
-          if (permanent) {
-            sessionStorage.setItem("modalClosed", "true"); // Empêche le retour pendant la session
-          }
-        };
-
-        // Gestionnaires d'événements pour fermeture
-        closeButton.addEventListener("click", () => hideOverlay(true));
-        noThanksButton.addEventListener("click", () => hideOverlay(true));
-        closeLaterBtn.addEventListener("click", () => hideOverlay(true));
-
-        // Permettre de fermer en cliquant à l'extérieur
-        overlay.addEventListener("click", (e) => {
-          if (e.target === overlay) {
-            hideOverlay(true);
-          }
-        });
-
-        // Fermer avec la touche Échap
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape" && overlay.classList.contains("opacity-100")) {
-            hideOverlay(true);
-          }
-        });
-
-        // Soumission du formulaire avec animation
-        // Soumission du formulaire avec animation
-        contactForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
-
-          // Collecter les données du formulaire - seuls nom et téléphone sont essentiels
-          const formData = {
-            prenom: document.getElementById("prenom").value || "",
-            nom: document.getElementById("nom").value,
-            email: document.getElementById("email").value || "",
-            telephone: document.getElementById("telephone").value,
-            message: document.getElementById("message").value || "",
+            // Accessibilité - piéger le focus
+            document.body.style.overflow = "hidden";
           };
 
-          // Vérifier si les champs obligatoires sont remplis
-          if (!formData.nom || !formData.telephone) {
-            // Afficher un message d'erreur si des champs obligatoires manquent
-            submissionMessage.innerHTML = `
+          // Fonction pour masquer la modale avec animation
+          const hideOverlay = (permanent = false) => {
+            overlay.classList.add("opacity-0", "pointer-events-none");
+            overlay.classList.remove("opacity-100", "pointer-events-auto");
+
+            // Animation de sortie
+            modalContent.classList.add("scale-95", "translate-y-4");
+            modalContent.classList.remove("scale-100", "translate-y-0");
+
+            // Restaurer le scroll
+            document.body.style.overflow = "";
+
+            if (permanent) {
+              sessionStorage.setItem("modalClosed", "true"); // Empêche le retour pendant la session
+            }
+          };
+
+          // Gestionnaires d'événements pour fermeture
+          closeButton.addEventListener("click", () => hideOverlay(true));
+          // noThanksButton.addEventListener("click", () => hideOverlay(true));
+          closeLaterBtn.addEventListener("click", () => hideOverlay(true));
+
+          // Permettre de fermer en cliquant à l'extérieur
+          overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) {
+              hideOverlay(true);
+            }
+          });
+
+          // Fermer avec la touche Échap
+          document.addEventListener("keydown", (e) => {
+            if (
+              e.key === "Escape" &&
+              overlay.classList.contains("opacity-100")
+            ) {
+              hideOverlay(true);
+            }
+          });
+
+          // Soumission du formulaire avec animation
+          // Soumission du formulaire avec animation
+          contactForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            // Collecter les données du formulaire - seuls nom et téléphone sont essentiels
+            const formData = {
+              prenom: document.getElementById("prenom").value || "",
+              nom: document.getElementById("nom").value,
+              email: document.getElementById("email").value || "",
+              telephone: document.getElementById("telephone").value,
+              message: document.getElementById("message").value || "",
+            };
+
+            // Vérifier si les champs obligatoires sont remplis
+            if (!formData.nom || !formData.telephone) {
+              // Afficher un message d'erreur si des champs obligatoires manquent
+              submissionMessage.innerHTML = `
       <svg class="w-6 h-6 mx-auto mb-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
       </svg>
       <p class="font-medium">Veuillez remplir les champs obligatoires</p>
       <p class="text-sm mt-1">Le nom et le téléphone sont requis.</p>
     `;
-            submissionMessage.classList.remove("hidden");
-            submissionMessage.classList.add("animate-fade-in");
-            submissionMessage.style.backgroundColor = "#FADEDE";
-            submissionMessage.style.borderColor = "#EABCBC";
-            submissionMessage.style.color = "#AF3B3B";
-            return;
-          }
-
-          try {
-            // Désactiver les champs pendant l'envoi
-            contactForm
-              .querySelectorAll("input, textarea, button")
-              .forEach((el) => {
-                el.disabled = true;
-              });
-
-            // Envoi des données à l'API
-            const response = await fetch(
-              "https://monica-mariage-next.vercel.app/api/send-email",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-              }
-            );
-
-            if (!response.ok) {
-              throw new Error("Erreur lors de l'envoi du formulaire");
+              submissionMessage.classList.remove("hidden");
+              submissionMessage.classList.add("animate-fade-in");
+              submissionMessage.style.backgroundColor = "#FADEDE";
+              submissionMessage.style.borderColor = "#EABCBC";
+              submissionMessage.style.color = "#AF3B3B";
+              return;
             }
 
-            // Afficher le message de confirmation si l'envoi est réussi
-            submissionMessage.innerHTML = `
+            try {
+              // Désactiver les champs pendant l'envoi
+              contactForm
+                .querySelectorAll("input, textarea, button")
+                .forEach((el) => {
+                  el.disabled = true;
+                });
+
+              // Envoi des données à l'API
+              const response = await fetch(
+                "https://monica-mariage-next.vercel.app/api/send-email",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(formData),
+                }
+              );
+
+              if (!response.ok) {
+                throw new Error("Erreur lors de l'envoi du formulaire");
+              }
+
+              // Afficher le message de confirmation si l'envoi est réussi
+              submissionMessage.innerHTML = `
       <svg class="w-6 h-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
       </svg>
       <p class="font-medium">Merci ! Votre message a bien été envoyé.</p>
       <p class="text-sm mt-1">Nous vous répondrons dans les plus brefs délais.</p>
     `;
-            submissionMessage.classList.remove("hidden");
-            submissionMessage.classList.add("animate-fade-in");
-            submissionMessage.style.backgroundColor = "#F3FAF3";
-            submissionMessage.style.borderColor = "#D1EAD1";
-            submissionMessage.style.color = "#4B8B55";
+              submissionMessage.classList.remove("hidden");
+              submissionMessage.classList.add("animate-fade-in");
+              submissionMessage.style.backgroundColor = "#F3FAF3";
+              submissionMessage.style.borderColor = "#D1EAD1";
+              submissionMessage.style.color = "#4B8B55";
 
-            // Fermer après un délai
-            setTimeout(() => {
-              hideOverlay(true);
-
-              // Réinitialiser le formulaire après fermeture
+              // Fermer après un délai
               setTimeout(() => {
-                contactForm.reset();
-                contactForm
-                  .querySelectorAll("input, textarea, button")
-                  .forEach((el) => {
-                    el.disabled = false;
-                  });
-                submissionMessage.classList.add("hidden");
-              }, 500);
-            }, 2500);
-          } catch (error) {
-            console.error("Erreur:", error);
-            // Gérer l'erreur - par exemple, afficher un message d'erreur
-            submissionMessage.innerHTML = `
+                hideOverlay(true);
+
+                // Réinitialiser le formulaire après fermeture
+                setTimeout(() => {
+                  contactForm.reset();
+                  contactForm
+                    .querySelectorAll("input, textarea, button")
+                    .forEach((el) => {
+                      el.disabled = false;
+                    });
+                  submissionMessage.classList.add("hidden");
+                }, 500);
+              }, 2500);
+            } catch (error) {
+              console.error("Erreur:", error);
+              // Gérer l'erreur - par exemple, afficher un message d'erreur
+              submissionMessage.innerHTML = `
       <svg class="w-6 h-6 mx-auto mb-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
       </svg>
       <p class="font-medium">Une erreur est survenue</p>
       <p class="text-sm mt-1">Veuillez réessayer ou nous contacter directement.</p>
     `;
-            submissionMessage.classList.remove("hidden");
-            submissionMessage.classList.add("animate-fade-in");
-            submissionMessage.style.backgroundColor = "#FADEDE";
-            submissionMessage.style.borderColor = "#EABCBC";
-            submissionMessage.style.color = "#AF3B3B";
+              submissionMessage.classList.remove("hidden");
+              submissionMessage.classList.add("animate-fade-in");
+              submissionMessage.style.backgroundColor = "#FADEDE";
+              submissionMessage.style.borderColor = "#EABCBC";
+              submissionMessage.style.color = "#AF3B3B";
 
-            // Réactiver les champs pour permettre une nouvelle tentative
-            contactForm
-              .querySelectorAll("input, textarea, button")
-              .forEach((el) => {
-                el.disabled = false;
-              });
-          }
+              // Réactiver les champs pour permettre une nouvelle tentative
+              contactForm
+                .querySelectorAll("input, textarea, button")
+                .forEach((el) => {
+                  el.disabled = false;
+                });
+            }
+          });
+
+          // Vérification pour afficher la modale
+          // Vérification pour afficher la modale
+          const checkOverlayVisibility = () => {
+            // Vérifier si l'utilisateur a déjà fermé la modale dans cette session
+            if (sessionStorage.getItem("modalClosed") === "true") return;
+
+            // Vérifier si nous avons déjà défini un temps pour la modale
+            const modalTimerSet = sessionStorage.getItem("modalTimerSet");
+
+            if (!modalTimerSet) {
+              // Première visite sur le site, définir le temps actuel
+              sessionStorage.setItem("modalTimerSet", Date.now().toString());
+              // Ne pas afficher immédiatement
+              return;
+            }
+            // Calculer si 30 secondes se sont écoulées depuis la première visite
+            const timeSinceFirstVisit = Date.now() - parseInt(modalTimerSet);
+            const thirtySecondsInMs = 5000;
+            console.log(timeSinceFirstVisit);
+
+            if (timeSinceFirstVisit >= thirtySecondsInMs) {
+              // 30 secondes ou plus se sont écoulées depuis la première visite
+              showOverlay();
+            } else {
+              // Moins de 30 secondes se sont écoulées, définir un minuteur pour le temps restant
+              const remainingTime = thirtySecondsInMs - timeSinceFirstVisit;
+              setTimeout(showOverlay, remainingTime);
+            }
+          };
+
+          checkOverlayVisibility();
         });
+      </script>
 
-        // Vérification pour afficher la modale
-        // Vérification pour afficher la modale
-        const checkOverlayVisibility = () => {
-          // Vérifier si l'utilisateur a déjà fermé la modale dans cette session
-          if (sessionStorage.getItem("modalClosed") === "true") return;
-
-          // Vérifier si nous avons déjà défini un temps pour la modale
-          const modalTimerSet = sessionStorage.getItem("modalTimerSet");
-
-          if (!modalTimerSet) {
-            // Première visite sur le site, définir le temps actuel
-            sessionStorage.setItem("modalTimerSet", Date.now().toString());
-            // Ne pas afficher immédiatement
-            return;
+      <style>
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
           }
-
-          // Calculer si 30 secondes se sont écoulées depuis la première visite
-          const timeSinceFirstVisit = Date.now() - parseInt(modalTimerSet);
-          const thirtySecondsInMs = 30000;
-
-          if (timeSinceFirstVisit >= thirtySecondsInMs) {
-            // 30 secondes ou plus se sont écoulées depuis la première visite
-            showOverlay();
-          } else {
-            // Moins de 30 secondes se sont écoulées, définir un minuteur pour le temps restant
-            const remainingTime = thirtySecondsInMs - timeSinceFirstVisit;
-            setTimeout(showOverlay, remainingTime);
+          to {
+            opacity: 1;
+            transform: translateY(0);
           }
-        };
-
-        checkOverlayVisibility();
-      });
-    </script>
-
-    <style>
-      @keyframes fade-in {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
         }
-        to {
-          opacity: 1;
-          transform: translateY(0);
+
+        .animate-fade-in {
+          animation: fade-in 0.5s ease forwards;
         }
-      }
 
-      .animate-fade-in {
-        animation: fade-in 0.5s ease forwards;
-      }
+        /* Style des placeholders */
+        ::placeholder {
+          color: #c5a88080;
+          opacity: 0.6;
+        }
 
-      /* Style des placeholders */
-      ::placeholder {
-        color: #c5a88080;
-        opacity: 0.6;
-      }
-
-      /* Améliorer l'apparence des champs focus */
-      input:focus,
-      textarea:focus {
-        box-shadow: 0 0 0 3px rgba(175, 123, 73, 0.1);
-      }
-    </style>
+        /* Améliorer l'apparence des champs focus */
+        input:focus,
+        textarea:focus {
+          box-shadow: 0 0 0 3px rgba(175, 123, 73, 0.1);
+        }
+      </style>
+    </form>
   </div>
 </div>
