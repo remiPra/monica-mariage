@@ -8,6 +8,7 @@ import ModalForm from "../components/ModalForm.astro";
 import AppointmentBar from "../components/AppointmentBar.astro";
 import FolatingButtonWhatsapp from "../components/FolatingButtonWhatsapp.astro";
 import WhatsAppModalForm from "../components/WhatsAppModalForm.astro";
+import PwaBanner from "../components/PwaBanner.astro";
 const {
   title = "Monica Mariage - Boutique de Robes de Mariée",
   description = "Découvrez nos robes de mariée sur-mesure à Toulouse.",
@@ -43,7 +44,7 @@ const {
   <AppointmentBar />
   <ModalForm isVisible={false} />
   <WhatsAppModalForm />
-  <script src="/a2hsbanner.js" defer></script>
+  <PwaBanner />
   <script src="/registerServiceWorker.js" defer></script>
 
   <!-- <AppointmentBar /> -->

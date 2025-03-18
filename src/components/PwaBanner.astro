@@ -1,0 +1,224 @@
+---
+// src/components/PwaBanner.astro
+---
+
+<div id="pwa-banner" style="display: none;">
+  <div class="overlay">
+    <div class="banner-container">
+      <button id="pwa-close-btn" class="close-btn">×</button>
+
+      <div class="header">
+        <span class="emoji">🚀</span>
+        <h2>Installez Monica Mariage</h2>
+      </div>
+
+      <div class="logo-container">
+        <img
+          src="/logo-new.png"
+          width="70"
+          height="70"
+          alt="Monica Mariage App"
+        />
+      </div>
+
+      <p class="description">
+        📱 Accédez à nos collections en exclusivité et recevez des offres
+        spéciales directement sur votre appareil.
+      </p>
+
+      <button id="pwa-install-btn" class="install-btn"
+        >📥 Installer maintenant</button
+      >
+      <button id="pwa-later-btn" class="later-btn">⏳ Plus tard</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  #pwa-banner {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+  }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+  }
+
+  .banner-container {
+    background: #fff9f2;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 350px;
+    width: 90%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    border: 1px solid #c8b09a;
+  }
+
+  .close-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 20px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #9e7e63;
+  }
+
+  .header {
+    margin-bottom: 15px;
+  }
+
+  .emoji {
+    font-size: 22px;
+  }
+
+  h2 {
+    color: #9e7e63;
+    font-family: serif;
+    margin: 5px 0;
+    font-weight: normal;
+  }
+
+  .logo-container {
+    background: white;
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #f0e2d3;
+  }
+
+  .description {
+    color: #5a4635;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .install-btn {
+    background: #c8924a;
+    color: white;
+    padding: 12px 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: 100%;
+    font-weight: bold;
+    transition: background 0.2s;
+  }
+
+  .later-btn {
+    background: #e0d5c8;
+    color: #7a6a5a;
+    padding: 10px 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 13px;
+    transition: background 0.2s;
+  }
+</style>
+
+<script>
+  // PWA Installation logic
+  const banner = document.getElementById("pwa-banner");
+  let deferredPrompt;
+  const dismissCooldown = 24 * 60 * 60 * 1000; // 24h
+  const lastDismissTime = localStorage.getItem("pwaLastDismissTime");
+
+  if (lastDismissTime && Date.now() - lastDismissTime < dismissCooldown) {
+    // Ne pas afficher la bannière si l'utilisateur l'a refusée récemment
+  } else {
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+
+      // Afficher la bannière après un délai
+      setTimeout(() => {
+        // Vérifier si l'utilisateur est engagé (a fait défiler la page)
+        if (window.scrollY > 300) {
+          banner.style.display = "block";
+        } else {
+          // Attendre que l'utilisateur montre de l'engagement
+          const scrollHandler = () => {
+            if (window.scrollY > 300) {
+              banner.style.display = "block";
+              window.removeEventListener("scroll", scrollHandler);
+            }
+          };
+          window.addEventListener("scroll", scrollHandler);
+        }
+      }, 60000);
+    });
+  }
+
+  document
+    .getElementById("pwa-install-btn")
+    ?.addEventListener("click", async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+
+      if (outcome === "accepted") {
+        console.log("✅ Installation acceptée !");
+        // Afficher un message de remerciement
+        const overlay = document.querySelector(".overlay");
+        if (overlay) {
+          overlay.innerHTML = `
+            <div class="banner-container">
+              <h2 style="color: #9E7E63;">Merci !</h2>
+              <p style="color: #5A4635;">Profitez de Monica Mariage sur votre appareil.</p>
+              <button id="pwa-thanks-close" style="
+                background: #C8924A; 
+                color: white; 
+                padding: 10px 20px; 
+                border: none; 
+                border-radius: 8px; 
+                cursor: pointer;
+                margin-top: 15px;
+              ">Fermer</button>
+            </div>
+          `;
+          document
+            .getElementById("pwa-thanks-close")
+            ?.addEventListener("click", () => {
+              banner.style.display = "none";
+            });
+          setTimeout(() => {
+            banner.style.display = "none";
+          }, 3000);
+        }
+      } else {
+        console.log("❌ Installation refusée.");
+        localStorage.setItem("pwaLastDismissTime", Date.now());
+        banner.style.display = "none";
+      }
+
+      localStorage.setItem("pwaBannerDismissed", "true");
+    });
+
+  document.getElementById("pwa-later-btn")?.addEventListener("click", () => {
+    banner.style.display = "none";
+    localStorage.setItem("pwaLastDismissTime", Date.now());
+  });
+
+  document.getElementById("pwa-close-btn")?.addEventListener("click", () => {
+    banner.style.display = "none";
+    localStorage.setItem("pwaLastDismissTime", Date.now());
+  });
+</script>
