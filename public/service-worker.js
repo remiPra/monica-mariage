@@ -8,8 +8,25 @@ const STATIC_ASSETS = [
 
 // Installation et mise en cache des fichiers statiques
 self.addEventListener("install", (event) => {
+  self.skipWaiting(); // ⬅️ Nouvelle version active sans attendre
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
+  );
+});
+
+// Activation : nettoyage des anciens caches
+self.addEventListener("activate", (event) => {
+  self.clients.claim(); // ⬅️ Prend immédiatement le contrôle
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((key) => key !== CACHE_NAME)
+            .map((key) => caches.delete(key))
+        )
+      )
   );
 });
 
@@ -22,11 +39,8 @@ self.addEventListener("fetch", (event) => {
         return (
           cachedResponse ||
           fetch(event.request).then((networkResponse) => {
-            // Vérifier si la réponse peut être mise en cache
-            // Ne pas mettre en cache les réponses partielles (206)
             if (networkResponse.ok && networkResponse.status !== 206) {
               return caches.open(CACHE_NAME).then((cache) => {
-                // Tentative de mise en cache
                 try {
                   cache.put(event.request, networkResponse.clone());
                 } catch (error) {
@@ -35,27 +49,11 @@ self.addEventListener("fetch", (event) => {
                 return networkResponse;
               });
             } else {
-              // Retourner la réponse sans la mettre en cache
               return networkResponse;
             }
           })
         );
       })
-      .catch(() => caches.match("/offline.html")) // Optionnel : page hors-ligne
-  );
-});
-
-// Nettoyage des anciens caches
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches
-      .keys()
-      .then((keys) =>
-        Promise.all(
-          keys
-            .filter((key) => key !== CACHE_NAME)
-            .map((key) => caches.delete(key))
-        )
-      )
+      .catch(() => caches.match("/offline.html")) // Optionnel
   );
 });

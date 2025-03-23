@@ -89,7 +89,10 @@ const { robe, randomDresses } = Astro.props;
     <!-- Section droite: infos robe -->
     <section class="w-full lg:w-[40%] flex flex-col justify-center">
       <h1 class="text-4xl font-vibes text-[#af7749] mb-4">
-        Robe de Mariée {robe.dressName}
+        Robe de Mariée {
+          robe.dressName.charAt(0).toUpperCase() +
+            robe.dressName.slice(1).toLowerCase()
+        }
       </h1>
       <p class="text-gray-700 text-lg leading-relaxed">
         {robe.descriptionCourte}
@@ -139,9 +142,10 @@ const { robe, randomDresses } = Astro.props;
                   <p class="text-gray-600">Image non disponible</p>
                 </div>
               )}
-              <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
+              <div class="absolute flex flex-col bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
                 <p class="text-white font-vibes text-xl md:text-2xl mb-4 drop-shadow-lg">
-                  {dress.dressName}
+                  {dress.dressName.charAt(0).toUpperCase() +
+                    dress.dressName.slice(1).toLowerCase()}
                 </p>
                 <button class="bg-[#C5A880] hidden md:block text-sm text-white font-semibold px-2 md:px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
                   Découvrir cette robe
