@@ -89,7 +89,10 @@ const { robe, randomDresses } = Astro.props;
     <!-- Section droite: infos robe -->
     <section class="w-full lg:w-[40%] flex flex-col justify-center">
       <h1 class="text-4xl font-vibes text-[#af7749] mb-4">
-        Robe de Mariée {robe.dressName}
+        Robe de Mariée {
+          robe.dressName.charAt(0).toUpperCase() +
+            robe.dressName.slice(1).toLowerCase()
+        }
       </h1>
       <p class="text-gray-700 text-lg leading-relaxed">
         {robe.descriptionCourte}
