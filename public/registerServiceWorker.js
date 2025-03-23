@@ -1,24 +1,26 @@
-// ✅ Détection du mode développement via l'URL
+// ✅ Détection du mode dev via l’URL
 const isLocalhost =
   window.location.hostname === "localhost" ||
   window.location.hostname === "127.0.0.1" ||
   window.location.hostname === "";
 
-// 🛑 En dev : supprimer les anciens service workers
+// 🧹 En développement : désinstallation automatique du SW
 if ("serviceWorker" in navigator && isLocalhost) {
   navigator.serviceWorker.getRegistrations().then((registrations) => {
     registrations.forEach((r) => r.unregister());
-    console.log("🧹 Service Worker désinstallé en local");
+    console.log("🧹 Service Worker désinstallé en mode développement");
   });
 }
 
-// ✅ En prod : enregistrer le service worker
+// 🚀 En production : enregistrement du SW avec auto-reload
 if ("serviceWorker" in navigator && !isLocalhost) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
       .register("/service-worker.js")
       .then((registration) => {
         console.log("✅ Service Worker enregistré !");
+
+        // 🌀 Détection d'une nouvelle version
         registration.onupdatefound = () => {
           const newWorker = registration.installing;
           if (newWorker) {
@@ -28,18 +30,13 @@ if ("serviceWorker" in navigator && !isLocalhost) {
                   console.log("♻️ Nouvelle version détectée, rechargement...");
                   window.location.reload();
                 } else {
-                  console.log("📦 SW installé pour la première fois");
+                  console.log("📦 Première installation du SW");
                 }
               }
             };
           }
         };
       })
-      .catch((error) =>
-        console.error(
-          "❌ Erreur lors de l'enregistrement du Service Worker:",
-          error
-        )
-      );
+      .catch((error) => console.error("❌ Erreur Service Worker :", error));
   });
 }

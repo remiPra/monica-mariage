@@ -4,19 +4,20 @@ const STATIC_ASSETS = [
   "/manifest.json",
   "/icons/icon-192x192.png",
   "/icons/icon-512x512.png",
+  // "/offline.html" // décommente si tu l'ajoutes
 ];
 
-// Installation et mise en cache des fichiers statiques
+// Installation : mise en cache des assets
 self.addEventListener("install", (event) => {
-  self.skipWaiting(); // ⬅️ Nouvelle version active sans attendre
+  self.skipWaiting(); // ⬅️ Active le nouveau SW immédiatement
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
   );
 });
 
-// Activation : nettoyage des anciens caches
+// Activation : suppression des anciens caches
 self.addEventListener("activate", (event) => {
-  self.clients.claim(); // ⬅️ Prend immédiatement le contrôle
+  self.clients.claim(); // ⬅️ Prend le contrôle sans reload manuel
   event.waitUntil(
     caches
       .keys()
@@ -30,21 +31,20 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Interception des requêtes et mise en cache dynamique
+// Fetch : réponse depuis le cache ou fallback au réseau
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches
-      .match(event.request)
-      .then((cachedResponse) => {
-        return (
-          cachedResponse ||
-          fetch(event.request).then((networkResponse) => {
+    caches.match(event.request).then((cachedResponse) => {
+      return (
+        cachedResponse ||
+        fetch(event.request)
+          .then((networkResponse) => {
             if (networkResponse.ok && networkResponse.status !== 206) {
               return caches.open(CACHE_NAME).then((cache) => {
                 try {
                   cache.put(event.request, networkResponse.clone());
                 } catch (error) {
-                  console.error("Erreur lors de la mise en cache:", error);
+                  console.error("❌ Erreur lors de la mise en cache :", error);
                 }
                 return networkResponse;
               });
@@ -52,8 +52,8 @@ self.addEventListener("fetch", (event) => {
               return networkResponse;
             }
           })
-        );
-      })
-      .catch(() => caches.match("/offline.html")) // Optionnel
+          .catch(() => caches.match("/offline.html")) // Optionnel si tu crées la page
+      );
+    })
   );
 });
