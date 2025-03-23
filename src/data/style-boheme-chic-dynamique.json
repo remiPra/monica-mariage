@@ -3,7 +3,7 @@
     "dressName": "Myrtille",
     "price": "",
     "category": "style-boheme-chic",
-    "descriptionCourte": "Robe de mariée fluide et romantique avec manches longues en tulle brodé et décolleté profond, idéale pour une mariée bohème et élégante.",
+    "descriptionCourte": "Tombez sous le charme de la Robe de Mariée Myrtille, une création enchanteresse où l'élégance rencontre la romance. Son décolleté plongeant audacieux s'équilibre parfaitement avec ses manches vaporeuses ornées de fleurs délicates, comme des pétales posés sur la peau. La taille subtilement marquée et la jupe fluide célèbrent chaque mouvement dans un tourbillon de légèreté. Cette merveille signée Anna Sposa vous attend chez Monica Mariage près de Toulouse. Essayage sur rendez-vous.",
     "description_html": "<section><h2>Présentation</h2><p>La robe de mariée Myrtille allie délicatesse et élégance avec son tissu fluide et ses manches longues en tulle brodé. Son décolleté profond apporte une touche de sensualité raffinée.</p></section><section><h2>Détails techniques</h2><p>Conçue dans une coupe aérienne, cette robe présente des manches en tulle transparent délicatement ornées de broderies florales. Sa taille cintrée met en valeur la silhouette tout en offrant un confort optimal.</p></section><section><h2>Personnalisation et essayage</h2><p>Disponible en plusieurs tailles et ajustable sur mesure, la robe Myrtille est parfaite pour une mariée à la recherche d’un style bohème et chic. Venez la découvrir dans notre boutique près de Toulouse.</p></section>",
     "sections": [
       {
@@ -91,195 +91,12 @@
     "title": "Robe mariée bohème Myrtille | Manches tulle Toulouse",
     "metaDescription": "Découvrez la robe Myrtille avec ses manches longues en tulle brodé et son décolleté profond. Essayez cette robe bohème raffinée dans notre boutique près de Toulouse."
   },
-  {
-    "dressName": "RUSINA",
-    "price": "",
-    "category": "style-boheme-chic",
-    "descriptionCourte": "Robe de mariée élégante et romantique avec un bustier en dentelle florale et une jupe fluide, idéale pour une mariée raffinée et moderne.",
-    "description_html": "<section><h2>Présentation</h2><p>La robe de mariée Rusina incarne l’élégance et la féminité avec son bustier en dentelle florale délicate et sa coupe fluide. Son jeu de transparence subtil met en valeur la silhouette tout en restant raffinée.</p></section><section><h2>Détails techniques</h2><p>Dotée d’un corsage ajusté orné de motifs floraux brodés et d’une jupe vaporeuse en mousseline, cette robe apporte une touche aérienne et sophistiquée. Son dos en dentelle et ses bretelles fines ajoutent une note de légèreté et de sensualité.</p></section><section><h2>Personnalisation et essayage</h2><p>Disponible en plusieurs tailles et ajustable sur mesure, la robe Rusina est parfaite pour une mariée recherchant une tenue à la fois romantique et moderne. Venez l’essayer dans notre boutique près de Toulouse.</p></section>",
-    "sections": [
-      {
-        "title": "Présentation",
-        "subtitle": "Une robe de mariée raffinée et moderne",
-        "content": "La robe de mariée Rusina incarne l’élégance et la féminité avec son bustier en dentelle florale délicate et sa coupe fluide. Son jeu de transparence subtil met en valeur la silhouette tout en restant raffinée."
-      },
-      {
-        "title": "Détails techniques",
-        "subtitle": "Un bustier brodé et une jupe fluide",
-        "content": "Dotée d’un corsage ajusté orné de motifs floraux brodés et d’une jupe vaporeuse en mousseline, cette robe apporte une touche aérienne et sophistiquée. Son dos en dentelle et ses bretelles fines ajoutent une note de légèreté et de sensualité."
-      },
-      {
-        "title": "Personnalisation et essayage",
-        "subtitle": "Un modèle idéal pour une mariée moderne",
-        "content": "Disponible en plusieurs tailles et ajustable sur mesure, la robe Rusina est parfaite pour une mariée recherchant une tenue à la fois romantique et moderne. Venez l’essayer dans notre boutique près de Toulouse."
-      }
-    ],
-    "images": [
-      {
-        "id": 8,
-        "imageUrl": "https://static.wixstatic.com/media/176703_999bc7e5222743938c0b8aeb353668a3~mv2.jpg",
-        "width": 1200,
-        "height": 1800,
-        "optimizedImages": {
-          "slider": {
-            "mobile": "/images/robes/slider/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8-slider-mobile.webp",
-            "tablet": "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8-slider-tablet.webp",
-            "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8-slider-desktop.webp"
-          },
-          "gallery": {
-            "mobile": "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8-gallery-mobile.webp",
-            "tablet": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8-gallery-tablet.webp",
-            "desktop": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8-gallery-desktop.webp"
-          },
-          "thumbnail": "/images/robes/thumbnails/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8-thumb.webp"
-        },
-        "urlBest": "monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8",
-        "altOptimized": "Robe de mariée Rusina avec bustier en dentelle florale et jupe fluide, élégante et romantique."
-      },
-      {
-        "id": 9,
-        "imageUrl": "https://static.wixstatic.com/media/176703_902366e40f94463281f0f1085fc4a7b5~mv2.jpg",
-        "width": 1200,
-        "height": 1800,
-        "optimizedImages": {
-          "slider": {
-            "mobile": "/images/robes/slider/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9-slider-mobile.webp",
-            "tablet": "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9-slider-tablet.webp",
-            "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9-slider-desktop.webp"
-          },
-          "gallery": {
-            "mobile": "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9-gallery-mobile.webp",
-            "tablet": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9-gallery-tablet.webp",
-            "desktop": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9-gallery-desktop.webp"
-          },
-          "thumbnail": "/images/robes/thumbnails/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9-thumb.webp"
-        },
-        "urlBest": "monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9",
-        "altOptimized": "Robe de mariée Rusina avec bustier en dentelle florale et jupe fluide, élégante et romantique."
-      },
-      {
-        "id": 10,
-        "imageUrl": "https://static.wixstatic.com/media/176703_d300aacd63a54e47912f381c2972bb68~mv2.jpg",
-        "width": 1200,
-        "height": 1800,
-        "optimizedImages": {
-          "slider": {
-            "mobile": "/images/robes/slider/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10-slider-mobile.webp",
-            "tablet": "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10-slider-tablet.webp",
-            "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10-slider-desktop.webp"
-          },
-          "gallery": {
-            "mobile": "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10-gallery-mobile.webp",
-            "tablet": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10-gallery-tablet.webp",
-            "desktop": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10-gallery-desktop.webp"
-          },
-          "thumbnail": "/images/robes/thumbnails/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10-thumb.webp"
-        },
-        "urlBest": "monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10",
-        "altOptimized": "Robe de mariée Rusina avec bustier en dentelle florale et jupe fluide, élégante et romantique."
-      }
-    ],
-    "slug": "rusina",
-    "title": "Robe de mariée Rusina | Bustier dentelle florale",
-    "metaDescription": "La robe Rusina allie élégance et féminité avec son bustier en dentelle et sa jupe vaporeuse. Venez l'essayer dans notre atelier près de Toulouse pour un ajustement parfait."
-  },
-  {
-    "dressName": "Ione",
-    "price": "",
-    "category": "style-boheme-chic",
-    "descriptionCourte": "Robe de mariée élégante avec un bustier en dentelle florale et une jupe fluide, parfaite pour une mariée moderne et sophistiquée.",
-    "description_html": "<section><h2>Présentation</h2><p>La robe de mariée Ione est l’incarnation de la sophistication et de la féminité. Son bustier en dentelle florale délicate épouse parfaitement la silhouette, tandis que sa jupe fluide apporte une légèreté et un charme aérien.</p></section><section><h2>Détails techniques</h2><p>Cette robe présente un décolleté en V profond qui sublime le port de tête et met en valeur le buste. Sa jupe en mousseline légère assure un tombé fluide et naturel, idéal pour une allure gracieuse et raffinée.</p></section><section><h2>Personnalisation et essayage</h2><p>Disponible en plusieurs tailles et ajustable sur mesure, la robe Ione est idéale pour une mariée moderne en quête d’élégance intemporelle. Venez découvrir ce modèle en boutique et trouvez la robe qui vous correspond parfaitement.</p></section>",
-    "sections": [
-      {
-        "title": "Présentation",
-        "subtitle": "Une robe raffinée et moderne",
-        "content": "La robe de mariée Ione est l’incarnation de la sophistication et de la féminité. Son bustier en dentelle florale délicate épouse parfaitement la silhouette, tandis que sa jupe fluide apporte une légèreté et un charme aérien."
-      },
-      {
-        "title": "Détails techniques",
-        "subtitle": "Un décolleté sublime et une jupe fluide",
-        "content": "Cette robe présente un décolleté en V profond qui sublime le port de tête et met en valeur le buste. Sa jupe en mousseline légère assure un tombé fluide et naturel, idéal pour une allure gracieuse et raffinée."
-      },
-      {
-        "title": "Personnalisation et essayage",
-        "subtitle": "Une robe pensée pour vous",
-        "content": "Disponible en plusieurs tailles et ajustable sur mesure, la robe Ione est idéale pour une mariée moderne en quête d’élégance intemporelle. Venez découvrir ce modèle en boutique et trouvez la robe qui vous correspond parfaitement."
-      }
-    ],
-    "images": [
-      {
-        "id": 11,
-        "imageUrl": "https://static.wixstatic.com/media/176703_2443bd642322420ba4a15c390f242306~mv2.jpg",
-        "width": 2100,
-        "height": 2800,
-        "optimizedImages": {
-          "slider": {
-            "mobile": "/images/robes/slider/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-ione-11-slider-mobile.webp",
-            "tablet": "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-ione-11-slider-tablet.webp",
-            "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-ione-11-slider-desktop.webp"
-          },
-          "gallery": {
-            "mobile": "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-ione-11-gallery-mobile.webp",
-            "tablet": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-ione-11-gallery-tablet.webp",
-            "desktop": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-ione-11-gallery-desktop.webp"
-          },
-          "thumbnail": "/images/robes/thumbnails/monica-mariage-robe-de-mariee-style-boheme-chic-ione-11-thumb.webp"
-        },
-        "urlBest": "monica-mariage-robe-de-mariee-style-boheme-chic-ione-11",
-        "altOptimized": "Robe de mariée Ione avec un bustier en dentelle florale et une jupe fluide, élégante et sophistiquée."
-      },
-      {
-        "id": 12,
-        "imageUrl": "https://static.wixstatic.com/media/176703_fdd56169342849f59f264881b67faa6e~mv2.jpg",
-        "width": 2100,
-        "height": 2800,
-        "optimizedImages": {
-          "slider": {
-            "mobile": "/images/robes/slider/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-ione-12-slider-mobile.webp",
-            "tablet": "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-ione-12-slider-tablet.webp",
-            "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-ione-12-slider-desktop.webp"
-          },
-          "gallery": {
-            "mobile": "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-ione-12-gallery-mobile.webp",
-            "tablet": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-ione-12-gallery-tablet.webp",
-            "desktop": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-ione-12-gallery-desktop.webp"
-          },
-          "thumbnail": "/images/robes/thumbnails/monica-mariage-robe-de-mariee-style-boheme-chic-ione-12-thumb.webp"
-        },
-        "urlBest": "monica-mariage-robe-de-mariee-style-boheme-chic-ione-12",
-        "altOptimized": "Robe de mariée Ione avec un bustier en dentelle florale et une jupe fluide, élégante et sophistiquée."
-      },
-      {
-        "id": 13,
-        "imageUrl": "https://static.wixstatic.com/media/176703_aacc02bb69a54e1fa405553a9fb3c47a~mv2.jpg",
-        "width": 2100,
-        "height": 2800,
-        "optimizedImages": {
-          "slider": {
-            "mobile": "/images/robes/slider/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-ione-13-slider-mobile.webp",
-            "tablet": "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-ione-13-slider-tablet.webp",
-            "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-ione-13-slider-desktop.webp"
-          },
-          "gallery": {
-            "mobile": "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-ione-13-gallery-mobile.webp",
-            "tablet": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-ione-13-gallery-tablet.webp",
-            "desktop": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-ione-13-gallery-desktop.webp"
-          },
-          "thumbnail": "/images/robes/thumbnails/monica-mariage-robe-de-mariee-style-boheme-chic-ione-13-thumb.webp"
-        },
-        "urlBest": "monica-mariage-robe-de-mariee-style-boheme-chic-ione-13",
-        "altOptimized": "Robe de mariée Ione avec un bustier en dentelle florale et une jupe fluide, élégante et sophistiquée."
-      }
-    ],
-    "slug": "ione",
-    "title": "Collection Ione | Robe mariée élégante Toulouse",
-    "metaDescription": "Ione, une robe de mariée sophistiquée avec décolleté en V et jupe fluide. Essayez ce modèle intemporel dans notre boutique toulousaine et trouvez la robe parfaite."
-  },
+
   {
     "dressName": "Tina",
     "price": "",
     "category": "style-boheme-chic",
-    "descriptionCourte": "Robe de mariée sophistiquée avec un bustier en dentelle illusion et une jupe fluide fendue, parfaite pour une mariée élégante et moderne.",
+    "descriptionCourte": "Robe de mariée sophistiquée avec un bustier en dentelle effet tatouage sur la peau et une jupe fluide fendue, l'un de nos bestsellers incontestables. Son décolleté plongeant orné d'appliques florales délicates crée un magnifique trompe-l'œil qui sublime le buste avec élégance.\n\nCette création signature d'Anna Sposa, plébiscitée pour son alliance de raffinement et d'audace, est disponible chez Monica Mariage près de Toulouse. Essayage sur rendez-vous.",
     "description_html": "<section><h2>Présentation</h2><p>La robe de mariée Tina allie modernité et romantisme avec son bustier en dentelle illusion et sa jupe fluide. Sa fente élégante apporte une touche de sensualité, idéale pour une mariée confiante et audacieuse.</p></section><section><h2>Détails techniques</h2><p>Ce modèle se distingue par son corsage délicatement brodé qui crée un effet de transparence raffiné. Sa coupe fluide assure un tombé parfait, tandis que la fente latérale apporte du mouvement et de la légèreté.</p></section><section><h2>Personnalisation et essayage</h2><p>Disponible en plusieurs tailles et ajustable sur mesure, la robe Tina s’adapte parfaitement aux courbes de chaque mariée. Venez l’essayer en boutique et trouvez la robe qui sublimera votre silhouette pour le grand jour.</p></section>",
     "sections": [
       {
@@ -371,7 +188,7 @@
     "dressName": "KEME",
     "price": "",
     "category": "style-boheme-chic",
-    "descriptionCourte": "Robe de mariée bohème et élégante avec un bustier en dentelle florale et des manches tombantes romantiques.",
+    "descriptionCourte": "Robe de mariée bohème et élégante avec un bustier en dentelle en forme de feuille et des manches tombantes romantiques, notre bestseller incontournable. Sa jupe fluide fendue créent une silhouette à la fois sensuelle et raffinée, idéale pour les cérémonies en bord de mer.\n\nCette création d'exception d'Anna Sposa est disponible chez Monica Mariage près de Toulouse. Essayage sur rendez-vous.",
     "description_html": "<section><h2>Présentation</h2><p>La robe de mariée Keme est un véritable symbole de romance et de féminité. Son bustier en dentelle florale dessine un décolleté sensuel, sublimé par des manches tombantes qui apportent une touche bohème irrésistible. La jupe fluide en mousseline accompagne chaque mouvement avec légèreté, idéale pour une mariée en quête d'élégance naturelle.</p></section><section><h2>Détails techniques</h2><p>Confectionnée en dentelle brodée et mousseline aérienne, la robe Keme allie confort et raffinement. Le bustier structuré assure un excellent maintien tout en mettant en valeur la silhouette. Les manches amovibles permettent une double tenue, à la fois romantique et moderne.</p></section><section><h2>Personnalisation et essayage</h2><p>Disponible en plusieurs tailles, la robe Keme peut être ajustée pour un tombé parfait. Vous pouvez choisir d’adapter la longueur de la traîne ou modifier certains détails de la dentelle. Venez essayer cette merveille dans notre boutique près de Toulouse et laissez-vous guider par nos expertes pour trouver la robe de vos rêves.</p></section>",
     "sections": [
       {
@@ -442,7 +259,7 @@
     "dressName": "MINELLY",
     "price": "",
     "category": "style-boheme-chic",
-    "descriptionCourte": "Robe de mariée princesse en tulle avec bustier illusion brodé et jupe volumineuse fluide, idéale pour une allure féérique et raffinée.",
+    "descriptionCourte": "Robe de mariée en tulle nude avec bustier effet tatouage finement brodé et jupe fluide évasée, idéale pour une allure féerique et raffinée. Son dos transparent orné d'appliques florales en cascade crée une silhouette spectaculaire sous tous les angles. Cette création Anna Sposa allie naturel et élégance pour un jour J inoubliable, disponible chez Monica Mariage près de Toulouse. Essayage sur rendez-vous.",
     "description_html": "<section><h2>Présentation</h2><p>La robe de mariée Minelly incarne l’élégance intemporelle avec son design majestueux. Son bustier illusion, orné de broderies végétales délicates, sublime le buste tout en offrant un équilibre parfait entre sensualité et raffinement. La jupe volumineuse en tulle crée une silhouette aérienne et gracieuse, idéale pour une mariée recherchant une allure féérique.</p></section><section><h2>Détails techniques</h2><p>Minelly est conçue avec des matériaux de haute qualité : un tulle léger et fluide pour la jupe, et une dentelle brodée raffinée appliquée sur le bustier illusion. Le dos nu apporte une touche de modernité et de délicatesse, tandis que la structure du corsage assure un maintien optimal tout au long de la journée.</p></section><section><h2>Personnalisation et essayage</h2><p>Disponible en plusieurs tailles et ajustable sur mesure, la robe Minelly peut être adaptée en fonction des préférences de la mariée, notamment en ce qui concerne la longueur de la traîne et les détails de la broderie. Pour un essayage personnalisé et un accompagnement sur mesure, nous vous accueillons dans notre boutique de robes de mariée près de Toulouse.</p></section>",
     "sections": [
       {
@@ -508,6 +325,190 @@
     "slug": "minelly",
     "title": "Robe princesse Minelly | Tulle féerique Toulouse",
     "metaDescription": "Découvrez la robe Minelly avec son bustier illusion brodé et sa jupe volumineuse en tulle. Essayez ce modèle féerique dans notre boutique toulousaine pour un mariage enchanteur."
+  },
+  {
+    "dressName": "RUSINA",
+    "price": "",
+    "category": "style-boheme-chic",
+    "descriptionCourte": "Robe de mariée élégante et romantique avec un bustier en dentelle florale et une jupe fluide, idéale pour une mariée raffinée et moderne.\n\nCette création d'exception signée Anna Sposa est disponible chez Monica Mariage près de Toulouse. Essayage sur rendez-vous",
+    "description_html": "<section><h2>Présentation</h2><p>La robe de mariée Rusina incarne l’élégance et la féminité avec son bustier en dentelle florale délicate et sa coupe fluide. Son jeu de transparence subtil met en valeur la silhouette tout en restant raffinée.</p></section><section><h2>Détails techniques</h2><p>Dotée d’un corsage ajusté orné de motifs floraux brodés et d’une jupe vaporeuse en mousseline, cette robe apporte une touche aérienne et sophistiquée. Son dos en dentelle et ses bretelles fines ajoutent une note de légèreté et de sensualité.</p></section><section><h2>Personnalisation et essayage</h2><p>Disponible en plusieurs tailles et ajustable sur mesure, la robe Rusina est parfaite pour une mariée recherchant une tenue à la fois romantique et moderne. Venez l’essayer dans notre boutique près de Toulouse.</p></section>",
+    "sections": [
+      {
+        "title": "Présentation",
+        "subtitle": "Une robe de mariée raffinée et moderne",
+        "content": "La robe de mariée Rusina incarne l’élégance et la féminité avec son bustier en dentelle florale délicate et sa coupe fluide. Son jeu de transparence subtil met en valeur la silhouette tout en restant raffinée."
+      },
+      {
+        "title": "Détails techniques",
+        "subtitle": "Un bustier brodé et une jupe fluide",
+        "content": "Dotée d’un corsage ajusté orné de motifs floraux brodés et d’une jupe vaporeuse en mousseline, cette robe apporte une touche aérienne et sophistiquée. Son dos en dentelle et ses bretelles fines ajoutent une note de légèreté et de sensualité."
+      },
+      {
+        "title": "Personnalisation et essayage",
+        "subtitle": "Un modèle idéal pour une mariée moderne",
+        "content": "Disponible en plusieurs tailles et ajustable sur mesure, la robe Rusina est parfaite pour une mariée recherchant une tenue à la fois romantique et moderne. Venez l’essayer dans notre boutique près de Toulouse."
+      }
+    ],
+    "images": [
+      {
+        "id": 8,
+        "imageUrl": "https://static.wixstatic.com/media/176703_999bc7e5222743938c0b8aeb353668a3~mv2.jpg",
+        "width": 1200,
+        "height": 1800,
+        "optimizedImages": {
+          "slider": {
+            "mobile": "/images/robes/slider/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8-slider-mobile.webp",
+            "tablet": "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8-slider-tablet.webp",
+            "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8-slider-desktop.webp"
+          },
+          "gallery": {
+            "mobile": "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8-gallery-mobile.webp",
+            "tablet": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8-gallery-tablet.webp",
+            "desktop": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8-gallery-desktop.webp"
+          },
+          "thumbnail": "/images/robes/thumbnails/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8-thumb.webp"
+        },
+        "urlBest": "monica-mariage-robe-de-mariee-style-boheme-chic-rusina-8",
+        "altOptimized": "Robe de mariée Rusina avec bustier en dentelle florale et jupe fluide, élégante et romantique."
+      },
+      {
+        "id": 9,
+        "imageUrl": "https://static.wixstatic.com/media/176703_902366e40f94463281f0f1085fc4a7b5~mv2.jpg",
+        "width": 1200,
+        "height": 1800,
+        "optimizedImages": {
+          "slider": {
+            "mobile": "/images/robes/slider/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9-slider-mobile.webp",
+            "tablet": "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9-slider-tablet.webp",
+            "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9-slider-desktop.webp"
+          },
+          "gallery": {
+            "mobile": "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9-gallery-mobile.webp",
+            "tablet": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9-gallery-tablet.webp",
+            "desktop": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9-gallery-desktop.webp"
+          },
+          "thumbnail": "/images/robes/thumbnails/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9-thumb.webp"
+        },
+        "urlBest": "monica-mariage-robe-de-mariee-style-boheme-chic-rusina-9",
+        "altOptimized": "Robe de mariée Rusina avec bustier en dentelle florale et jupe fluide, élégante et romantique."
+      },
+      {
+        "id": 10,
+        "imageUrl": "https://static.wixstatic.com/media/176703_d300aacd63a54e47912f381c2972bb68~mv2.jpg",
+        "width": 1200,
+        "height": 1800,
+        "optimizedImages": {
+          "slider": {
+            "mobile": "/images/robes/slider/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10-slider-mobile.webp",
+            "tablet": "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10-slider-tablet.webp",
+            "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10-slider-desktop.webp"
+          },
+          "gallery": {
+            "mobile": "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10-gallery-mobile.webp",
+            "tablet": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10-gallery-tablet.webp",
+            "desktop": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10-gallery-desktop.webp"
+          },
+          "thumbnail": "/images/robes/thumbnails/monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10-thumb.webp"
+        },
+        "urlBest": "monica-mariage-robe-de-mariee-style-boheme-chic-rusina-10",
+        "altOptimized": "Robe de mariée Rusina avec bustier en dentelle florale et jupe fluide, élégante et romantique."
+      }
+    ],
+    "slug": "rusina",
+    "title": "Robe de mariée Rusina | Bustier dentelle florale",
+    "metaDescription": "La robe Rusina allie élégance et féminité avec son bustier en dentelle et sa jupe vaporeuse. Venez l'essayer dans notre atelier près de Toulouse pour un ajustement parfait."
+  },
+  {
+    "dressName": "Yone",
+    "price": "",
+    "category": "style-boheme-chic",
+    "descriptionCourte": "Robe de mariée élégante avec un bustier en dentelle florale et une jupe fluide ornée d'une longue traîne charmante délicatement brodée, parfaite pour une mariée moderne et sophistiquée. Son col V profond à l'avant comme à l'arrière sculpte une silhouette harmonieuse et raffinée.\n\nCette création Bianco d'exception est disponible chez Monica Mariage près de Toulouse. Essayage sur rendez-vous",
+    "description_html": "<section><h2>Présentation</h2><p>La robe de mariée Ione est l’incarnation de la sophistication et de la féminité. Son bustier en dentelle florale délicate épouse parfaitement la silhouette, tandis que sa jupe fluide apporte une légèreté et un charme aérien.</p></section><section><h2>Détails techniques</h2><p>Cette robe présente un décolleté en V profond qui sublime le port de tête et met en valeur le buste. Sa jupe en mousseline légère assure un tombé fluide et naturel, idéal pour une allure gracieuse et raffinée.</p></section><section><h2>Personnalisation et essayage</h2><p>Disponible en plusieurs tailles et ajustable sur mesure, la robe Ione est idéale pour une mariée moderne en quête d’élégance intemporelle. Venez découvrir ce modèle en boutique et trouvez la robe qui vous correspond parfaitement.</p></section>",
+    "sections": [
+      {
+        "title": "Présentation",
+        "subtitle": "Une robe raffinée et moderne",
+        "content": "La robe de mariée Ione est l’incarnation de la sophistication et de la féminité. Son bustier en dentelle florale délicate épouse parfaitement la silhouette, tandis que sa jupe fluide apporte une légèreté et un charme aérien."
+      },
+      {
+        "title": "Détails techniques",
+        "subtitle": "Un décolleté sublime et une jupe fluide",
+        "content": "Cette robe présente un décolleté en V profond qui sublime le port de tête et met en valeur le buste. Sa jupe en mousseline légère assure un tombé fluide et naturel, idéal pour une allure gracieuse et raffinée."
+      },
+      {
+        "title": "Personnalisation et essayage",
+        "subtitle": "Une robe pensée pour vous",
+        "content": "Disponible en plusieurs tailles et ajustable sur mesure, la robe Ione est idéale pour une mariée moderne en quête d’élégance intemporelle. Venez découvrir ce modèle en boutique et trouvez la robe qui vous correspond parfaitement."
+      }
+    ],
+    "images": [
+      {
+        "id": 11,
+        "imageUrl": "https://static.wixstatic.com/media/176703_2443bd642322420ba4a15c390f242306~mv2.jpg",
+        "width": 2100,
+        "height": 2800,
+        "optimizedImages": {
+          "slider": {
+            "mobile": "/images/robes/slider/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-ione-11-slider-mobile.webp",
+            "tablet": "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-ione-11-slider-tablet.webp",
+            "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-ione-11-slider-desktop.webp"
+          },
+          "gallery": {
+            "mobile": "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-ione-11-gallery-mobile.webp",
+            "tablet": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-ione-11-gallery-tablet.webp",
+            "desktop": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-ione-11-gallery-desktop.webp"
+          },
+          "thumbnail": "/images/robes/thumbnails/monica-mariage-robe-de-mariee-style-boheme-chic-ione-11-thumb.webp"
+        },
+        "urlBest": "monica-mariage-robe-de-mariee-style-boheme-chic-ione-11",
+        "altOptimized": "Robe de mariée Ione avec un bustier en dentelle florale et une jupe fluide, élégante et sophistiquée."
+      },
+      {
+        "id": 12,
+        "imageUrl": "https://static.wixstatic.com/media/176703_fdd56169342849f59f264881b67faa6e~mv2.jpg",
+        "width": 2100,
+        "height": 2800,
+        "optimizedImages": {
+          "slider": {
+            "mobile": "/images/robes/slider/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-ione-12-slider-mobile.webp",
+            "tablet": "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-ione-12-slider-tablet.webp",
+            "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-ione-12-slider-desktop.webp"
+          },
+          "gallery": {
+            "mobile": "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-ione-12-gallery-mobile.webp",
+            "tablet": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-ione-12-gallery-tablet.webp",
+            "desktop": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-ione-12-gallery-desktop.webp"
+          },
+          "thumbnail": "/images/robes/thumbnails/monica-mariage-robe-de-mariee-style-boheme-chic-ione-12-thumb.webp"
+        },
+        "urlBest": "monica-mariage-robe-de-mariee-style-boheme-chic-ione-12",
+        "altOptimized": "Robe de mariée Ione avec un bustier en dentelle florale et une jupe fluide, élégante et sophistiquée."
+      },
+      {
+        "id": 13,
+        "imageUrl": "https://static.wixstatic.com/media/176703_aacc02bb69a54e1fa405553a9fb3c47a~mv2.jpg",
+        "width": 2100,
+        "height": 2800,
+        "optimizedImages": {
+          "slider": {
+            "mobile": "/images/robes/slider/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-ione-13-slider-mobile.webp",
+            "tablet": "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-ione-13-slider-tablet.webp",
+            "desktop": "/images/robes/slider/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-ione-13-slider-desktop.webp"
+          },
+          "gallery": {
+            "mobile": "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-ione-13-gallery-mobile.webp",
+            "tablet": "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-ione-13-gallery-tablet.webp",
+            "desktop": "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-style-boheme-chic-ione-13-gallery-desktop.webp"
+          },
+          "thumbnail": "/images/robes/thumbnails/monica-mariage-robe-de-mariee-style-boheme-chic-ione-13-thumb.webp"
+        },
+        "urlBest": "monica-mariage-robe-de-mariee-style-boheme-chic-ione-13",
+        "altOptimized": "Robe de mariée Ione avec un bustier en dentelle florale et une jupe fluide, élégante et sophistiquée."
+      }
+    ],
+    "slug": "Yone",
+    "title": "Collection Ione | Robe mariée élégante Toulouse",
+    "metaDescription": "Ione, une robe de mariée sophistiquée avec décolleté en V et jupe fluide. Essayez ce modèle intemporel dans notre boutique toulousaine et trouvez la robe parfaite."
   },
   {
     "dressName": "Doridis",

@@ -3,6 +3,8 @@ import Layout from "../../../layouts/Layout.astro";
 import BreadCrumbs from "../../../components/BreadCrumbs.astro";
 import sirene from "../../../data/forme-princesse-dynamique.json"; // Assurez-vous que le chemin est correct
 import PrendreRendezVousButtonHome from "../../../components/PrendreRendezVousButtonHome.astro";
+import FaqAccordionHome from "../../../components/FaqAccordionHome.astro";
+import FAQAccordion from "../../../components/FAQAccordion.astro";
 
 // Génère tous les chemins statiques à partir du JSON
 // Génère tous les chemins statiques à partir du JSON
@@ -94,7 +96,7 @@ const { robe, randomDresses } = Astro.props;
             robe.dressName.slice(1).toLowerCase()
         }
       </h1>
-      <p class="text-gray-700 text-lg leading-relaxed">
+      <p class="text-gray-700 text-lg leading-relaxed whitespace-pre-line">
         {robe.descriptionCourte}
       </p>
       <div class="mt-10 w-full text-center">
@@ -102,6 +104,7 @@ const { robe, randomDresses } = Astro.props;
       </div>
     </section>
   </div>
+  <!-- <FAQAccordion /> -->
 
   <!-- "Vous pourriez aussi aimer" -->
   <div class="max-w-7xl mb-20 mx-auto px-6 mt-20">
