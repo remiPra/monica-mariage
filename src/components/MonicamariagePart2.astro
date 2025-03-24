@@ -24,6 +24,30 @@ const bestSellers = [
     label: "Vegas",
     link: "/robes-de-mariee/style-sirene",
   },
+  {
+    src: "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-minimaliste-myrtille-28-gallery-tablet.webp",
+    alt: "Robe de mariée Myrtille - Monica Mariage Toulouse",
+    label: "Myrtille",
+    link: "/robes-de-mariee/forme-princesse",
+  },
+  {
+    src: "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-keme-17-gallery-tablet.webp",
+    alt: "Robe de mariée Tina - Monica Mariage Toulouse",
+    label: "Keme",
+    link: "/robes-de-mariee/style-boheme-chic",
+  },
+  {   
+    src: "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1742801955/images_optimisees/bnq0lb1icg4ka3ioynoz.webp",
+    alt: "Robe de mariée Kapella - Monica Mariage Toulouse",
+    label: "Agathe",
+    link: "/robes-de-mariee/forme-princesse",     
+  },
+  {
+    src: "/images/robes/slider/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-ione-11-slider-tablet.webp",
+    alt: "Robe de mariée Vegas - Monica Mariage Toulouse",
+    label: "Yone",
+    link: "/robes-de-mariee/style-sirene",
+  },
 ];
 ---
 
@@ -46,22 +70,30 @@ const bestSellers = [
 
     <!-- Contenu - cartes des robes -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      {bestSellers.map((dress) => (
-        <a 
-          href={dress.link} 
-          class="relative text-center overflow-hidden cursor-pointer fade-in rounded-2xl h-[300px] sm:h-[400px] shadow-md"
-        >
-          <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
-          <img
-            src={dress.src}
-            alt={dress.alt}
-            class="absolute top-0 w-full h-full object-cover hover:scale-105 transition-transform duration-300 z-0"
-            loading="lazy"
-          />
+      {bestSellers.map((robe,index) => (
+         <a
+              href={robe.link}
+              class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] shadow-md"
+              data-index={index}
+            >
+              {/* Overlay dégradé */}
+              <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
+
+              {/* Image */}
+              <img
+                src={robe.src}
+                alt={robe.label}
+                width="300"
+                height="400"
+                class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+
+           
           
           <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-4 md:p-6 rounded-b-2xl z-20">
             <p class="text-white font-vibes text-2xl md:text-3xl mb-2 md:mb-4 drop-shadow-lg">
-              {dress.label}
+              {robe.label}
             </p>
             
             <!-- Bouton visible sur desktop uniquement -->
