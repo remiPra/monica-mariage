@@ -1,0 +1,302 @@
+---
+import Layout from "../layouts/Layout.astro";
+import HeroSection from "../components/HeroSection.astro";
+import { sanityClient } from "../sanityClient";
+
+// Fonction pour optimiser les URLs Cloudinary en format mobile ou desktop
+function optimizeCloudinaryUrl(url, isMobile = false) {
+  if (!url || !url.includes("cloudinary.com")) return url;
+
+  const baseUrl = url.split("/upload/")[0];
+  const imageId = url.split("/upload/")[1];
+
+  // Paramètres différents selon le format (desktop vs mobile)
+  if (isMobile) {
+    // Format vertical pour mobile (comme dans votre second exemple)
+    return `${baseUrl}/upload/c_fill,g_face,ar_3:4,w_400,f_webp,q_100/${imageId}`;
+  } else {
+    // Format allongé pour desktop (comme dans votre premier exemple)
+    return `${baseUrl}/upload/c_fill,g_face,ar_1:2,w_400,f_webp,q_85/${imageId}`;
+  }
+}
+
+// Récupérer toutes les robes depuis Sanity avec TOUTES les informations
+const robes = await sanityClient.fetch(`
+  *[_type == "robe"] {
+    _id,
+    _createdAt,
+    _updatedAt,
+    dressName,
+    price,
+    "slug": slug.current,
+    title,
+    metaDescription,
+    descriptionCourte,
+    category,
+    sousCategorie,
+    "imagesCloudinary": imagesCloudinary[] {
+      _key,
+      _type,
+      url,
+      alt,
+      public_id,
+      resource_type
+    }
+  }
+`);
+
+// Réorganiser par catégorie pour le debugging
+const robesByCategory = {};
+robes.forEach((robe) => {
+  if (!robesByCategory[robe.category]) {
+    robesByCategory[robe.category] = [];
+  }
+  robesByCategory[robe.category].push(robe);
+});
+
+// Afficher les robes dans la console du serveur pour déboguer
+console.log("Robes récupérées depuis Sanity (avec sous-catégories):");
+console.log(JSON.stringify(robes, null, 2));
+---
+
+<Layout
+  title="Toutes nos robes de mariée | Monica Mariage"
+  description="Découvrez notre collection de robes de mariée, disponibles dans différents styles et tailles. Trouvez la robe parfaite pour votre mariage à Toulouse."
+>
+  <!-- Préchargement de la première image pour améliorer le LCP -->
+  {
+    robes.length > 0 &&
+      robes[0].imagesCloudinary &&
+      robes[0].imagesCloudinary.length > 0 && (
+        <link
+          rel="preload"
+          as="image"
+          href={optimizeCloudinaryUrl(robes[0].imagesCloudinary[0].url)}
+          fetchpriority="high"
+        />
+      )
+  }
+
+  <section
+    style="margin-top: 120px;"
+    class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]"
+  >
+    {/* Section Hero */}
+    <HeroSection
+      title="Découvrez Toutes Nos Robes de Mariée"
+      subtitle="Plongez dans notre univers de robes élégantes, romantiques et modernes. Trouvez la robe parfaite pour le jour de vos rêves."
+      buttonText="Voir les Collections"
+      scrollTarget="#robes"
+      iconSrc="/image/iconerobe.png"
+    />
+    <div class="flex justify-center px-4">
+      <div
+        id="robes"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 max-w-6xl w-full"
+      >
+        {
+          robes.map((robe, index) => (
+            <a
+              href={`/robes-de-mariee/${robe.sousCategorie || "collection"}/${robe.slug}`}
+              class="relative text-center overflow-hidden border border-[#C5A880] cursor-pointer fade-in rounded-3xl shadow-md"
+              style="aspect-ratio: 3/4; height: auto; max-width: 100%; @media (min-width: 1024px) { aspect-ratio: 1/2; }"
+              data-index={index}
+            >
+              {/* Overlay dégradé */}
+              <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
+
+              {/* Image optimisée avec Cloudinary - différente pour mobile et desktop */}
+              {robe.imagesCloudinary && robe.imagesCloudinary.length > 0 ? (
+                <>
+                  {/* Version mobile (3:4) */}
+                  <img
+                    src={optimizeCloudinaryUrl(
+                      robe.imagesCloudinary[0].url,
+                      true
+                    )}
+                    alt={
+                      robe.imagesCloudinary[0].alt ||
+                      robe.dressName ||
+                      "Robe de mariée Monica Mariage"
+                    }
+                    class="absolute top-0 w-full h-full object-cover rounded-3xl hover:scale-105 transition-transform duration-300 z-[-1] block lg:hidden"
+                    loading={index < 8 ? "eager" : "lazy"}
+                    decoding="async"
+                  />
+
+                  {/* Version desktop (1:2) */}
+                  <img
+                    src={optimizeCloudinaryUrl(
+                      robe.imagesCloudinary[0].url,
+                      false
+                    )}
+                    alt={
+                      robe.imagesCloudinary[0].alt ||
+                      robe.dressName ||
+                      "Robe de mariée Monica Mariage"
+                    }
+                    class="absolute top-0 w-full h-full object-cover rounded-3xl hover:scale-105 transition-transform duration-300 z-[-1] hidden lg:block"
+                    loading={index < 8 ? "eager" : "lazy"}
+                    decoding="async"
+                  />
+                </>
+              ) : (
+                <div class="absolute top-0 w-full h-full bg-[#f5e8e2] flex items-center justify-center z-[-1] rounded-3xl">
+                  <span class="text-[#af7749]">Image non disponible</span>
+                </div>
+              )}
+
+              {/* Contenu en bas */}
+              <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-3xl z-20">
+                <p class="text-white font-vibes text-4xl mb-4 drop-shadow-lg">
+                  {robe.dressName.charAt(0).toUpperCase() +
+                    robe.dressName.slice(1).toLowerCase()}
+                </p>
+                <button class="bg-[#D6C6A9] text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
+                  Découvrir cette robe
+                </button>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Vérifier s'il y a des éléments à animer
+      const fadeElements = document.querySelectorAll(".fade-in");
+
+      if (fadeElements.length > 0) {
+        setTimeout(() => {
+          fadeElements.forEach((el, index) => {
+            setTimeout(() => {
+              el.classList.add("active");
+            }, index * 200); // Délai progressif de 200ms par robe
+          });
+        }, 500);
+      }
+    });
+  </script>
+
+  <style>
+    .fade-in {
+      opacity: 0;
+      transform: translateY(10px);
+      transition:
+        opacity 0.6s ease-in-out,
+        transform 0.6s ease-in-out;
+    }
+    .fade-in.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Styles spécifiques pour ajuster le ratio d'aspect selon la taille d'écran */
+    @media (min-width: 1024px) {
+      #robes a {
+        aspect-ratio: 1/2 !important;
+      }
+    }
+    @media (max-width: 1023px) {
+      #robes a {
+        aspect-ratio: 3/4 !important;
+      }
+    }
+  </style>
+  <script define:vars={{ robes, robesByCategory }}>
+    // Afficher toutes les informations dans la console
+    console.log("=== TOUTES LES ROBES RÉCUPÉRÉES DE SANITY ===");
+    console.log("Nombre total de robes:", robes.length);
+
+    // Afficher dans un tableau facile à lire les infos principales
+    console.table(
+      robes.map((r) => ({
+        ID: r._id,
+        Nom: r.dressName,
+        Prix: r.price,
+        Slug: r.slug,
+        Catégorie: r.category,
+        SousCatégorie: r.sousCategorie || "Non définie",
+        NbImages: r.imagesCloudinary?.length || 0,
+        DateCréation: new Date(r._createdAt).toLocaleDateString("fr-FR"),
+        DernièreMàJ: new Date(r._updatedAt).toLocaleDateString("fr-FR"),
+      }))
+    );
+
+    // Afficher un résumé par catégorie
+    console.log("=== RÉSUMÉ PAR CATÉGORIE ===");
+    Object.keys(robesByCategory).forEach((category) => {
+      console.group(
+        `Catégorie: ${category} (${robesByCategory[category].length} robes)`
+      );
+
+      // Regrouper par sous-catégorie si présent
+      const sousCategories = {};
+      robesByCategory[category].forEach((robe) => {
+        const sc = robe.sousCategorie || "Non classée";
+        if (!sousCategories[sc]) sousCategories[sc] = [];
+        sousCategories[sc].push(robe);
+      });
+
+      // Afficher chaque sous-catégorie
+      Object.keys(sousCategories).forEach((sc) => {
+        console.group(
+          `Sous-catégorie: ${sc} (${sousCategories[sc].length} robes)`
+        );
+        sousCategories[sc].forEach((robe) => {
+          console.group(`${robe.dressName} (${robe.slug})`);
+          console.log("Prix:", robe.price);
+          console.log("SEO Title:", robe.title || "Non défini");
+          console.log(
+            "SEO Description:",
+            robe.metaDescription || "Non définie"
+          );
+          console.log("Description:", robe.descriptionCourte || "Non définie");
+
+          if (robe.imagesCloudinary && robe.imagesCloudinary.length > 0) {
+            console.log(`Images (${robe.imagesCloudinary.length}):`);
+            robe.imagesCloudinary.forEach((img, i) => {
+              console.log(`  ${i + 1}. ${img.alt || "Sans alt"}: ${img.url}`);
+            });
+          } else {
+            console.log("Aucune image");
+          }
+
+          console.groupEnd();
+        });
+        console.groupEnd();
+      });
+
+      console.groupEnd();
+    });
+
+    // Afficher des statistiques
+    console.log("=== STATISTIQUES ===");
+    const stats = {
+      totalRobes: robes.length,
+      totalCategories: Object.keys(robesByCategory).length,
+      totalImages: robes.reduce(
+        (sum, r) => sum + (r.imagesCloudinary?.length || 0),
+        0
+      ),
+      robesParCat: Object.fromEntries(
+        Object.entries(robesByCategory).map(([cat, list]) => [cat, list.length])
+      ),
+      robesSansImage: robes.filter(
+        (r) => !r.imagesCloudinary || r.imagesCloudinary.length === 0
+      ).length,
+      robesSansDescription: robes.filter((r) => !r.descriptionCourte).length,
+      robesSansSEO: robes.filter((r) => !r.title || !r.metaDescription).length,
+    };
+    console.table(stats);
+
+    // Afficher les détails complets de chaque robe (déplié)
+    console.log("=== DÉTAILS COMPLETS DE CHAQUE ROBE ===");
+    robes.forEach((robe, index) => {
+      console.log(`Robe #${index + 1}: ${robe.dressName}`);
+      console.dir(robe, { depth: null });
+    });
+  </script>
+</Layout>
