@@ -5,12 +5,10 @@ import PrendreRendezVousButtonHome from "../../../components/PrendreRendezVousBu
 import { sanityClient } from "../../../sanityClient";
 import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
 
-// 1) Définition des chemins statiques
+// 1) Génération des chemins dynamiques pour chaque slug de robe
 export async function getStaticPaths() {
   const slugs = await sanityClient.fetch(`
-    *[_type == "robe"
-      && category == "robes-de-mariee"
-      && sousCategorie == "forme-princesse"].slug.current
+    *[_type == "robe" && category == "robes-de-mariee" && sousCategorie == "forme-princesse"].slug.current
   `);
   return slugs.map((s) => ({ params: { slug: s } }));
 }
@@ -18,7 +16,7 @@ export async function getStaticPaths() {
 // 2) Récupération du slug courant
 const { slug } = Astro.params;
 
-// 3) Fetch de la robe courante, alias des images et optimisation
+// 3) Fetch de la robe demandée
 const robeData = await sanityClient.fetch(
   `
     *[_type == "robe"
@@ -29,34 +27,31 @@ const robeData = await sanityClient.fetch(
         metaDescription,
         dressName,
         descriptionCourte,
+        category,
+        sousCategorie,
         "imagesCloudinary": imagesCloudinary[]{ url, alt }
     }
   `,
   { slug }
 );
 
+if (!robeData) {
+  throw new Error(`Robe introuvable pour le slug : ${slug}`);
+}
+
+// 4) Mapping et optimisation des images pour le slider
 const robe = {
   ...robeData,
   images: (robeData.imagesCloudinary || []).map((img) => ({
     alt: img.alt,
-    optimizedImages: {
-      gallery: {
-        tablet: optimizeCloudinaryUrl(img.url, {
-          w: 800,
-          h: 1200,
-          crop: "fill",
-        }),
-        mobile: optimizeCloudinaryUrl(img.url, {
-          w: 400,
-          h: 600,
-          crop: "fill",
-        }),
-      },
+    optimized: {
+      tablet: optimizeCloudinaryUrl(img.url, { w: 800, h: 1200, crop: "fill" }),
+      mobile: optimizeCloudinaryUrl(img.url, { w: 400, h: 600, crop: "fill" }),
     },
   })),
 };
 
-// 4) Fetch des autres robes, alias catégorie et optimisation
+// 5) Fetch des suggestions (autres robes)
 const othersData = await sanityClient.fetch(
   `
     *[_type == "robe"
@@ -72,25 +67,22 @@ const othersData = await sanityClient.fetch(
   `,
   { slug }
 );
-
 const randomDresses = (othersData || [])
-  .map((dress) => ({
-    ...dress,
-    images: (dress.imagesCloudinary || []).map((img) => ({
+  .map((d) => ({
+    ...d,
+    images: (d.imagesCloudinary || []).map((img) => ({
       alt: img.alt,
-      optimizedImages: {
-        gallery: {
-          tablet: optimizeCloudinaryUrl(img.url, {
-            w: 400,
-            h: 600,
-            crop: "fill",
-          }),
-          mobile: optimizeCloudinaryUrl(img.url, {
-            w: 200,
-            h: 300,
-            crop: "fill",
-          }),
-        },
+      optimized: {
+        tablet: optimizeCloudinaryUrl(img.url, {
+          w: 400,
+          h: 600,
+          crop: "fill",
+        }),
+        mobile: optimizeCloudinaryUrl(img.url, {
+          w: 200,
+          h: 300,
+          crop: "fill",
+        }),
       },
     })),
   }))
@@ -99,6 +91,7 @@ const randomDresses = (othersData || [])
 ---
 
 <Layout title={robe.title} description={robe.metaDescription}>
+  <!-- Slider -->
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
@@ -110,7 +103,6 @@ const randomDresses = (othersData || [])
   <div
     class="mt-20 max-w-7xl mx-auto px-4 lg:px-6 flex flex-col lg:flex-row gap-10"
   >
-    <!-- Slider d'images -->
     <section class="w-full lg:w-3/5">
       <BreadCrumbs />
       <div class="relative w-full max-w-md h-[600px] mx-auto overflow-hidden">
@@ -119,10 +111,10 @@ const randomDresses = (othersData || [])
         >
           <div class="swiper-wrapper">
             {
-              robe.images.map((img, idx) => (
-                <div class="swiper-slide" key={idx}>
+              robe.images.map((img, i) => (
+                <div class="swiper-slide" key={i}>
                   <img
-                    src={img.optimizedImages.gallery.tablet}
+                    src={img.optimized.tablet}
                     alt={img.alt}
                     class="object-cover w-full h-full rounded-2xl"
                     loading="lazy"
@@ -135,7 +127,6 @@ const randomDresses = (othersData || [])
       </div>
     </section>
 
-    <!-- Infos robe -->
     <section class="w-full lg:w-2/5 flex flex-col justify-center">
       <h1 class="text-4xl font-vibes text-[#af7749] mb-4">
         Robe de Mariée {
@@ -152,42 +143,30 @@ const randomDresses = (othersData || [])
     </section>
   </div>
 
-  <!-- Suggestions -->
+  <!-- Vous pourriez aussi aimer -->
   <div class="max-w-7xl mb-20 mx-auto px-6 mt-20">
-    <h2
-      class="text-[2.5rem] font-cursive font-playfair text-[#af7749] mb-8 text-center"
-    >
+    <h2 class="text-3xl font-playfair text-[#af7749] mb-8 text-center">
       Vous pourriez aussi aimer
     </h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       {
-        randomDresses.map((dress, idx) => (
+        randomDresses.map((d, i) => (
           <a
-            key={idx}
-            href={`/robes-de-mariee/${dress.sousCategorie}/${dress.slug}`}
-            class="relative overflow-hidden border border-[#322d25] rounded-2xl h-[300px] shadow-md cursor-pointer hover:shadow-lg transition-shadow"
+            key={i}
+            href={`/robes-de-mariee/${d.sousCategorie}/${d.slug}`}
+            class="relative rounded-2xl overflow-hidden h-[300px] shadow-md hover:shadow-lg transition-shadow"
           >
+            <img
+              src={d.images[0]?.optimized.mobile}
+              alt={d.images[0]?.alt}
+              class="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
+            />
             <div class="absolute inset-0 bg-[#af7749] opacity-20" />
-            {dress.images[0] ? (
-              <img
-                src={dress.images[0].optimizedImages.gallery.mobile}
-                alt={dress.images[0].alt}
-                class="absolute inset-0 w-full h-full object-cover rounded-2xl hover:scale-105 transition-transform"
-                loading="lazy"
-              />
-            ) : (
-              <div class="absolute inset-0 bg-gray-200 flex items-center justify-center">
-                <span class="text-gray-600">Image non disponible</span>
-              </div>
-            )}
-            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-[#af7749] to-transparent p-4 text-center">
+            <div class="absolute bottom-0 w-full p-4 text-center bg-gradient-to-t from-[#af7749] to-transparent">
               <p class="text-white font-vibes text-xl drop-shadow-lg">
-                {dress.dressName.charAt(0).toUpperCase() +
-                  dress.dressName.slice(1).toLowerCase()}
+                {d.dressName}
               </p>
-              <button class="mt-2 bg-[#C5A880] text-white text-sm font-semibold py-2 px-4 rounded-full shadow hover:bg-[#A27E5D] hidden md:inline-block">
-                Découvrir cette robe
-              </button>
             </div>
           </a>
         ))
@@ -195,66 +174,14 @@ const randomDresses = (othersData || [])
     </div>
   </div>
 
-  <!-- Init Swiper et zoom -->
+  <!-- Init Swiper -->
   <script defer>
     document.addEventListener("DOMContentLoaded", () => {
-      const swiper = new Swiper(".swiper-container", {
+      new Swiper(".swiper-container", {
         loop: true,
         slidesPerView: 1,
-        spaceBetween: 10,
-        autoplay: { delay: 5000 },
+        autoplay: { delay: 3000 },
       });
-
-      setTimeout(() => {
-        document.querySelectorAll(".swiper-slide img").forEach((img) => {
-          img.style.cursor = "zoom-in";
-          img.addEventListener("click", () => {
-            if (swiper.autoplay.running) swiper.autoplay.stop();
-            const overlay = document.createElement("div");
-            Object.assign(overlay.style, {
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(0,0,0,0.9)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 9999,
-            });
-            const zoomed = document.createElement("img");
-            zoomed.src = img.src;
-            zoomed.style.maxWidth = "none";
-            zoomed.style.height = "auto";
-            zoomed.style.transformOrigin = "center";
-            zoomed.style.position = "absolute";
-            overlay.appendChild(zoomed);
-            const close = document.createElement("button");
-            close.innerHTML = "✖";
-            Object.assign(close.style, {
-              position: "absolute",
-              top: "20px",
-              right: "20px",
-              fontSize: "24px",
-              color: "#fff",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-            });
-            overlay.appendChild(close);
-            document.body.appendChild(overlay);
-            document.body.style.overflow = "hidden";
-            close.onclick = () => {
-              document.body.removeChild(overlay);
-              document.body.style.overflow = "";
-              swiper.autoplay.start();
-            };
-
-            // Ajout du pinch-to-zoom et pan… (similaire à ci-dessus)
-          });
-        });
-      }, 500);
     });
   </script>
 </Layout>
