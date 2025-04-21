@@ -13,7 +13,7 @@ export function optimizeCloudinaryUrl(url, mode = false) {
   const isMobile = !!mode;
   if (isMobile) {
     // ratio 3:4 pour mobile
-    return `${baseUrl}/upload/c_fill,g_face,ar_3:4,w_600,f_webp,q_100/${imageId}`;
+    return `${baseUrl}/upload/c_fill,g_face,ar_3:4,w_400,f_webp,q_100/${imageId}`;
   } else {
     // ratio 1:2 pour desktop
     return `${baseUrl}/upload/c_fill,g_face,ar_1:2,w_800,f_webp,q_95/${imageId}`;
