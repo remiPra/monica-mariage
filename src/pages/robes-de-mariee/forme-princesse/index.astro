@@ -1,18 +1,62 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-
-// Importer directement votre fichier JSON avec la nouvelle structure
-import robes from "../../../data/forme-princesse-dynamique.json"; // Assurez-vous que le chemin est correct
 import HeroSection from "../../../components/HeroSection.astro";
-// Fonction de création de slug au cas où
-function slugify(text) {
-  // Convertir en minuscules et enlever les caractères spéciaux
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]/g, "");
-}
+import { sanityClient } from "../../../sanityClient";
+import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
+
+// 🔍 DEBUG : récupérer TOUTES les robes pour inspection
+const allDocs = await sanityClient.fetch(`
+  *[_type == "robe"]{
+    _id,
+    dressName,
+    category,
+    sousCategorie,
+    "slug": slug.current,
+    imagesCloudinary[]{ url, alt }
+  }
+`);
+console.log("🚀 SANITY: allDocs =", JSON.stringify(allDocs, null, 2));
+
+// 1) Récupération des robes filtrées
+const robesData = await sanityClient.fetch(`
+  *[_type == "robe"
+    && category == "robes-de-mariee"
+    && sousCategorie == "forme-princesse"]{
+      _id,
+      dressName,
+      category,
+      sousCategorie,
+      "slug": slug.current,
+      imagesCloudinary[]{ url, alt }
+  }
+`);
+
+// 2) Mapping et optimisation des images
+const robes = (robesData || []).map((robe) => ({
+  ...robe,
+  images: (robe.imagesCloudinary || []).map((img) => ({
+    alt: img.alt,
+    optimizedImages: {
+      gallery: {
+        desktop: optimizeCloudinaryUrl(img.url, {
+          w: 1200,
+          h: 1600,
+          crop: "fill",
+        }),
+        tablet: optimizeCloudinaryUrl(img.url, {
+          w: 800,
+          h: 1200,
+          crop: "fill",
+        }),
+        mobile: optimizeCloudinaryUrl(img.url, {
+          w: 400,
+          h: 600,
+          crop: "fill",
+        }),
+      },
+    },
+  })),
+}));
 ---
 
 <Layout
@@ -23,22 +67,15 @@ function slugify(text) {
     style="margin-top: 120px;"
     class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]"
   >
-    <HeroSection
-      title="Nos Offres Exceptionnelles"
-      subtitle="Profitez de réductions exclusives sur nos plus belles robes de mariée. Offre limitée, ne passez pas à côté de votre robe de rêve."
-      buttonText="Voir les Promotions"
-      scrollTarget="#robes"
-      iconSrc="/image/iconerobe.png"
-    />
     <div class="flex justify-center px-4">
       <div
-        id="robes"
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full"
       >
         {
           robes.map((robe, index) => (
             <a
-              href={`/robes-de-mariee/${robe.category}/${robe.slug}`}
+              key={robe._id}
+              href={`/robes-de-mariee/${robe.sousCategorie}/${robe.slug}`}
               class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] shadow-md"
               data-index={index}
             >
@@ -46,16 +83,22 @@ function slugify(text) {
               <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
 
               {/* Image */}
-              <img
-                src={robe.images[0].optimizedImages.gallery.desktop}
-                alt={robe.dressName}
-                width="300"
-                height="400"
-                class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
-                loading="lazy"
-              />
+              {robe.images[0] ? (
+                <img
+                  src={robe.images[0].optimizedImages.gallery.desktop}
+                  alt={robe.images[0].alt || robe.dressName}
+                  width="300"
+                  height="400"
+                  class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="absolute inset-0 bg-gray-200 flex items-center justify-center">
+                  <span class="text-gray-600">Image non disponible</span>
+                </div>
+              )}
 
-              {/* Nouveau contenu en bas */}
+              {/* Contenu bas */}
               <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
                 <p class="text-white font-vibes text-4xl mb-4 drop-shadow-lg">
                   {robe.dressName.charAt(0).toUpperCase() +
@@ -73,10 +116,10 @@ function slugify(text) {
       <script defer>
         document.addEventListener("DOMContentLoaded", () => {
           setTimeout(() => {
-            document.querySelectorAll(".fade-in").forEach((el, index) => {
+            document.querySelectorAll(".fade-in").forEach((el, idx) => {
               setTimeout(() => {
                 el.classList.add("active");
-              }, index * 200); // Délai progressif de 200ms par robe
+              }, idx * 200);
             });
           }, 500);
         });
@@ -96,5 +139,5 @@ function slugify(text) {
         }
       </style>
     </div>
-  </section></Layout
->
+  </section>
+</Layout>

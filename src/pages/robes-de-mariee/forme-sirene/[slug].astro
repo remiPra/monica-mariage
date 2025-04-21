@@ -1,49 +1,80 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import BreadCrumbs from "../../../components/BreadCrumbs.astro";
-import sirene from "../../../data/forme-sirene-dynamique.json"; // Assurez-vous que le chemin est correct
 import PrendreRendezVousButtonHome from "../../../components/PrendreRendezVousButtonHome.astro";
+import { sanityClient } from "../../../sanityClient";
+import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
 
-// Génère tous les chemins statiques à partir du JSON
-// Génère tous les chemins statiques à partir du JSON
+// 🔍 DEBUG : dump complet de tous les docs "robe"
+const allDocs = await sanityClient.fetch(`
+  *[_type == "robe"]{
+    _id,
+    dressName,
+    category,
+    sousCategorie,
+    "slug": slug.current,
+    imagesCloudinary[]{ url, alt }
+  }
+`);
+console.log("🚀 SANITY ALL DOCS:", JSON.stringify(allDocs, null, 2));
+
+// 1) getStaticPaths() filtré sur catégorie + sousCat
 export async function getStaticPaths() {
-  const paths = sirene.map((robe) => ({
-    params: { slug: robe.slug }, // Utilisation du slug pour générer l'URL
-    props: {
-      robe,
-      randomDresses: sirene
-        .filter((r) => r.slug !== robe.slug) // Exclure la robe courante
-        .sort(() => 0.5 - Math.random()) // Mélange
-        .slice(0, 4), // Sélection de 4 robes aléatoires
-    },
-  }));
-
-  console.log(
-    "Routes générées :",
-    paths.map((p) => p.params.slug)
-  ); // Vérification des slugs
-  return paths;
+  const slugs = await sanityClient.fetch(`
+    *[_type == "robe"
+      && category == "robes-de-mariee"
+      && sousCategorie == "forme-princesse"].slug.current
+  `);
+  return slugs.map((s) => ({ params: { slug: s } }));
 }
 
-// Récupération des données depuis les props Astro
-const { robe, randomDresses } = Astro.props;
+// 2) Fetch de la robe courante
+const { slug } = Astro.params;
+const robe = await sanityClient.fetch(
+  `
+  *[_type == "robe"
+    && category == "robes-de-mariee"
+    && sousCategorie == "forme-princesse"
+    && slug.current == $slug][0]{
+      title,
+      metaDescription,
+      dressName,
+      descriptionCourte,
+      imagesCloudinary[]{ url, alt }
+  }
+`,
+  { slug }
+);
+
+// 3) Fetch de tous les autres candidats, puis randomiser en JS
+const others = await sanityClient.fetch(
+  `
+  *[_type == "robe"
+    && category == "robes-de-mariee"
+    && sousCategorie == "forme-princesse"
+    && slug.current != $slug]{
+      "slug": slug.current,
+      dressName,
+      imagesCloudinary[]{ url, alt }
+  }
+`,
+  { slug }
+);
+
+// Tirage aléatoire en JavaScript
+const randomDresses = others.sort(() => 0.5 - Math.random()).slice(0, 4);
 ---
 
 <Layout title={robe.title} description={robe.metaDescription}>
-  <!-- Préchargement éventuel de la première image du slider -->
+  <!-- Préchargement pour LCP -->
   <link
     rel="preload"
     as="image"
-    href={robe.images &&
-    robe.images[0] &&
-    robe.images[0].optimizedImages &&
-    robe.images[0].optimizedImages.gallery
-      ? robe.images[0].optimizedImages.gallery.tablet
-      : ""}
-    type="image/webp"
+    href={optimizeCloudinaryUrl(robe.imagesCloudinary[0].url, false)}
     fetchpriority="high"
   />
-  <!-- Swiper CSS + JS (version 10) -->
+
+  <!-- Charger Swiper -->
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
@@ -59,7 +90,6 @@ const { robe, randomDresses } = Astro.props;
     <!-- Section gauche: slider -->
     <section class="w-full lg:w-[60%]">
       <BreadCrumbs />
-
       <div
         class="relative w-full max-w-[500px] h-[600px] mx-auto overflow-hidden"
       >
@@ -68,18 +98,16 @@ const { robe, randomDresses } = Astro.props;
         >
           <div class="swiper-wrapper">
             {
-              robe.images &&
-                robe.images.length > 0 &&
-                robe.images.map((img) => (
-                  <div class="swiper-slide" key={img.id}>
-                    <img
-                      src={img.optimizedImages?.gallery?.tablet || ""}
-                      alt={img.altOptimized || robe.dressName}
-                      class="object-cover w-full h-full rounded-2xl"
-                      loading="lazy"
-                    />
-                  </div>
-                ))
+              robe.imagesCloudinary.map((img, i) => (
+                <div class="swiper-slide" key={i}>
+                  <img
+                    src={optimizeCloudinaryUrl(img.url, false)}
+                    alt={img.alt || robe.dressName}
+                    class="object-cover w-full h-full rounded-2xl"
+                    loading="lazy"
+                  />
+                </div>
+              ))
             }
           </div>
         </div>
@@ -89,10 +117,7 @@ const { robe, randomDresses } = Astro.props;
     <!-- Section droite: infos robe -->
     <section class="w-full lg:w-[40%] flex flex-col justify-center">
       <h1 class="text-4xl font-vibes text-[#af7749] mb-4">
-        Robe de Mariée {
-          robe.dressName.charAt(0).toUpperCase() +
-            robe.dressName.slice(1).toLowerCase()
-        }
+        Robe de Mariée {robe.dressName}
       </h1>
       <p class="text-gray-700 text-lg leading-relaxed">
         {robe.descriptionCourte}
@@ -115,52 +140,44 @@ const { robe, randomDresses } = Astro.props;
       class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4"
     >
       {
-        randomDresses &&
-          randomDresses.map((dress) => (
-            <a
-              key={
-                dress.images && dress.images[0]
-                  ? dress.images[0].id
-                  : dress.dressName
-              }
-              href={`/robes-de-mariee/${dress.category}/${dress.slug}`}
-              class="relative text-center overflow-hidden border-[#322d25] cursor-pointer fade-in border rounded-2xl h-[300px] shadow-md"
-            >
-              <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
-              {dress.images &&
-              dress.images[0] &&
-              dress.images[0].optimizedImages &&
-              dress.images[0].optimizedImages.gallery ? (
-                <img
-                  src={dress.images[0].optimizedImages.gallery.mobile}
-                  alt={dress.images[0].altOptimized || dress.dressName}
-                  class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
-                  loading="lazy"
-                />
-              ) : (
-                <div class="absolute top-0 w-full h-full bg-gray-200 flex items-center justify-center z-[-1]">
-                  <p class="text-gray-600">Image non disponible</p>
-                </div>
-              )}
-              <div class="absolute flex flex-col bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
-                <p class="text-white font-vibes text-xl md:text-2xl mb-4 drop-shadow-lg">
-                  {dress.dressName.charAt(0).toUpperCase() +
-                    dress.dressName.slice(1).toLowerCase()}
-                </p>
-                <button class="bg-[#C5A880] hidden md:block text-sm text-white font-semibold px-2 md:px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
-                  Découvrir cette robe
-                </button>
+        randomDresses.map((dress, i) => (
+          <a
+            key={i}
+            href={`/robes-de-mariee/forme-princesse/${dress.slug}`}
+            class="relative text-center overflow-hidden border-[#322d25] cursor-pointer fade-in border rounded-2xl h-[300px] shadow-md"
+          >
+            <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
+            {dress.imagesCloudinary && dress.imagesCloudinary[0] ? (
+              <img
+                src={optimizeCloudinaryUrl(
+                  dress.imagesCloudinary[0].url,
+                  false
+                )}
+                alt={dress.imagesCloudinary[0].alt || dress.dressName}
+                class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
+              />
+            ) : (
+              <div class="absolute top-0 w-full h-full bg-gray-200 flex items-center justify-center z-[-1]">
+                <p class="text-gray-600">Image non disponible</p>
               </div>
-            </a>
-          ))
+            )}
+            <div class="absolute flex flex-col bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
+              <p class="text-white font-vibes text-xl md:text-2xl mb-4 drop-shadow-lg">
+                {dress.dressName}
+              </p>
+              <button class="bg-[#C5A880] hidden md:block text-sm text-white font-semibold px-2 md:px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
+                Découvrir cette robe
+              </button>
+            </div>
+          </a>
+        ))
       }
     </div>
   </div>
 
-  <!-- Init du slider Swiper -->
+  <!-- Init du slider et zoom -->
   <script defer>
     document.addEventListener("DOMContentLoaded", function () {
-      // Initialize Swiper
       const swiper = new Swiper(".swiper-container", {
         loop: true,
         slidesPerView: 1,
@@ -169,117 +186,49 @@ const { robe, randomDresses } = Astro.props;
       });
 
       function setupZoom() {
-        const sliderImages = document.querySelectorAll(".swiper-slide img");
-
-        sliderImages.forEach((img) => {
+        const imgs = document.querySelectorAll(".swiper-slide img");
+        imgs.forEach((img) => {
           img.style.cursor = "zoom-in";
-
           img.addEventListener("click", function () {
-            if (swiper.autoplay && swiper.autoplay.running) {
-              swiper.autoplay.stop();
-            }
-
-            // Create overlay
+            swiper.autoplay.stop();
             const overlay = document.createElement("div");
-            overlay.style.position = "fixed";
-            overlay.style.top = "0";
-            overlay.style.left = "0";
-            overlay.style.width = "100%";
-            overlay.style.height = "100%";
-            overlay.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
-            overlay.style.display = "flex";
-            overlay.style.justifyContent = "center";
-            overlay.style.alignItems = "center";
-            overlay.style.zIndex = "9999";
-            overlay.style.overflow = "hidden"; // Permet le déplacement
-
-            // Create zoomed image
-            const zoomedImg = document.createElement("img");
-            zoomedImg.src = this.src;
-            zoomedImg.alt = this.alt;
-            zoomedImg.style.maxWidth = "none";
-            zoomedImg.style.height = "auto";
-            zoomedImg.style.transformOrigin = "center";
-            zoomedImg.style.position = "absolute";
-
-            // Create close button
-            const closeButton = document.createElement("button");
-            closeButton.innerHTML = "✖";
-            closeButton.style.position = "absolute";
-            closeButton.style.top = "20px";
-            closeButton.style.right = "20px";
-            closeButton.style.fontSize = "24px";
-            closeButton.style.color = "#fff";
-            closeButton.style.background = "none";
-            closeButton.style.border = "none";
-            closeButton.style.cursor = "pointer";
-
-            overlay.appendChild(zoomedImg);
-            overlay.appendChild(closeButton);
+            overlay.className =
+              "fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50";
+            const zoomed = document.createElement("img");
+            zoomed.src = this.src;
+            zoomed.style.maxWidth = "90%";
+            zoomed.style.maxHeight = "90%";
+            zoomed.style.objectFit = "contain";
+            const closeBtn = document.createElement("button");
+            closeBtn.innerText = "✖";
+            closeBtn.className = "absolute top-4 right-4 text-white text-2xl";
+            overlay.appendChild(zoomed);
+            overlay.appendChild(closeBtn);
             document.body.appendChild(overlay);
             document.body.style.overflow = "hidden";
-
-            // Close on click
-            closeButton.addEventListener("click", function () {
+            closeBtn.onclick = () => {
               document.body.removeChild(overlay);
               document.body.style.overflow = "";
-              if (swiper.autoplay) {
-                swiper.autoplay.start();
-              }
-            });
-
-            // Pinch-to-Zoom + Déplacement
-            let scale = 1,
-              startDistance = 0,
-              lastX = 0,
-              lastY = 0,
-              startX = 0,
-              startY = 0;
-            let isPanning = false;
-
-            zoomedImg.addEventListener("touchstart", function (e) {
-              if (e.touches.length === 2) {
-                startDistance = Math.hypot(
-                  e.touches[0].pageX - e.touches[1].pageX,
-                  e.touches[0].pageY - e.touches[1].pageY
-                );
-              } else if (e.touches.length === 1) {
-                isPanning = true;
-                startX = e.touches[0].pageX - lastX;
-                startY = e.touches[0].pageY - lastY;
-              }
-            });
-
-            zoomedImg.addEventListener("touchmove", function (e) {
-              if (e.touches.length === 2) {
-                // Gestion du zoom
-                const newDistance = Math.hypot(
-                  e.touches[0].pageX - e.touches[1].pageX,
-                  e.touches[0].pageY - e.touches[1].pageY
-                );
-                scale = Math.min(
-                  3,
-                  Math.max(1, (newDistance / startDistance) * scale)
-                );
-                zoomedImg.style.transform = `scale(${scale}) translate(${lastX}px, ${lastY}px)`;
-              } else if (e.touches.length === 1 && isPanning && scale > 1) {
-                // Gestion du déplacement
-                lastX = e.touches[0].pageX - startX;
-                lastY = e.touches[0].pageY - startY;
-                zoomedImg.style.transform = `scale(${scale}) translate(${lastX}px, ${lastY}px)`;
-              }
-            });
-
-            zoomedImg.addEventListener("touchend", function () {
-              isPanning = false;
-            });
+              swiper.autoplay.start();
+            };
           });
         });
       }
-
       setTimeout(setupZoom, 500);
     });
   </script>
 
-  <!-- Ajouter dans la section head -->
+  <style>
+    .fade-in {
+      opacity: 0;
+      transform: translateY(10px);
+      transition:
+        opacity 0.6s,
+        transform 0.6s;
+    }
+    .fade-in.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </Layout>
