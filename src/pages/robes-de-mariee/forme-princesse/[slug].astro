@@ -1,6 +1,6 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import BreadCrumbs from "../../../components/BreadCrumbs.astro";
+// import BreadCrumbs from "../../../components/BreadCrumbs.astro";
 import PrendreRendezVousButtonHome from "../../../components/PrendreRendezVousButtonHome.astro";
 import { sanityClient } from "../../../sanityClient";
 import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
@@ -13,25 +13,33 @@ export async function getStaticPaths() {
   return slugs.map((s) => ({ params: { slug: s } }));
 }
 
-// 2) Récupération du slug courant
+// 2) Lecture du paramètre de route
 const { slug } = Astro.params;
 
-// 3) Fetch de la robe demandée
+// 3) Fetch de tous les robes pour navigation
+const allRobes = await sanityClient.fetch(
+  `*[_type == "robe" && category == "robes-de-mariee" && sousCategorie == "forme-princesse"]{
+     "slug": slug.current,
+     dressName,
+     category,
+     sousCategorie
+  }`
+);
+
+// 4) Récupération de la robe courante
 const robeData = await sanityClient.fetch(
-  `
-    *[_type == "robe"
-      && category == "robes-de-mariee"
-      && sousCategorie == "forme-princesse"
-      && slug.current == $slug][0]{
-        title,
-        metaDescription,
-        dressName,
-        descriptionCourte,
-        category,
-        sousCategorie,
-        "imagesCloudinary": imagesCloudinary[]{ url, alt }
-    }
-  `,
+  `*[_type == "robe"
+     && category == "robes-de-mariee"
+     && sousCategorie == "forme-princesse"
+     && slug.current == $slug][0]{
+       title,
+       metaDescription,
+       dressName,
+       descriptionCourte,
+       category,
+       sousCategorie,
+       "imagesCloudinary": imagesCloudinary[]{ url, alt }
+  }`,
   { slug }
 );
 
@@ -39,7 +47,7 @@ if (!robeData) {
   throw new Error(`Robe introuvable pour le slug : ${slug}`);
 }
 
-// 4) Mapping et optimisation des images pour le slider
+// 5) Préparation des images pour le slider
 const robe = {
   ...robeData,
   images: (robeData.imagesCloudinary || []).map((img) => ({
@@ -48,23 +56,28 @@ const robe = {
       tablet: optimizeCloudinaryUrl(img.url, { w: 800, h: 1200, crop: "fill" }),
       mobile: optimizeCloudinaryUrl(img.url, { w: 400, h: 600, crop: "fill" }),
     },
+    full: optimizeCloudinaryUrl(img.url, "full"),
   })),
 };
 
-// 5) Fetch des suggestions (autres robes)
+// 6) Calcul des précédents/suivants
+const currentIndex = allRobes.findIndex((r) => r.slug === slug);
+const prevItem =
+  allRobes[(currentIndex - 1 + allRobes.length) % allRobes.length];
+const nextItem = allRobes[(currentIndex + 1) % allRobes.length];
+
+// 7) Suggestions aléatoires
 const othersData = await sanityClient.fetch(
-  `
-    *[_type == "robe"
-      && category == "robes-de-mariee"
-      && sousCategorie == "forme-princesse"
-      && slug.current != $slug]{
-        "slug": slug.current,
-        dressName,
-        category,
-        sousCategorie,
-        "imagesCloudinary": imagesCloudinary[]{ url, alt }
-    }
-  `,
+  `*[_type == "robe"
+     && category == "robes-de-mariee"
+     && sousCategorie == "forme-princesse"
+     && slug.current != $slug]{
+       "slug": slug.current,
+       dressName,
+       category,
+       sousCategorie,
+       "imagesCloudinary": imagesCloudinary[]{ url, alt }
+  }`,
   { slug }
 );
 const randomDresses = (othersData || [])
@@ -91,7 +104,7 @@ const randomDresses = (othersData || [])
 ---
 
 <Layout title={robe.title} description={robe.metaDescription}>
-  <!-- Slider -->
+  <!-- CSS + JS Swiper -->
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
@@ -99,12 +112,116 @@ const randomDresses = (othersData || [])
   <script
     defer
     src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <style>
+    /* Personnalisation des flèches du slider Swiper */
+    .custom-swiper-button-prev,
+    .custom-swiper-button-next {
+      color: #c5a880;
+    }
+
+    .custom-swiper-button-prev:after,
+    .custom-swiper-button-next:after {
+      font-size: 24px;
+    }
+
+    .custom-swiper-button-prev:hover,
+    .custom-swiper-button-next:hover {
+      color: #a27e5d;
+    }
+
+    .nav-robe-btn {
+      display: flex;
+      align-items: center;
+      color: #af7749;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .nav-robe-btn:hover {
+      background-color: rgba(197, 168, 128, 0.1);
+      color: #c5a880;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding: 0 0.5rem;
+    }
+
+    .category-pill {
+      background-color: #f9f5f0;
+      color: #af7749;
+      padding: 0.5rem 1.25rem;
+      border-radius: 2rem;
+      font-size: 0.9rem;
+      border: 1px solid #c5a880;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+  </style>
 
   <div
     class="mt-20 max-w-7xl mx-auto px-4 lg:px-6 flex flex-col lg:flex-row gap-10"
   >
+    <!-- Colonne slider + nav -->
     <section class="w-full lg:w-3/5">
-      <BreadCrumbs />
+      <!-- <BreadCrumbs /> -->
+      <div class="mt-8 flex items-center justify-between mb-6 px-2 py-3">
+        <!-- Précédent -->
+        <a
+          href={`/robes-de-mariee/${prevItem.sousCategorie}/${prevItem.slug}`}
+          class="flex items-center text-[#af7749] hover:text-[#C5A880] transition-colors"
+          title={`Voir la robe ${prevItem.dressName}`}
+        >
+          <!-- SVG flèche gauche -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </a>
+
+        <!-- Titre courant -->
+        <p class="text-[#af7749] font-vibes text-3xl text-center">
+          {
+            robe.dressName.charAt(0).toUpperCase() +
+              robe.dressName.slice(1).toLowerCase()
+          }
+        </p>
+
+        <!-- Suivant -->
+        <a
+          href={`/robes-de-mariee/${nextItem.sousCategorie}/${nextItem.slug}`}
+          class="flex items-center text-[#af7749] hover:text-[#C5A880] transition-colors"
+          title={`Voir la robe ${nextItem.dressName}`}
+        >
+          <!-- SVG flèche droite -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Slider Swiper -->
       <div class="relative w-full max-w-md h-[600px] mx-auto overflow-hidden">
         <div
           class="swiper-container rounded-2xl shadow-lg border border-[#C5A880]"
@@ -118,15 +235,38 @@ const randomDresses = (othersData || [])
                     alt={img.alt}
                     class="object-cover w-full h-full rounded-2xl"
                     loading="lazy"
+                    onclick={`openModal("${img.full}", "${img.alt}")`}
                   />
                 </div>
               ))
             }
           </div>
+          <!-- Contrôles du slider -->
+          <div class="swiper-button-prev custom-swiper-button-prev"></div>
+          <div class="swiper-button-next custom-swiper-button-next"></div>
+        </div>
+      </div>
+      <!-- Modal plein écran -->
+      <div
+        id="zoomModal"
+        class="fixed inset-0 bg-black bg-opacity-80 hidden items-center justify-center z-50"
+      >
+        <div class="relative w-full justify-center">
+          <button
+            id="closeModal"
+            class="absolute top-4 right-4 text-white text-3xl">&times;</button
+          >
+          <img
+            id="modalImage"
+            src=""
+            alt=""
+            class="max-w-full md:mx-auto object-contain rounded-lg shadow-lg"
+          />
         </div>
       </div>
     </section>
 
+    <!-- Colonne infos -->
     <section class="w-full lg:w-2/5 flex flex-col justify-center">
       <h1 class="text-4xl font-vibes text-[#af7749] mb-4">
         Robe de Mariée {
@@ -143,7 +283,7 @@ const randomDresses = (othersData || [])
     </section>
   </div>
 
-  <!-- Vous pourriez aussi aimer -->
+  <!-- Suggestions -->
   <div class="max-w-7xl mb-20 mx-auto px-6 mt-20">
     <h2 class="text-3xl font-playfair text-[#af7749] mb-8 text-center">
       Vous pourriez aussi aimer
@@ -181,6 +321,26 @@ const randomDresses = (othersData || [])
         loop: true,
         slidesPerView: 1,
         autoplay: { delay: 3000 },
+      });
+      // Ouvre le modal
+      window.openModal = (src, alt) => {
+        console.log("openModal src:", src); // <— doit afficher une URL valide
+        const modal = document.getElementById("zoomModal");
+        const img = document.getElementById("modalImage");
+        img.src = src;
+        img.alt = alt;
+        modal.classList.remove("hidden");
+      };
+
+      // Ferme le modal
+      document.getElementById("closeModal").addEventListener("click", () => {
+        document.getElementById("zoomModal").classList.add("hidden");
+      });
+      // Fermer au clic sur le fond
+      document.getElementById("zoomModal").addEventListener("click", (e) => {
+        if (e.target.id === "zoomModal") {
+          e.currentTarget.classList.add("hidden");
+        }
       });
     });
   </script>
