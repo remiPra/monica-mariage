@@ -53,10 +53,10 @@ const robe = {
   images: (robeData.imagesCloudinary || []).map((img) => ({
     alt: img.alt,
     optimized: {
-      tablet: optimizeCloudinaryUrl(img.url, true),
+      tablet: optimizeCloudinaryUrl(img.url, false),
       mobile: optimizeCloudinaryUrl(img.url, true),
     },
-    full: optimizeCloudinaryUrl(img.url, true),
+    full: optimizeCloudinaryUrl(img.url, "full"),
   })),
 };
 

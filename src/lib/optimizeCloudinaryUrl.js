@@ -7,13 +7,13 @@ export function optimizeCloudinaryUrl(url, mode = false) {
 
   if (mode === "full") {
     // transformation « full » : auto quality et format
-    return `${baseUrl}/upload/f_auto,q_auto/${imageId}`;
+    return `${baseUrl}/upload/c_fill,g_face,ar_2:5,w_400,f_webp,q_100/${imageId}`;
   }
 
   const isMobile = !!mode;
   if (isMobile) {
     // ratio 3:4 pour mobile
-    return `${baseUrl}/upload/c_fill,g_face,ar_3:4,w_400,f_webp,q_100/${imageId}`;
+    return `${baseUrl}/upload/c_fill,g_face,ar_2:5,w_400,f_webp,q_100/${imageId}`;
   } else {
     // ratio 1:2 pour desktop
     return `${baseUrl}/upload/c_fill,g_face,ar_1:2,w_800,f_webp,q_95/${imageId}`;
