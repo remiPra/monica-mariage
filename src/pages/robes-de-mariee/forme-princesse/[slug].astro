@@ -53,10 +53,10 @@ const robe = {
   images: (robeData.imagesCloudinary || []).map((img) => ({
     alt: img.alt,
     optimized: {
-      tablet: optimizeCloudinaryUrl(img.url, { w: 800, h: 1200, crop: "fill" }),
-      mobile: optimizeCloudinaryUrl(img.url, { w: 400, h: 600, crop: "fill" }),
+      tablet: optimizeCloudinaryUrl(img.url, true),
+      mobile: optimizeCloudinaryUrl(img.url, true),
     },
-    full: optimizeCloudinaryUrl(img.url, "full"),
+    full: optimizeCloudinaryUrl(img.url, true),
   })),
 };
 
@@ -233,7 +233,7 @@ const randomDresses = (othersData || [])
                   <img
                     src={img.optimized.tablet}
                     alt={img.alt}
-                    class="object-cover w-full h-full rounded-2xl"
+                    class="object-cover w-full h-[600px] md:h-full rounded-2xl"
                     loading="lazy"
                     onclick={`openModal("${img.full}", "${img.alt}")`}
                   />
