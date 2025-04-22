@@ -320,9 +320,11 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
             robe.dressName.slice(1).toLowerCase()
         }
       </h1>
-      <p class="text-gray-700 text-lg leading-relaxed">
-        {robe.descriptionCourte}
-      </p>
+      <div
+        class="text-gray-700 text-lg leading-relaxed"
+        set:html={robe.descriptionCourte}
+      />
+
       <div class="mt-10 text-center">
         <PrendreRendezVousButtonHome />
       </div>

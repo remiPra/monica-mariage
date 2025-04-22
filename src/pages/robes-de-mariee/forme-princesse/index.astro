@@ -21,13 +21,15 @@ console.log("🚀 SANITY: allDocs =", JSON.stringify(allDocs, null, 2));
 const robesData = await sanityClient.fetch(`       
   *[_type == "robe"
     && category == "robes-de-mariee"
-    && sousCategorie == "forme-princesse"]{
-      _id,
-      dressName,
-      category,
-      sousCategorie,
-      "slug": slug.current,
-      imagesCloudinary[]{ url, alt }
+    && sousCategorie == "forme-princesse"]
+  | order(order asc){
+    _id,
+    dressName,
+    category,
+    sousCategorie,
+    "slug": slug.current,
+    order,
+    imagesCloudinary[]{ url, alt }
   }
 `);
 
