@@ -9,6 +9,10 @@ export function optimizeCloudinaryUrl(url, mode = false) {
     // transformation « full » : auto quality et format
     return `${baseUrl}/upload/c_fill,g_face,ar_2:5,w_400,f_webp,q_100/${imageId}`;
   }
+  if (mode === "imageMobileGallery") {
+    // transformation « full » : auto quality et format
+    return `${baseUrl}/upload/c_fill,g_face,ar_2:6,w_400,f_webp,q_100/${imageId}`;
+  }
 
   const isMobile = !!mode;
   if (isMobile) {

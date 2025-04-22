@@ -48,11 +48,7 @@ const robes = (robesData || []).map((robe) => ({
           h: 1200,
           crop: "fill",
         }),
-        mobile: optimizeCloudinaryUrl(img.url, {
-          w: 400,
-          h: 600,
-          crop: "fill",
-        }),
+        mobile: optimizeCloudinaryUrl(img.url, "imageMobileGallery"),
       },
     },
   })),
