@@ -11,7 +11,7 @@ export function optimizeCloudinaryUrl(url, mode = false) {
   }
   if (mode === "imageMobileGallery") {
     // transformation « full » : auto quality et format
-    return `${baseUrl}/upload/c_fill,g_face,ar_2:6,w_400,f_webp,q_100/${imageId}`;
+    return `${baseUrl}/upload/c_fill,g_face,ar_2:3,w_350,f_webp,q_95/${imageId}`;
   }
 
   const isMobile = !!mode;
