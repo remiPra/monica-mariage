@@ -44,7 +44,7 @@ const robeData = await sanityClient.fetch(
 );
 
 if (!robeData) {
-  throw new Error(`Robe introuvable pour le slug : ${slug}`);
+  throw new Error(`Robe introuvable pour le slug : ${slug}`);
 }
 
 // 5) Préparation des images pour le slider
@@ -101,17 +101,44 @@ const randomDresses = (othersData || [])
   }))
   .sort(() => 0.5 - Math.random())
   .slice(0, 4);
+
+// Récupération de la première image pour préchargement
+const firstImage = robe.images.length > 0 ? robe.images[0] : null;
 ---
 
 <Layout title={robe.title} description={robe.metaDescription}>
-  <!-- CSS + JS Swiper -->
+  <!-- Préchargement de la première image pour améliorer le LCP -->
+  {
+    firstImage && (
+      <link
+        rel="preload"
+        href={firstImage.optimized.tablet}
+        as="image"
+        fetchpriority="high"
+      />
+    )
+  }
+
+  <!-- Chargement optimisé du CSS Swiper -->
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    media="print"
+    onload="this.media='all'"
   />
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+  </noscript>
+
+  <!-- Chargement différé du JS Swiper -->
   <script
     defer
+    async
     src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
   <style>
     /* Personnalisation des flèches du slider Swiper */
     .custom-swiper-button-prev,
@@ -221,7 +248,7 @@ const randomDresses = (othersData || [])
         </a>
       </div>
 
-      <!-- Slider Swiper -->
+      <!-- Slider Swiper avec chargement prioritaire de la première image -->
       <div class="relative w-full max-w-md h-[600px] mx-auto overflow-hidden">
         <div
           class="swiper-container rounded-2xl shadow-lg border border-[#C5A880]"
@@ -234,8 +261,10 @@ const randomDresses = (othersData || [])
                     src={img.optimized.tablet}
                     alt={img.alt}
                     class="object-cover w-full h-[600px] md:h-full rounded-2xl"
-                    loading="lazy"
+                    loading={i === 0 ? "eager" : "lazy"}
+                    fetchpriority={i === 0 ? "high" : "auto"}
                     onclick={`openModal("${img.full}", "${img.alt}")`}
+                    decoding={i === 0 ? "sync" : "async"}
                   />
                 </div>
               ))
@@ -245,7 +274,24 @@ const randomDresses = (othersData || [])
           <div class="swiper-button-prev custom-swiper-button-prev"></div>
           <div class="swiper-button-next custom-swiper-button-next"></div>
         </div>
+
+        <!-- Conteneur de l'image statique qui sera remplacé par Swiper -->
+        {
+          firstImage && (
+            <div
+              class="no-js-image absolute inset-0 rounded-2xl"
+              style="display: none;"
+            >
+              <img
+                src={firstImage.optimized.tablet}
+                alt={firstImage.alt}
+                class="object-cover w-full h-full rounded-2xl"
+              />
+            </div>
+          )
+        }
       </div>
+
       <!-- Modal plein écran -->
       <div
         id="zoomModal"
@@ -254,7 +300,7 @@ const randomDresses = (othersData || [])
         <div class="relative w-full justify-center">
           <button
             id="closeModal"
-            class="absolute top-4 right-4 text-white text-3xl">&times;</button
+            class="fixed z-56 top-4 right-4 text-white text-3xl">&times;</button
           >
           <img
             id="modalImage"
@@ -282,7 +328,6 @@ const randomDresses = (othersData || [])
       </div>
     </section>
   </div>
-
   <!-- Suggestions -->
   <div class="max-w-7xl mb-20 mx-auto px-6 mt-20">
     <h2 class="text-3xl font-playfair text-[#af7749] mb-8 text-center">
@@ -314,34 +359,101 @@ const randomDresses = (othersData || [])
     </div>
   </div>
 
-  <!-- Init Swiper -->
-  <script defer>
-    document.addEventListener("DOMContentLoaded", () => {
-      new Swiper(".swiper-container", {
-        loop: true,
-        slidesPerView: 1,
-        autoplay: { delay: 3000 },
-      });
+  <!-- Script optimisé -->
+  <script>
+    // Affiche l'image statique si JS est désactivé
+    document.querySelector(".no-js-image").style.display = "block";
+
+    // Fonction d'initialisation du slider
+    function initSwiper() {
+      if (typeof Swiper !== "undefined") {
+        // Masque l'image statique une fois Swiper initialisé
+        const noJsImage = document.querySelector(".no-js-image");
+        if (noJsImage) noJsImage.style.display = "none";
+
+        // Initialise Swiper
+        new Swiper(".swiper-container", {
+          loop: true,
+          slidesPerView: 1,
+          autoplay: { delay: 3000 },
+          navigation: {
+            nextEl: ".custom-swiper-button-next",
+            prevEl: ".custom-swiper-button-prev",
+          },
+        });
+      } else {
+        // Si Swiper n'est pas encore chargé, on réessaie plus tard
+        setTimeout(initSwiper, 100);
+      }
+    }
+
+    // Fonction pour configurer le modal
+    function setupModal() {
       // Ouvre le modal
       window.openModal = (src, alt) => {
-        console.log("openModal src:", src); // <— doit afficher une URL valide
         const modal = document.getElementById("zoomModal");
         const img = document.getElementById("modalImage");
         img.src = src;
         img.alt = alt;
         modal.classList.remove("hidden");
+        modal.classList.add("flex");
       };
 
       // Ferme le modal
       document.getElementById("closeModal").addEventListener("click", () => {
         document.getElementById("zoomModal").classList.add("hidden");
+        document.getElementById("zoomModal").classList.remove("flex");
       });
+
       // Fermer au clic sur le fond
       document.getElementById("zoomModal").addEventListener("click", (e) => {
         if (e.target.id === "zoomModal") {
           e.currentTarget.classList.add("hidden");
+          e.currentTarget.classList.remove("flex");
         }
       });
-    });
+    }
+
+    // Utiliser l'intersection observer pour initialiser Swiper seulement quand le conteneur est visible
+    if ("IntersectionObserver" in window) {
+      const swiperContainer = document.querySelector(".swiper-container");
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // Initialiser Swiper seulement quand le conteneur est dans le viewport
+              if ("requestIdleCallback" in window) {
+                requestIdleCallback(() => {
+                  initSwiper();
+                });
+              } else {
+                setTimeout(initSwiper, 1);
+              }
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      if (swiperContainer) {
+        observer.observe(swiperContainer);
+      }
+    } else {
+      // Fallback pour les navigateurs qui ne supportent pas IntersectionObserver
+      if (document.readyState !== "loading") {
+        initSwiper();
+      } else {
+        document.addEventListener("DOMContentLoaded", initSwiper);
+      }
+    }
+
+    // Configurer le modal dès que possible
+    if (document.readyState !== "loading") {
+      setupModal();
+    } else {
+      document.addEventListener("DOMContentLoaded", setupModal);
+    }
   </script>
 </Layout>
