@@ -38,17 +38,9 @@ const robes = (robesData || []).map((robe) => ({
     alt: img.alt,
     optimizedImages: {
       gallery: {
-        desktop: optimizeCloudinaryUrl(img.url, {
-          w: 1200,
-          h: 1600,
-          crop: "fill",
-        }),
-        tablet: optimizeCloudinaryUrl(img.url, {
-          w: 800,
-          h: 1200,
-          crop: "fill",
-        }),
-        mobile: optimizeCloudinaryUrl(img.url, "imageMobileGallery"),
+        desktop: optimizeCloudinaryUrl(img.url, false), // mode desktop
+        tablet: optimizeCloudinaryUrl(img.url, false), // même chose pour tablet
+        mobile: optimizeCloudinaryUrl(img.url, "imageMobileGallery"), // celui-ci est correct
       },
     },
   })),
@@ -84,7 +76,7 @@ const robes = (robesData || []).map((robe) => ({
                   src={robe.images[0].optimizedImages.gallery.desktop}
                   alt={robe.images[0].alt || robe.dressName}
                   width="300"
-                  height="400"
+                  height="500"
                   class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
                   loading="lazy"
                 />
