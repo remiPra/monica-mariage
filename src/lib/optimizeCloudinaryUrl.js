@@ -16,7 +16,7 @@ export function optimizeCloudinaryUrl(url, mode) {
     return `${baseUrl}/upload/c_fill,g_face,ar_2:3,w_350,f_webp,q_95/${imageId}`;
   }
 
-  if (mode === "mobile" || mode === true) {
+  if (mode === "mobile") {
     return `${baseUrl}/upload/c_fill,g_face,ar_2:5,w_350,f_webp,q_85/${imageId}`;
   }
 
