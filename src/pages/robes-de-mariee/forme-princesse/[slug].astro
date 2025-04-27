@@ -48,13 +48,14 @@ if (!robeData) {
 }
 
 // 5) Préparation des images pour le slider
+// 5) Préparation des images pour le slider
 const robe = {
   ...robeData,
   images: (robeData.imagesCloudinary || []).map((img) => ({
     alt: img.alt,
     optimized: {
-      tablet: optimizeCloudinaryUrl(img.url, false),
-      mobile: optimizeCloudinaryUrl(img.url, true),
+      tablet: optimizeCloudinaryUrl(img.url, "desktop"), // Explicitement "desktop"
+      mobile: optimizeCloudinaryUrl(img.url, "mobile"), // Explicitement "mobile"
     },
     full: optimizeCloudinaryUrl(img.url, "full"),
   })),
