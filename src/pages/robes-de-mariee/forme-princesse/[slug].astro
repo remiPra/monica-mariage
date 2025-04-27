@@ -48,10 +48,12 @@ if (!robeData) {
 }
 
 // 5) Préparation des images pour le slider
+// 5) Préparation des images pour le slider
 const robe = {
   ...robeData,
   images: (robeData.imagesCloudinary || []).map((img) => ({
     alt: img.alt,
+    placeholderMobile: optimizeCloudinaryUrl(img.url, "placeholderMobile"), // Version très légère pour mobile
     optimized: {
       tablet: optimizeCloudinaryUrl(img.url, false),
       mobile: optimizeCloudinaryUrl(img.url, true),
@@ -139,58 +141,72 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
     async
     src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
-  <style>
-    /* Personnalisation des flèches du slider Swiper */
-    .custom-swiper-button-prev,
-    .custom-swiper-button-next {
-      color: #c5a880;
-    }
-
-    .custom-swiper-button-prev:after,
-    .custom-swiper-button-next:after {
-      font-size: 24px;
-    }
-
-    .custom-swiper-button-prev:hover,
-    .custom-swiper-button-next:hover {
-      color: #a27e5d;
-    }
-
-    .nav-robe-btn {
-      display: flex;
-      align-items: center;
-      color: #af7749;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      transition: all 0.3s ease;
-      font-weight: 500;
-    }
-
-    .nav-robe-btn:hover {
-      background-color: rgba(197, 168, 128, 0.1);
-      color: #c5a880;
-    }
-
-    .category-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
-      padding: 0 0.5rem;
-    }
-
-    .category-pill {
-      background-color: #f9f5f0;
-      color: #af7749;
-      padding: 0.5rem 1.25rem;
-      border-radius: 2rem;
-      font-size: 0.9rem;
-      border: 1px solid #c5a880;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-  </style>
+    <style>
+      /* Style pour le chargement progressif des images sur mobile uniquement */
+      .placeholder-img {
+        filter: blur(8px);
+        transition: opacity 0.3s ease-out;
+      }
+      
+      .final-img {
+        transition: opacity 0.3s ease-in;
+      }
+      
+      .final-img.loaded {
+        opacity: 1 !important;
+      }
+      
+      /* Personnalisation des flèches du slider Swiper */
+      .custom-swiper-button-prev,
+      .custom-swiper-button-next {
+        color: #c5a880;
+      }
+    
+      .custom-swiper-button-prev:after,
+      .custom-swiper-button-next:after {
+        font-size: 24px;
+      }
+    
+      .custom-swiper-button-prev:hover,
+      .custom-swiper-button-next:hover {
+        color: #a27e5d;
+      }
+    
+      .nav-robe-btn {
+        display: flex;
+        align-items: center;
+        color: #af7749;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+        font-weight: 500;
+      }
+    
+      .nav-robe-btn:hover {
+        background-color: rgba(197, 168, 128, 0.1);
+        color: #c5a880;
+      }
+    
+      .category-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        padding: 0 0.5rem;
+      }
+    
+      .category-pill {
+        background-color: #f9f5f0;
+        color: #af7749;
+        padding: 0.5rem 1.25rem;
+        border-radius: 2rem;
+        font-size: 0.9rem;
+        border: 1px solid #c5a880;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+    </style>
 
   <div
     class="mt-20 max-w-7xl mx-auto px-4 lg:px-6 flex flex-col lg:flex-row gap-10"
@@ -248,49 +264,59 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
         </a>
       </div>
 
-      <!-- Slider Swiper avec chargement prioritaire de la première image -->
-      <div class="relative w-full max-w-md h-[600px] mx-auto overflow-hidden">
-        <div
-          class="swiper-container rounded-2xl shadow-lg border border-[#C5A880]"
-        >
-          <div class="swiper-wrapper">
-            {
-              robe.images.map((img, i) => (
-                <div class="swiper-slide" key={i}>
-                  <img
-                    src={img.optimized.tablet}
-                    alt={img.alt}
-                    class="object-cover w-full h-[600px] md:h-full rounded-2xl"
-                    loading={i === 0 ? "eager" : "lazy"}
-                    fetchpriority={i === 0 ? "high" : "auto"}
-                    onclick={`openModal("${img.full}", "${img.alt}")`}
-                    decoding={i === 0 ? "sync" : "async"}
-                  />
-                </div>
-              ))
-            }
+    <!-- Slider Swiper avec chargement prioritaire de la première image -->
+<div class="relative w-full max-w-md h-[600px] mx-auto overflow-hidden">
+  <div class="swiper-container rounded-2xl shadow-lg border border-[#C5A880]">
+    <div class="swiper-wrapper">
+      {
+        robe.images.map((img, i) => (
+          <div class="swiper-slide" key={i}>
+            <!-- Sur mobile uniquement: image placeholder très légère -->
+            <img
+              src={img.placeholderMobile}
+              alt={img.alt}
+              class="object-cover w-full h-[600px] md:h-full rounded-2xl placeholder-img block md:hidden"
+              loading="eager"
+              fetchpriority={i === 0 ? "high" : "auto"}
+              decoding="sync"
+            />
+            
+            <!-- Image finale: visible directement sur desktop, chargée en background sur mobile -->
+            <img
+              src={img.optimized.tablet}
+              alt={img.alt}
+              class="object-cover w-full h-[600px] md:h-full rounded-2xl final-img md:opacity-100 opacity-0 md:relative absolute inset-0"
+              loading={i === 0 ? "eager" : "lazy"}
+              fetchpriority={i === 0 ? "high" : "auto"}
+              onclick={`openModal("${img.full}", "${img.alt}")`}
+              decoding={i === 0 ? "sync" : "async"}
+              onload="if(window.innerWidth < 768) { this.classList.add('loaded'); }"
+            />
           </div>
-          <!-- Contrôles du slider -->
-          <div class="swiper-button-prev custom-swiper-button-prev"></div>
-          <div class="swiper-button-next custom-swiper-button-next"></div>
-        </div>
+        ))
+      }
+    </div>
+    <!-- Contrôles du slider -->
+    <div class="swiper-button-prev custom-swiper-button-prev"></div>
+    <div class="swiper-button-next custom-swiper-button-next"></div>
+  </div>
 
-        <!-- Conteneur de l'image statique qui sera remplacé par Swiper -->
-        {
-          firstImage && (
-            <div
-              class="no-js-image absolute inset-0 rounded-2xl"
-              style="display: none;"
-            >
-              <img
-                src={firstImage.optimized.tablet}
-                alt={firstImage.alt}
-                class="object-cover w-full h-full rounded-2xl"
-              />
-            </div>
-          )
-        }
+  <!-- Conteneur de l'image statique qui sera remplacé par Swiper -->
+  {
+    firstImage && (
+      <div
+        class="no-js-image absolute inset-0 rounded-2xl"
+        style="display: none;"
+      >
+        <img
+          src={firstImage.optimized.tablet}
+          alt={firstImage.alt}
+          class="object-cover w-full h-full rounded-2xl"
+        />
       </div>
+    )
+  }
+</div>
 
       <!-- Modal plein écran -->
       <div
@@ -365,14 +391,17 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
   <script>
     // Affiche l'image statique si JS est désactivé
     document.querySelector(".no-js-image").style.display = "block";
-
+  
+    // Détection mobile pour adapter l'expérience
+    const isMobile = window.innerWidth < 768;
+  
     // Fonction d'initialisation du slider
     function initSwiper() {
       if (typeof Swiper !== "undefined") {
         // Masque l'image statique une fois Swiper initialisé
         const noJsImage = document.querySelector(".no-js-image");
         if (noJsImage) noJsImage.style.display = "none";
-
+  
         // Initialise Swiper
         new Swiper(".swiper-container", {
           loop: true,
@@ -382,13 +411,32 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
             nextEl: ".custom-swiper-button-next",
             prevEl: ".custom-swiper-button-prev",
           },
+          // Optimisation pour mobile : précharger les images adjacentes
+          preloadImages: !isMobile,
+          lazy: isMobile ? {
+            loadPrevNext: true,
+            loadPrevNextAmount: 1
+          } : false
         });
+  
+        // Sur mobile, masquer les placeholders quand images finales sont chargées
+        if (isMobile) {
+          document.querySelectorAll('.final-img').forEach(img => {
+            if (img.complete) {
+              img.classList.add('loaded');
+            } else {
+              img.onload = function() {
+                this.classList.add('loaded');
+              };
+            }
+          });
+        }
       } else {
         // Si Swiper n'est pas encore chargé, on réessaie plus tard
         setTimeout(initSwiper, 100);
       }
     }
-
+  
     // Fonction pour configurer le modal
     function setupModal() {
       // Ouvre le modal
@@ -400,13 +448,13 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
         modal.classList.remove("hidden");
         modal.classList.add("flex");
       };
-
+  
       // Ferme le modal
       document.getElementById("closeModal").addEventListener("click", () => {
         document.getElementById("zoomModal").classList.add("hidden");
         document.getElementById("zoomModal").classList.remove("flex");
       });
-
+  
       // Fermer au clic sur le fond
       document.getElementById("zoomModal").addEventListener("click", (e) => {
         if (e.target.id === "zoomModal") {
@@ -415,11 +463,11 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
         }
       });
     }
-
+  
     // Utiliser l'intersection observer pour initialiser Swiper seulement quand le conteneur est visible
     if ("IntersectionObserver" in window) {
       const swiperContainer = document.querySelector(".swiper-container");
-
+  
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -438,7 +486,7 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
         },
         { threshold: 0.1 }
       );
-
+  
       if (swiperContainer) {
         observer.observe(swiperContainer);
       }
@@ -450,7 +498,7 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
         document.addEventListener("DOMContentLoaded", initSwiper);
       }
     }
-
+  
     // Configurer le modal dès que possible
     if (document.readyState !== "loading") {
       setupModal();
