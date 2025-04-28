@@ -5,7 +5,7 @@ export function optimizeCloudinaryUrl(url, mode) {
 
   const [baseUrl, imageId] = url.split("/upload/");
 
-  // Log pour débugger
+  // Log pour
   console.log("Mode reçu:", mode);
 
   if (mode === "full") {
