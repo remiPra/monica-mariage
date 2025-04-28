@@ -259,7 +259,9 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
       </div>
 
       <!-- Slider Swiper avec chargement prioritaire de la première image -->
-      <div class="relative w-full max-w-md h-[600px] mx-auto overflow-hidden">
+      <div
+        class="relative w-full max-w-md h-[600px] md:h-full mx-auto overflow-hidden"
+      >
         <div class="swiper-container shadow-lg">
           <div class="swiper-wrapper">
             {
@@ -342,7 +344,7 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
   </div>
   <!-- Suggestions -->
   <div class="max-w-7xl mb-20 mx-auto px-6 mt-20">
-    <h2 class="text-3xl font-playfair text-[#af7749] mb-8 text-center">
+    <h2 class="text-5xl font-vibes text-[#af7749] mb-8 text-center">
       Vous pourriez aussi aimer
     </h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -361,8 +363,9 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
             />
             <div class="absolute inset-0 bg-[#af7749] opacity-20" />
             <div class="absolute bottom-0 w-full p-4 text-center bg-gradient-to-t from-[#af7749] to-transparent">
-              <p class="text-white font-vibes text-xl drop-shadow-lg">
-                {d.dressName}
+              <p class="text-white font-vibes text-3xl drop-shadow-lg">
+                {d.dressName.charAt(0).toUpperCase() +
+                  d.dressName.slice(1).toLowerCase()}
               </p>
             </div>
           </a>
