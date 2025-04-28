@@ -7,15 +7,23 @@
 >
   <!-- Background image container using Cloudinary optimizations -->
   <div class="relative w-full h-[650px]">
+    <!-- Préchargement de l'image principale -->
+    <link
+      rel="preload"
+      as="image"
+      href="https://res.cloudinary.com/dkbsvrpdc/image/upload/f_auto,q_100:good,w_480/v1745254754/ylrvmsmxewylhvf6xywi.jpg"
+      fetchpriority="high"
+    />
+
     <img
-      src="https://res.cloudinary.com/dkbsvrpdc/image/upload/f_auto,q_100,w_480/v1745254754/ylrvmsmxewylhvf6xywi.jpg"
+      src="https://res.cloudinary.com/dkbsvrpdc/image/upload/f_auto,q_auto:good,w_480/v1745254754/ylrvmsmxewylhvf6xywi.jpg"
       alt="Robe de mariée"
       class="absolute inset-0 w-full h-full object-cover z-2"
-      loading="lazy"
-      srcset="
-        https://res.cloudinary.com/dkbsvrpdc/image/upload/f_auto,q_100,w_480/v1745254754/ylrvmsmxewylhvf6xywi.jpg 480w
-      "
-      sizes="(max-width: 640px) 100vw, 480px"
+      fetchpriority="high"
+      width="480"
+      height="650"
+      loading="eager"
+      decoding="async"
     />
 
     <!-- Beautiful overlay -->
@@ -54,8 +62,6 @@
           le 1er Mai matin sur RDV,<br />
           contactez moi sur WhatsApp
         </p>
-
-        <!-- WhatsApp button -->
       </div>
     </div>
   </div>
