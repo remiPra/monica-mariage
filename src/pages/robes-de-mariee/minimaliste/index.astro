@@ -1,23 +1,71 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
+import HeroSection from "../../../components/HeroSection.astro";
+import { sanityClient } from "../../../sanityClient";
+import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
 
-// Importer directement votre fichier JSON avec la nouvelle structure
-import robes from "../../../data/minimaliste-dynamique.json"; // Assurez-vous que le chemin est correct
-// Fonction de création de slug au cas où
-function slugify(text) {
-  // Convertir en minuscules et enlever les caractères spéciaux
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]/g, "");
-}
+// 🔍 DEBUG : récupérer TOUTES les robes pour inspection
+const allDocs = await sanityClient.fetch(`
+  *[_type == "robe"]{
+    _id,
+    dressName,
+    category,
+    sousCategorie,
+    "slug": slug.current,
+    imagesCloudinary[]{ url, alt }
+  }
+`);
+console.log("🚀 SANITY: allDocs =", JSON.stringify(allDocs, null, 2));
+
+// 1) Récupération des robes
+const robesData = await sanityClient.fetch(`       
+  *[_type == "robe"
+    && category == "robes-de-mariee"
+    && sousCategorie == "minimaliste"]
+  | order(order asc){
+    _id,
+    dressName,
+    category,
+    sousCategorie,
+    "slug": slug.current,
+    order,
+    imagesCloudinary[]{ url, alt }
+  }
+`);
+
+// 2) Mapping et optimisation des images
+const robes = (robesData || []).map((robe) => ({
+  ...robe,
+  images: (robe.imagesCloudinary || []).map((img) => ({
+    alt: img.alt,
+    optimizedImages: {
+      gallery: {
+        desktop: optimizeCloudinaryUrl(img.url, false), // mode desktop
+        tablet: optimizeCloudinaryUrl(img.url, false), // même chose pour tablet
+        mobile: optimizeCloudinaryUrl(img.url, "imageMobileGallery"), // celui-ci est correct
+      },
+    },
+  })),
+}));
+
+// Préparer les URLs des premières images visibles pour le préchargement
+const preloadImageUrls = robes
+  .slice(0, 4)
+  .map((robe) => robe.images[0]?.optimizedImages.gallery.mobile)
+  .filter(Boolean);
 ---
 
 <Layout
   title="Toutes nos robes de mariée | Monica Mariage"
   description="Découvrez notre collection de robes de mariée, disponibles dans différents styles et tailles. Trouvez la robe parfaite pour votre mariage à Toulouse."
 >
+  <!-- Préchargement des images critiques -->
+  {
+    preloadImageUrls.map((url) => (
+      <link rel="preload" href={url} as="image" fetchpriority="high" />
+    ))
+  }
+
   <section
     style="margin-top: 120px;"
     class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]"
@@ -29,30 +77,39 @@ function slugify(text) {
         {
           robes.map((robe, index) => (
             <a
-              href={`/robes-de-mariee/${robe.category}/${robe.slug}`}
-              class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] shadow-md"
+              key={robe._id}
+              href={`/robes-de-mariee/${robe.sousCategorie}/${robe.slug}`}
+              class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] lg:h-[420px] shadow-md"
               data-index={index}
             >
               {/* Overlay dégradé */}
               <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
 
               {/* Image */}
-              <img
-                src={robe.images[0].optimizedImages.gallery.desktop}
-                alt={robe.dressName}
-                width="300"
-                height="400"
-                class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
-                loading="lazy"
-              />
+              {robe.images[0] ? (
+                <img
+                  src={robe.images[0].optimizedImages.gallery.mobile}
+                  alt={robe.images[0].alt || robe.dressName}
+                  width="300"
+                  height="500"
+                  fetchpriority={index < 2 ? "high" : "auto"}
+                  class="w-full absolute top-0 h-auto object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
+                  loading={index < 4 ? "eager" : "lazy"}
+                  decoding={index < 4 ? "sync" : "async"}
+                />
+              ) : (
+                <div class="absolute inset-0 bg-gray-200 flex items-center justify-center">
+                  <span class="text-gray-600">Image non disponible</span>
+                </div>
+              )}
 
-              {/* Nouveau contenu en bas */}
-              <div class="absolute flex flex-col bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
+              {/* Contenu bas */}
+              <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
                 <p class="text-white font-vibes text-4xl mb-4 drop-shadow-lg">
                   {robe.dressName.charAt(0).toUpperCase() +
                     robe.dressName.slice(1).toLowerCase()}
                 </p>
-                <button class="bg-[#C5A880] mx-auto text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
+                <button class="bg-[#C5A880] text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
                   Découvrir cette robe
                 </button>
               </div>
@@ -61,15 +118,22 @@ function slugify(text) {
         }
       </div>
 
-      <script defer>
+      <script>
+        // Amélioration du script d'animation pour ne pas retarder le LCP
         document.addEventListener("DOMContentLoaded", () => {
-          setTimeout(() => {
-            document.querySelectorAll(".fade-in").forEach((el, index) => {
-              setTimeout(() => {
-                el.classList.add("active");
-              }, index * 200); // Délai progressif de 200ms par robe
+          // Initialiser immédiatement les images visibles
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("active");
+                observer.unobserve(entry.target);
+              }
             });
-          }, 500);
+          });
+
+          document.querySelectorAll(".fade-in").forEach((el) => {
+            observer.observe(el);
+          });
         });
       </script>
 
@@ -87,5 +151,5 @@ function slugify(text) {
         }
       </style>
     </div>
-  </section></Layout
->
+  </section>
+</Layout>

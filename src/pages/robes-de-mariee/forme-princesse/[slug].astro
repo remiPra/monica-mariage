@@ -260,22 +260,22 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
 
       <!-- Slider Swiper avec chargement prioritaire de la première image -->
       <div class="relative w-full max-w-md h-[600px] mx-auto overflow-hidden">
-        <div
-          class="swiper-container rounded-2xl shadow-lg border border-[#C5A880]"
-        >
+        <div class="swiper-container shadow-lg">
           <div class="swiper-wrapper">
             {
               robe.images.map((img, i) => (
-                <div class="swiper-slide" key={i}>
-                  <img
-                    src={img.optimized.tablet}
-                    alt={img.alt}
-                    class="object-cover w-full h-[600px] md:h-full rounded-2xl"
-                    loading={i === 0 ? "eager" : "lazy"}
-                    fetchpriority={i === 0 ? "high" : "auto"}
-                    onclick={`openModal("${img.full}", "${img.alt}")`}
-                    decoding={i === 0 ? "sync" : "async"}
-                  />
+                <div class="swiper-slide overflow-hidden" key={i}>
+                  <div class="border border-[#C5A880] rounded-2xl h-full w-full overflow-hidden">
+                    <img
+                      src={img.optimized.tablet}
+                      alt={img.alt}
+                      class="object-cover w-full h-[600px] md:h-full"
+                      loading={i === 0 ? "eager" : "lazy"}
+                      fetchpriority={i === 0 ? "high" : "auto"}
+                      onclick={`openModal("${img.full}", "${img.alt}")`}
+                      decoding={i === 0 ? "sync" : "async"}
+                    />
+                  </div>
                 </div>
               ))
             }
