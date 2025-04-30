@@ -108,7 +108,7 @@
       </a>
     </div>
   </div>
-  <script defer>
+  <!-- <script defer>
     document.addEventListener(
       "focus",
       function (event) {
@@ -284,5 +284,342 @@
     </style>
   `
     );
+  </script> -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      //infobulle
+      // Création de l'infobulle
+      const tooltip = document.createElement("div");
+      tooltip.className = "whatsapp-tooltip hidden"; // Hidden au départ
+      tooltip.innerHTML = `
+    <div class="tooltip-content">
+      <span class="tooltip-text"></span>
+    </div>
+    <div class="tooltip-arrow"></div>
+  `;
+      document.body.appendChild(tooltip);
+
+      // Ajout des styles pour l'infobulle
+      document.head.insertAdjacentHTML(
+        "beforeend",
+        `
+    <style>
+      .whatsapp-tooltip {
+        position: fixed;
+        bottom: 75px;
+        right: 70px; /* Position à droite du bouton */
+        z-index: 49;
+        background-color: white;
+        padding: 12px 16px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        max-width: 230px;
+        transform-origin: bottom right;
+        transition: all 0.3s ease;
+      }
+      
+      .whatsapp-tooltip.hidden {
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(0.8);
+      }
+      
+      .whatsapp-tooltip.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1);
+        animation: fadeInTooltip 0.3s ease forwards;
+      }
+      
+      .tooltip-content {
+        font-size: 14px;
+        line-height: 1.4;
+        color: #5F4B3F;
+        text-align: center;
+      }
+      
+      .tooltip-arrow {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: white;
+        bottom: 10px;
+        right: -6px; /* Flèche pointant vers le bouton */
+        transform: rotate(45deg);
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.05);
+      }
+      
+      @keyframes fadeInTooltip {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+      }
+      
+      @keyframes fadeOutTooltip {
+        from { opacity: 1; transform: scale(1); }
+        to { opacity: 0; transform: scale(0.9); }
+      }
+    </style>
+  `
+      );
+
+      // Messages chaleureux variables
+      const tooltipMessages = [
+        "Besoin d'aide pour trouver la robe de vos rêves ? 👰‍♀️",
+        "Une question sur nos collections ? Discutons sur WhatsApp ! ✨",
+        "Envie de prendre rendez-vous pour un essayage ? C'est par ici ! 📆",
+        "Découvrez nos conseils personnalisés pour votre mariage ! 💍",
+        "Un doute sur votre taille ? Monica vous guide en direct ! 👗",
+        "Nouvelles robes disponibles ! Parlons-en maintenant ! 🆕",
+        "Planning serré ? Échangeons rapidement sur WhatsApp ! ⏱️",
+      ];
+
+      // Fonction pour vérifier si l'infobulle doit être affichée
+
+      // Fonction pour montrer l'infobulle
+      function showRandomTooltip() {
+        // Apparaît seulement 1 fois sur 4 (25% de chance)
+        if (Math.random() < 0.25) {
+          const randomIndex = Math.floor(
+            Math.random() * tooltipMessages.length
+          );
+          const tooltipText = document.querySelector(".tooltip-text");
+          tooltipText.textContent = tooltipMessages[randomIndex];
+
+          tooltip.classList.remove("hidden");
+          tooltip.classList.add("visible");
+
+          // Disparaît après 4 secondes
+          setTimeout(() => {
+            tooltip.style.animation = "fadeOutTooltip 0.3s ease forwards";
+            setTimeout(() => {
+              tooltip.classList.remove("visible");
+              tooltip.classList.add("hidden");
+              tooltip.style.animation = "";
+            }, 300);
+          }, 4000);
+        }
+      }
+
+      // Cache l'infobulle si l'utilisateur clique sur le bouton WhatsApp
+      document
+        .getElementById("whatsapp-floating-btn")
+        .addEventListener("click", () => {
+          tooltip.classList.remove("visible");
+          tooltip.classList.add("hidden");
+        });
+
+      // Délai d'apparition - seulement si l'utilisateur reste sur la page
+      let userEngagedTimeout = setTimeout(() => {
+        showRandomTooltip;
+      }, 15000); // Attendre 15 secondes avant d'afficher l'infobulle
+
+      // Annuler le délai si l'utilisateur quitte la page avant
+      window.addEventListener("beforeunload", () => {
+        clearTimeout(userEngagedTimeout);
+      });
+
+      // Si l'utilisateur scrolle, c'est qu'il est engagé - attendre moins longtemps
+      let hasScrolled = false;
+      window.addEventListener("scroll", () => {
+        if (!hasScrolled) {
+          hasScrolled = true;
+          clearTimeout(userEngagedTimeout);
+          userEngagedTimeout = setTimeout(() => {
+            showRandomTooltip();
+          }, 5000); // Attendre seulement 5 secondes après un scroll
+        }
+      });
+
+      //
+
+      const floatingBtn = document.getElementById("whatsapp-floating-btn");
+      // Message préconfiguré pour WhatsApp (encodé pour URL)
+      const defaultMessage = encodeURIComponent("Bonjour Monica !");
+      const whatsappLink = `https://wa.me/33668300960?text=${defaultMessage}`;
+
+      // Créer le modal de confirmation
+      const modal = document.createElement("div");
+      modal.className = "fixed inset-0 z-[500] hidden";
+      modal.id = "whatsapp-modal";
+      modal.innerHTML = `
+    <!-- Overlay avec flou -->
+    <div class="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
+
+    <!-- Contenu de la modale -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-xl p-8 transform transition-all">
+      <!-- En-tête avec titre et bouton de fermeture -->
+      <div class="flex justify-between items-center mb-6 border-b border-[#F0E6E2] pb-4">
+        <h2 class="font-vibes text-3xl text-[#af7749]">WhatsApp</h2>
+        <button id="close-modal-button" class="rounded-full w-8 h-8 flex items-center justify-center text-[#8B7569] hover:bg-[#FDF8F7] transition-colors" aria-label="Fermer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Corps de la modale -->
+      <div class="text-center mb-8">
+        <!-- Logo -->
+        <div class="mb-4 flex justify-center">
+          <img src="/logo-new.png" alt="Monica Mariage" class="h-16 object-contain">
+        </div>
+        
+        <!-- Séparateur décoratif -->
+        <div class="flex items-center justify-center gap-4 mb-4">
+          <span class="h-px w-12 bg-[#C5A880]"></span>
+          <p class="text-[#8B7569] text-xs font-medium">REDIRECTION</p>
+          <span class="h-px w-12 bg-[#C5A880]"></span>
+        </div>
+
+        <p class="text-[#5F4B3F] leading-relaxed mb-6 text-base md:text-lg">
+          Vous allez être redirigé vers WhatsApp pour échanger directement avec notre conseillère.
+        </p>
+        
+        <p class="text-[#8B7569] text-sm mb-6">
+          Redirection automatique dans <span id="countdown" class="font-bold text-[#C99A9A]">3</span> secondes...
+        </p>
+      </div>
+
+      <!-- Boutons de contact -->
+      <div class="space-y-3">
+        <div class="flex gap-4">
+          <button id="cancel-redirect" class="flex-1 py-3 px-4 rounded-full bg-gray-100 text-[#8B7569] hover:bg-gray-200 transition-colors">
+            Annuler
+          </button>
+          <a id="confirm-redirect" href=${whatsappLink} target="_blank" class="flex-1 py-3 px-4 rounded-full bg-[#25D366] text-white hover:bg-[#1faa54] transition-colors text-center font-medium">
+            Continuer
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+      document.body.appendChild(modal);
+
+      // Ajouter des styles pour les animations
+      document.head.insertAdjacentHTML(
+        "beforeend",
+        `
+    <style>
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+
+      #whatsapp-modal.active {
+        display: block;
+        animation: fadeIn 0.3s ease forwards;
+      }
+
+      #whatsapp-modal.active > div:last-child {
+        animation: scaleIn 0.3s ease forwards;
+      }
+      
+      @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+        70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+      }
+      
+      #whatsapp-floating-btn {
+        animation: pulse 2s infinite;
+      }
+    </style>
+  `
+      );
+
+      // Ajouter les gestionnaires d'événements pour le modal
+      const confirmBtn = document.getElementById("confirm-redirect");
+      const cancelBtn = document.getElementById("cancel-redirect");
+      const closeModalBtn = document.getElementById("close-modal-button");
+      const countdownEl = document.getElementById("countdown");
+
+      let countdownInterval;
+      let redirectTimeout;
+
+      // Fonction pour démarrer le compte à rebours
+      function startCountdown() {
+        let count = 3;
+        countdownEl.textContent = count.toString();
+
+        countdownInterval = setInterval(() => {
+          count--;
+          countdownEl.textContent = count.toString();
+
+          if (count <= 0) {
+            clearInterval(countdownInterval);
+          }
+        }, 1000);
+
+        // Redirection automatique après 3 secondes
+        redirectTimeout = setTimeout(() => {
+          window.open(whatsappLink, "_blank");
+          closeModal();
+        }, 3000);
+      }
+
+      // Fonction pour arrêter le compte à rebours
+      function stopCountdown() {
+        clearInterval(countdownInterval);
+        clearTimeout(redirectTimeout);
+      }
+
+      // Fonction pour fermer la modale
+      function closeModal() {
+        modal.classList.remove("active");
+        document.body.style.overflow = "";
+        stopCountdown();
+      }
+
+      // Ouvrir le modal au lieu du chat
+      floatingBtn.addEventListener("click", () => {
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden"; // Empêcher le défilement
+        startCountdown();
+      });
+
+      // Fermer le modal
+      cancelBtn.addEventListener("click", () => {
+        closeModal();
+      });
+
+      // Bouton de fermeture en haut à droite
+      closeModalBtn.addEventListener("click", () => {
+        closeModal();
+      });
+
+      // Rediriger vers WhatsApp immédiatement
+      confirmBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        stopCountdown();
+        window.open("https://wa.me/33668300960", "_blank");
+        closeModal();
+      });
+
+      // Fermer en cliquant sur l'overlay
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal || e.target === modal.firstElementChild) {
+          closeModal();
+        }
+      });
+
+      // Fermer avec la touche Echap
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.classList.contains("active")) {
+          closeModal();
+        }
+      });
+    });
   </script>
 </div>
