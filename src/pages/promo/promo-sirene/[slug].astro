@@ -8,7 +8,7 @@ import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
 // 1) Génération des chemins dynamiques pour chaque slug de robe
 export async function getStaticPaths() {
   const slugs = await sanityClient.fetch(`
-    *[_type == "robe" && category == "promo" && sousCategorie == "robes-de-mariees-destockage"].slug.current
+    *[_type == "robe" && category == "promo" && sousCategorie == "promo-sirene"].slug.current
   `);
   return slugs.map((s) => ({ params: { slug: s } }));
 }
@@ -18,7 +18,7 @@ const { slug } = Astro.params;
 
 // 3) Fetch de tous les robes pour navigation
 const allRobes = await sanityClient.fetch(
-  `*[_type == "robe" && category == "promo" && sousCategorie == "robes-de-mariees-destockage"]{
+  `*[_type == "robe" && category == "promo" && sousCategorie == "promo-sirene"]{
      "slug": slug.current,
      dressName,
      category,
@@ -30,7 +30,7 @@ const allRobes = await sanityClient.fetch(
 const robeData = await sanityClient.fetch(
   `*[_type == "robe"
      && category == "promo"
-     && sousCategorie == "robes-de-mariees-destockage"
+     && sousCategorie == "promo-sirene"
      && slug.current == $slug][0]{
        title,
        metaDescription,
@@ -71,7 +71,7 @@ const nextItem = allRobes[(currentIndex + 1) % allRobes.length];
 const othersData = await sanityClient.fetch(
   `*[_type == "robe"
      && category == "promo"
-     && sousCategorie == "robes-de-mariees-destockage"
+     && sousCategorie == "promo-sirene"
      && slug.current != $slug]{
        "slug": slug.current,
        dressName,
