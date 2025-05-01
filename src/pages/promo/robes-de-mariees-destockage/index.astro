@@ -21,7 +21,7 @@ console.log("🚀 SANITY: allDocs =", JSON.stringify(allDocs, null, 2));
 const robesData = await sanityClient.fetch(`       
   *[_type == "robe"
     && category == "promo"
-    && sousCategorie == "robes-de-mariees-destockage"] // Changer ici pour la catégorie souhaitée
+    && sousCategorie == "robes-de-mariee-destockage"] // Changer ici pour la catégorie souhaitée
   | order(order asc){
     _id,
     dressName,
