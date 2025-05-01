@@ -5,14 +5,17 @@ const pathname = Astro.url.pathname;
 const pathSegments = pathname.split("/").filter((segment) => segment);
 ---
 
-<nav class="items-baseline text-wrap mt-8 text-[#5e3c21] text-lg md:text-xl font-vibes my-4">
-    <ul class="flex flex-wrap space-x-2 break-words">
-      <li>
-        <a href="/" class="hover:underline">
-          <Icon name="mdi:home" />
-        </a>
-      </li>
-      {pathSegments.map((segment, index) => {
+<nav
+  class="items-baseline text-wrap mt-8 text-[#5e3c21] text-lg md:text-xl font-vibes my-4"
+>
+  <ul class="flex flex-wrap space-x-2 break-words">
+    <li>
+      <a href="/" class="hover:underline">
+        <!-- <Icon name="mdi:home" /> -->
+      </a>
+    </li>
+    {
+      pathSegments.map((segment, index) => {
         const href = "/" + pathSegments.slice(0, index + 1).join("/");
         const isLast = index === pathSegments.length - 1;
         return (
@@ -21,11 +24,13 @@ const pathSegments = pathname.split("/").filter((segment) => segment);
             {isLast ? (
               <span class="text-gray-500">{decodeURIComponent(segment)}</span>
             ) : (
-              <a href={href} class="hover:underline">{decodeURIComponent(segment)}</a>
+              <a href={href} class="hover:underline">
+                {decodeURIComponent(segment)}
+              </a>
             )}
           </li>
         );
-      })}
-    </ul>
-  </nav>
-  
+      })
+    }
+  </ul>
+</nav>
