@@ -4,6 +4,7 @@ import Layout from "../../../layouts/Layout.astro";
 import PrendreRendezVousButtonHome from "../../../components/PrendreRendezVousButtonHome.astro";
 import { sanityClient } from "../../../sanityClient";
 import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
+import FavoriButton from "../../../components/FavoriButton.astro";
 
 // 1) Génération des chemins dynamiques pour chaque slug de robe
 export async function getStaticPaths() {
@@ -33,6 +34,7 @@ const robeData = await sanityClient.fetch(
      && sousCategorie == "minimaliste"
      && slug.current == $slug][0]{
        title,
+       _id,
        metaDescription,
        dressName,
        descriptionCourte,
@@ -74,6 +76,7 @@ const othersData = await sanityClient.fetch(
      && sousCategorie == "minimaliste"
      && slug.current != $slug]{
        "slug": slug.current,
+         _id,
        dressName,
        category,
        sousCategorie,
@@ -263,7 +266,17 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
         class="relative w-full max-w-md h-[600px] md:h-full mx-auto overflow-hidden"
       >
         <div class="swiper-container shadow-lg">
-          <div class="swiper-wrapper">
+          <FavoriButton 
+          imageId={robe._id} 
+          robeSlug={slug}
+          position="absolute top-4 right-4 z-30" 
+          robeName={robe.dressName}
+          imageUrl={robe.images[0]?.optimized.tablet}
+          imageAlt={robe.images[0]?.alt || robe.dressName}
+          sousCategorie={robe.sousCategorie}  
+        />   
+         <div class="swiper-wrapper">
+
             {
               robe.images.map((img, i) => (
                 <div class="swiper-slide overflow-hidden" key={i}>

@@ -87,10 +87,11 @@ const preloadImageUrls = robes
               {/* Overlay dégradé */}
               <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
                {/* Bouton Favoris */}
-               <FavoriButton 
-                imageId={robe._id} 
-                robeSlug={robe.slug} 
-              />
+<FavoriButton 
+  imageId={robe._id} 
+  robeSlug={robe.slug}
+  sousCategorie={robe.sousCategorie}  
+/>
               {/* Image */}
               {robe.images[0] ? (
                 <img

@@ -34,6 +34,7 @@ const robeData = await sanityClient.fetch(
      && sousCategorie == "style-boheme-chic"
      && slug.current == $slug][0]{
        title,
+       _id,
        metaDescription,
        dressName,
        descriptionCourte,
@@ -75,6 +76,7 @@ const othersData = await sanityClient.fetch(
      && sousCategorie == "style-boheme-chic"
      && slug.current != $slug]{
        "slug": slug.current,
+         _id,
        dressName,
        category,
        sousCategorie,
@@ -264,8 +266,16 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
         class="relative w-full max-w-md h-[600px] md:h-full mx-auto overflow-hidden"
       >
         <div class="swiper-container shadow-lg">
-          <!-- <FavoriButton/>  -->
-          <div class="swiper-wrapper">
+          <FavoriButton 
+          imageId={robe._id} 
+          robeSlug={slug}
+          position="absolute top-4 right-4 z-30" 
+          robeName={robe.dressName}
+          imageUrl={robe.images[0]?.optimized.tablet}
+          imageAlt={robe.images[0]?.alt || robe.dressName}
+          sousCategorie={robe.sousCategorie}  
+        />   
+         <div class="swiper-wrapper">
 
             {
               robe.images.map((img, i) => (

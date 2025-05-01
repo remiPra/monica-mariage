@@ -1,12 +1,25 @@
 ---
 // FavoriButton.astro
-const { imageId, robeSlug } = Astro.props;
+// Props avec valeurs par défaut pour compatibilité
+const { 
+  imageId, 
+  robeSlug, 
+  position = "absolute top-2 right-2", // Position par défaut
+  robeName = null,
+  imageUrl = null,
+  imageAlt = null,
+  sousCategorie = null  // Nouvelle prop pour la sous-catégorie
+} = Astro.props;
 ---
 
 <button
-  class="favori-button absolute top-2 right-2 p-2 rounded-full bg-white/70 hover:bg-white/90 transition-colors z-30"
+  class={`favori-button ${position} p-2 rounded-full bg-white/70 hover:bg-white/90 transition-colors z-30`}
   data-image-id={imageId}
   data-robe-slug={robeSlug}
+  data-robe-name={robeName}
+  data-image-url={imageUrl}
+  data-image-alt={imageAlt}
+  data-sous-categorie={sousCategorie} 
   aria-label="Ajouter aux favoris"
 >
   <svg 
@@ -22,9 +35,15 @@ const { imageId, robeSlug } = Astro.props;
     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
   </svg>
 </button>
-<script defer>
+
+<script>
   document.addEventListener('DOMContentLoaded', () => {
     setupFavoriButtons();
+    
+    // Écouter les événements de mise à jour des favoris pour rafraîchir tous les boutons
+    window.addEventListener('favorisUpdated', () => {
+      setupFavoriButtons();
+    });
   });
 
   function setupFavoriButtons() {
@@ -37,11 +56,16 @@ const { imageId, robeSlug } = Astro.props;
     // Pour chaque bouton, initialiser l'état et ajouter un gestionnaire d'événements
     favoriButtons.forEach(button => {
       const imageId = button.dataset.imageId;
+      
+      // Important: vérifier si cet ID est dans les favoris
       const isFavori = favoris.some(fav => fav.id === imageId);
       
       // Mettre à jour l'attribut data-favori et le style
       button.dataset.favori = isFavori ? 'true' : 'false';
       updateFavoriStyle(button, isFavori);
+      
+      // Supprimer les gestionnaires d'événements existants pour éviter les doublons
+      button.removeEventListener('click', handleFavoriClick);
       
       // Ajouter le gestionnaire d'événements pour le clic
       button.addEventListener('click', handleFavoriClick);
@@ -55,6 +79,12 @@ const { imageId, robeSlug } = Astro.props;
     const button = event.currentTarget;
     const imageId = button.dataset.imageId;
     const robeSlug = button.dataset.robeSlug;
+    const sousCategorie = button.dataset.sousCategorie;  // Récupérer la sous-catégorie
+    
+    // Logique adaptée pour utiliser les attributs data supplémentaires si disponibles
+    const robeName = button.dataset.robeName;
+    const imageUrl = button.dataset.imageUrl;
+    const imageAlt = button.dataset.imageAlt;
     
     // Inverser l'état du favori
     const isFavori = button.dataset.favori === 'true';
@@ -64,19 +94,52 @@ const { imageId, robeSlug } = Astro.props;
     button.dataset.favori = newFavoriState ? 'true' : 'false';
     updateFavoriStyle(button, newFavoriState);
     
-    // Trouver l'image et le nom de la robe
-    const card = button.closest('a');
-    const img = card.querySelector('img');
-    const nameElement = card.querySelector('.font-vibes');
+    // Trouver l'image et le nom de la robe si non fournis dans les attributs data
+    let name = robeName;
+    let imgUrl = imageUrl;
+    let imgAlt = imageAlt;
+    let categorie = sousCategorie;
+    
+    if (!name || !imgUrl) {
+      const card = button.closest('a');
+      if (card) {
+        const img = card.querySelector('img');
+        const nameElement = card.querySelector('.font-vibes');
+        
+        // Si le href du lien contient la sous-catégorie, l'extraire
+        if (!categorie && card.href) {
+          const hrefParts = card.href.split('/');
+          if (hrefParts.length >= 2) {
+            categorie = hrefParts[hrefParts.length - 2];
+          }
+        }
+        
+        name = name || (nameElement ? nameElement.textContent.trim() : 'Robe de mariée');
+        imgUrl = imgUrl || (img ? img.src : '');
+        imgAlt = imgAlt || (img ? img.alt : 'Robe de mariée');
+      }
+    }
     
     // Créer ou mettre à jour dans localStorage
     updateFavoriInStorage({
       id: imageId,
       slug: robeSlug,
-      name: nameElement ? nameElement.textContent.trim() : 'Robe de mariée',
-      imageUrl: img ? img.src : '',
-      imageAlt: img ? img.alt : 'Robe de mariée'
+      name: name,
+      imageUrl: imgUrl,
+      imageAlt: imgAlt,
+      sousCategorie: categorie || 'style-boheme-chic'  // Utiliser une valeur par défaut si non définie
     }, newFavoriState);
+    
+    // Mettre à jour tous les boutons avec le même ID
+    updateAllButtonsWithSameId(imageId, newFavoriState);
+  }
+  
+  function updateAllButtonsWithSameId(imageId, isFavori) {
+    // Mettre à jour tous les boutons avec le même ID sur la page
+    document.querySelectorAll(`.favori-button[data-image-id="${imageId}"]`).forEach(btn => {
+      btn.dataset.favori = isFavori ? 'true' : 'false';
+      updateFavoriStyle(btn, isFavori);
+    });
   }
 
   function updateFavoriStyle(button, isFavori) {
@@ -97,37 +160,38 @@ const { imageId, robeSlug } = Astro.props;
   }
 
   function updateFavoriInStorage(robeInfo, isFavori) {
-    // IMPORTANT: Récupérer la liste ACTUELLE des favoris
+    // Récupérer la liste actuelle des favoris
     const favoris = getFavorisFromStorage();
     
     if (isFavori) {
-      // Vérifier si l'élément existe déjà pour éviter les doublons
+      // Vérifier si l'élément existe déjà
       const existingIndex = favoris.findIndex(fav => fav.id === robeInfo.id);
       if (existingIndex === -1) {
-        // Ajouter à la liste existante si l'élément n'existe pas
+        // Ajouter à la liste si n'existe pas
         favoris.push(robeInfo);
       } else {
-        // Mettre à jour les infos si nécessaire
+        // Mettre à jour si besoin
         favoris[existingIndex] = { ...favoris[existingIndex], ...robeInfo };
       }
     } else {
-      // Supprimer l'élément s'il existe
+      // Supprimer si existe
       const index = favoris.findIndex(fav => fav.id === robeInfo.id);
       if (index !== -1) {
         favoris.splice(index, 1);
       }
     }
     
-    // Sauvegarder la liste COMPLÈTE dans localStorage
+    // Sauvegarder la liste mise à jour
     localStorage.setItem('favoriteRobes', JSON.stringify(favoris));
     
-    // Déclencher un événement personnalisé pour informer d'autres parties de l'application
+    // Déclencher un événement personnalisé
     window.dispatchEvent(new CustomEvent('favorisUpdated', { detail: { count: favoris.length } }));
   }
-
-  // Exposer ces fonctions globalement pour les autres composants
-  window.favoriUtils = {
-    getFavorisFromStorage,
-    updateFavoriStyle
-  };
+  
+  // Exécuter setupFavoriButtons après la modification du localStorage
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'favoriteRobes') {
+      setupFavoriButtons();
+    }
+  });
 </script>
