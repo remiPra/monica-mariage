@@ -4,6 +4,7 @@ import Layout from "../../../layouts/Layout.astro";
 import PrendreRendezVousButtonHome from "../../../components/PrendreRendezVousButtonHome.astro";
 import { sanityClient } from "../../../sanityClient";
 import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
+import FavoriButton from "../../../components/FavoriButton.astro";
 
 // 1) Génération des chemins dynamiques pour chaque slug de robe
 export async function getStaticPaths() {
@@ -263,7 +264,9 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
         class="relative w-full max-w-md h-[600px] md:h-full mx-auto overflow-hidden"
       >
         <div class="swiper-container shadow-lg">
+          <!-- <FavoriButton/>  -->
           <div class="swiper-wrapper">
+
             {
               robe.images.map((img, i) => (
                 <div class="swiper-slide overflow-hidden" key={i}>

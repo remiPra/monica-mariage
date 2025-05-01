@@ -2,6 +2,8 @@
 // Importation des composants Astro
 import { Icon } from "astro-icon/components";
 import SocialIcons from "./SocialIcons.astro";
+import FavoriDrawer from "./FavoriDrawer.astro";
+import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
 ---
 
 <header id="header" class="fixed top-0 w-full z-50 bg-[#FDE9E6] shadow-md">
@@ -142,12 +144,7 @@ import SocialIcons from "./SocialIcons.astro";
       >
         Trouver le showroom
       </a>
-      <a href="/">
-        <Icon
-          name="mdi:heart"
-          class="w-5 h-5 text-[#7A5C4B] hover:text-[#A37B63]"
-        />
-      </a>
+      <FavorisDrawerDesktop/>
     </div>
   </nav>
 
@@ -161,14 +158,12 @@ import SocialIcons from "./SocialIcons.astro";
     >
       <Icon name="mdi:menu" class="w-8 h-8 text-[28px]" />
     </button>
-    <a href="/" class="font-vibes text-2xl text-[#7A5C4B]"> MonicaMariage </a>
-    <div class="flex gap-4">
-      <a href="/trouver-le-showroom">
+    <a href="/" class="font-vibes ml-5 text-2xl text-[#7A5C4B]"> MonicaMariage </a>
+    <div class="flex">
+      <a class="text-[#7A5C4B] text-[26px] font-semibold py-3 flex items-center" href="/trouver-le-showroom">
         <Icon name="mdi:map-marker" class="text-[#7A5C4B]" />
       </a>
-      <a href="/">
-        <Icon name="mdi:heart" class="text-[#7A5C4B]" />
-      </a>
+    <FavoriDrawer/>
     </div>
   </div>
 
@@ -356,6 +351,7 @@ import SocialIcons from "./SocialIcons.astro";
 </header>
 
 <!-- JavaScript en defer pour gérer l'ouverture/fermeture des menus -->
+<!-- JavaScript en defer pour gérer l'ouverture/fermeture des menus et les favoris -->
 <script defer>
   document.addEventListener("DOMContentLoaded", () => {
     const mobileMenu = document.getElementById("mobileMenu");
@@ -432,5 +428,30 @@ import SocialIcons from "./SocialIcons.astro";
       mobileMenu.classList.remove("translate-y-full", "opacity-0");
       mobileMenu.classList.add("translate-y-0", "opacity-100");
     });
+
+    // Gestion des compteurs de favoris
+    updateHeaderFavorisCounters();
+    
+    // Écouter les événements de mise à jour des favoris
+    window.addEventListener('favorisUpdated', updateHeaderFavorisCounters);
+    window.addEventListener('favoritesUpdated', updateHeaderFavorisCounters); // Pour compatibilité
+    
+    function updateHeaderFavorisCounters() {
+      // Récupérer les favoris
+      const favoris = localStorage.getItem('favoriteRobes');
+      const favorisCount = favoris ? JSON.parse(favoris).length : 0;
+      
+      // Mettre à jour tous les compteurs dans le header
+      const countElements = document.querySelectorAll('#favoris-count');
+      countElements.forEach(element => {
+        element.textContent = favorisCount;
+      });
+      
+      // Mettre également à jour dans le cas où d'anciens IDs sont utilisés
+      const oldCountElements = document.querySelectorAll('#favorites-count');
+      oldCountElements.forEach(element => {
+        element.textContent = favorisCount;
+      });
+    }
   });
 </script>

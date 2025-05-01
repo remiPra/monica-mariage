@@ -1,0 +1,133 @@
+---
+// FavoriButton.astro
+const { imageId, robeSlug } = Astro.props;
+---
+
+<button
+  class="favori-button absolute top-2 right-2 p-2 rounded-full bg-white/70 hover:bg-white/90 transition-colors z-30"
+  data-image-id={imageId}
+  data-robe-slug={robeSlug}
+  aria-label="Ajouter aux favoris"
+>
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width="24" 
+    height="24" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    stroke-width="2" 
+    class="w-5 h-5 favori-icon transition-colors duration-300"
+  >
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+  </svg>
+</button>
+<script defer>
+  document.addEventListener('DOMContentLoaded', () => {
+    setupFavoriButtons();
+  });
+
+  function setupFavoriButtons() {
+    // Récupérer tous les boutons de favoris
+    const favoriButtons = document.querySelectorAll('.favori-button');
+    
+    // Récupérer les favoris du localStorage
+    const favoris = getFavorisFromStorage();
+    
+    // Pour chaque bouton, initialiser l'état et ajouter un gestionnaire d'événements
+    favoriButtons.forEach(button => {
+      const imageId = button.dataset.imageId;
+      const isFavori = favoris.some(fav => fav.id === imageId);
+      
+      // Mettre à jour l'attribut data-favori et le style
+      button.dataset.favori = isFavori ? 'true' : 'false';
+      updateFavoriStyle(button, isFavori);
+      
+      // Ajouter le gestionnaire d'événements pour le clic
+      button.addEventListener('click', handleFavoriClick);
+    });
+  }
+
+  function handleFavoriClick(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    const button = event.currentTarget;
+    const imageId = button.dataset.imageId;
+    const robeSlug = button.dataset.robeSlug;
+    
+    // Inverser l'état du favori
+    const isFavori = button.dataset.favori === 'true';
+    const newFavoriState = !isFavori;
+    
+    // Mettre à jour le bouton
+    button.dataset.favori = newFavoriState ? 'true' : 'false';
+    updateFavoriStyle(button, newFavoriState);
+    
+    // Trouver l'image et le nom de la robe
+    const card = button.closest('a');
+    const img = card.querySelector('img');
+    const nameElement = card.querySelector('.font-vibes');
+    
+    // Créer ou mettre à jour dans localStorage
+    updateFavoriInStorage({
+      id: imageId,
+      slug: robeSlug,
+      name: nameElement ? nameElement.textContent.trim() : 'Robe de mariée',
+      imageUrl: img ? img.src : '',
+      imageAlt: img ? img.alt : 'Robe de mariée'
+    }, newFavoriState);
+  }
+
+  function updateFavoriStyle(button, isFavori) {
+    const icon = button.querySelector('.favori-icon');
+    
+    if (isFavori) {
+      icon.classList.add('text-pink-500');
+      icon.setAttribute('fill', 'currentColor');
+    } else {
+      icon.classList.remove('text-pink-500');
+      icon.setAttribute('fill', 'none');
+    }
+  }
+
+  function getFavorisFromStorage() {
+    const storedFavoris = localStorage.getItem('favoriteRobes');
+    return storedFavoris ? JSON.parse(storedFavoris) : [];
+  }
+
+  function updateFavoriInStorage(robeInfo, isFavori) {
+    // IMPORTANT: Récupérer la liste ACTUELLE des favoris
+    const favoris = getFavorisFromStorage();
+    
+    if (isFavori) {
+      // Vérifier si l'élément existe déjà pour éviter les doublons
+      const existingIndex = favoris.findIndex(fav => fav.id === robeInfo.id);
+      if (existingIndex === -1) {
+        // Ajouter à la liste existante si l'élément n'existe pas
+        favoris.push(robeInfo);
+      } else {
+        // Mettre à jour les infos si nécessaire
+        favoris[existingIndex] = { ...favoris[existingIndex], ...robeInfo };
+      }
+    } else {
+      // Supprimer l'élément s'il existe
+      const index = favoris.findIndex(fav => fav.id === robeInfo.id);
+      if (index !== -1) {
+        favoris.splice(index, 1);
+      }
+    }
+    
+    // Sauvegarder la liste COMPLÈTE dans localStorage
+    localStorage.setItem('favoriteRobes', JSON.stringify(favoris));
+    
+    // Déclencher un événement personnalisé pour informer d'autres parties de l'application
+    window.dispatchEvent(new CustomEvent('favorisUpdated', { detail: { count: favoris.length } }));
+  }
+
+  // Exposer ces fonctions globalement pour les autres composants
+  window.favoriUtils = {
+    getFavorisFromStorage,
+    updateFavoriStyle
+  };
+</script>

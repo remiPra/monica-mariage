@@ -3,6 +3,8 @@ import Layout from "../../../layouts/Layout.astro";
 import HeroSection from "../../../components/HeroSection.astro";
 import { sanityClient } from "../../../sanityClient";
 import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
+import FavoriButton from "../../../components/FavoriButton.astro";
+import FavoriDrawer from "../../../components/FavoriDrawer.astro";
 
 // 🔍 DEBUG : récupérer TOUTES les robes pour inspection
 const allDocs = await sanityClient.fetch(`
@@ -84,7 +86,11 @@ const preloadImageUrls = robes
             >
               {/* Overlay dégradé */}
               <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
-
+               {/* Bouton Favoris */}
+               <FavoriButton 
+                imageId={robe._id} 
+                robeSlug={robe.slug} 
+              />
               {/* Image */}
               {robe.images[0] ? (
                 <img
