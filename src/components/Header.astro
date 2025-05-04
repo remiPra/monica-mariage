@@ -91,12 +91,6 @@ import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
           class="absolute left-0 mt-2 w-48 bg-[#FDE9E6] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         >
           <a
-            href="/promo/promo-sirene"
-            class="block px-4 py-2 text-[#7A5C4B] hover:bg-[#A37B63] hover:text-white"
-          >
-            Offre Spéciale
-          </a>
-          <a
             href="/promo/robes-de-mariee-promotion"
             class="block px-4 py-2 text-[#7A5C4B] hover:bg-[#A37B63] hover:text-white"
           >
@@ -106,7 +100,13 @@ import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
             href="/promo/robes-de-mariee-boheme-chic"
             class="block px-4 py-2 text-[#7A5C4B] hover:bg-[#A37B63] hover:text-white"
           >
-            Promotion Festive
+            Promotion Bohème
+          </a>
+          <a
+            href="/promo/promo-sirene"
+            class="block px-4 py-2 text-[#7A5C4B] hover:bg-[#A37B63] hover:text-white"
+          >
+            Promotion Sirène
           </a>
           <a
             href="/promo/robes-de-mariee-destockage"
@@ -144,7 +144,7 @@ import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
       >
         Trouver le showroom
       </a>
-      <FavorisDrawerDesktop/>
+      <FavorisDrawerDesktop />
     </div>
   </nav>
 
@@ -158,12 +158,17 @@ import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
     >
       <Icon name="mdi:menu" class="w-8 h-8 text-[28px]" />
     </button>
-    <a href="/" class="font-vibes ml-5 text-2xl text-[#7A5C4B]"> MonicaMariage </a>
+    <a href="/" class="font-vibes ml-5 text-2xl text-[#7A5C4B]">
+      MonicaMariage
+    </a>
     <div class="flex">
-      <a class="text-[#7A5C4B] text-[26px] font-semibold py-3 flex items-center" href="/trouver-le-showroom">
+      <a
+        class="text-[#7A5C4B] text-[26px] font-semibold py-3 flex items-center"
+        href="/trouver-le-showroom"
+      >
         <Icon name="mdi:map-marker" class="text-[#7A5C4B]" />
       </a>
-    <FavoriDrawer/>
+      <FavoriDrawer />
     </div>
   </div>
 
@@ -323,12 +328,6 @@ import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
     </div>
     <div class="flex flex-col items-start space-y-4 w-full">
       <a
-        href="/promo/promo-sirene"
-        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
-      >
-        <span class="text-xl">Offre Spéciale</span>
-      </a>
-      <a
         href="/promo/robes-de-mariee-promotion"
         class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
       >
@@ -338,7 +337,13 @@ import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
         href="/promo/robes-de-mariee-boheme-chic"
         class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
       >
-        <span class="text-xl">Promotion Festive</span>
+        <span class="text-xl">Promotion Boheme</span>
+      </a>
+      <a
+        href="/promo/promo-sirene"
+        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
+      >
+        <span class="text-xl">Promotion Sirène</span>
       </a>
       <a
         href="/promo/robes-de-mariee-destockage"
@@ -431,25 +436,25 @@ import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
 
     // Gestion des compteurs de favoris
     updateHeaderFavorisCounters();
-    
+
     // Écouter les événements de mise à jour des favoris
-    window.addEventListener('favorisUpdated', updateHeaderFavorisCounters);
-    window.addEventListener('favoritesUpdated', updateHeaderFavorisCounters); // Pour compatibilité
-    
+    window.addEventListener("favorisUpdated", updateHeaderFavorisCounters);
+    window.addEventListener("favoritesUpdated", updateHeaderFavorisCounters); // Pour compatibilité
+
     function updateHeaderFavorisCounters() {
       // Récupérer les favoris
-      const favoris = localStorage.getItem('favoriteRobes');
+      const favoris = localStorage.getItem("favoriteRobes");
       const favorisCount = favoris ? JSON.parse(favoris).length : 0;
-      
+
       // Mettre à jour tous les compteurs dans le header
-      const countElements = document.querySelectorAll('#favoris-count');
-      countElements.forEach(element => {
+      const countElements = document.querySelectorAll("#favoris-count");
+      countElements.forEach((element) => {
         element.textContent = favorisCount;
       });
-      
+
       // Mettre également à jour dans le cas où d'anciens IDs sont utilisés
-      const oldCountElements = document.querySelectorAll('#favorites-count');
-      oldCountElements.forEach(element => {
+      const oldCountElements = document.querySelectorAll("#favorites-count");
+      oldCountElements.forEach((element) => {
         element.textContent = favorisCount;
       });
     }

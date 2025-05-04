@@ -24,13 +24,14 @@ const joursSemaine = [
         class="md:w-1/2 w-full relative overflow-hidden"
         style="background-image: url('/contact.jpg'); background-size: cover; background-position: center;"
       >
+        <!-- En ceci -->
         <div
           class="absolute top-0 left-0 w-full h-full"
-          style="background-color: rgba(181, 116, 75, 0.7);"
+          style="background-color: rgba(93, 38, 2, 0.8);"
         >
         </div>
         <div class="relative z-10 p-6">
-          <SocialIcons iconColor="white" center="center" />
+          <SocialIcons iconColor="white" />
         </div>
         <div class="rounded-lg shadow-md p-8 max-w-xl mx-auto relative z-10">
           <h1
@@ -56,19 +57,36 @@ const joursSemaine = [
           </div>
 
           <!-- Horaires d'ouverture -->
+          <!-- Horaires d'ouverture -->
           <div class="mt-8 text-white">
             <h3 class="text-xl font-medium text-center mb-4">
               Horaires d'ouverture
             </h3>
             <div class="grid grid-cols-2 gap-2">
-              {
-                joursSemaine.map((jour) => (
-                  <div class="text-center py-2 border-b border-[#53240f]/20">
-                    <span class="font-medium">{jour}</span>
-                    <p>9h - 19h</p>
-                  </div>
-                ))
-              }
+              <div class="text-center py-2 border-b border-[#53240f]/20">
+                <span class="font-medium">Lundi</span>
+                <p>12h - 19h</p>
+              </div>
+              <div class="text-center py-2 border-b border-[#53240f]/20">
+                <span class="font-medium">Mardi</span>
+                <p>14h - 19h</p>
+              </div>
+              <div class="text-center py-2 border-b border-[#53240f]/20">
+                <span class="font-medium">Mercredi</span>
+                <p>12h30 - 19h</p>
+              </div>
+              <div class="text-center py-2 border-b border-[#53240f]/20">
+                <span class="font-medium">Jeudi</span>
+                <p>Fermé</p>
+              </div>
+              <div class="text-center py-2 border-b border-[#53240f]/20">
+                <span class="font-medium">Vendredi</span>
+                <p>9h - 19h</p>
+              </div>
+              <div class="text-center py-2 border-b border-[#53240f]/20">
+                <span class="font-medium">Samedi</span>
+                <p>9h - 19h</p>
+              </div>
             </div>
             <p class="text-center mt-4 text-sm italic">
               Sur rendez-vous uniquement
@@ -78,7 +96,8 @@ const joursSemaine = [
       </div>
 
       <!-- COLONNE DROITE -->
-      <div class="w-full md:w-1/2 bg-[rgba(181,116,75,0.7)] p-6 rounded-lg">
+      <!-- En ceci -->
+      <div class="w-full md:w-1/2 bg-[rgba(131,82,50,0.8)] p-6 rounded-lg">
         <h2 class="text-center text-2xl font-script text-white mb-6">
           Contactez-moi
         </h2>
