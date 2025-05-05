@@ -22,7 +22,7 @@
   font-family: "Lora";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/lora-v35-latin-regular.woff2") format("woff2");
+  src: url("/fonts/lora-v35-latin-regular.woff2") format("woff2");
 }
 
 /* great-vibes-regular - latin */
