@@ -70,11 +70,11 @@ const preloadImageUrls = robes
 
   <section
     style="margin-top: 120px;"
-    class="py-1 bg-gradient-to-b  from-white to-[#FDE9E6]"
+    class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]"
   >
     <div class="flex justify-center px-4">
       <div
-        class="grid   mb-[100px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full"
+        class="grid mb-[100px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full"
       >
         {
           robes.map((robe, index) => (
@@ -86,12 +86,12 @@ const preloadImageUrls = robes
             >
               {/* Overlay dégradé */}
               <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
-               {/* Bouton Favoris */}
-<FavoriButton 
-  imageId={robe._id} 
-  robeSlug={robe.slug}
-  sousCategorie={robe.sousCategorie}  
-/>
+              {/* Bouton Favoris */}
+              <FavoriButton
+                imageId={robe._id}
+                robeSlug={robe.slug}
+                sousCategorie={robe.sousCategorie}
+              />
               {/* Image */}
               {robe.images[0] ? (
                 <img
@@ -125,7 +125,7 @@ const preloadImageUrls = robes
         }
       </div>
 
-      <script>
+      <script defer>
         // Amélioration du script d'animation pour ne pas retarder le LCP
         document.addEventListener("DOMContentLoaded", () => {
           // Initialiser immédiatement les images visibles
