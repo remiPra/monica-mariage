@@ -90,16 +90,8 @@ const randomDresses = (othersData || [])
     images: (d.imagesCloudinary || []).map((img) => ({
       alt: img.alt,
       optimized: {
-        tablet: optimizeCloudinaryUrl(img.url, {
-          w: 400,
-          h: 600,
-          crop: "fill",
-        }),
-        mobile: optimizeCloudinaryUrl(img.url, {
-          w: 200,
-          h: 300,
-          crop: "fill",
-        }),
+        tablet: optimizeCloudinaryUrl(img.url, "tablet"), // On peut aussi mettre "imageMobileGallery" ou "desktop"
+        mobile: optimizeCloudinaryUrl(img.url, "mobile"),
       },
     })),
   }))
@@ -266,17 +258,16 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
         class="relative w-full max-w-md h-[600px] md:h-full mx-auto overflow-hidden"
       >
         <div class="swiper-container shadow-lg">
-          <FavoriButton 
-          imageId={robe._id} 
-          robeSlug={slug}
-          position="absolute top-4 right-4 z-30" 
-          robeName={robe.dressName}
-          imageUrl={robe.images[0]?.optimized.tablet}
-          imageAlt={robe.images[0]?.alt || robe.dressName}
-          sousCategorie={robe.sousCategorie}  
-        />   
-         <div class="swiper-wrapper">
-
+          <FavoriButton
+            imageId={robe._id}
+            robeSlug={slug}
+            position="absolute top-4 right-4 z-30"
+            robeName={robe.dressName}
+            imageUrl={robe.images[0]?.optimized.tablet}
+            imageAlt={robe.images[0]?.alt || robe.dressName}
+            sousCategorie={robe.sousCategorie}
+          />
+          <div class="swiper-wrapper">
             {
               robe.images.map((img, i) => (
                 <div class="swiper-slide overflow-hidden" key={i}>
