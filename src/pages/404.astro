@@ -1,0 +1,33 @@
+---
+// src/pages/404.astro
+import Layout from "../layouts/Layout.astro";
+export const prerender = true;
+---
+
+<Layout
+  title="Page non trouvée - 404 | Monica Mariage"
+  description="La page que vous cherchez n'existe pas. Retournez à l'accueil de Monica Mariage."
+>
+  <main
+    class="min-h-screen flex flex-col items-center justify-center px-4 bg-stone-50"
+  >
+    <div class="text-center max-w-2xl py-16">
+      <h1 class="text-8xl font-bold text-rose-200 mb-6">404</h1>
+      <h2 class="text-4xl text-stone-800 mb-6 font-serif">Page non trouvée</h2>
+      <p class="text-stone-600 mb-8 text-lg">
+        Désolée, la page que vous cherchez semble avoir disparu.<br />
+        Peut-être que notre <a
+          href="/robes-mariees"
+          class="text-rose-300 hover:text-rose-400 underline"
+          >collection de robes</a
+        > vous intéressera ?
+      </p>
+      <a
+        href="/"
+        class="bg-rose-300 hover:bg-rose-400 text-white px-8 py-3 rounded-full text-sm font-medium transition-colors inline-block"
+      >
+        Retour à l'accueil
+      </a>
+    </div>
+  </main>
+</Layout>
