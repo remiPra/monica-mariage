@@ -1,6 +1,5 @@
 export function get() {
-  const baseUrl =
-    import.meta.env.SITE || "https://www.monica-mariage.vercel.app";
+  const baseUrl = import.meta.env.SITE || "https://www.monicamariage.com";
 
   return {
     body: `User-agent: *

@@ -2,8 +2,7 @@ import { sanityClient } from "../sanityClient";
 
 export async function get() {
   // Définir la base URL de votre site
-  const baseUrl =
-    import.meta.env.SITE || "https://www.monica-mariage.vercel.app";
+  const baseUrl = import.meta.env.SITE || "https://www.monicamariage.com";
 
   // 1. Récupérer toutes les robes avec leurs catégories et sous-catégories
   const allRobes = await sanityClient.fetch(`
