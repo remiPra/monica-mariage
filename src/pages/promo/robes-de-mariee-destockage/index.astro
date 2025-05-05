@@ -9,6 +9,7 @@ const allDocs = await sanityClient.fetch(`
   *[_type == "robe"]{
     _id,
     dressName,
+    price,
     category,
     sousCategorie,
     "slug": slug.current,
@@ -25,6 +26,7 @@ const robesData = await sanityClient.fetch(`
   | order(order asc){
     _id,
     dressName,
+    price,
     category,
     sousCategorie,
     "slug": slug.current,
@@ -104,14 +106,19 @@ const preloadImageUrls = robes
               )}
 
               {/* Contenu bas */}
-              <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
-                <p class="text-white font-vibes text-4xl mb-4 drop-shadow-lg">
-                  {robe.dressName.charAt(0).toUpperCase() +
-                    robe.dressName.slice(1).toLowerCase()}
-                </p>
-                <button class="bg-[#C5A880] text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
-                  Découvrir cette robe
-                </button>
+              <div class="absolute bottom-0 left-0 w-full bg-white/95 p-4 z-10">
+                <div class="flex justify-between items-center">
+                  <div>
+                    <h3 class="text-[#af7749] font-vibes text-2xl">
+                      {robe.dressName.charAt(0).toUpperCase() +
+                        robe.dressName.slice(1).toLowerCase()}
+                    </h3>
+                    <span class="text-gray-600">{robe.price} €</span>
+                  </div>
+                  <button class="bg-[#C5A880] text-white px-6 py-2 rounded-full hover:bg-[#A27E5D] transition-all">
+                    Voir
+                  </button>
+                </div>
               </div>
             </a>
           ))

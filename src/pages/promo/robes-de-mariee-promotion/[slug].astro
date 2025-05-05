@@ -22,6 +22,7 @@ const allRobes = await sanityClient.fetch(
      "slug": slug.current,
      dressName,
      category,
+     price,
      sousCategorie
   }`
 );
@@ -35,6 +36,7 @@ const robeData = await sanityClient.fetch(
        title,
        metaDescription,
        dressName,
+       price,
        descriptionCourte,
        category,
        sousCategorie,
@@ -76,6 +78,7 @@ const othersData = await sanityClient.fetch(
        "slug": slug.current,
        dressName,
        category,
+       price,
        sousCategorie,
        "imagesCloudinary": imagesCloudinary[]{ url, alt }
   }`,
@@ -332,6 +335,13 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
             robe.dressName.slice(1).toLowerCase()
         }
       </h1>
+      <div class="flex items-center gap-4 mb-6">
+        <span class="text-3xl font-cormorant text-[#A27E5D]"
+          >{robe.price} €</span
+        >
+        <div class="h-6 w-px bg-[#C5A880]"></div>
+      </div>
+
       <div
         class="text-gray-700 text-lg leading-relaxed"
         set:html={robe.descriptionCourte}
