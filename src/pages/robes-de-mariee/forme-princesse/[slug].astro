@@ -272,15 +272,25 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
               robe.images.map((img, i) => (
                 <div class="swiper-slide overflow-hidden" key={i}>
                   <div class="border border-[#C5A880] rounded-2xl h-full w-full overflow-hidden">
-                    <img
-                      src={img.optimized.tablet}
-                      alt={img.alt}
-                      class="object-cover w-full h-[600px] md:h-full"
-                      loading={i === 0 ? "eager" : "lazy"}
-                      fetchpriority={i === 0 ? "high" : "auto"}
-                      onclick={`openModal("${img.full}", "${img.alt}")`}
-                      decoding={i === 0 ? "sync" : "async"}
-                    />
+                    <picture>
+                      <source
+                        media="(max-width: 767px)"
+                        srcset={img.optimized.mobile}
+                      />
+                      <source
+                        media="(min-width: 768px)"
+                        srcset={img.optimized.tablet}
+                      />
+                      <img
+                        src={img.optimized.tablet}
+                        alt={img.alt}
+                        class="object-cover w-full h-[600px] md:h-full"
+                        loading={i === 0 ? "eager" : "lazy"}
+                        fetchpriority={i === 0 ? "high" : "auto"}
+                        onclick={`openModal("${img.full}", "${img.alt}")`}
+                        decoding={i === 0 ? "sync" : "async"}
+                      />
+                    </picture>
                   </div>
                 </div>
               ))
