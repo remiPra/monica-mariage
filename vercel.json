@@ -13,33 +13,26 @@
       "destination": "https://www.monicamariage.com/:path*",
       "permanent": true
     },
-
-    // Catégories sans chemin supplémentaire
     {
       "source": "/:cat(style-boheme-chic|forme-sirene|minimaliste|forme-princesse)",
       "destination": "/robes-de-mariee/:cat",
       "permanent": true
     },
-    // Catégories avec chemin supplémentaire
     {
       "source": "/:cat(style-boheme-chic|forme-sirene|minimaliste|forme-princesse)/:rest*",
       "destination": "/robes-de-mariee/:cat/:rest*",
       "permanent": true
     },
-
-    // Promotions sans chemin supplémentaire
     {
       "source": "/:promo(promo-sirene|robes-de-mariee-boheme-chic|robes-de-mariee-destockage|robes-de-mariee-promotion)",
       "destination": "/promo/:promo",
       "permanent": true
     },
-    // Promotions avec chemin supplémentaire
     {
       "source": "/:promo(promo-sirene|robes-de-mariee-boheme-chic|robes-de-mariee-destockage|robes-de-mariee-promotion)/:rest*",
       "destination": "/promo/:promo/:rest*",
       "permanent": true
     },
-
     {
       "source": "/robe-de-soiree",
       "destination": "/toutes-nos-robes",
