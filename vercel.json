@@ -30,7 +30,7 @@
     },
     {
       "source": "/pourquoi-nous-choisir",
-      "destination": "/prendre-rendez-vous",
+      "destination": "/",
       "permanent": true
     }
   ]
