@@ -8,9 +8,9 @@ const { measurementId } = Astro.props;
 
 <!-- src/components/Analytics.astro --><!-- Script Google Analytics avec defer pour minimiser l'impact sur le LCP -->
 <script
-  defer
+  async
   src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}></script>
-<script defer define:vars={{ measurementId }}>
+<script async define:vars={{ measurementId }}>
   window.dataLayer = window.dataLayer || [];
   function gtag() {
     dataLayer.push(arguments);
