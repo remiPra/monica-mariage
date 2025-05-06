@@ -1,0 +1,42 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "monicamariage.com" }],
+      "destination": "https://www.monicamariage.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:cat(style-boheme-chic|forme-sirene|minimaliste|forme-princesse)(/:rest*)?",
+      "destination": "/robes-de-mariee/:cat:rest",
+      "permanent": true
+    },
+    {
+      "source": "/:promo(promo-sirene|robes-de-mariee-boheme-chic|robes-de-mariee-destockage|robes-de-mariee-promotion)(/:rest*)?",
+      "destination": "/promo/:promo:rest",
+      "permanent": true
+    },
+    {
+      "source": "/robe-de-soiree",
+      "destination": "/toutes-nos-robes",
+      "permanent": true
+    },
+    {
+      "source": "/modalites",
+      "destination": "/prendre-rendez-vous",
+      "permanent": true
+    },
+    {
+      "source": "/pourquoi-nous-choisir",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}
