@@ -1,4 +1,11 @@
 {
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build"
+    }
+  ],
   "redirects": [
     {
       "source": "/:path*",
@@ -40,11 +47,6 @@
       "source": "/pourquoi-nous-choisir",
       "destination": "/",
       "permanent": true
-    },
-    {
-      "source": "/:path*",
-      "destination": "/404.html",
-      "statusCode": 404
     }
   ]
 }
