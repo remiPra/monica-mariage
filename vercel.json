@@ -1,15 +1,16 @@
 {
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/((?!_next|api|static|assets|css|js|images).*)",
-      "destination": "/index.html"
+      "src": "package.json",
+      "use": "@vercel/static-build"
     }
   ],
   "redirects": [
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "has": [{ "type": "host", "value": "monicamariage.com" }],
-      "destination": "https://www.monicamariage.com/$1",
+      "destination": "https://www.monicamariage.com/:path*",
       "permanent": true
     },
     {
@@ -46,6 +47,11 @@
       "source": "/pourquoi-nous-choisir",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "destination": "/404.html",
+      "statusCode": 404
     }
   ]
 }
