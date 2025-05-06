@@ -3,7 +3,7 @@ const { title, subtitle, buttonText, scrollTarget, iconSrc } = Astro.props;
 ---
 
 <section class="relative text-center pt-12 pb-28 px-6 sm:px-8 lg:px-12">
-  <div class="max-w-5xl mx-auto animate-fade-in">
+  <div class="max-w-5xl mx-auto">
     {/* Icône décorative */}
     <div class="flex justify-center mb-4">
       <img
@@ -41,22 +41,7 @@ const { title, subtitle, buttonText, scrollTarget, iconSrc } = Astro.props;
 </section>
 
 <!-- Animation améliorée -->
-<style>
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
 
-  .animate-fade-in {
-    animation: fade-in 0.8s ease-out;
-  }
-</style>
 <script defer>
   document.addEventListener("DOMContentLoaded", function () {
     const scrollButton = document.getElementById("scroll-button");
