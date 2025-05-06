@@ -19,7 +19,7 @@ export function optimizeCloudinaryUrl(url, mode) {
       transformation += ",ar_2:3,w_350,f_webp,q_95";
       break;
     case "mobile":
-      transformation += ",ar_2:5,w_350,f_webp,q_85";
+      transformation += ",ar_2:5,w_400,f_webp,q_95";
       break;
     case "desktop":
     default:
