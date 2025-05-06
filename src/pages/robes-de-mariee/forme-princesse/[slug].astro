@@ -90,8 +90,16 @@ const randomDresses = (othersData || [])
     images: (d.imagesCloudinary || []).map((img) => ({
       alt: img.alt,
       optimized: {
-        tablet: optimizeCloudinaryUrl(img.url, "tablet"), // On peut aussi mettre "imageMobileGallery" ou "desktop"
-        mobile: optimizeCloudinaryUrl(img.url, "mobile"),
+        tablet: optimizeCloudinaryUrl(img.url, {
+          w: 400,
+          h: 600,
+          crop: "fill",
+        }),
+        mobile: optimizeCloudinaryUrl(img.url, {
+          w: 200,
+          h: 300,
+          crop: "fill",
+        }),
       },
     })),
   }))
@@ -272,25 +280,15 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
               robe.images.map((img, i) => (
                 <div class="swiper-slide overflow-hidden" key={i}>
                   <div class="border border-[#C5A880] rounded-2xl h-full w-full overflow-hidden">
-                    <picture>
-                      <source
-                        media="(max-width: 767px)"
-                        srcset={img.optimized.mobile}
-                      />
-                      <source
-                        media="(min-width: 768px)"
-                        srcset={img.optimized.tablet}
-                      />
-                      <img
-                        src={img.optimized.tablet}
-                        alt={img.alt}
-                        class="object-cover w-full h-[600px] md:h-full"
-                        loading={i === 0 ? "eager" : "lazy"}
-                        fetchpriority={i === 0 ? "high" : "auto"}
-                        onclick={`openModal("${img.full}", "${img.alt}")`}
-                        decoding={i === 0 ? "sync" : "async"}
-                      />
-                    </picture>
+                    <img
+                      src={img.optimized.tablet}
+                      alt={img.alt}
+                      class="object-cover w-full h-[600px] md:h-full"
+                      loading={i === 0 ? "eager" : "lazy"}
+                      fetchpriority={i === 0 ? "high" : "auto"}
+                      onclick={`openModal("${img.full}", "${img.alt}")`}
+                      decoding={i === 0 ? "sync" : "async"}
+                    />
                   </div>
                 </div>
               ))
@@ -389,7 +387,7 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
   </div>
 
   <!-- Script optimisé -->
-  <script defer>
+  <script>
     // Affiche l'image statique si JS est désactivé
     document.querySelector(".no-js-image").style.display = "block";
 
