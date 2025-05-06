@@ -1,97 +1,139 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import sirene from "../data/forme-sirene-dynamique.json";
-import princesse from "../data/forme-princesse-dynamique.json";
-import minimaliste from "../data/minimaliste-dynamique.json";
-import boheme from "../data/style-boheme-chic-dynamique.json";
 import HeroSection from "../components/HeroSection.astro";
+import { sanityClient } from "../sanityClient";
+import { optimizeCloudinaryUrl } from "../lib/optimizeCloudinaryUrl";
+import FavoriButton from "../components/FavoriButton.astro";
+import FavoriDrawer from "../components/FavoriDrawer.astro";
 
-// Vérifier et transformer les données JSON en tableaux utilisables
-let sireneRobes = Array.isArray(sirene) ? sirene : Object.values(sirene);
-let princesseRobes = Array.isArray(princesse)
-  ? princesse
-  : Object.values(princesse);
-let minimalisteRobes = Array.isArray(minimaliste)
-  ? minimaliste
-  : Object.values(minimaliste);
-let bohemeRobes = Array.isArray(boheme) ? boheme : Object.values(boheme);
-
-// Fusionner tous les fichiers JSON et enlever les doublons
-const allRobes = [
-  ...sireneRobes,
-  ...princesseRobes,
-  ...minimalisteRobes,
-  ...bohemeRobes,
-];
-const robes = allRobes.reduce((acc, robe) => {
-  if (!acc.some((r) => r.slug === robe.slug)) {
-    acc.push(robe);
+// 🔍 DEBUG : récupérer TOUTES les robes pour inspection
+const allDocs = await sanityClient.fetch(`
+  *[_type == "robe"]{
+    _id,
+    dressName,
+    category,
+    sousCategorie,
+    "slug": slug.current,
+    imagesCloudinary[]{ url, alt }
   }
-  return acc;
-}, []);
+`);
+console.log("🚀 SANITY: allDocs =", JSON.stringify(allDocs, null, 2));
+
+// 1) Récupération de toutes les robes de la catégorie "robes-de-mariee" (sans filtre de sous-catégorie)
+const robesData = await sanityClient.fetch(`       
+  *[_type == "robe" && category == "robes-de-mariee"]
+  | order(order asc){
+    _id,
+    dressName,
+    category,
+    sousCategorie,
+    "slug": slug.current,
+    order,
+    imagesCloudinary[]{ url, alt }
+  }
+`);
+
+// 2) Mapping et optimisation des images
+const robes = (robesData || []).map((robe) => ({
+  ...robe,
+  images: (robe.imagesCloudinary || []).map((img) => ({
+    alt: img.alt || robe.dressName,
+    optimizedImages: {
+      gallery: {
+        desktop: optimizeCloudinaryUrl(img.url, false), // mode desktop
+        tablet: optimizeCloudinaryUrl(img.url, false), // même chose pour tablet
+        mobile: optimizeCloudinaryUrl(img.url, "imageMobileGallery"), // celui-ci est correct
+      },
+    },
+  })),
+}));
+
+// Préparer les URLs des premières images visibles pour le préchargement
+const preloadImageUrls = robes
+  .slice(0, 4)
+  .map((robe) => robe.images[0]?.optimizedImages.gallery.mobile)
+  .filter(Boolean);
 ---
 
 <Layout
-  title="Toutes nos robes de mariée | Monica Mariage"
-  description="Découvrez notre collection de robes de mariée, disponibles dans différents styles et tailles. Trouvez la robe parfaite pour votre mariage à Toulouse."
+  title="Robes de Mariée à Toulouse | Collection Complète | Monica Mariage"
+  description="Découvrez toute notre collection de robes de mariée à Toulouse. Styles princesse, sirène, bohème-chic ou minimaliste. Créations sur-mesure pour sublimer chaque mariée."
 >
+  <!-- Préchargement des images critiques -->
+  {
+    preloadImageUrls.map((url) => (
+      <link rel="preload" href={url} as="image" fetchpriority="high" />
+    ))
+  }
+
   <section
     style="margin-top: 120px;"
     class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]"
   >
     {/* Section Hero */}
     <HeroSection
-      title="Découvrez Toutes Nos Robes de Mariée"
-      subtitle="Plongez dans notre univers de robes élégantes, romantiques et modernes. Trouvez la robe parfaite pour le jour de vos rêves."
-      buttonText="Voir les Collections"
-      scrollTarget="#robes"
+      title="Notre Collection de Robes de Mariée"
+      subtitle="Des créations élégantes et romantiques pour le plus beau jour de votre vie"
+      buttonText="Découvrir les robes"
+      scrollTarget="#robes-collection"
       iconSrc="/image/iconerobe.png"
     />
+
     <div class="flex justify-center px-4">
       <div
-        id="robes"
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full"
+        id="robes-collection"
+        class="grid mb-[100px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full"
       >
         {
           robes.map((robe, index) => (
             <a
-              href={`/robes-de-mariee/${robe.category || "collection"}/${robe.slug}`}
-              class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] shadow-md"
+              key={robe._id}
+              href={`/robes-de-mariee/${robe.sousCategorie || "collection"}/${robe.slug}`}
+              class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] lg:h-[420px] shadow-md"
               data-index={index}
             >
               {/* Overlay dégradé */}
               <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
 
+              {/* Bouton Favoris */}
+              <FavoriButton
+                imageId={robe._id}
+                robeSlug={robe.slug}
+                sousCategorie={robe.sousCategorie || "collection"}
+              />
+
               {/* Image */}
               {robe.images && robe.images.length > 0 ? (
                 <img
-                  src={
-                    robe.images[0].optimizedImages?.gallery?.desktop ||
-                    "/images/placeholder-dress.jpg"
+                  src={robe.images[0].optimizedImages.gallery.mobile}
+                  alt={
+                    robe.images[0].alt ||
+                    robe.dressName ||
+                    "Robe de mariée Monica Mariage"
                   }
-                  alt={robe.dressName || "Robe de mariée Monica Mariage"}
                   width="300"
-                  height="400"
-                  class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
-                  loading="lazy"
+                  height="500"
+                  fetchpriority={index < 2 ? "high" : "auto"}
+                  class="w-full absolute top-0 h-auto object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
+                  loading={index < 4 ? "eager" : "lazy"}
+                  decoding={index < 4 ? "sync" : "async"}
                 />
               ) : (
-                <div class="absolute top-0 w-full h-full bg-[#f5e8e2] flex items-center justify-center z-[-1]">
-                  <span class="text-[#af7749]">Image non disponible</span>
+                <div class="absolute inset-0 bg-gray-200 flex items-center justify-center">
+                  <span class="text-gray-600">Image non disponible</span>
                 </div>
               )}
 
-              {/* Contenu en bas */}
+              {/* Contenu bas */}
               <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
                 <p class="text-white font-vibes text-4xl mb-4 drop-shadow-lg">
-                  {` ${
-                    robe.dressName.charAt(0).toUpperCase() +
-                    robe.dressName.slice(1).toLowerCase()
-                  }` ||
-                    robe.slug ||
-                    "Robe de mariée"}
+                  {robe.dressName
+                    ? robe.dressName.charAt(0).toUpperCase() +
+                      robe.dressName.slice(1).toLowerCase()
+                    : "Robe de mariée"}
                 </p>
-                <button class="bg-[#C5A880] text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
+
+                <button class="bg-[#C5A880] text-[16px] text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
                   Découvrir cette robe
                 </button>
               </div>
@@ -103,19 +145,21 @@ const robes = allRobes.reduce((acc, robe) => {
   </section>
 
   <script defer>
+    // Amélioration du script d'animation pour ne pas retarder le LCP
     document.addEventListener("DOMContentLoaded", () => {
-      // Vérifier s'il y a des éléments à animer
-      const fadeElements = document.querySelectorAll(".fade-in");
+      // Initialiser immédiatement les images visibles
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+            observer.unobserve(entry.target);
+          }
+        });
+      });
 
-      if (fadeElements.length > 0) {
-        setTimeout(() => {
-          fadeElements.forEach((el, index) => {
-            setTimeout(() => {
-              el.classList.add("active");
-            }, index * 200); // Délai progressif de 200ms par robe
-          });
-        }, 500);
-      }
+      document.querySelectorAll(".fade-in").forEach((el) => {
+        observer.observe(el);
+      });
     });
   </script>
 
