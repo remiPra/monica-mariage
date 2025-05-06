@@ -1,0 +1,21 @@
+---
+export interface Props {
+  measurementId: string;
+}
+
+const { measurementId } = Astro.props;
+---
+
+<!-- src/components/Analytics.astro --><!-- Script Google Analytics avec defer pour minimiser l'impact sur le LCP -->
+<script
+  defer
+  src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}></script>
+<script defer define:vars={{ measurementId }}>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", measurementId);
+  console.log("Google Analytics script loaded with ID:");
+</script>
