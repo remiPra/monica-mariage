@@ -58,8 +58,8 @@ const preloadImageUrls = robes
 ---
 
 <Layout
-  title="Toutes nos robes de mariée | Monica Mariage"
-  description="Découvrez notre collection de robes de mariée, disponibles dans différents styles et tailles. Trouvez la robe parfaite pour votre mariage à Toulouse."
+  title="Robes de Mariée Sirène à Toulouse | Monica Mariage"
+  description="Robes de mariée sirène à Toulouse - Monica Mariage sublime votre silhouette avec nos modèles ajustés et féminins. Élégance et sensualité pour votre mariage."
 >
   <!-- Préchargement des images critiques -->
   {
@@ -70,11 +70,11 @@ const preloadImageUrls = robes
 
   <section
     style="margin-top: 120px;"
-    class="py-1 bg-gradient-to-b  from-white to-[#FDE9E6]"
+    class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]"
   >
     <div class="flex justify-center px-4">
       <div
-        class="grid   mb-[100px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full"
+        class="grid mb-[100px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full"
       >
         {
           robes.map((robe, index) => (
@@ -86,12 +86,12 @@ const preloadImageUrls = robes
             >
               {/* Overlay dégradé */}
               <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />
-               {/* Bouton Favoris */}
-<FavoriButton 
-  imageId={robe._id} 
-  robeSlug={robe.slug}
-  sousCategorie={robe.sousCategorie}  
-/>
+              {/* Bouton Favoris */}
+              <FavoriButton
+                imageId={robe._id}
+                robeSlug={robe.slug}
+                sousCategorie={robe.sousCategorie}
+              />
               {/* Image */}
               {robe.images[0] ? (
                 <img
