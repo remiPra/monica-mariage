@@ -11,6 +11,7 @@
   "dependencies": {
     "@astrojs/tailwind": "^5.1.5",
     "@sanity/client": "^6.29.0",
+    "@vercel/speed-insights": "^1.2.0",
     "astro": "^3.0.0",
     "astro-icon": "^1.1.5",
     "astro-sitemap": "^1.0.0",
