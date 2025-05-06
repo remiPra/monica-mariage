@@ -1,6 +1,12 @@
 ---
+// Importation du composant Analytics
+import Analytics from "../components/Analytics.astro";
 
+// Vous pouvez ajouter d'autres imports ou définir des props si nécessaire
 ---
+
+<!-- Intégration de Google Analytics avec votre ID de mesure -->
+<Analytics measurementId="G-XXXXXXXXXX" />
 
 <div class="whatsapp-feature">
   <button
@@ -86,223 +92,43 @@
 
     <!-- Bouton d'action -->
     <div class="p-3 bg-gray-100">
-      <a
-        href="https://wa.me/33668300960"
-        id="whatsapp-send"
-        class="block w-full
-      py-3 px-4 bg-[#25D366] text-white font-medium rounded-md text-center"
-      >
-        <div class="flex items-center justify-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 mr-2"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path
-              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
-            ></path>
-          </svg>
-          Discutez sur WhatsApp
-        </div>
-      </a>
+      href="https://wa.me/33668300960" id="whatsapp-send" class="block w-full
+      py-3 px-4 bg-[#25D366] text-white font-medium rounded-md text-center" >
+      <div class="flex items-center justify-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 mr-2"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+          ></path>
+        </svg>
+        Discutez sur WhatsApp
+      </div>
     </div>
   </div>
-  <!-- <script defer>
-    document.addEventListener(
-      "focus",
-      function (event) {
-        if (event.target.tagName === "INPUT") {
-          event.preventDefault(); // Empêche l'autofocus
-        }
-      },
-      true
-    );
-  </script>
+</div>
 
-  <script>
-    // JavaScript pour gérer les interactions
-    document.addEventListener("DOMContentLoaded", () => {
-      const floatingBtn = document.getElementById("whatsapp-floating-btn");
-      const chatWindow = document.getElementById("whatsapp-chat");
-      const closeChat = document.getElementById("close-chat");
-      const messageInput = document.getElementById("whatsapp-input");
-      const whatsappSend = document.getElementById("whatsapp-send");
-      const chatMessages = document.getElementById("chat-messages");
-
-      setTimeout(() => {
-        document.activeElement?.blur(); // Retire le focus de l'élément actif
-      }, 100); //
-
-      // Ouvrir la fenêtre de chat
-      floatingBtn.addEventListener("click", () => {
-        chatWindow.classList.remove("hidden");
-        // Animation d'ouverture
-        chatWindow.style.animation = "slideIn 0.3s forwards";
-        // Focus sur l'input
-        setTimeout(() => messageInput.focus(), 400);
-      });
-
-      // Fermer la fenêtre de chat
-      closeChat.addEventListener("click", () => {
-        // Animation de fermeture
-        chatWindow.style.animation = "slideOut 0.3s forwards";
-        setTimeout(() => {
-          chatWindow.classList.add("hidden");
-        }, 300);
-      });
-
-      // Fonction pour ajouter un message utilisateur au chat
-      function addUserMessage(message) {
-        // Créer le conteneur de message
-        const messageContainer = document.createElement("div");
-        messageContainer.className = "flex justify-end my-2";
-
-        // Formatage du message
-        const time = new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        });
-        messageContainer.innerHTML = `
-          <div class="bg-[#d9fdd3] rounded-lg p-3 shadow-sm inline-block max-w-[80%] relative">
-            <p class="text-gray-800">${message}</p>
-            <span class="text-[10px] text-gray-500 absolute bottom-1 right-2">${time}</span>
-          </div>
-        `;
-
-        // Ajouter à la conversation
-        chatMessages.appendChild(messageContainer);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      }
-
-      // Fonction pour ajouter le message de confirmation
-      function addConfirmationMessage() {
-        // Petit délai pour que le message apparaisse après celui de l'utilisateur
-        setTimeout(() => {
-          const confirmContainer = document.createElement("div");
-          confirmContainer.className = "flex my-2";
-          confirmContainer.innerHTML = `
-            <div class="bg-white rounded-lg p-3 shadow-sm inline-block max-w-[80%]">
-              <p class="text-gray-800">Merci pour votre message ! 💖 N'oubliez pas de cliquer sur la flèche d'envoi dans WhatsApp pour finaliser votre envoi.</p>
-            </div>
-          `;
-
-          chatMessages.appendChild(confirmContainer);
-          chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 500);
-      }
-
-      // Gestion du bouton d'envoi et mise à jour du lien avec le texte saisi
-      messageInput.addEventListener("input", () => {
-        const message = messageInput.value.trim();
-        if (message) {
-          whatsappSend.href = `https://wa.me/33668300960?text=${encodeURIComponent(message)}`;
-        } else {
-          whatsappSend.href = "https://wa.me/33668300960";
-        }
-      });
-
-      // Fonction pour gérer l'envoi de message
-      function sendMessage() {
-        const message = messageInput.value.trim();
-        if (message) {
-          // Ajouter le message au chat
-          addUserMessage(message);
-
-          // Ajouter le message de confirmation
-          addConfirmationMessage();
-
-          // Ouvrir WhatsApp avec le message préconfiguré
-          window.open(
-            `https://wa.me/33668300960?text=${encodeURIComponent(message)}`,
-            "_blank"
-          );
-
-          // Vider l'input
-          messageInput.value = "";
-        }
-      }
-
-      // Envoyer le message en appuyant sur Enter
-      messageInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          sendMessage();
-        }
-      });
-
-      // Gérer le clic sur le bouton d'envoi
-      whatsappSend.addEventListener("click", (e) => {
-        e.preventDefault();
-        const message = messageInput.value.trim();
-        if (message) {
-          // Ajouter le message au chat
-          addUserMessage(message);
-
-          // Ajouter le message de confirmation
-          addConfirmationMessage();
-
-          // Rediriger vers WhatsApp
-          window.open(
-            `https://wa.me/33668300960?text=${encodeURIComponent(message)}`,
-            "_blank"
-          );
-
-          // Vider l'input
-          messageInput.value = "";
-        } else {
-          // Si pas de message, juste ouvrir WhatsApp
-          window.open("https://wa.me/33668300960", "_blank");
-        }
-      });
-    });
-
-    // Ajouter les animations
-    document.head.insertAdjacentHTML(
-      "beforeend",
-      `
-    <style>
-      @keyframes slideIn {
-        from { transform: translateY(20px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-      }
-      
-      @keyframes slideOut {
-        from { transform: translateY(0); opacity: 1; }
-        to { transform: translateY(20px); opacity: 0; }
-      }
-      
-      /* Animation de pulsation pour le bouton flottant */
-      @keyframes pulse {
-        0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-        70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-      }
-      
-      #whatsapp-floating-btn {
-        animation: pulse 2s infinite;
-      }
-    </style>
-  `
-    );
-  </script> -->
-  <script defer>
-    document.addEventListener("DOMContentLoaded", () => {
-      //infobulle
-      // Création de l'infobulle
-      const tooltip = document.createElement("div");
-      tooltip.className = "whatsapp-tooltip hidden"; // Hidden au départ
-      tooltip.innerHTML = `
+<script defer>
+  document.addEventListener("DOMContentLoaded", () => {
+    //infobulle
+    // Création de l'infobulle
+    const tooltip = document.createElement("div");
+    tooltip.className = "whatsapp-tooltip hidden"; // Hidden au départ
+    tooltip.innerHTML = `
     <div class="tooltip-content">
       <span class="tooltip-text"></span>
     </div>
     <div class="tooltip-arrow"></div>
   `;
-      document.body.appendChild(tooltip);
+    document.body.appendChild(tooltip);
 
-      // Ajout des styles pour l'infobulle
-      document.head.insertAdjacentHTML(
-        "beforeend",
-        `
+    // Ajout des styles pour l'infobulle
+    document.head.insertAdjacentHTML(
+      "beforeend",
+      `
     <style>
       .whatsapp-tooltip {
         position: fixed;
@@ -360,86 +186,82 @@
       }
     </style>
   `
-      );
+    );
 
-      // Messages chaleureux variables
-      const tooltipMessages = [
-        "Besoin d'aide pour trouver la robe de vos rêves ? 👰‍♀️",
-        "Une question sur nos collections ? Discutons sur WhatsApp ! ✨",
-        "Envie de prendre rendez-vous pour un essayage ? C'est par ici ! 📆",
-        "Découvrez nos conseils personnalisés pour votre mariage ! 💍",
-        "Un doute sur votre taille ? Monica vous guide en direct ! 👗",
-        "Nouvelles robes disponibles ! Parlons-en maintenant ! 🆕",
-        "Planning serré ? Échangeons rapidement sur WhatsApp ! ⏱️",
-      ];
+    // Messages chaleureux variables
+    const tooltipMessages = [
+      "Besoin d'aide pour trouver la robe de vos rêves ? 👰‍♀️",
+      "Une question sur nos collections ? Discutons sur WhatsApp ! ✨",
+      "Envie de prendre rendez-vous pour un essayage ? C'est par ici ! 📆",
+      "Découvrez nos conseils personnalisés pour votre mariage ! 💍",
+      "Un doute sur votre taille ? Monica vous guide en direct ! 👗",
+      "Nouvelles robes disponibles ! Parlons-en maintenant ! 🆕",
+      "Planning serré ? Échangeons rapidement sur WhatsApp ! ⏱️",
+    ];
 
-      // Fonction pour vérifier si l'infobulle doit être affichée
+    // Fonction pour montrer l'infobulle
+    function showRandomTooltip() {
+      // Apparaît seulement 1 fois sur 4 (25% de chance)
+      if (Math.random() < 0.25) {
+        const randomIndex = Math.floor(Math.random() * tooltipMessages.length);
+        const tooltipText = document.querySelector(".tooltip-text");
+        tooltipText.textContent = tooltipMessages[randomIndex];
 
-      // Fonction pour montrer l'infobulle
-      function showRandomTooltip() {
-        // Apparaît seulement 1 fois sur 4 (25% de chance)
-        if (Math.random() < 0.25) {
-          const randomIndex = Math.floor(
-            Math.random() * tooltipMessages.length
-          );
-          const tooltipText = document.querySelector(".tooltip-text");
-          tooltipText.textContent = tooltipMessages[randomIndex];
+        tooltip.classList.remove("hidden");
+        tooltip.classList.add("visible");
 
-          tooltip.classList.remove("hidden");
-          tooltip.classList.add("visible");
-
-          // Disparaît après 4 secondes
+        // Disparaît après 4 secondes
+        setTimeout(() => {
+          tooltip.style.animation = "fadeOutTooltip 0.3s ease forwards";
           setTimeout(() => {
-            tooltip.style.animation = "fadeOutTooltip 0.3s ease forwards";
-            setTimeout(() => {
-              tooltip.classList.remove("visible");
-              tooltip.classList.add("hidden");
-              tooltip.style.animation = "";
-            }, 300);
-          }, 4000);
-        }
+            tooltip.classList.remove("visible");
+            tooltip.classList.add("hidden");
+            tooltip.style.animation = "";
+          }, 300);
+        }, 4000);
       }
+    }
 
-      // Cache l'infobulle si l'utilisateur clique sur le bouton WhatsApp
-      document
-        .getElementById("whatsapp-floating-btn")
-        .addEventListener("click", () => {
-          tooltip.classList.remove("visible");
-          tooltip.classList.add("hidden");
-        });
+    // Cache l'infobulle si l'utilisateur clique sur le bouton WhatsApp
+    document
+      .getElementById("whatsapp-floating-btn")
+      .addEventListener("click", () => {
+        tooltip.classList.remove("visible");
+        tooltip.classList.add("hidden");
+      });
 
-      // Délai d'apparition - seulement si l'utilisateur reste sur la page
-      let userEngagedTimeout = setTimeout(() => {
-        showRandomTooltip;
-      }, 15000); // Attendre 15 secondes avant d'afficher l'infobulle
+    // Délai d'apparition - seulement si l'utilisateur reste sur la page
+    let userEngagedTimeout = setTimeout(() => {
+      showRandomTooltip;
+    }, 15000); // Attendre 15 secondes avant d'afficher l'infobulle
 
-      // Annuler le délai si l'utilisateur quitte la page avant
-      window.addEventListener("beforeunload", () => {
+    // Annuler le délai si l'utilisateur quitte la page avant
+    window.addEventListener("beforeunload", () => {
+      clearTimeout(userEngagedTimeout);
+    });
+
+    // Si l'utilisateur scrolle, c'est qu'il est engagé - attendre moins longtemps
+    let hasScrolled = false;
+    window.addEventListener("scroll", () => {
+      if (!hasScrolled) {
+        hasScrolled = true;
         clearTimeout(userEngagedTimeout);
-      });
+        userEngagedTimeout = setTimeout(() => {
+          showRandomTooltip();
+        }, 5000); // Attendre seulement 5 secondes après un scroll
+      }
+    });
 
-      // Si l'utilisateur scrolle, c'est qu'il est engagé - attendre moins longtemps
-      let hasScrolled = false;
-      window.addEventListener("scroll", () => {
-        if (!hasScrolled) {
-          hasScrolled = true;
-          clearTimeout(userEngagedTimeout);
-          userEngagedTimeout = setTimeout(() => {
-            showRandomTooltip();
-          }, 5000); // Attendre seulement 5 secondes après un scroll
-        }
-      });
+    const floatingBtn = document.getElementById("whatsapp-floating-btn");
+    // Message préconfiguré pour WhatsApp (encodé pour URL)
+    const defaultMessage = encodeURIComponent("Bonjour Monica !");
+    const whatsappLink = `https://wa.me/33668300960?text=${defaultMessage}`;
 
-      const floatingBtn = document.getElementById("whatsapp-floating-btn");
-      // Message préconfiguré pour WhatsApp (encodé pour URL)
-      const defaultMessage = encodeURIComponent("Bonjour Monica !");
-      const whatsappLink = `https://wa.me/33668300960?text=${defaultMessage}`;
-
-      // Créer le modal de confirmation
-      const modal = document.createElement("div");
-      modal.className = "fixed inset-0 z-[500] hidden";
-      modal.id = "whatsapp-modal";
-      modal.innerHTML = `
+    // Créer le modal de confirmation
+    const modal = document.createElement("div");
+    modal.className = "fixed inset-0 z-[500] hidden";
+    modal.id = "whatsapp-modal";
+    modal.innerHTML = `
     <!-- Overlay avec flou -->
     <div class="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
 
@@ -492,12 +314,12 @@
       </div>
     </div>
   `;
-      document.body.appendChild(modal);
+    document.body.appendChild(modal);
 
-      // Ajouter des styles pour les animations
-      document.head.insertAdjacentHTML(
-        "beforeend",
-        `
+    // Ajouter des styles pour les animations
+    document.head.insertAdjacentHTML(
+      "beforeend",
+      `
     <style>
       @keyframes fadeIn {
         from { opacity: 0; }
@@ -535,89 +357,174 @@
       }
     </style>
   `
-      );
+    );
 
-      // Ajouter les gestionnaires d'événements pour le modal
-      const confirmBtn = document.getElementById("confirm-redirect");
-      const cancelBtn = document.getElementById("cancel-redirect");
-      const closeModalBtn = document.getElementById("close-modal-button");
-      const countdownEl = document.getElementById("countdown");
+    // Ajouter les gestionnaires d'événements pour le modal
+    const confirmBtn = document.getElementById("confirm-redirect");
+    const cancelBtn = document.getElementById("cancel-redirect");
+    const closeModalBtn = document.getElementById("close-modal-button");
+    const countdownEl = document.getElementById("countdown");
 
-      let countdownInterval;
-      let redirectTimeout;
+    let countdownInterval;
+    let redirectTimeout;
 
-      // Fonction pour démarrer le compte à rebours
-      function startCountdown() {
-        let count = 3;
+    // Fonction pour démarrer le compte à rebours
+    function startCountdown() {
+      let count = 3;
+      countdownEl.textContent = count.toString();
+
+      countdownInterval = setInterval(() => {
+        count--;
         countdownEl.textContent = count.toString();
 
-        countdownInterval = setInterval(() => {
-          count--;
-          countdownEl.textContent = count.toString();
-
-          if (count <= 0) {
-            clearInterval(countdownInterval);
-          }
-        }, 1000);
-
-        // Redirection automatique après 3 secondes
-        redirectTimeout = setTimeout(() => {
-          window.open(whatsappLink, "_blank");
-          closeModal();
-        }, 3000);
-      }
-
-      // Fonction pour arrêter le compte à rebours
-      function stopCountdown() {
-        clearInterval(countdownInterval);
-        clearTimeout(redirectTimeout);
-      }
-
-      // Fonction pour fermer la modale
-      function closeModal() {
-        modal.classList.remove("active");
-        document.body.style.overflow = "";
-        stopCountdown();
-      }
-
-      // Ouvrir le modal au lieu du chat
-      floatingBtn.addEventListener("click", () => {
-        modal.classList.add("active");
-        document.body.style.overflow = "hidden"; // Empêcher le défilement
-        startCountdown();
-      });
-
-      // Fermer le modal
-      cancelBtn.addEventListener("click", () => {
-        closeModal();
-      });
-
-      // Bouton de fermeture en haut à droite
-      closeModalBtn.addEventListener("click", () => {
-        closeModal();
-      });
-
-      // Rediriger vers WhatsApp immédiatement
-      confirmBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        stopCountdown();
-        window.open("https://wa.me/33668300960", "_blank");
-        closeModal();
-      });
-
-      // Fermer en cliquant sur l'overlay
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal || e.target === modal.firstElementChild) {
-          closeModal();
+        if (count <= 0) {
+          clearInterval(countdownInterval);
         }
-      });
+      }, 1000);
 
-      // Fermer avec la touche Echap
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && modal.classList.contains("active")) {
-          closeModal();
+      // Redirection automatique après 3 secondes
+      redirectTimeout = setTimeout(() => {
+        // Envoyer l'événement à Google Analytics
+        if (typeof gtag === "function") {
+          gtag("event", "auto_redirect", {
+            event_category: "Contact",
+            event_label: "WhatsApp Auto Redirect",
+            value: 1,
+            date_clicked: new Date().toISOString().split("T")[0],
+          });
+          console.log(
+            "Redirection automatique WhatsApp enregistrée dans Google Analytics"
+          );
         }
-      });
+
+        window.open(whatsappLink, "_blank");
+        closeModal();
+      }, 3000);
+    }
+
+    // Fonction pour arrêter le compte à rebours
+    function stopCountdown() {
+      clearInterval(countdownInterval);
+      clearTimeout(redirectTimeout);
+    }
+
+    // Fonction pour fermer la modale
+    function closeModal() {
+      modal.classList.remove("active");
+      document.body.style.overflow = "";
+      stopCountdown();
+    }
+
+    // Ouvrir le modal au lieu du chat avec suivi Google Analytics
+    floatingBtn.addEventListener("click", () => {
+      // Envoyer l'événement à Google Analytics
+      if (typeof gtag === "function") {
+        gtag("event", "click", {
+          event_category: "Contact",
+          event_label: "WhatsApp Floating Button",
+          value: 1,
+          date_clicked: new Date().toISOString().split("T")[0],
+        });
+        console.log(
+          "Clic sur bouton WhatsApp enregistré dans Google Analytics"
+        );
+      }
+
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden"; // Empêcher le défilement
+      startCountdown();
     });
-  </script>
-</div>
+
+    // Fermer le modal
+    cancelBtn.addEventListener("click", () => {
+      // Envoyer l'événement à Google Analytics
+      if (typeof gtag === "function") {
+        gtag("event", "cancel", {
+          event_category: "Contact",
+          event_label: "WhatsApp Cancel",
+          value: 1,
+          date_clicked: new Date().toISOString().split("T")[0],
+        });
+        console.log("Annulation WhatsApp enregistrée dans Google Analytics");
+      }
+
+      closeModal();
+    });
+
+    // Bouton de fermeture en haut à droite
+    closeModalBtn.addEventListener("click", () => {
+      // Envoyer l'événement à Google Analytics
+      if (typeof gtag === "function") {
+        gtag("event", "close", {
+          event_category: "Contact",
+          event_label: "WhatsApp Close",
+          value: 1,
+          date_clicked: new Date().toISOString().split("T")[0],
+        });
+        console.log("Fermeture WhatsApp enregistrée dans Google Analytics");
+      }
+
+      closeModal();
+    });
+
+    // Rediriger vers WhatsApp immédiatement
+    confirmBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      // Envoyer l'événement à Google Analytics
+      if (typeof gtag === "function") {
+        gtag("event", "confirm", {
+          event_category: "Contact",
+          event_label: "WhatsApp Confirmation",
+          value: 1,
+          date_clicked: new Date().toISOString().split("T")[0],
+        });
+        console.log("Confirmation WhatsApp enregistrée dans Google Analytics");
+      }
+
+      stopCountdown();
+      window.open("https://wa.me/33668300960", "_blank");
+      closeModal();
+    });
+
+    // Fermer en cliquant sur l'overlay
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal || e.target === modal.firstElementChild) {
+        // Envoyer l'événement à Google Analytics
+        if (typeof gtag === "function") {
+          gtag("event", "overlay_close", {
+            event_category: "Contact",
+            event_label: "WhatsApp Overlay Close",
+            value: 1,
+            date_clicked: new Date().toISOString().split("T")[0],
+          });
+          console.log(
+            "Fermeture par overlay WhatsApp enregistrée dans Google Analytics"
+          );
+        }
+
+        closeModal();
+      }
+    });
+
+    // Fermer avec la touche Echap
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("active")) {
+        // Envoyer l'événement à Google Analytics
+        if (typeof gtag === "function") {
+          gtag("event", "escape_close", {
+            event_category: "Contact",
+            event_label: "WhatsApp Escape Close",
+            value: 1,
+            date_clicked: new Date().toISOString().split("T")[0],
+          });
+          console.log(
+            "Fermeture par touche Echap WhatsApp enregistrée dans Google Analytics"
+          );
+        }
+
+        closeModal();
+      }
+    });
+  });
+</script>
