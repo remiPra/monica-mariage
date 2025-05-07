@@ -1,6 +1,6 @@
 ---
 // Layout.astro
-import SpeedInsights from "@vercel/speed-insights/astro";
+// import SpeedInsights from "@vercel/speed-insights/astro";
 
 import Header from "../components/Header.astro";
 import "../styles/global.css";
@@ -12,9 +12,11 @@ import FolatingButtonWhatsapp from "../components/FolatingButtonWhatsapp.astro";
 import WhatsAppModalForm from "../components/WhatsAppModalForm.astro";
 import PwaBanner from "../components/PwaBanner.astro";
 import Analytics from "../components/Analytics.astro";
+import ImagePreloader from "../components/ImagePreloader.astro";
 const {
   title = "Monica Mariage - Boutique de Robes de Mariée",
   description = "Découvrez nos robes de mariée sur-mesure à Toulouse.",
+  mainImageUrl = "", // Nouvelle prop pour l'image principale
 } = Astro.props;
 ---
 
@@ -52,21 +54,15 @@ const {
       crossorigin
     />
     <!-- Déplacer cette balise dans la section <head> du document -->
-    <link
-      rel="preload"
-      as="image"
-      href="https://res.cloudinary.com/dkbsvrpdc/image/upload/f_auto,q_auto:good,w_400/v1745254754/ylrvmsmxewylhvf6xywi.webp"
-      fetchpriority="high"
-    />
+
     <!-- <link rel="manifest" href="/manifest.json" /> -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"
-    ></script>
+
+    <!-- Préchargement conditionnel de l'image principale -->
+    {mainImageUrl && <ImagePreloader imageUrl={mainImageUrl} />}
   </head>
   <body>
     <Header />
@@ -81,7 +77,7 @@ const {
     <!-- <script src="/registerServiceWorker.js" defer></script>
     <PwaBanner /> -->
     <!-- <AppointmentBar /> -->
-    <SpeedInsights />
+    <!-- <SpeedInsights /> -->
     <Analytics measurementId="G-H8RDXC45EX" />
     <!-- Remplacez par votre ID réel -->
   </body>

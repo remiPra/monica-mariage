@@ -1,0 +1,13 @@
+<!-- components/DeferredSpeedInsights.astro -->
+<script>
+  // Charger SpeedInsights de manière différée
+  window.addEventListener("load", function () {
+    setTimeout(() => {
+      const script = document.createElement("script");
+      script.async = true;
+      script.defer = true;
+      script.src = "/@vercel/speed-insights/script.js";
+      document.body.appendChild(script);
+    }, 3000);
+  });
+</script>

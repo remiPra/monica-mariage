@@ -1,0 +1,10 @@
+---
+export interface Props {
+  imageUrl: string;
+}
+
+const { imageUrl } = Astro.props;
+---
+
+<!-- components/ImagePreloader.astro -->
+<link rel="preload" as="image" href={imageUrl} fetchpriority="high" />
