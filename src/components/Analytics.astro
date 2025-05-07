@@ -6,16 +6,28 @@ export interface Props {
 const { measurementId } = Astro.props;
 ---
 
-<!-- src/components/Analytics.astro --><!-- Script Google Analytics avec defer pour minimiser l'impact sur le LCP -->
-<script
-  async
-  src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}></script>
-<script async define:vars={{ measurementId }}>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag("js", new Date());
-  gtag("config", measurementId);
-  console.log("Google Analytics script loaded with ID:");
+<!-- Script Google Analytics différé pour améliorer le LCP -->
+<script define:vars={{ measurementId }}>
+  // Attendre que la page soit complètement chargée
+  window.addEventListener("load", function () {
+    // Attendre encore 2 secondes après le chargement
+    setTimeout(() => {
+      // Créer dynamiquement le script GA
+      const script = document.createElement("script");
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+      document.head.appendChild(script);
+
+      // Configuration de GA une fois le script chargé
+      script.onload = () => {
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", measurementId);
+        console.log("Google Analytics script loaded and configured. ", gtag);
+      };
+    }, 2000);
+  });
 </script>
