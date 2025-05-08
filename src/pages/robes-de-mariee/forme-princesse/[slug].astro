@@ -1,6 +1,5 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
-// import BreadCrumbs from "../../../components/BreadCrumbs.astro";
+import ProductLayout from "../../../layouts/ProductLayout.astro";
 import PrendreRendezVousButtonHome from "../../../components/PrendreRendezVousButtonHome.astro";
 import { sanityClient } from "../../../sanityClient";
 import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
@@ -49,7 +48,6 @@ if (!robeData) {
   throw new Error(`Robe introuvable pour le slug : ${slug}`);
 }
 
-// 5) Préparation des images pour le slider
 // 5) Préparation des images pour le slider
 const robe = {
   ...robeData,
@@ -108,95 +106,27 @@ const randomDresses = (othersData || [])
 
 // Récupération de la première image pour préchargement
 const firstImage = robe.images.length > 0 ? robe.images[0] : null;
+
+// Configuration des images pour le préchargement
+const productImages = firstImage
+  ? {
+      mobile: firstImage.optimized.mobile,
+      tablet: firstImage.optimized.tablet,
+      desktop: firstImage.optimized.tablet, // Si vous n'avez pas de version desktop
+    }
+  : {};
 ---
 
-<Layout title={robe.title} description={robe.metaDescription}>
-  <!-- Préchargement de la première image pour améliorer le LCP -->
-  {
-    firstImage && (
-      <link
-        rel="preload"
-        href={
-          typeof window !== "undefined" && window.innerWidth < 768
-            ? firstImage.optimized.mobile
-            : firstImage.optimized.tablet
-        }
-        as="image"
-        fetchpriority="high"
-        media={
-          typeof window !== "undefined" && window.innerWidth < 768
-            ? "(max-width: 767px)"
-            : "(min-width: 768px)"
-        }
-      />
-    )
-  }
-
-  <!-- Chargement optimisé du CSS Swiper -->
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
-    media="print"
-    onload="this.media='all'"
-  />
-  <noscript>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
-    />
-  </noscript>
-
-  <!-- Chargement différé du JS Swiper -->
-  <script
-    defer
-    async
-    src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-
-  <style>
-    /* Personnalisation des flèches du slider Swiper */
-
-    .nav-robe-btn {
-      display: flex;
-      align-items: center;
-      color: #af7749;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      transition: all 0.3s ease;
-      font-weight: 500;
-    }
-
-    .nav-robe-btn:hover {
-      background-color: rgba(197, 168, 128, 0.1);
-      color: #c5a880;
-    }
-
-    .category-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
-      padding: 0 0.5rem;
-    }
-
-    .category-pill {
-      background-color: #f9f5f0;
-      color: #af7749;
-      padding: 0.5rem 1.25rem;
-      border-radius: 2rem;
-      font-size: 0.9rem;
-      border: 1px solid #c5a880;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-  </style>
-
+<ProductLayout
+  title={robe.title}
+  description={robe.metaDescription}
+  productImages={productImages}
+>
   <div
     class="mt-20 max-w-7xl mx-auto px-4 lg:px-6 flex flex-col lg:flex-row gap-10"
   >
     <!-- Colonne slider + nav -->
     <section class="w-full lg:w-3/5">
-      <!-- <BreadCrumbs /> -->
       <div class="mt-8 flex items-center justify-between mb-6 px-2 py-3">
         <!-- Précédent -->
         <a
@@ -247,7 +177,7 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
         </a>
       </div>
 
-      <!-- Slider Swiper avec chargement prioritaire de la première image -->
+      <!-- Slider Swiper -->
       <div
         class="relative w-full max-w-md h-[600px] md:h-full mx-auto overflow-hidden"
       >
@@ -280,7 +210,7 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
               ))
             }
           </div>
-          <!-- Contrôles du slider -->
+          <!-- Les contrôles du slider seront gérés par le JS -->
         </div>
 
         <!-- Conteneur de l'image statique qui sera remplacé par Swiper -->
@@ -370,7 +300,7 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
     </div>
   </div>
 
-  <!-- Script optimisé -->
+  <!-- Script optimisé pour le slider (maintenant directement dans la page) -->
   <script>
     // Affiche l'image statique si JS est désactivé
     document.querySelector(".no-js-image").style.display = "block";
@@ -387,10 +317,7 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
           loop: true,
           slidesPerView: 1,
           autoplay: { delay: 3000 },
-          navigation: {
-            nextEl: ".custom-swiper-button-next",
-            prevEl: ".custom-swiper-button-prev",
-          },
+          // Navigation configurable avec des boutons personnalisés si nécessaire
         });
       } else {
         // Si Swiper n'est pas encore chargé, on réessaie plus tard
@@ -467,4 +394,4 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
       document.addEventListener("DOMContentLoaded", setupModal);
     }
   </script>
-</Layout>
+</ProductLayout>

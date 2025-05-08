@@ -1,10 +1,79 @@
 ---
+// components/ImagePreloader.astro
 export interface Props {
-  imageUrl: string;
+  // URL unique pour une seule taille
+  imageUrl?: string;
+  // URLs pour différentes tailles d'écran
+  mobile?: string;
+  tablet?: string;
+  desktop?: string;
+  // Options supplémentaires pour plus de contrôle
+  fetchPriority?: "high" | "low" | "auto";
+  media?: string;
+  alt?: string;
 }
 
-const { imageUrl } = Astro.props;
+const {
+  imageUrl,
+  mobile,
+  tablet,
+  desktop,
+  fetchPriority = "high",
+  media = "",
+  alt = "",
+} = Astro.props;
 ---
 
-<!-- components/ImagePreloader.astro -->
-<link rel="preload" as="image" href={imageUrl} fetchpriority="high" />
+{/* Préchargement avec URL unique (prioritaire) */}
+{
+  imageUrl && (
+    <link
+      rel="preload"
+      as="image"
+      href={imageUrl}
+      fetchpriority={fetchPriority}
+      media={media}
+      imagesizes={alt}
+    />
+  )
+}
+
+{/* Préchargement responsive avec URLs séparées */}
+{
+  !imageUrl && mobile && (
+    <link
+      rel="preload"
+      as="image"
+      href={mobile}
+      media="(max-width: 767px)"
+      fetchpriority={fetchPriority}
+      imagesizes={alt}
+    />
+  )
+}
+
+{
+  !imageUrl && tablet && (
+    <link
+      rel="preload"
+      as="image"
+      href={tablet}
+      media="(min-width: 768px) and (max-width: 1023px)"
+      fetchpriority={fetchPriority}
+      imagesizes={alt}
+    />
+  )
+}
+
+{
+  !imageUrl && desktop && (
+    <link
+      rel="preload"
+      as="image"
+      href={desktop}
+      media="(min-width: 1024px)"
+      fetchpriority={fetchPriority}
+      imagesizes={alt}
+    />
+  )
+}

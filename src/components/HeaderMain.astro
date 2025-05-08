@@ -1,5 +1,5 @@
 ---
-// MonicaMariageAd.astro
+// components/HeaderMain.astro
 ---
 
 <div
@@ -7,13 +7,11 @@
 >
   <!-- Background image container using Cloudinary optimizations -->
   <div class="relative w-full h-[650px]">
-    <!-- Préchargement de l'image principale -->
-
+    <!-- Image principale (déjà préchargée dans le layout) -->
     <img
       src="https://res.cloudinary.com/dkbsvrpdc/image/upload/f_auto,q_auto:good,w_400/v1745254754/ylrvmsmxewylhvf6xywi.webp"
       alt="Robe de mariée"
       class="absolute inset-0 w-full h-full object-cover z-2"
-      fetchpriority="high"
       width="400"
       height="500"
       loading="eager"

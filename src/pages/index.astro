@@ -1,25 +1,24 @@
 ---
+import StandardLayout from "../layouts/StandardLayout.astro";
 import Welcome from "../components/Welcome.astro";
-import Layout from "../layouts/Layout.astro";
 import VideoSlider from "../components/VideoSlider.astro";
 import MonicamariagePart1 from "../components/MonicamariagePart1.astro";
 import MonicamariagePart2 from "../components/MonicamariagePart2.astro";
-import Footer from "../components/Footer.astro";
-import MonicaMariageBlocDestockage from "../components/MonicaMariageBlocDestockage.astro";
 import GoogleReviews from "../components/GoogleReviews.astro";
+import MonicaMariageBlocDestockage from "../components/MonicaMariageBlocDestockage.astro";
 import FAQAccordionHome from "../components/FaqAccordionHome.astro";
 import HeaderMain from "../components/HeaderMain.astro";
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+
+// Image principale pour préchargement
+const heroImageUrl =
+  "https://res.cloudinary.com/dkbsvrpdc/image/upload/f_auto,q_auto:good,w_400/v1745254754/ylrvmsmxewylhvf6xywi.webp";
 ---
 
-<Layout
+<StandardLayout
   title="Monica Mariage - Boutique de Robes de Mariée"
   description="Monica Mariage : boutique de robes de mariée sur-mesure à Toulouse. Découvrez nos modèles princesse, évasée, bohème-chic, fourreau et sirène à prix abordables. Showroom à 15 min de Toulouse."
-  mainImageUrl="https://res.cloudinary.com/dkbsvrpdc/image/upload/f_auto,q_auto:good,w_400/v1745254754/ylrvmsmxewylhvf6xywi.webp"
+  mainImageUrl={heroImageUrl}
 >
-  <!-- <Welcome /> -->
-
   <div class="hidden md:block">
     <VideoSlider />
   </div>
@@ -28,8 +27,7 @@ import HeaderMain from "../components/HeaderMain.astro";
   </div>
   <MonicamariagePart1 />
   <MonicamariagePart2 />
-  <!-- <SliderAllRobes /> -->
   <GoogleReviews />
   <MonicaMariageBlocDestockage />
   <FAQAccordionHome />
-</Layout>
+</StandardLayout>

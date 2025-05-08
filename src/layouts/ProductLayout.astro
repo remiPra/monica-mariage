@@ -1,0 +1,87 @@
+---
+// layouts/ProductLayout.astro
+import BaseLayout from "./BaseLayout.astro";
+
+const {
+  title = "Monica Mariage - Boutique de Robes de Mariée",
+  description = "Découvrez nos robes de mariée sur-mesure à Toulouse.",
+  productImages = {}, // Objet contenant les URLs des images (mobile, tablet, desktop)
+  swiper = true, // Activer Swiper.js par défaut
+} = Astro.props;
+
+const { mobile, tablet, desktop } = productImages;
+---
+
+<BaseLayout title={title} description={description}>
+  <Fragment slot="head">
+    <!-- Préchargement responsive des images -->
+    {
+      mobile && (
+        <link
+          rel="preload"
+          as="image"
+          href={mobile}
+          media="(max-width: 767px)"
+          fetchpriority="high"
+        />
+      )
+    }
+
+    {
+      tablet && (
+        <link
+          rel="preload"
+          as="image"
+          href={tablet}
+          media="(min-width: 768px) and (max-width: 1023px)"
+          fetchpriority="high"
+        />
+      )
+    }
+
+    {
+      desktop && (
+        <link
+          rel="preload"
+          as="image"
+          href={desktop}
+          media="(min-width: 1024px)"
+          fetchpriority="high"
+        />
+      )
+    }
+
+    <!-- Chargement conditionnel de Swiper CSS -->
+    {
+      swiper && (
+        <>
+          <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+            media="print"
+            onload="this.media='all'"
+          />
+          <noscript>
+            <link
+              rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+            />
+          </noscript>
+        </>
+      )
+    }
+  </Fragment>
+
+  <slot />
+
+  <!-- Chargement conditionnel de Swiper JS -->
+  {
+    swiper && (
+      <script
+        defer
+        async
+        src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"
+      />
+    )
+  }
+</BaseLayout>

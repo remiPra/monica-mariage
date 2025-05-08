@@ -1,0 +1,27 @@
+---
+// layouts/StandardLayout.astro
+import BaseLayout from "./BaseLayout.astro";
+
+const {
+  title = "Monica Mariage - Boutique de Robes de Mariée",
+  description = "Découvrez nos robes de mariée sur-mesure à Toulouse.",
+  mainImageUrl = "", // URL unique pour l'image principale
+} = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <Fragment slot="head">
+    {
+      mainImageUrl && (
+        <link
+          rel="preload"
+          as="image"
+          href={mainImageUrl}
+          fetchpriority="high"
+        />
+      )
+    }
+  </Fragment>
+
+  <slot />
+</BaseLayout>
