@@ -63,56 +63,6 @@ const analyticsId = "G-H8RDXC45EX";
 
     <!-- Préchargement conditionnel de l'image principale -->
     {mainImageUrl && <ImagePreloader imageUrl={mainImageUrl} />}
-
-    <!-- Chargement différé de Google Analytics pour optimiser le LCP -->
-    <script define:vars={{ analyticsId }}>
-      // Initialiser la file d'attente pour les événements avant le chargement de GA4
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function () {
-        dataLayer.push(arguments);
-      };
-      window.ga4Loaded = false;
-
-      // Fonction améliorée pour envoyer des événements
-      window.sendGa4Event = function (eventName, params = {}) {
-        if (window.ga4Loaded) {
-          // Si GA4 est chargé, envoyer l'événement immédiatement
-          gtag("event", eventName, params);
-          console.log(`📊 GA4 Event sent: ${eventName}`, params);
-        } else {
-          // Sinon, attendre que GA4 soit chargé
-          console.log(
-            `⏳ Waiting for GA4 to load before sending: ${eventName}`
-          );
-          document.addEventListener(
-            "ga4Ready",
-            function () {
-              gtag("event", eventName, params);
-              console.log(`📊 GA4 Event sent (delayed): ${eventName}`, params);
-            },
-            { once: true }
-          );
-        }
-      };
-
-      // Chargement différé de Google Analytics après 4 secondes
-      setTimeout(() => {
-        const script = document.createElement("script");
-        script.async = true;
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsId}`;
-        document.head.appendChild(script);
-
-        script.onload = function () {
-          gtag("js", new Date());
-          gtag("config", analyticsId);
-
-          // Marquer GA4 comme chargé et déclencher l'événement
-          window.ga4Loaded = true;
-          document.dispatchEvent(new Event("ga4Ready"));
-          console.log("✅ Google Analytics 4 is ready");
-        };
-      }, 4000); // Délai de 4 secondes pour optimiser le LCP
-    </script>
   </head>
   <body>
     <Header />
@@ -122,4 +72,52 @@ const analyticsId = "G-H8RDXC45EX";
     <AppointmentBar />
     <ModalForm isVisible={false} />
   </body>
+
+  <!-- Chargement différé de Google Analytics pour optimiser le LCP -->
+  <script define:vars={{ analyticsId }}>
+    // Initialiser la file d'attente pour les événements avant le chargement de GA4
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () {
+      dataLayer.push(arguments);
+    };
+    window.ga4Loaded = false;
+
+    // Fonction améliorée pour envoyer des événements
+    window.sendGa4Event = function (eventName, params = {}) {
+      if (window.ga4Loaded) {
+        // Si GA4 est chargé, envoyer l'événement immédiatement
+        gtag("event", eventName, params);
+        console.log(`📊 GA4 Event sent: ${eventName}`, params);
+      } else {
+        // Sinon, attendre que GA4 soit chargé
+        console.log(`⏳ Waiting for GA4 to load before sending: ${eventName}`);
+        document.addEventListener(
+          "ga4Ready",
+          function () {
+            gtag("event", eventName, params);
+            console.log(`📊 GA4 Event sent (delayed): ${eventName}`, params);
+          },
+          { once: true }
+        );
+      }
+    };
+
+    // Chargement différé de Google Analytics après 4 secondes
+    setTimeout(() => {
+      const script = document.createElement("script");
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsId}`;
+      document.head.appendChild(script);
+
+      script.onload = function () {
+        gtag("js", new Date());
+        gtag("config", analyticsId);
+
+        // Marquer GA4 comme chargé et déclencher l'événement
+        window.ga4Loaded = true;
+        document.dispatchEvent(new Event("ga4Ready"));
+        console.log("✅ Google Analytics 4 is ready");
+      };
+    }, 4000); // Délai de 4 secondes pour optimiser le LCP
+  </script>
 </html>

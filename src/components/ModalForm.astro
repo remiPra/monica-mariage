@@ -179,7 +179,7 @@ const { isVisible } = Astro.props;
   </div>
 </div>
 
-<script async>
+<script defer>
   // Fonction qui sera exécutée quand le navigateur est inactif
   const initModal = () => {
     const overlay = document.getElementById("contact-overlay");
@@ -189,7 +189,18 @@ const { isVisible } = Astro.props;
     const submissionMessage = document.getElementById("submission-message");
     const closeLaterBtn = document.getElementById("close-later-btn");
 
-    // Fonction pour afficher la modale avec animation
+    // Variables pour le tracking de formulaire
+    let formFieldsHistory = [];
+    let formStarted = false;
+    let formFields = {
+      prenom: false,
+      nom: false,
+      email: false,
+      telephone: false,
+      message: false,
+    };
+
+    // Fonction pour afficher la modale avec animation et tracking
     const showOverlay = () => {
       overlay.classList.remove("opacity-0", "pointer-events-none");
       overlay.classList.add("opacity-100", "pointer-events-auto");
@@ -200,10 +211,20 @@ const { isVisible } = Astro.props;
 
       // Accessibilité - piéger le focus
       document.body.style.overflow = "hidden";
+
+      // Tracking de l'affichage du modal
+      if (window.sendGa4Event) {
+        window.sendGa4Event("trigger_modal_view", {
+          event_category: "Engagement",
+          event_label: "Contact Modal View",
+          form_name: "contact_form",
+          non_interaction: true,
+        });
+      }
     };
 
-    // Fonction pour masquer la modale avec animation
-    const hideOverlay = (permanent = false) => {
+    // Fonction pour masquer la modale avec animation et tracking
+    const hideOverlay = (permanent = false, reason = "close_button") => {
       overlay.classList.add("opacity-0", "pointer-events-none");
       overlay.classList.remove("opacity-100", "pointer-events-auto");
 
@@ -217,27 +238,108 @@ const { isVisible } = Astro.props;
       if (permanent) {
         sessionStorage.setItem("modalClosed", "true"); // Empêche le retour pendant la session
       }
+
+      // Tracking de l'abandon du formulaire s'il y a eu des interactions
+      if (formStarted && reason !== "form_submitted") {
+        const filledFields = Object.entries(formFields)
+          .filter(([_, filled]) => filled)
+          .map(([field, _]) => field);
+
+        if (window.sendGa4Event) {
+          window.sendGa4Event("trigger_form_abandon", {
+            event_category: "Conversion",
+            event_label: "Form Abandoned",
+            form_name: "contact_form",
+            form_step: formFieldsHistory.join(" > "),
+            fields_completed: filledFields.length,
+            fields_filled: filledFields.join(","),
+          });
+        }
+      }
+
+      // Tracking de la fermeture du modal
+      if (reason === "close_button" && window.sendGa4Event) {
+        window.sendGa4Event("trigger_modal_close", {
+          event_category: "Engagement",
+          event_label: "Modal Closed",
+          close_method: reason,
+        });
+      } else if (reason === "close_later" && window.sendGa4Event) {
+        window.sendGa4Event("trigger_modal_close_later", {
+          event_category: "Engagement",
+          event_label: "Modal Closed - Will Return Later",
+        });
+      }
     };
 
     // Gestionnaires d'événements pour fermeture
-    closeButton.addEventListener("click", () => hideOverlay(true));
-    closeLaterBtn.addEventListener("click", () => hideOverlay(true));
+    closeButton.addEventListener("click", () =>
+      hideOverlay(true, "close_button")
+    );
+    closeLaterBtn.addEventListener("click", () =>
+      hideOverlay(true, "close_later")
+    );
 
     // Permettre de fermer en cliquant à l'extérieur
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) {
-        hideOverlay(true);
+        hideOverlay(true, "overlay_click");
       }
     });
 
     // Fermer avec la touche Échap
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && overlay.classList.contains("opacity-100")) {
-        hideOverlay(true);
+        hideOverlay(true, "escape_key");
       }
     });
 
-    // Soumission du formulaire avec animation
+    // Tracking des interactions avec les champs du formulaire
+    const formInputs = contactForm.querySelectorAll("input, textarea");
+
+    // Suivi du focus initial sur les champs
+    formInputs.forEach((input) => {
+      input.addEventListener("focus", () => {
+        if (!formStarted) {
+          formStarted = true;
+
+          // Premier champ sur lequel l'utilisateur a cliqué
+          if (window.sendGa4Event) {
+            window.sendGa4Event("trigger_form_field_focus", {
+              event_category: "Engagement",
+              event_label: "First Field Focus",
+              field_name: input.name,
+              form_name: "contact_form",
+            });
+          }
+        }
+      });
+
+      // Suivi du remplissage des champs
+      input.addEventListener("blur", () => {
+        if (input.value.trim() !== "") {
+          // Marquer le champ comme rempli
+          if (!formFields[input.name]) {
+            formFields[input.name] = true;
+
+            // Ajouter à l'historique des champs remplis
+            formFieldsHistory.push(input.name);
+
+            if (window.sendGa4Event) {
+              window.sendGa4Event("trigger_form_field_filled", {
+                event_category: "Engagement",
+                event_label: "Field Filled",
+                field_name: input.name,
+                form_name: "contact_form",
+                field_position: formFieldsHistory.length,
+              });
+            }
+          }
+        }
+      });
+    });
+
+    // Soumission du formulaire avec animation et tracking
     contactForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -265,6 +367,17 @@ const { isVisible } = Astro.props;
         submissionMessage.style.backgroundColor = "#FADEDE";
         submissionMessage.style.borderColor = "#EABCBC";
         submissionMessage.style.color = "#AF3B3B";
+
+        // Tracking des erreurs de soumission
+        if (window.sendGa4Event) {
+          window.sendGa4Event("trigger_form_submit_error", {
+            event_category: "Engagement",
+            event_label: "Form Submit Error",
+            form_name: "contact_form",
+            error_type: "missing_required_fields",
+          });
+        }
+
         return;
       }
 
@@ -292,6 +405,17 @@ const { isVisible } = Astro.props;
           throw new Error("Erreur lors de l'envoi du formulaire");
         }
 
+        // Tracking du succès de la soumission
+        if (window.sendGa4Event) {
+          window.sendGa4Event("trigger_form_submit_success", {
+            event_category: "Conversion",
+            event_label: "Form Submit Success",
+            form_name: "contact_form",
+            value: 1, // Valeur de conversion
+            fields_completed: Object.values(formFields).filter((v) => v).length,
+          });
+        }
+
         // Afficher le message de confirmation si l'envoi est réussi
         submissionMessage.innerHTML = `
           <svg class="w-6 h-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -308,11 +432,15 @@ const { isVisible } = Astro.props;
 
         // Fermer après un délai
         setTimeout(() => {
-          hideOverlay(true);
+          hideOverlay(true, "form_submitted");
 
           // Réinitialiser le formulaire après fermeture
           setTimeout(() => {
             contactForm.reset();
+            formStarted = false;
+            formFieldsHistory = [];
+            Object.keys(formFields).forEach((key) => (formFields[key] = false));
+
             contactForm
               .querySelectorAll("input, textarea, button")
               .forEach((el) => {
@@ -337,12 +465,45 @@ const { isVisible } = Astro.props;
         submissionMessage.style.borderColor = "#EABCBC";
         submissionMessage.style.color = "#AF3B3B";
 
+        // Tracking des erreurs d'API
+        if (window.sendGa4Event) {
+          window.sendGa4Event("trigger_form_submit_error", {
+            event_category: "Engagement",
+            event_label: "Form Submit Error",
+            form_name: "contact_form",
+            error_type: "api_error",
+          });
+        }
+
         // Réactiver les champs pour permettre une nouvelle tentative
         contactForm
           .querySelectorAll("input, textarea, button")
           .forEach((el) => {
             el.disabled = false;
           });
+      }
+    });
+
+    // Tracking de l'abandon du formulaire si l'utilisateur quitte la page
+    window.addEventListener("beforeunload", () => {
+      // Si le formulaire a été commencé mais pas soumis avec succès
+      if (formStarted) {
+        const filledFields = Object.entries(formFields)
+          .filter(([_, filled]) => filled)
+          .map(([field, _]) => field);
+
+        // Note: cet événement peut ne pas être envoyé car la page se ferme
+        // mais nous tentons de l'envoyer pour la prise en charge via sendBeacon
+        if (window.sendGa4Event) {
+          window.sendGa4Event("trigger_form_abandon", {
+            event_category: "Conversion",
+            event_label: "Form Abandoned - Page Exit",
+            form_name: "contact_form",
+            form_step: formFieldsHistory.join(" > "),
+            fields_completed: filledFields.length,
+            fields_filled: filledFields.join(","),
+          });
+        }
       }
     });
 
