@@ -240,17 +240,6 @@ const primaryColor = "bg-[#C99A9A]"; // Marron principal
 </script>
 
 <script defer>
-  // Fonction pour envoyer des événements GA4
-  function sendGa4Event(eventName, params = {}) {
-    if (typeof gtag !== "function") {
-      console.warn("GA4 not loaded yet");
-      return;
-    }
-
-    gtag("event", eventName, params);
-    console.log(`📊 GA4 Event sent: ${eventName}`, params);
-  }
-
   document.addEventListener("DOMContentLoaded", () => {
     const appointmentBar = document.getElementById("appointment-bar");
     const appointmentButton = document.getElementById("appointment-button");
@@ -266,13 +255,17 @@ const primaryColor = "bg-[#C99A9A]"; // Marron principal
     // Affichage automatique après 10s
     if (sessionStorage.getItem("appointmentBarClosed") !== "true") {
       setTimeout(() => {
-        appointmentBar?.classList.remove("translate-y-full");
+        if (appointmentBar) {
+          appointmentBar.classList.remove("translate-y-full");
 
-        // Tracking pour l'affichage de la barre
-        sendGa4Event("appointment_bar_display", {
-          event_category: "Engagement",
-          event_label: "Barre rendez-vous affichée",
-        });
+          // Tracking pour l'affichage de la barre
+          if (window.sendGa4Event) {
+            window.sendGa4Event("appointment_bar_display", {
+              event_category: "Engagement",
+              event_label: "Barre rendez-vous affichée",
+            });
+          }
+        }
       }, 10000);
     }
 
@@ -282,23 +275,27 @@ const primaryColor = "bg-[#C99A9A]"; // Marron principal
       appointmentBar?.classList.add("translate-y-full");
 
       // Tracking pour la fermeture de la barre
-      sendGa4Event("appointment_bar_close", {
-        event_category: "Engagement",
-        event_label: "Barre rendez-vous fermée",
-      });
+      if (window.sendGa4Event) {
+        window.sendGa4Event("appointment_bar_close", {
+          event_category: "Engagement",
+          event_label: "Barre rendez-vous fermée",
+        });
+      }
     });
 
     // Ouvrir le modal en cliquant sur le bouton
     appointmentButton?.addEventListener("click", () => {
-      // Tracking pour le clic sur le bouton de rendez-vous
-      sendGa4Event("appointment_button_click", {
-        event_category: "Conversion",
-        event_label: "Bouton prendre rendez-vous",
-        value: 1,
-      });
-
       modal?.classList.add("active");
       document.body.style.overflow = "hidden";
+
+      // Tracking pour le clic sur le bouton de rendez-vous
+      if (window.sendGa4Event) {
+        window.sendGa4Event("appointment_button_click", {
+          event_category: "Conversion",
+          event_label: "Bouton prendre rendez-vous",
+          value: 1,
+        });
+      }
     });
 
     // Fermer le modal
@@ -307,59 +304,65 @@ const primaryColor = "bg-[#C99A9A]"; // Marron principal
       document.body.style.overflow = "";
 
       // Tracking pour la fermeture du modal
-      sendGa4Event("contact_modal_close", {
-        event_category: "Engagement",
-        event_label: "Modal contact fermé",
-      });
+      if (window.sendGa4Event) {
+        window.sendGa4Event("contact_modal_close", {
+          event_category: "Engagement",
+          event_label: "Modal contact fermé",
+        });
+      }
     });
 
     // Tracking des options de contact
     contactPhone?.addEventListener("click", () => {
-      sendGa4Event("contact_option_selected", {
-        event_category: "Conversion",
-        event_label: "Téléphone",
-        contact_method: "phone",
-        value: 1,
-      });
+      if (window.sendGa4Event) {
+        window.sendGa4Event("contact_option_selected", {
+          event_category: "Conversion",
+          event_label: "Téléphone",
+          contact_method: "phone",
+          value: 1,
+        });
+      }
     });
 
     contactWhatsapp?.addEventListener("click", () => {
-      sendGa4Event("contact_option_selected", {
-        event_category: "Conversion",
-        event_label: "WhatsApp",
-        contact_method: "whatsapp",
-        value: 1,
-      });
+      if (window.sendGa4Event) {
+        window.sendGa4Event("contact_option_selected", {
+          event_category: "Conversion",
+          event_label: "WhatsApp",
+          contact_method: "whatsapp",
+          value: 1,
+        });
+      }
     });
 
     contactInstagram?.addEventListener("click", () => {
-      sendGa4Event("contact_option_selected", {
-        event_category: "Conversion",
-        event_label: "Instagram",
-        contact_method: "instagram",
-        value: 1,
-      });
+      if (window.sendGa4Event) {
+        window.sendGa4Event("contact_option_selected", {
+          event_category: "Conversion",
+          event_label: "Instagram",
+          contact_method: "instagram",
+          value: 1,
+        });
+      }
     });
 
-    // Performance monitoring pour le LCP
-    if (
-      typeof performance !== "undefined" &&
-      typeof PerformanceObserver !== "undefined"
-    ) {
-      // Observer pour le LCP
+    // Performance monitoring pour le LCP - si nécessaire
+    if (typeof PerformanceObserver !== "undefined") {
       try {
         const lcpObserver = new PerformanceObserver((entryList) => {
           const entries = entryList.getEntries();
           const lastEntry = entries[entries.length - 1];
 
-          // Envoyer la valeur LCP à GA4
-          sendGa4Event("web_vitals", {
-            event_category: "Web Vitals",
-            event_label: "LCP",
-            value: Math.round(lastEntry.startTime),
-            metric_id: "LCP",
-            non_interaction: true,
-          });
+          // Envoyer la valeur LCP à GA4 lorsque GA4 est chargé
+          if (window.sendGa4Event) {
+            window.sendGa4Event("web_vitals", {
+              event_category: "Web Vitals",
+              event_label: "LCP",
+              value: Math.round(lastEntry.startTime),
+              metric_id: "LCP",
+              non_interaction: true,
+            });
+          }
         });
 
         lcpObserver.observe({
