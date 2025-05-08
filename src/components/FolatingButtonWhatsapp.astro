@@ -1,12 +1,7 @@
 ---
-// Importation du composant Analytics
-import Analytics from "../components/Analytics.astro";
-
-// Vous pouvez ajouter d'autres imports ou définir des props si nécessaire
+// Ce composant n'a plus besoin d'importer Analytics car il est géré dans Layout.astro
+// Le code est optimisé pour fonctionner avec notre implémentation différée de GA4
 ---
-
-<!-- Intégration de Google Analytics avec votre ID de mesure -->
-<Analytics measurementId="G-XXXXXXXXXX" />
 
 <div class="whatsapp-feature">
   <button
@@ -232,7 +227,7 @@ import Analytics from "../components/Analytics.astro";
 
     // Délai d'apparition - seulement si l'utilisateur reste sur la page
     let userEngagedTimeout = setTimeout(() => {
-      showRandomTooltip;
+      showRandomTooltip();
     }, 15000); // Attendre 15 secondes avant d'afficher l'infobulle
 
     // Annuler le délai si l'utilisateur quitte la page avant
@@ -384,9 +379,9 @@ import Analytics from "../components/Analytics.astro";
 
       // Redirection automatique après 3 secondes
       redirectTimeout = setTimeout(() => {
-        // Envoyer l'événement à Google Analytics
-        if (typeof gtag === "function") {
-          gtag("event", "auto_redirect", {
+        // Envoyer l'événement à Google Analytics avec la fonction globale
+        if (window.sendGa4Event) {
+          window.sendGa4Event("auto_redirect", {
             event_category: "Contact",
             event_label: "WhatsApp Auto Redirect",
             value: 1,
@@ -417,9 +412,9 @@ import Analytics from "../components/Analytics.astro";
 
     // Ouvrir le modal au lieu du chat avec suivi Google Analytics
     floatingBtn.addEventListener("click", () => {
-      // Envoyer l'événement à Google Analytics
-      if (typeof gtag === "function") {
-        gtag("event", "whatsapp_click", {
+      // Envoyer l'événement à Google Analytics avec la fonction globale
+      if (window.sendGa4Event) {
+        window.sendGa4Event("whatsapp_click", {
           event_category: "Contact",
           event_label: "WhatsApp Floating Button",
           value: 1,
@@ -437,9 +432,9 @@ import Analytics from "../components/Analytics.astro";
 
     // Fermer le modal
     cancelBtn.addEventListener("click", () => {
-      // Envoyer l'événement à Google Analytics
-      if (typeof gtag === "function") {
-        gtag("event", "cancel", {
+      // Envoyer l'événement à Google Analytics avec la fonction globale
+      if (window.sendGa4Event) {
+        window.sendGa4Event("cancel", {
           event_category: "Contact",
           event_label: "WhatsApp Cancel",
           value: 1,
@@ -453,9 +448,9 @@ import Analytics from "../components/Analytics.astro";
 
     // Bouton de fermeture en haut à droite
     closeModalBtn.addEventListener("click", () => {
-      // Envoyer l'événement à Google Analytics
-      if (typeof gtag === "function") {
-        gtag("event", "close", {
+      // Envoyer l'événement à Google Analytics avec la fonction globale
+      if (window.sendGa4Event) {
+        window.sendGa4Event("close", {
           event_category: "Contact",
           event_label: "WhatsApp Close",
           value: 1,
@@ -471,9 +466,9 @@ import Analytics from "../components/Analytics.astro";
     confirmBtn.addEventListener("click", (e) => {
       e.preventDefault();
 
-      // Envoyer l'événement à Google Analytics
-      if (typeof gtag === "function") {
-        gtag("event", "confirm", {
+      // Envoyer l'événement à Google Analytics avec la fonction globale
+      if (window.sendGa4Event) {
+        window.sendGa4Event("confirm", {
           event_category: "Contact",
           event_label: "WhatsApp Confirmation",
           value: 1,
@@ -490,9 +485,9 @@ import Analytics from "../components/Analytics.astro";
     // Fermer en cliquant sur l'overlay
     modal.addEventListener("click", (e) => {
       if (e.target === modal || e.target === modal.firstElementChild) {
-        // Envoyer l'événement à Google Analytics
-        if (typeof gtag === "function") {
-          gtag("event", "overlay_close", {
+        // Envoyer l'événement à Google Analytics avec la fonction globale
+        if (window.sendGa4Event) {
+          window.sendGa4Event("overlay_close", {
             event_category: "Contact",
             event_label: "WhatsApp Overlay Close",
             value: 1,
@@ -510,9 +505,9 @@ import Analytics from "../components/Analytics.astro";
     // Fermer avec la touche Echap
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && modal.classList.contains("active")) {
-        // Envoyer l'événement à Google Analytics
-        if (typeof gtag === "function") {
-          gtag("event", "escape_close", {
+        // Envoyer l'événement à Google Analytics avec la fonction globale
+        if (window.sendGa4Event) {
+          window.sendGa4Event("escape_close", {
             event_category: "Contact",
             event_label: "WhatsApp Escape Close",
             value: 1,
