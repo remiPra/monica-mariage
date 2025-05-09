@@ -4,6 +4,58 @@
       "source": "monicamariage.com",
       "destination": "www.monicamariage.com",
       "permanent": true
+    },
+
+    {
+      "source": "/promo-sirene",
+      "destination": "/promo/promo-sirene",
+      "permanent": true
+    },
+    {
+      "source": "/robes-de-mariee-destockage",
+      "destination": "/promo/robes-de-mariee-destockage",
+      "permanent": true
+    },
+    {
+      "source": "/robes-de-mariee-promotion",
+      "destination": "/promo/robes-de-mariee-promotion",
+      "permanent": true
+    },
+    {
+      "source": "/robes-de-mariee-boheme-chic",
+      "destination": "/promo/robes-de-mariee-boheme-chic",
+      "permanent": true
+    },
+
+    {
+      "source": "/forme-princesse",
+      "destination": "/robes-de-mariee/forme-princesse",
+      "permanent": true
+    },
+    {
+      "source": "/forme-sirene",
+      "destination": "/robes-de-mariee/forme-sirene",
+      "permanent": true
+    },
+    {
+      "source": "/minimaliste",
+      "destination": "/robes-de-mariee/minimaliste",
+      "permanent": true
+    },
+    {
+      "source": "/style-boheme-chic",
+      "destination": "/robes-de-mariee/style-boheme-chic",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "destination": "/prendre-rendez-vous",
+      "permanent": true
+    },
+    {
+      "source": "/robes-de-mariée-blackfriday",
+      "destination": "/promo/robes-de-mariee-boheme-chic",
+      "permanent": true
     }
   ]
 }
