@@ -1,0 +1,166 @@
+---
+import GoogleReviews from "../components/GoogleReviews.astro";
+import PrendreRendezVousButtonHome from "../components/PrendreRendezVousButtonHome.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Monica Mariage - Contact"
+  description="Réservez votre essayage de robe de mariée à Toulouse chez Monica Mariage. Notre équipe vous accompagne dans le choix de votre robe sur-mesure. Showroom à 15 min du centre de Toulouse"
+>
+  <!-- En-tête de page "Pourquoi nous choisir" -->
+  <section
+    class="mt-[100px] relative text-center pt-12 pb-28 px-6 sm:px-8 lg:px-12 bg-pink-light"
+  >
+    <div class="max-w-5xl mx-auto">
+      <!-- Icône décorative -->
+      <div class="flex justify-center mb-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="80"
+          height="80"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#C5A880"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="opacity-80"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          ></path>
+          <circle cx="12" cy="8" r="5" stroke-dasharray="2"></circle>
+        </svg>
+      </div>
+
+      <!-- H1 Principal -->
+      <h1
+        class="text-4xl font-vibes sm:text-5xl lg:text-6xl text-[#af7749] font-semibold mb-6 leading-tight"
+      >
+        Pourquoi choisir Monica Mariage
+      </h1>
+
+      <!-- Sous-titre -->
+      <p
+        class="text-lg sm:text-xl font-light text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8"
+      >
+        Des modèles uniques et un accompagnement personnalisé pour le plus beau
+        jour de votre vie
+      </p>
+    </div>
+    <!-- Bouton d'action -->
+    <div class="text-center my-16">
+      <PrendreRendezVousButtonHome />
+    </div>
+  </section>
+
+  <!-- Section Avantages -->
+  <section class="py-16 px-6 sm:px-8 lg:px-12 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <div
+          class="bg-pink-light p-8 rounded-lg shadow-md hover:shadow-lg transition-all text-center"
+        >
+          <div class="flex justify-center mb-6">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="60"
+              height="60"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#af7749"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polygon
+                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+              ></polygon>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-medium text-[#af7749] mb-4">
+            Notre expertise
+          </h3>
+          <p class="text-gray-700 mb-4">
+            Depuis 2014, notre équipe passionnée a accompagné plus de 1000
+            futures mariées dans le choix de leur robe. Notre expérience nous
+            permet de vous conseiller avec précision pour trouver la robe qui
+            magnifiera votre silhouette.
+          </p>
+          <p class="text-gray-500 italic">
+            Un savoir-faire reconnu dans toute l'Occitanie
+          </p>
+        </div>
+
+        <div
+          class="bg-pink-light p-8 rounded-lg shadow-md hover:shadow-lg transition-all text-center"
+        >
+          <div class="flex justify-center mb-6">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="60"
+              height="60"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#af7749"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-medium text-[#af7749] mb-4">
+            Service personnalisé
+          </h3>
+          <p class="text-gray-700 mb-4">
+            Chaque rendez-vous est privé dans notre showroom de Seysses près de
+            Toulouse. Nous prenons le temps de vous connaître, de comprendre
+            votre style et vos envies pour une expérience sur mesure.
+          </p>
+          <p class="text-gray-500 italic">
+            Un moment privilégié dans un cadre chaleureux
+          </p>
+        </div>
+
+        <div
+          class="bg-pink-light p-8 rounded-lg shadow-md hover:shadow-lg transition-all text-center"
+        >
+          <div class="flex justify-center mb-6">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="60"
+              height="60"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#af7749"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"
+              ></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-medium text-[#af7749] mb-4">
+            Collections exclusives
+          </h3>
+          <p class="text-gray-700 mb-4">
+            Nous sélectionnons avec passion des robes princesse, évasées et
+            bohème-chic de créateurs reconnus. Chaque modèle est choisi pour sa
+            qualité, son style unique et son rapport qualité-prix.
+          </p>
+          <p class="text-gray-500 italic">
+            Des robes pour tous les styles et tous les budgets
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <GoogleReviews />
+</Layout>
