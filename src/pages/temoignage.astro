@@ -1,0 +1,250 @@
+---
+import HeroSection from "../components/HeroSection.astro";
+import Layout from "../layouts/Layout.astro";
+import { Icon } from 'astro-icon';
+import { sanityClient } from "../sanityClient";
+
+// Récupération des témoignages
+const temoignages = await sanityClient.fetch(`
+  *[_type == "temoignage" ] | order(order asc) {
+    _id,
+    clientName,
+    dateMarriage,
+    rating,
+    testimonial_html,
+    "imagesUrl": imagesCloudinary[0].url,
+    "robeNom": robe->dressName
+  }
+`);
+console.log("🚀 SANITY: témoignages =", JSON.stringify(temoignages, null, 2));
+
+// TémoignagesPage.astro
+const title = "Elles ont dit Oui 💍";
+const subtitle =
+  "Découvrez les histoires vraies de nos mariées qui ont trouvé leur robe de rêve chez Monica Mariage.";
+const buttonText = "Voir les témoignages";
+const iconSrc = "/image/iconerobe.png";
+
+// Fonction pour formater la date
+function formatDateFr(dateString) {
+  if (!dateString) return "";
+
+  const options = { day: "numeric", month: "long", year: "numeric" };
+  return new Date(dateString).toLocaleDateString("fr-FR", options);
+}
+
+// Fonction pour générer les étoiles avec des icônes SVG
+function renderStars(rating) {
+  const stars = [];
+  for (let i = 0; i < 5; i++) {
+    stars.push(i < rating ? true : false);
+  }
+  return stars;
+}
+---
+
+<Layout>
+  <!-- Bannière décorative en haut -->
+  <div class="absolute top-0 left-0 w-full h-40 bg-[#fff8f5] -z-10 overflow-hidden">
+    <div class="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-[#fbeee8] opacity-70"></div>
+    <div class="absolute top-16 -left-20 w-48 h-48 rounded-full bg-[#fdf1ec] opacity-50"></div>
+  </div>
+
+  <section
+    id="temoignages"
+    class="py-24 mt-[100px] px-6 sm:px-8 lg:px-16 bg-gradient-to-b from-[#fff8f5] to-transparent"
+  >
+    <!-- En-tête élégant avec décoration -->
+    <div class="relative mb-20 text-center">
+      <h1 class="text-5xl sm:text-6xl font-vibes text-[#af7749] inline-block relative z-10">
+        Nos belles mariées
+      </h1>
+      <div class="absolute top-1/2 right-1/4 transform translate-x-1/2 -translate-y-1/2 text-yellow-300 opacity-90 text-7xl z-0">✨</div>
+      
+      <div class="w-32 h-1 bg-gradient-to-r from-transparent via-[#d4a982] to-transparent mx-auto mt-6 mb-8"></div>
+      
+      <p class="text-[#8a6246] max-w-2xl mx-auto italic font-lora text-lg">
+        {subtitle}
+      </p>
+      
+      <!-- Motif décoratif -->
+      <div class="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-full max-w-md">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 20" class="w-full h-auto opacity-20">
+          <path d="M0,10 Q50,-10 100,10 T200,10" fill="none" stroke="#d4a982" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Filtre et pagination (optionnel) -->
+    <div class="flex justify-center mb-12">
+      <div class="flex gap-2 bg-white/80 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm border border-[#f0e0d8]">
+        <button class="text-sm px-4 py-1.5 rounded-full bg-[#af7749] text-white font-medium">Toutes</button>
+        <button class="text-sm px-4 py-1.5 rounded-full text-[#af7749] hover:bg-[#fbeee8] transition-colors">2025</button>
+        <button class="text-sm px-4 py-1.5 rounded-full text-[#af7749] hover:bg-[#fbeee8] transition-colors">2024</button>
+      </div>
+    </div>
+
+    <!-- Grille de témoignages avec effet masonry -->
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 auto-rows-max">
+      {
+        temoignages.map((temoignage, index) => (
+          <article 
+            class={`bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-500 hover:shadow-xl ${index % 3 === 1 ? 'sm:translate-y-10' : ''}`}
+          >
+            <!-- Image avec overlay et effet de zoom au survol -->
+            <div class="relative h-72 overflow-hidden group">
+              {temoignage.imagesUrl ? (
+                <img
+                  src={temoignage.imagesUrl}
+                  alt={`Photo de mariage de ${temoignage.clientName}`}
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              ) : (
+                <div class="w-full h-full bg-gradient-to-br from-[#fbeee8] to-[#f8d8c8] flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-16 h-16 text-[#d4a982] opacity-50">
+                    <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688
+                    15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                  </svg>
+                </div>
+              )}
+              
+              <!-- Overlay dégradé -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              <!-- Badge flottant -->
+              <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm py-1 px-3 rounded-full shadow-md text-xs font-medium text-[#af7749]">
+                {formatDateFr(temoignage.dateMarriage).split(' ').slice(0, 2).join(' ')} {(new Date(temoignage.dateMarriage)).getFullYear()}
+              </div>
+            </div>
+            
+            <div class="p-6">
+              <!-- En-tête avec nom et étoiles -->
+              <div class="flex justify-between items-start mb-4">
+                <h3 class="font-vibes text-3xl text-[#af7749]">
+                  {temoignage.clientName}
+                </h3>
+                
+                <!-- Étoiles de notation -->
+                <div class="flex gap-0.5">
+                  {renderStars(temoignage.rating).map((isFilled) => (
+                    isFilled ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-amber-400">
+                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-gray-200">
+                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                      </svg>
+                    )
+                  ))}
+                </div>
+              </div>
+              
+              <!-- Citation stylisée -->
+              <div class="relative">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-[#f8d8c8] absolute -top-4 -left-2 opacity-50">
+                  <path fill-rule="evenodd" d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9s-9.75 3.97-9.75 9c0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 01-.814 1.686.75.75 0 00.44 1.223zM8.25 10.875a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM10.875 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875-1.125a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z" clip-rule="evenodd" />
+                </svg>
+                
+                <div
+                  class="font-lora text-gray-700 leading-relaxed pt-2 relative z-10"
+                  set:html={temoignage.testimonial_html}
+                />
+              </div>
+              
+              <!-- Pied avec robe et bouton d'action -->
+              <div class="flex justify-between items-center mt-6 pt-4 border-t border-[#f8e9e0]">
+                {temoignage.robeNom && (
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-[#d4a982] mr-1.5">
+                      <path d="M19.006 3.705a.75.75 0 00-.512-1.41L6 6.838V3a.75.75 0 00-.75-.75h-1.5A.75.75 0 003 3v4.93l-1.006.365a.75.75 0 00.512 1.41l16.5-6z" />
+                      <path fill-rule="evenodd" d="M3.019 11.115L18 5.667V9.09l4.006 1.456a.75.75 0 11-.512 1.41l-.494-.18v8.475h.75a.75.75 0 010 1.5H2.25a.75.75 0 010-1.5H3v-9.129l.019-.006zM18 20.25v-9.565l1.5.545v9.02H18zm-9-6a.75.75 0 00-.75.75v4.5c0 .414.336.75.75.75h3a.75.75 0 00.75-.75V15a.75.75 0 00-.75-.75H9z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="text-sm text-[#af7749] font-medium">
+                      Robe {temoignage.robeNom}
+                    </span>
+                  </div>
+                )}
+                
+                <button class="text-xs flex items-center gap-1 py-1.5 px-3 rounded-full bg-[#fbeee8] hover:bg-[#f8d8c8] text-[#af7749] transition-colors">
+                  <span>Voir plus</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
+                    <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+
+      {
+        temoignages.length === 0 && (
+          <div class="col-span-full flex flex-col items-center justify-center py-16 px-6 bg-white/50 backdrop-blur-sm rounded-2xl border border-[#f0e0d8]">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-[#d4a982] mb-4 opacity-70">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+            </svg>
+            <p class="text-center text-[#8a6246] font-lora text-lg">
+              Les témoignages de nos mariées seront bientôt disponibles.
+            </p>
+            <p class="text-center text-[#af7749] italic mt-2">
+              Revenez nous voir prochainement !
+            </p>
+          </div>
+        )
+      }
+    </div>
+    
+    <!-- Bouton "Voir plus" avec effet -->
+    <div class="flex justify-center mt-16">
+      <button class="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-white px-8 py-3 font-medium text-[#af7749] shadow-md transition duration-300 ease-out border border-[#f0e0d8] hover:text-white">
+        <span class="absolute inset-0 flex h-full w-full -translate-x-full items-center justify-center bg-[#af7749] text-white duration-300 group-hover:translate-x-0">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+        </span>
+        <span class="absolute flex items-center justify-center w-full h-full transition-all duration-300 transform group-hover:translate-x-full">
+          Découvrir plus de témoignages
+        </span>
+        <span class="relative invisible">Découvrir plus de témoignages</span>
+      </button>
+    </div>
+    
+    <!-- Motif décoratif en bas -->
+    <div class="mt-24 opacity-20">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 40" class="w-full h-auto">
+        <path fill="none" stroke="#d4a982" stroke-width="2" d="M0,20 Q360,40 720,20 T1440,20" />
+      </svg>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Animation légère pour les cartes au survol */
+  article {
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+  
+  /* Style personnalisé pour le contenu HTML du témoignage */
+  :global(.font-lora p) {
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  
+  :global(.font-lora em) {
+    color: #af7749;
+    font-style: italic;
+  }
+  
+  /* Effet d'animation pour les étoiles */
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.9; }
+    50% { opacity: 0.5; }
+  }
+  
+  .text-yellow-300 {
+    animation: twinkle 4s ease-in-out infinite;
+  }
+</style>
