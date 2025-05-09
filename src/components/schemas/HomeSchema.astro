@@ -1,0 +1,144 @@
+---
+// src/components/schema/HomeSchema.astro
+// Schema spécifique pour la page d'accueil
+
+import Schema from './Schema.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  additionalData?: any;
+}
+
+const { 
+  title, 
+  description, 
+  image = "/images/cover-robes.jpg", 
+  additionalData = {} 
+} = Astro.props;
+
+// Données spécifiques pour la page d'accueil
+const homeData = {
+  // Offre principale
+  offers: {
+    name: "Robes de mariée sur-mesure",
+    description: "Confection de robes de mariée sur-mesure et personnalisables jusqu'à la taille 44",
+    lowPrice: additionalData.lowPrice || "750",
+    highPrice: additionalData.highPrice || "1850"
+  },
+  
+  // Avis clients
+  reviews: additionalData.reviews || [
+    {
+      author: "mathilda llobell",
+      rating: "5",
+      date: "2025-04-01",
+      text: "Monica est très gentille et professionnelle! Elle a su être à l'écoute durant le choix de ma robe de mariée et nous avons trouvé ensemble ma PÉPITE."
+    },
+    {
+      author: "Amelie Jouve",
+      rating: "5",
+      date: "2024-11-15",
+      text: "J'ai passer le plus beau jour de ma vie dans une robe dans laquelle je me sentais belle ! Je recommande grandement Monica les yeux fermés."
+    }
+  ],
+  
+  // Bestsellers ou produits phares
+  featuredProducts: additionalData.featuredProducts || [
+    {
+      name: "Robe Emil",
+      description: "Magnifique robe de mariée princesse avec dentelle et tulle",
+      image: "/images/robes/emil.jpg",
+      url: "/robes/emil",
+      price: "1250"
+    },
+    {
+      name: "Robe Tina",
+      description: "Élégante robe de mariée bohème avec dos ouvert",
+      image: "/images/robes/tina.jpg",
+      url: "/robes/tina",
+      price: "980"
+    }
+  ],
+  
+  // FAQ
+  faqItems: additionalData.faqItems || [
+    {
+      question: "Faut-il prendre rendez-vous avant de venir ?",
+      answer: "Oui, il est nécessaire de prendre rendez-vous pour garantir une expérience personnalisée dans notre showroom."
+    },
+    {
+      question: "Comment se déroule le premier rendez-vous ?",
+      answer: "Lors du premier rendez-vous, nous discutons de vos préférences et vous essayez plusieurs modèles pour identifier le style qui vous convient le mieux."
+    }
+  ]
+};
+
+// Fusion des données par défaut avec les données personnalisées
+const mergedData = { ...homeData, ...additionalData };
+
+// Préparation des données FAQ pour un schema séparé
+const faqItems = mergedData.faqItems || [];
+
+// Préparation des produits phares pour un schema séparé
+const featuredProducts = mergedData.featuredProducts || [];
+---
+
+<!-- Schema principal pour la page d'accueil -->
+<Schema 
+  type="home"
+  title={title}
+  description={description}
+  image={image}
+  additionalData={mergedData}
+/>
+
+<!-- Schema FAQ séparé pour de meilleurs résultats enrichis -->
+{faqItems.length > 0 && (
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqItems.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer
+        }
+      }))
+    })}
+  </script>
+)}
+
+<!-- Schema pour les produits phares / bestsellers -->
+{featuredProducts.length > 0 && (
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "itemListElement": featuredProducts.map((product, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "Product",
+          "name": product.name,
+          "description": product.description,
+          "image": product.image,
+          "url": product.url,
+          "brand": {
+            "@type": "Brand",
+            "name": "Monica Mariage"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": product.price,
+            "priceCurrency": "EUR",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      }))
+    })}
+  </script>
+)}

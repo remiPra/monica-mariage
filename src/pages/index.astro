@@ -12,12 +12,97 @@ import HeaderMain from "../components/HeaderMain.astro";
 // Image principale pour préchargement
 const heroImageUrl =
   "https://res.cloudinary.com/dkbsvrpdc/image/upload/f_auto,q_auto:good,w_400/v1745254754/ylrvmsmxewylhvf6xywi.webp";
+
+// Données pour le schema de la page d'accueil
+const homeSchemaData = {
+  // Offre principale
+  offers: {
+    name: "Robes de mariée sur-mesure",
+    description:
+      "Confection de robes de mariée sur-mesure et personnalisables jusqu'à la taille 44",
+    lowPrice: "750",
+    highPrice: "1850",
+  },
+
+  // Récupération des avis clients (vous pourriez les récupérer dynamiquement)
+  reviews: [
+    {
+      author: "mathilda llobell",
+      rating: "5",
+      date: "2025-04-01",
+      text: "Monica est très gentille et professionnelle! Elle a su être à l'écoute durant le choix de ma robe de mariée et nous avons trouvé ensemble ma PÉPITE.",
+    },
+    {
+      author: "Amelie Jouve",
+      rating: "5",
+      date: "2024-11-15",
+      text: "J'ai passer le plus beau jour de ma vie dans une robe dans laquelle je me sentais belle ! Je recommande grandement Monica les yeux fermés.",
+    },
+  ],
+
+  // Bestsellers ou robes phares
+  featuredProducts: [
+    {
+      name: "Robe Emil",
+      description: "Magnifique robe de mariée princesse avec dentelle et tulle",
+      image:
+        "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1745254754/robes/emil.webp",
+      url: "/robes/emil",
+      price: "1250",
+    },
+    {
+      name: "Robe Tina",
+      description: "Élégante robe de mariée bohème avec dos ouvert",
+      image:
+        "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1745254754/robes/tina.webp",
+      url: "/robes/tina",
+      price: "980",
+    },
+    {
+      name: "Robe Kapella",
+      description: "Somptueuse robe de mariée princesse avec détails en perles",
+      image:
+        "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1745254754/robes/kapella.webp",
+      url: "/robes/kapella",
+      price: "1350",
+    },
+  ],
+
+  // Questions fréquentes (vous pourriez les récupérer de votre composant FAQ)
+  faqItems: [
+    {
+      question: "Faut-il prendre rendez-vous avant de venir ?",
+      answer:
+        "Oui, il est nécessaire de prendre rendez-vous pour garantir une expérience personnalisée dans notre showroom.",
+    },
+    {
+      question: "Comment se déroule le premier rendez-vous ?",
+      answer:
+        "Lors du premier rendez-vous, nous discutons de vos préférences et vous essayez plusieurs modèles pour identifier le style qui vous convient le mieux.",
+    },
+    {
+      question: "Que faut-il prévoir pour l'essayage ?",
+      answer:
+        "Nous vous recommandons de porter des sous-vêtements neutres et confortables. Vous pouvez également apporter des accessoires que vous comptez porter le jour J.",
+    },
+    {
+      question: "Quelles sont les modalités de paiement ?",
+      answer:
+        "Nous acceptons les paiements en plusieurs fois. Un acompte de 30% est demandé à la commande, puis le solde peut être échelonné jusqu'à la livraison.",
+    },
+  ],
+
+  // Informations supplémentaires comme l'année de fondation
+  foundingDate: "2014-01-01",
+};
 ---
 
 <StandardLayout
   title="Monica Mariage - Boutique de Robes de Mariée"
   description="Monica Mariage : boutique de robes de mariée sur-mesure à Toulouse. Découvrez nos modèles princesse, évasée, bohème-chic, fourreau et sirène à prix abordables. Showroom à 15 min de Toulouse."
   mainImageUrl={heroImageUrl}
+  page="home"
+  schemaData={homeSchemaData}
 >
   <div class="hidden md:block">
     <VideoSlider />

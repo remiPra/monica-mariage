@@ -41,13 +41,7 @@ const analyticsId = "G-H8RDXC45EX";
       type="font/woff2"
       crossorigin
     />
-    <link
-      rel="preload"
-      href="/fonts/lora-v35-latin-regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+
     <link
       rel="preload"
       href="/fonts/cormorant-garamond-v19-latin-regular.woff2"
@@ -63,6 +57,9 @@ const analyticsId = "G-H8RDXC45EX";
 
     <!-- Préchargement conditionnel de l'image principale -->
     {mainImageUrl && <ImagePreloader imageUrl={mainImageUrl} />}
+
+    <!-- Slot pour les schemas JSON-LD -->
+    <slot />
   </head>
   <body>
     <Header />

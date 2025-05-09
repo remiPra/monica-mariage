@@ -1,27 +1,58 @@
 ---
 // layouts/StandardLayout.astro
-import BaseLayout from "./BaseLayout.astro";
+import Layout from "./Layout.astro";
+
+// Import dynamique du schema en fonction du type de page
+const getSchemaComponent = async (page) => {
+  let schemaPath;
+
+  // Déterminer quel schema utiliser en fonction du type de page
+  switch (page) {
+    case "home":
+      schemaPath = "HomeSchema";
+      break;
+    case "product":
+      schemaPath = "ProductSchema";
+      break;
+    case "category":
+      schemaPath = "CategorySchema";
+      break;
+    default:
+      schemaPath = "Schema";
+  }
+
+  try {
+    return (await import(`../components/schemas/${schemaPath}.astro`)).default;
+  } catch (error) {
+    console.warn(`Schema ${schemaPath} not found, using default Schema`);
+    return (await import("../components/schemas/Schema.astro")).default;
+  }
+};
 
 const {
   title = "Monica Mariage - Boutique de Robes de Mariée",
   description = "Découvrez nos robes de mariée sur-mesure à Toulouse.",
   mainImageUrl = "", // URL unique pour l'image principale
+  page = "", // Type de page: 'home', 'product', 'category', etc.
+  schemaData = {}, // Données spécifiques pour le schema
 } = Astro.props;
+
+// Récupérer le composant Schema approprié
+const SchemaComponent = await getSchemaComponent(page);
 ---
 
-<BaseLayout title={title} description={description}>
-  <Fragment slot="head">
-    {
-      mainImageUrl && (
-        <link
-          rel="preload"
-          as="image"
-          href={mainImageUrl}
-          fetchpriority="high"
-        />
-      )
-    }
-  </Fragment>
+<Layout title={title} description={description} mainImageUrl={mainImageUrl}>
+  <!-- Schema SEO -->
+  {
+    SchemaComponent && (
+      <SchemaComponent
+        title={title}
+        description={description}
+        image={mainImageUrl}
+        additionalData={schemaData}
+      />
+    )
+  }
 
   <slot />
-</BaseLayout>
+</Layout>
