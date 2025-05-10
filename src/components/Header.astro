@@ -165,7 +165,7 @@ import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
   <!-- Menu Mobile Principal -->
   <div
     id="mobileMenu"
-    class="fixed top-0 right-0 h-full w-/4 bg-[#FDE9E6] z-50 p-4 flex flex-col items-center justify-center space-y-6 shadow-lg transform translate-x-full opacity-0 transition-all duration-500 ease-in-out"
+    class="font-vibes fixed top-0 right-0 h-full w-/4 bg-[#FDE9E6] z-50 p-4 flex flex-col items-center justify-center space-y-6 shadow-lg transform translate-x-full opacity-0 transition-all duration-500 ease-in-out"
   >
     <button
       id="closeMobileMenu"
@@ -182,36 +182,34 @@ import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
         >Since 2014</span
       >
     </div>
-    <div
-      class="flex flex-col items-center space-y-4 text-[#7A5C4B] text-xl w-full"
-    >
+    <div class="flex flex-col items-center space-y-4 text-[#7A5C4B] w-full">
       <a
         href="/"
         class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
       >
         <Icon name="mdi:home-outline" class="text-2xl" />
-        <span>Accueil</span>
+        <span class="font-cormorant text-2xl">Accueil</span>
       </a>
       <button
         id="openMobileSubmenu"
         class="flex items-center gap-3 hover:text-[#A37B63] transition w-full text-left"
       >
         <Icon name="mdi:hanger" class="text-2xl" />
-        <span>Robes de Mariée</span>
+        <span class="font-cormorant text-2xl">Robes de Mariée</span>
       </button>
       <button
         id="openMobilePromoSubmenu"
         class="flex items-center gap-3 hover:text-[#A37B63] transition w-full text-left"
       >
         <Icon name="mdi:percent-outline" class="text-2xl" />
-        <span>Promotions</span>
+        <span class="font-cormorant text-2xl">Promotions</span>
       </button>
       <a
         href="/toutes-nos-robes"
         class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
       >
         <Icon name="mdi:human-female-dance" class="text-2xl" /><span
-          >Toutes nos robes</span
+          class="font-cormorant text-2xl">Toutes nos robes</span
         >
       </a>
       <a
@@ -219,7 +217,7 @@ import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
         class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
       >
         <Icon name="mdi:calendar-check-outline" class="text-2xl" /><span
-          >Prendre Rendez-Vous</span
+          class="font-cormorant text-2xl">Prendre Rendez-Vous</span
         >
       </a>
       <a
@@ -227,7 +225,7 @@ import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
         class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
       >
         <Icon name="mdi:map-marker-outline" class="text-2xl" /><span
-          >Trouver le showroom</span
+          class="font-cormorant text-2xl">Trouver le showroom</span
         >
       </a>
     </div>

@@ -1,49 +1,38 @@
 ---
-// src/components/schemas/Schema.astro
-// Composant schema de base réutilisable
-
 export interface Props {
-  type?: string; // Type de page: 'home', 'product', 'category', etc.
-  title: string; // Titre de la page
-  description: string; // Description de la page
-  url?: string; // URL de la page
-  image?: string; // Image principale de la page
-  businessInfo?: any; // Informations sur l'entreprise (si différentes du défaut)
-  additionalData?: any; // Données spécifiques à chaque type de page
+  type?: string;
+  title: string;
+  description: string;
+  url?: string;
+  image?: string;
+  businessInfo?: any;
+  additionalData?: any;
 }
 
 const {
   type = "website",
   title,
   description,
-  url, // Ne pas définir de valeur par défaut ici
+  url,
   image = "/images/cover-robes.jpg",
   businessInfo = {},
   additionalData = {},
 } = Astro.props;
 
-// Construire l'URL correctement en vérifiant qu'Astro.site est défini
 let pageUrl;
 try {
-  // Si une URL a été fournie directement, l'utiliser
   if (url) {
     pageUrl = url;
-  }
-  // Sinon, construire l'URL à partir du chemin actuel
-  else if (Astro.site) {
+  } else if (Astro.site) {
     pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
-  }
-  // Fallback si Astro.site n'est pas défini
-  else {
+  } else {
     pageUrl = "https://monicamariage.com" + Astro.url.pathname;
   }
 } catch (error) {
-  // En cas d'erreur, utiliser une URL par défaut
   console.warn("Error creating URL:", error);
   pageUrl = "https://monicamariage.com";
 }
 
-// Informations par défaut sur l'entreprise Monica Mariage
 const defaultBusinessInfo = {
   name: "Monica Mariage",
   alternateName: "MonicaMariage",
@@ -51,20 +40,27 @@ const defaultBusinessInfo = {
   email: "monicamariage@hotmail.com",
   priceRange: "€€",
   address: {
-    streetAddress: "12 rue de Seysses", // À ajuster avec l'adresse exacte
+    streetAddress: "1220 chemin de brouquere",
     addressLocality: "Seysses",
     addressRegion: "Occitanie",
     addressCountry: "FR",
     postalCode: "31600",
   },
   geo: {
-    latitude: 43.471123, // À vérifier
-    longitude: 1.291812, // À vérifier
+    latitude: 43.471123,
+    longitude: 1.291812,
   },
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
       opens: "10:00",
       closes: "19:00",
     },
@@ -76,7 +72,7 @@ const defaultBusinessInfo = {
     },
   ],
   sameAs: [
-    "https://www.instagram.com/monicamariage/", // À remplacer par vos réels profils
+    "https://www.instagram.com/monicamariage/",
     "https://www.facebook.com/monicamariage/",
     "https://www.pinterest.fr/monicamariage/",
   ],
@@ -101,17 +97,13 @@ const defaultBusinessInfo = {
   ],
 };
 
-// Fusion des infos par défaut avec les infos personnalisées
 const business = { ...defaultBusinessInfo, ...businessInfo };
 
-// Site URL de base (pour les références)
 const siteUrl = "https://monicamariage.com";
 
-// Création de la structure de base du schema
 let structuredData = {
   "@context": "https://schema.org",
   "@graph": [
-    // Informations sur l'entreprise (toujours incluses)
     {
       "@type": "LocalBusiness",
       "@id": `${siteUrl}#business`,
@@ -142,7 +134,6 @@ let structuredData = {
       aggregateRating: business.aggregateRating,
       additionalType: "https://schema.org/BridalShop",
     },
-    // Informations sur le site web (toujours incluses)
     {
       "@type": "WebSite",
       "@id": `${siteUrl}#website`,
@@ -161,7 +152,6 @@ let structuredData = {
         "query-input": "required name=search_term_string",
       },
     },
-    // Informations sur la page spécifique
     {
       "@type": "WebPage",
       "@id": pageUrl,
@@ -179,7 +169,6 @@ let structuredData = {
   ],
 };
 
-// Conversion en JSON
 const jsonLD = JSON.stringify(structuredData, null, 2);
 ---
 

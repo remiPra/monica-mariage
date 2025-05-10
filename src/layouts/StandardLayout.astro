@@ -47,6 +47,7 @@ const SchemaComponent = await getSchemaComponent(page);
     SchemaComponent && (
       <SchemaComponent
         title={title}
+        slot="schema"
         description={description}
         image={mainImageUrl}
         additionalData={schemaData}
