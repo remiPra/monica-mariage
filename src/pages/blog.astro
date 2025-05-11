@@ -1,0 +1,368 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { sanityClient } from "../sanityClient";
+
+// Récupération des articles de blog avec gestion des cas où la catégorie est absente
+const articles = await sanityClient.fetch(`
+  *[_type == "blogPost"] | order(order asc) {
+    _id,
+    title,
+    slug,
+    publishedAt,
+    excerpt,
+    featured,
+    "imageUrl": mainImageCloudinary.url,
+    "categorieName": categorie->title,
+    "categorieSlug": categorie->slug.current,
+    "robesAssociees": robesAssociees[]->{
+      _id,
+      dressName,
+      slug
+    }
+  }
+`);
+console.log("🚀 SANITY: articles =", JSON.stringify(articles, null, 2));
+
+// Récupérer toutes les catégories pour le filtre
+const categories = await sanityClient.fetch(`
+  *[_type == "categorie"] | order(title asc) {
+    _id,
+    title,
+    slug
+  }
+`);
+
+// Fonction pour formater la date
+function formatDateFr(dateString) {
+  if (!dateString) return "";
+
+  const options = { day: "numeric", month: "long", year: "numeric" };
+  return new Date(dateString).toLocaleDateString("fr-FR", options);
+}
+
+// Fonction pour tronquer le texte
+function truncateText(text, maxLength = 150) {
+  if (!text || text.length <= maxLength) return text;
+  return text.slice(0, maxLength) + '...';
+}
+---
+
+<Layout>
+  <!-- Bannière décorative en haut -->
+  <div class="absolute top-0 left-0 w-full h-40 bg-[#fff8f5] -z-10 overflow-hidden">
+    <div class="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-[#fbeee8] opacity-70"></div>
+    <div class="absolute top-16 -left-20 w-48 h-48 rounded-full bg-[#fdf1ec] opacity-50"></div>
+  </div>
+
+  <section
+    id="blog"
+    class="py-24 mt-[100px] px-6 sm:px-8 lg:px-16 bg-gradient-to-b from-[#fff8f5] to-transparent"
+  >
+    <!-- En-tête élégant avec décoration -->
+    <div class="relative mb-20 text-center">
+      <h1 class="text-5xl sm:text-6xl font-vibes text-[#af7749] inline-block relative z-10">
+        Notre Blog
+      </h1>
+      <div class="absolute top-1/2 right-1/4 transform translate-x-1/2 -translate-y-1/2 text-yellow-300 opacity-90 text-7xl z-0">✨</div>
+      
+      <div class="w-32 h-1 bg-gradient-to-r from-transparent via-[#d4a982] to-transparent mx-auto mt-6 mb-8"></div>
+      
+      <p class="text-[#8a6246] max-w-2xl mx-auto italic font-lora text-lg">
+        Inspirations, conseils et actualités pour préparer votre mariage et trouver la robe de vos rêves.
+      </p>
+      
+      <!-- Motif décoratif -->
+      <div class="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-full max-w-md">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 20" class="w-full h-auto opacity-20">
+          <path d="M0,10 Q50,-10 100,10 T200,10" fill="none" stroke="#d4a982" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Articles en vedette (carousel ou grand format) -->
+    {articles.some(article => article.featured) && (
+      <div class="mb-20">
+        <h2 class="text-3xl font-vibes text-[#af7749] mb-8 text-center">Articles en vedette</h2>
+        
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {articles
+            .filter(article => article.featured)
+            .slice(0, 3)
+            .map((article) => (
+              <article class="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
+                <!-- Image avec overlay -->
+                <div class="relative h-64 overflow-hidden group">
+                  {article.imageUrl ? (
+                    <img
+                      src={article.imageUrl}
+                      alt={article.title}
+                      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  ) : (
+                    <div class="w-full h-full bg-gradient-to-br from-[#fbeee8] to-[#f8d8c8] flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-16 h-16 text-[#d4a982] opacity-50">
+                        <path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A8.237 8.237 0 016 18.75c1.995 0 3.823.707 5.25 1.886V4.533zM12.75 20.636A8.214 8.214 0 0118 18.75c.966 0 1.89.166 2.75.47a.75.75 0 001-.708V4.262a.75.75 0 00-.5-.707A9.735 9.735 0 0018 3a9.707 9.707 0 00-5.25 1.533v16.103z" />
+                      </svg>
+                    </div>
+                  )}
+                  
+                  <!-- Overlay dégradé -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300"></div>
+                  
+                  <!-- Badge catégorie si définie -->
+                  {article.categorieName && (
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm py-1 px-3 rounded-full shadow-md text-xs font-medium text-[#af7749]">
+                      {article.categorieName}
+                    </div>
+                  )}
+                  
+                  <!-- Date -->
+                  <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm py-1 px-3 rounded-full shadow-md text-xs font-medium text-[#af7749]">
+                    {formatDateFr(article.publishedAt)}
+                  </div>
+                </div>
+                
+                <div class="p-6">
+                  <!-- Titre -->
+                  <h3 class="font-vibes text-3xl text-[#af7749] mb-3">
+                    {article.title}
+                  </h3>
+                  
+                  <!-- Extrait -->
+                  <p class="font-lora text-gray-700 leading-relaxed">
+                    {article.excerpt ? truncateText(article.excerpt, 120) : ""}
+                  </p>
+                  
+                  <!-- Pied avec robes associées et bouton d'action -->
+                  <div class="flex justify-between items-center mt-6 pt-4 border-t border-[#f8e9e0]">
+                    {article.robesAssociees && article.robesAssociees.length > 0 && (
+                      <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-[#d4a982] mr-1.5">
+                          <path d="M19.006 3.705a.75.75 0 00-.512-1.41L6 6.838V3a.75.75 0 00-.75-.75h-1.5A.75.75 0 003 3v4.93l-1.006.365a.75.75 0 00.512 1.41l16.5-6z" />
+                          <path fill-rule="evenodd" d="M3.019 11.115L18 5.667V9.09l4.006 1.456a.75.75 0 11-.512 1.41l-.494-.18v8.475h.75a.75.75 0 010 1.5H2.25a.75.75 0 010-1.5H3v-9.129l.019-.006zM18 20.25v-9.565l1.5.545v9.02H18zm-9-6a.75.75 0 00-.75.75v4.5c0 .414.336.75.75.75h3a.75.75 0 00.75-.75V15a.75.75 0 00-.75-.75H9z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="text-sm text-[#af7749] font-medium">
+                          {article.robesAssociees.length} {article.robesAssociees.length > 1 ? "robes" : "robe"}
+                        </span>
+                      </div>
+                    )}
+                    
+                    <a 
+                      href={`/blog/${article.slug?.current || ""}`}
+                      class="text-xs flex items-center gap-1 py-1.5 px-3 rounded-full bg-[#fbeee8] hover:bg-[#f8d8c8] text-[#af7749] transition-colors"
+                    >
+                      <span>Lire l'article</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
+                        <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    )}
+
+    <!-- Filtre par catégories -->
+    {categories.length > 0 && (
+      <div class="flex justify-center mb-12 overflow-x-auto pb-2">
+        <div class="flex gap-2 bg-white/80 backdrop-blur-sm py-2 px-4 rounded-full shadow-sm border border-[#f0e0d8]">
+          <a href="/blog" class="text-sm px-4 py-1.5 rounded-full bg-[#af7749] text-white font-medium whitespace-nowrap">
+            Tous les articles
+          </a>
+          {categories.map(category => (
+            <a 
+              href={`/blog/categorie/${category.slug?.current || ""}`} 
+              class="text-sm px-4 py-1.5 rounded-full text-[#af7749] hover:bg-[#fbeee8] transition-colors whitespace-nowrap"
+            >
+              {category.title}
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Grille d'articles -->
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 auto-rows-max">
+      {
+        articles
+          .filter(article => !article.featured)
+          .map((article, index) => (
+            <article 
+              class={`bg-white border border-[#af7749] rounded-2xl shadow-lg overflow-hidden transform transition-all duration-500 hover:shadow-xl `}
+            >
+              <a   href={`/blog/${article.slug?.current || ""}`}>
+                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm py-1 px-3 rounded-full shadow-md text-xs font-medium text-[#af7749]">
+                  {article.categorieName}
+                </div>
+              <!-- Image avec overlay -->
+              <div class="relative h-56 overflow-hidden group">
+                {article.imageUrl ? (
+                  <img
+                    src={article.imageUrl}
+                    alt={article.title}
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                ) : (
+                  <div class="w-full h-full bg-gradient-to-br from-[#fbeee8] to-[#f8d8c8] flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-16 h-16 text-[#d4a982] opacity-50">
+                      <path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A8.237 8.237 0 016 18.75c1.995 0 3.823.707 5.25 1.886V4.533zM12.75 20.636A8.214 8.214 0 0118 18.75c.966 0 1.89.166 2.75.47a.75.75 0 001-.708V4.262a.75.75 0 00-.5-.707A9.735 9.735 0 0018 3a9.707 9.707 0 00-5.25 1.533v16.103z" />
+                    </svg>
+                  </div>
+                )}
+                
+                <!-- Overlay dégradé -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-80 transition-opacity duration-300"></div>
+                
+                <!-- Badge catégorie si définie -->
+                {article.categorieName && (
+                  <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm py-1 px-3 rounded-full shadow-md text-xs font-medium text-[#af7749]">
+                    {article.categorieName}
+                  </div>
+                )}
+                
+                <!-- Date -->
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm py-1 px-3 rounded-full shadow-md text-xs font-medium text-[#af7749]">
+                  {formatDateFr(article.publishedAt)}
+                </div>
+              </div>
+              
+              <div class="p-6">
+                <!-- Titre -->
+                <h3 class="font-vibes text-2xl text-[#af7749] mb-3 line-clamp-2">
+                  {article.title}
+                </h3>
+                
+                <!-- Extrait -->
+                <p class="font-lora text-sm text-gray-700 leading-relaxed line-clamp-3">
+                  {article.excerpt ? article.excerpt : ""}
+                </p>
+                
+                <!-- Pied avec robes associées et bouton d'action -->
+                <div class="flex justify-between items-center mt-6 pt-4 border-t border-[#f8e9e0]">
+                  {article.robesAssociees && article.robesAssociees.length > 0 && (
+                    <div class="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-[#d4a982] mr-1.5">
+                        <path d="M19.006 3.705a.75.75 0 00-.512-1.41L6 6.838V3a.75.75 0 00-.75-.75h-1.5A.75.75 0 003 3v4.93l-1.006.365a.75.75 0 00.512 1.41l16.5-6z" />
+                        <path fill-rule="evenodd" d="M3.019 11.115L18 5.667V9.09l4.006 1.456a.75.75 0 11-.512 1.41l-.494-.18v8.475h.75a.75.75 0 010 1.5H2.25a.75.75 0 010-1.5H3v-9.129l.019-.006zM18 20.25v-9.565l1.5.545v9.02H18zm-9-6a.75.75 0 00-.75.75v4.5c0 .414.336.75.75.75h3a.75.75 0 00.75-.75V15a.75.75 0 00-.75-.75H9z" clip-rule="evenodd" />
+                      </svg>
+                      <span class="text-sm text-[#af7749] font-medium">
+                        {article.robesAssociees.length} {article.robesAssociees.length > 1 ? "robes" : "robe"}
+                      </span>
+                    </div>
+                  )}
+                  
+                  <a 
+                    href={`/blog/${article.slug?.current || ""}`}
+                    class="text-xs flex items-center gap-1 py-1.5 px-3 rounded-full bg-[#fbeee8] hover:bg-[#f8d8c8] text-[#af7749] transition-colors"
+                  >
+                    <span>Lire l'article</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
+                      <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+              </a>
+            </article>
+          ))
+      }
+
+      {
+        articles.length === 0 && (
+          <div class="col-span-full flex flex-col items-center justify-center py-16 px-6 bg-white/50 backdrop-blur-sm rounded-2xl border border-[#f0e0d8]">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-[#d4a982] mb-4 opacity-70">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+            </svg>
+            <p class="text-center text-[#8a6246] font-lora text-lg">
+              Nos articles seront bientôt disponibles.
+            </p>
+            <p class="text-center text-[#af7749] italic mt-2">
+              Revenez nous voir prochainement !
+            </p>
+          </div>
+        )
+      }
+    </div>
+    
+    <!-- Pagination -->
+    {articles.length > 9 && (
+      <div class="flex justify-center mt-16">
+        <div class="inline-flex items-center justify-center gap-2 bg-white rounded-full shadow-sm px-4 py-2 border border-[#f0e0d8]">
+          <a href="#" class="w-8 h-8 flex items-center justify-center rounded-full text-[#af7749] hover:bg-[#fbeee8] transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+              <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+            </svg>
+          </a>
+          <a href="#" class="w-8 h-8 flex items-center justify-center rounded-full bg-[#af7749] text-white font-medium">1</a>
+          <a href="#" class="w-8 h-8 flex items-center justify-center rounded-full text-[#af7749] hover:bg-[#fbeee8] transition-colors">2</a>
+          <a href="#" class="w-8 h-8 flex items-center justify-center rounded-full text-[#af7749] hover:bg-[#fbeee8] transition-colors">3</a>
+          <span class="w-8 h-8 flex items-center justify-center text-[#af7749]">...</span>
+          <a href="#" class="w-8 h-8 flex items-center justify-center rounded-full text-[#af7749] hover:bg-[#fbeee8] transition-colors">12</a>
+          <a href="#" class="w-8 h-8 flex items-center justify-center rounded-full text-[#af7749] hover:bg-[#fbeee8] transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+              <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    )}
+    
+    <!-- Motif décoratif en bas -->
+    <div class="mt-24 opacity-20">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 40" class="w-full h-auto">
+        <path fill="none" stroke="#d4a982" stroke-width="2" d="M0,20 Q360,40 720,20 T1440,20" />
+      </svg>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Animation légère pour les cartes au survol */
+  article {
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+  
+  /* Effet d'animation pour les étoiles */
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.9; }
+    50% { opacity: 0.5; }
+  }
+  
+  .text-yellow-300 {
+    animation: twinkle 4s ease-in-out infinite;
+  }
+  
+  /* Masquer la barre de défilement tout en permettant le défilement */
+  .overflow-x-auto::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+    display: none;
+  }
+  
+  /* Effet de dégradé sur les côtés pour indiquer le défilement */
+  .overflow-x-auto::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 30px;
+    background: linear-gradient(to right, transparent, #fff8f5);
+    pointer-events: none;
+  }
+  
+  .overflow-x-auto::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 30px;
+    background: linear-gradient(to left, transparent, #fff8f5);
+    pointer-events: none;
+  }
+</style>

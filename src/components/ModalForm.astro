@@ -520,13 +520,13 @@ const { isVisible } = Astro.props;
         sessionStorage.setItem("modalTimerSet", Date.now().toString());
 
         // Différer l'affichage beaucoup plus longtemps (45 secondes) pour ne pas affecter le LCP
-        setTimeout(showOverlay, 45000);
+        setTimeout(showOverlay, 20000);
         return;
       }
 
       // Calculer si le temps s'est écoulé depuis la première visite
       const timeSinceFirstVisit = Date.now() - parseInt(modalTimerSet);
-      const delayInMs = 45000; // 45 secondes
+      const delayInMs = 20000; // 45 secondes
 
       if (timeSinceFirstVisit >= delayInMs) {
         // Le temps est écoulé, afficher avec un léger délai supplémentaire
