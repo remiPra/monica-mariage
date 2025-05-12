@@ -1,9 +1,24 @@
 ---
 // Importation des composants Astro
 import { Icon } from "astro-icon/components";
-import SocialIcons from "./SocialIcons.astro";
+import SocialIcons from "./SocialIcons.astro"; // Assurez-vous que ce composant existe ou supprimez l'import s'il n'est pas utilisé ici
 import FavoriDrawer from "./FavoriDrawer.astro";
 import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
+
+// Structure des sous-menus pour faciliter la maintenance
+const robesSubMenuItems = [
+  { href: "/robes-de-mariee/forme-princesse", text: "Forme Princesse" },
+  { href: "/robes-de-mariee/style-boheme-chic", text: "Style Bohème Chic" },
+  { href: "/robes-de-mariee/forme-sirene", text: "Style Sirène" },
+  { href: "/robes-de-mariee/minimaliste", text: "Minimaliste" },
+];
+
+const promoSubMenuItems = [
+  { href: "/promo/robes-de-mariee-promotion", text: "Flash Vente" },
+  { href: "/promo/robes-de-mariee-boheme-chic", text: "Promotion Bohème" },
+  { href: "/promo/promo-sirene", text: "Promotion Sirène" },
+  { href: "/promo/robes-de-mariee-destockage", text: "Destockage" },
+];
 ---
 
 <header id="header" class="fixed top-0 w-full z-50 bg-[#FDE9E6] shadow-md">
@@ -38,6 +53,7 @@ import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
   <nav
     class="hidden lg:flex bg-[#FDE9E6] items-center justify-between px-8 h-20"
   >
+    <!-- Liens Gauche -->
     <div class="flex items-center space-x-8">
       <a
         href="/"
@@ -52,28 +68,18 @@ import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
           >Robes de Mariée</button
         >
         <div
-          class="absolute left-0 mt-2 w-48 bg-[#FDE9E6] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          class="absolute left-0 mt-2 w-48 bg-[#FDE9E6] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
         >
-          <a
-            href="/robes-de-mariee/forme-princesse"
-            class="block px-4 py-2 text-[#7A5C4B] hover:bg-[#A37B63] hover:text-white"
-            >Forme Princesse</a
-          >
-          <a
-            href="/robes-de-mariee/style-boheme-chic"
-            class="block px-4 py-2 text-[#7A5C4B] hover:bg-[#A37B63] hover:text-white"
-            >Style Bohème Chic</a
-          >
-          <a
-            href="/robes-de-mariee/forme-sirene"
-            class="block px-4 py-2 text-[#7A5C4B] hover:bg-[#A37B63] hover:text-white"
-            >Style Sirène</a
-          >
-          <a
-            href="/robes-de-mariee/minimaliste"
-            class="block px-4 py-2 text-[#7A5C4B] hover:bg-[#A37B63] hover:text-white"
-            >Minimaliste</a
-          >
+          {
+            robesSubMenuItems.map((item) => (
+              <a
+                href={item.href}
+                class="block px-4 py-2 text-[#7A5C4B] hover:bg-[#A37B63] hover:text-white"
+              >
+                {item.text}
+              </a>
+            ))
+          }
         </div>
       </div>
       <!-- Dropdown Promotions -->
@@ -82,74 +88,74 @@ import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
           >Promotions</button
         >
         <div
-          class="absolute left-0 mt-2 w-48 bg-[#FDE9E6] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          class="absolute left-0 mt-2 w-48 bg-[#FDE9E6] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
         >
-          <a
-            href="/promo/robes-de-mariee-promotion"
-            class="block px-4 py-2 text-[#7A5C4B] hover:bg-[#A37B63] hover:text-white"
-            >Flash Vente</a
-          >
-          <a
-            href="/promo/robes-de-mariee-boheme-chic"
-            class="block px-4 py-2 text-[#7A5C4B] hover:bg-[#A37B63] hover:text-white"
-            >Promotion Bohème</a
-          >
-          <a
-            href="/promo/promo-sirene"
-            class="block px-4 py-2 text-[#7A5C4B] hover:bg-[#A37B63] hover:text-white"
-            >Promotion Sirène</a
-          >
-          <a
-            href="/promo/robes-de-mariee-destockage"
-            class="block px-4 py-2 text-[#7A5C4B] hover:bg-[#A37B63] hover:text-white"
-            >Destockage</a
-          >
+          {
+            promoSubMenuItems.map((item) => (
+              <a
+                href={item.href}
+                class="block px-4 py-2 text-[#7A5C4B] hover:bg-[#A37B63] hover:text-white"
+              >
+                {item.text}
+              </a>
+            ))
+          }
         </div>
       </div>
+      <a href="/toutes-nos-robes" class="text-[#7A5C4B] hover:text-[#A37B63]"
+        >Toutes nos robes</a
+      >
     </div>
 
+    <!-- Logo Central -->
     <div
-      class="absolute left-1/2 transform -translate-x-1/2 flex items-center text-center"
+      class="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center text-center"
     >
-      <p class="text-[#7A5C4B] font-vibes italic text-4xl mr-2">
-        MonicaMariage
-      </p>
-      <span class="text-[#7A5C4B] italic text-md">Since 2014</span>
+      <a href="/" class="inline-block">
+        <p class="text-[#7A5C4B] font-vibes italic text-4xl">MonicaMariage</p>
+        <span class="text-[#7A5C4B] italic text-md -mt-1 block">Since 2014</span
+        >
+      </a>
     </div>
 
+    <!-- Liens Droite -->
     <div class="flex items-center space-x-8">
+      <a href="/trouver-le-showroom" class="text-[#7A5C4B] hover:text-[#A37B63]"
+        >Trouver le showroom</a
+      >
       <a href="/prendre-rendez-vous">
         <button
-          class="bg-[#7A5C4B] text-white hover:text-[#A37B63] transition transform hover:scale-105 rounded-md py-2 px-4 shadow-lg"
+          class="bg-[#7A5C4B] text-white hover:bg-[#A37B63] transition transform hover:scale-105 rounded-md py-2 px-4 shadow-lg"
         >
           Contactez Nous
         </button>
       </a>
-      <a href="/trouver-le-showroom" class="text-[#7A5C4B] hover:text-[#A37B63]"
-        >Trouver le showroom</a
-      >
+
       <FavorisDrawerDesktop />
     </div>
   </nav>
 
   <!-- Navigation Mobile -->
   <div
-    class="lg:hidden z-60 bg-white shadow-md px-4 py-3 flex justify-between items-center"
+    class="lg:hidden bg-[#FDE9E6] shadow-md px-4 py-3 flex justify-between items-center"
   >
     <button
       id="mobileMenuBtn"
+      aria-label="Ouvrir le menu"
       class="text-[#7A5C4B] p-1 border border-[#7A5C4B] rounded-full"
     >
-      <Icon name="mdi:menu" class="w-8 h-8 text-[28px]" />
+      <Icon name="mdi:menu" class="w-7 h-7" />
+      <!-- Slightly smaller icon -->
     </button>
-    <a href="/" class="font-vibes ml-5 text-2xl text-[#7A5C4B]">MonicaMariage</a
-    >
-    <div class="flex">
+    <a href="/" class="font-vibes text-3xl text-[#7A5C4B]">MonicaMariage</a>
+    <div class="flex items-center space-x-2">
+      <!-- Added space-x-2 -->
       <a
         href="/trouver-le-showroom"
-        class="text-[#7A5C4B] text-[26px] font-semibold py-3 flex items-center"
+        aria-label="Trouver le showroom"
+        class="text-[#7A5C4B] p-1"
       >
-        <Icon name="mdi:map-marker" class="text-[#7A5C4B]" />
+        <Icon name="mdi:map-marker" class="w-7 h-7 text-[#7A5C4B]" />
       </a>
       <FavoriDrawer />
     </div>
@@ -158,251 +164,306 @@ import FavorisDrawerDesktop from "./FavorisDrawerDesktop.astro";
   <!-- Overlay -->
   <div
     id="menuOverlay"
-    class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden transition-opacity duration-300"
+    class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden lg:hidden transition-opacity duration-300"
   >
   </div>
 
-  <!-- Menu Mobile Principal -->
+  <!-- Menu Mobile Principal (Avec sous-menus intégrés) -->
   <div
     id="mobileMenu"
-    class="font-vibes fixed top-0 right-0 h-full w-/4 bg-[#FDE9E6] z-50 p-4 flex flex-col items-center justify-center space-y-6 shadow-lg transform translate-x-full opacity-0 transition-all duration-500 ease-in-out"
+    class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-[#FDE9E6] z-50 p-4 overflow-y-auto flex flex-col shadow-lg transform translate-x-full opacity-0 transition-all duration-500 ease-in-out lg:hidden"
   >
-    <button
-      id="closeMobileMenu"
-      class="border border-[#7A5C4B] rounded-full absolute top-4 right-4 text-[#7A5C4B]"
-    >
-      <Icon name="mdi:close" size="28px" />
-    </button>
-    <div class="text-center w-full">
-      <span class="text-[#7A5C4B] block mt-[10px] font-vibes italic text-[40px]"
-        >MonicaMariage</span
+    <!-- Entête du Menu Mobile -->
+    <div class="flex justify-between items-center mb-6">
+      <div class="text-center mt-[100px]">
+        <a href="/">
+          <span class="text-[#7A5C4B] block font-vibes italic text-[32px]"
+            >MonicaMariage</span
+          >
+          <span class="text-[#7A5C4B] text-[16px] block -mt-1">Since 2014</span>
+        </a>
+      </div>
+      <button
+        id="closeMobileMenu"
+        aria-label="Fermer le menu"
+        class="border border-[#7A5C4B] rounded-full p-1 text-[#7A5C4B]"
       >
-      <span
-        class="mb-3 mt-[-10px] text-[#7A5C4B] text-[18px] block w-full text-center"
-        >Since 2014</span
-      >
+        <Icon name="mdi:close" class="w-7 h-7" />
+      </button>
     </div>
-    <div class="flex flex-col items-center space-y-4 text-[#7A5C4B] w-full">
+
+    <!-- Liens du Menu Mobile -->
+    <div class="flex flex-col space-y-2 text-[#7A5C4B] w-full flex-grow">
       <a
         href="/"
-        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
+        class="flex items-center gap-3 py-2 hover:text-[#A37B63] transition w-full"
       >
         <Icon name="mdi:home-outline" class="text-2xl" />
-        <span class="font-cormorant text-2xl">Accueil</span>
+        <span class="font-cormorant text-xl">Accueil</span>
       </a>
-      <button
-        id="openMobileSubmenu"
-        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full text-left"
-      >
-        <Icon name="mdi:hanger" class="text-2xl" />
-        <span class="font-cormorant text-2xl">Robes de Mariée</span>
-      </button>
-      <button
-        id="openMobilePromoSubmenu"
-        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full text-left"
-      >
-        <Icon name="mdi:percent-outline" class="text-2xl" />
-        <span class="font-cormorant text-2xl">Promotions</span>
-      </button>
+
+      <!-- Section Robes de Mariée (Toggle) -->
+      <div class="w-full">
+        <button
+          id="toggleRobesSubmenu"
+          aria-expanded="false"
+          aria-controls="robesSubmenuContainer"
+          class="flex items-center justify-between gap-3 py-2 hover:text-[#A37B63] transition w-full text-left"
+        >
+          <span class="flex items-center gap-3">
+            <Icon name="mdi:hanger" class="text-2xl" />
+            <span class="font-cormorant text-xl">Robes de Mariée</span>
+          </span>
+          <Icon
+            name="mdi:chevron-down"
+            class="text-xl transition-transform duration-300"
+            data-arrow="toggleRobesSubmenu"
+          />
+        </button>
+        <div
+          id="robesSubmenuContainer"
+          class="overflow-hidden transition-all duration-500 ease-in-out max-h-0 pl-8"
+          style="/* max-h set via JS */"
+        >
+          <div class="flex flex-col space-y-1 pt-1">
+            {
+              robesSubMenuItems.map((item) => (
+                <a
+                  href={item.href}
+                  class="block py-1 text-[#7A5C4B] hover:text-[#A37B63] transition font-cormorant text-lg"
+                >
+                  {item.text}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Promotions (Toggle) -->
+      <div class="w-full">
+        <button
+          id="togglePromoSubmenu"
+          aria-expanded="false"
+          aria-controls="promoSubmenuContainer"
+          class="flex items-center justify-between gap-3 py-2 hover:text-[#A37B63] transition w-full text-left"
+        >
+          <span class="flex items-center gap-3">
+            <Icon name="mdi:percent-outline" class="text-2xl" />
+            <span class="font-cormorant text-xl">Promotions</span>
+          </span>
+          <Icon
+            name="mdi:chevron-down"
+            class="text-xl transition-transform duration-300"
+            data-arrow="togglePromoSubmenu"
+          />
+        </button>
+        <div
+          id="promoSubmenuContainer"
+          class="overflow-hidden transition-all duration-500 ease-in-out max-h-0 pl-8"
+          style="/* max-h set via JS */"
+        >
+          <div class="flex flex-col space-y-1 pt-1">
+            {
+              promoSubMenuItems.map((item) => (
+                <a
+                  href={item.href}
+                  class="block py-1 text-[#7A5C4B] hover:text-[#A37B63] transition font-cormorant text-lg"
+                >
+                  {item.text}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
       <a
         href="/toutes-nos-robes"
-        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
+        class="flex items-center gap-3 py-2 hover:text-[#A37B63] transition w-full"
       >
         <Icon name="mdi:human-female-dance" class="text-2xl" /><span
-          class="font-cormorant text-2xl">Toutes nos robes</span
+          class="font-cormorant text-xl">Toutes nos robes</span
         >
       </a>
+
       <a
         href="/prendre-rendez-vous"
-        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
+        class="flex items-center gap-3 py-2 hover:text-[#A37B63] transition w-full"
       >
         <Icon name="mdi:calendar-check-outline" class="text-2xl" /><span
-          class="font-cormorant text-2xl">Prendre Rendez-Vous</span
+          class="font-cormorant text-xl">Prendre Rendez-Vous</span
         >
       </a>
       <a
         href="/trouver-le-showroom"
-        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
+        class="flex items-center gap-3 py-2 hover:text-[#A37B63] transition w-full"
       >
         <Icon name="mdi:map-marker-outline" class="text-2xl" /><span
-          class="font-cormorant text-2xl">Trouver le showroom</span
+          class="font-cormorant text-xl">Trouver le showroom</span
         >
       </a>
     </div>
-    <div class="flex gap-6 mt-6 text-[#7A5C4B] text-2xl">
-      <a href="https://wa.me/33668300960" target="_blank"
-        ><Icon name="mdi:whatsapp" /></a
-      >
-      <a href="https://www.instagram.com" target="_blank"
-        ><Icon name="mdi:instagram" /></a
-      >
-      <a href="https://www.messenger.com" target="_blank"
-        ><Icon name="mdi:facebook-messenger" /></a
-      >
-      <a href="tel:+33668300960"><Icon name="mdi:phone" /></a>
+
+    <!-- Pied de page du Menu Mobile (Social) -->
+    <div class="mt-auto pt-6">
+      {/* mt-auto pousse ce div vers le bas */}
+      <div class="flex justify-center gap-6 text-[#7A5C4B] text-3xl">
+        <a
+          href="https://wa.me/33668300960"
+          target="_blank"
+          aria-label="WhatsApp"><Icon name="mdi:whatsapp" /></a
+        >
+        <a
+          href="https://www.instagram.com"
+          target="_blank"
+          aria-label="Instagram"><Icon name="mdi:instagram" /></a
+        >
+        <a
+          href="https://www.messenger.com"
+          target="_blank"
+          aria-label="Messenger"><Icon name="mdi:facebook-messenger" /></a
+        >
+        <a href="tel:+33668300960" aria-label="Téléphone"
+          ><Icon name="mdi:phone" /></a
+        >
+      </div>
     </div>
   </div>
 
-  <!-- Sous-menu Mobile pour "Robes de Mariée" -->
-  <div
-    id="mobileSubmenu"
-    class="fixed top-0 right-0 h-full w-4/5 bg-[#FDE9E6] z-50 p-4 flex flex-col items-center justify-start space-y-6 shadow-lg transform translate-x-full opacity-0 transition-all duration-500 ease-in-out"
-  >
-    <div class="w-full flex items-center mb-4">
-      <button
-        id="backToMainMenu"
-        class="text-[#7A5C4B] p-1 border border-[#7A5C4B] rounded-full mr-4"
-      >
-        <Icon name="mdi:arrow-left" size="28px" />
-      </button>
-      <span class="text-[#7A5C4B] font-vibes italic text-2xl"
-        >Robes de Mariée</span
-      >
-    </div>
-    <div class="flex flex-col items-start space-y-4 w-full">
-      <a
-        href="/robes-de-mariee/forme-princesse"
-        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
-        ><span class="text-xl">Forme Princesse</span></a
-      >
-      <a
-        href="/robes-de-mariee/style-boheme-chic"
-        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
-        ><span class="text-xl">Style Bohème Chic</span></a
-      >
-      <a
-        href="/robes-de-mariee/forme-sirene"
-        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
-        ><span class="text-xl">Style Sirène</span></a
-      >
-      <a
-        href="/robes-de-mariee/minimaliste"
-        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
-        ><span class="text-xl">Minimaliste</span></a
-      >
-    </div>
-  </div>
-
-  <!-- Sous-menu Mobile pour "Promotions" -->
-  <div
-    id="mobilePromoSubmenu"
-    class="fixed top-0 right-0 h-full w-4/5 bg-[#FDE9E6] z-50 p-4 flex flex-col items-center justify-start space-y-6 shadow-lg transform translate-x-full opacity-0 transition-all duration-500 ease-in-out"
-  >
-    <div class="w-full flex items-center mb-4">
-      <button
-        id="backToMainMenuFromPromo"
-        class="text-[#7A5C4B] p-1 border border-[#7A5C4B] rounded-full mr-4"
-      >
-        <Icon name="mdi:arrow-left" size="28px" />
-      </button>
-      <span class="text-[#7A5C4B] font-vibes italic text-2xl">Promotions</span>
-    </div>
-    <div class="flex flex-col items-start space-y-4 w-full">
-      <a
-        href="/promo/robes-de-mariee-promotion"
-        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
-        ><span class="text-xl">Flash Vente</span></a
-      >
-      <a
-        href="/promo/robes-de-mariee-boheme-chic"
-        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
-        ><span class="text-xl">Promotion Bohème</span></a
-      >
-      <a
-        href="/promo/promo-sirene"
-        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
-        ><span class="text-xl">Promotion Sirène</span></a
-      >
-      <a
-        href="/promo/robes-de-mariee-destockage"
-        class="flex items-center gap-3 hover:text-[#A37B63] transition w-full"
-        ><span class="text-xl">Destockage</span></a
-      >
-    </div>
-  </div>
+  <!-- SUPPRIMÉS: Les anciens div #mobileSubmenu et #mobilePromoSubmenu ne sont plus nécessaires -->
 </header>
 
-<script defer>
+<script
+  define:vars={{
+    robesSubmenuId: "robesSubmenuContainer",
+    promoSubmenuId: "promoSubmenuContainer",
+  }}
+>
   document.addEventListener("DOMContentLoaded", () => {
     const mobileMenu = document.getElementById("mobileMenu");
     const mobileMenuBtn = document.getElementById("mobileMenuBtn");
     const closeMobileMenu = document.getElementById("closeMobileMenu");
-    const mobileSubmenu = document.getElementById("mobileSubmenu");
-    const openMobileSubmenu = document.getElementById("openMobileSubmenu");
-    const backToMainMenu = document.getElementById("backToMainMenu");
-    const mobilePromoSubmenu = document.getElementById("mobilePromoSubmenu");
-    const openMobilePromoSubmenu = document.getElementById(
-      "openMobilePromoSubmenu"
-    );
-    const backToMainMenuFromPromo = document.getElementById(
-      "backToMainMenuFromPromo"
-    );
     const menuOverlay = document.getElementById("menuOverlay");
 
-    // Ouvrir le menu mobile principal
-    mobileMenuBtn.addEventListener("click", () => {
+    const toggleRobesBtn = document.getElementById("toggleRobesSubmenu");
+    const robesSubmenu = document.getElementById(robesSubmenuId); // Utilisation de define:vars
+    const togglePromoBtn = document.getElementById("togglePromoSubmenu");
+    const promoSubmenu = document.getElementById(promoSubmenuId); // Utilisation de define:vars
+
+    // Fonction pour ouvrir le menu principal
+    const openMainMenu = () => {
       mobileMenu.classList.replace("translate-x-full", "translate-x-0");
       mobileMenu.classList.replace("opacity-0", "opacity-100");
       menuOverlay.classList.remove("hidden");
-      document.body.style.overflow = "hidden";
-    });
+      document.body.style.overflow = "hidden"; // Empêche le scroll de la page derrière
+    };
 
-    // Fermer le menu mobile principal
-    function closeAllMenus() {
-      // Fermer sous-menus si ouverts
-      [mobileSubmenu, mobilePromoSubmenu].forEach((sub) => {
-        if (!sub.classList.contains("translate-x-full")) {
-          sub.classList.replace("translate-x-0", "translate-x-full");
-          sub.classList.replace("opacity-100", "opacity-0");
-        }
-      });
+    // Fonction pour fermer le menu principal (et réinitialiser les sous-menus)
+    const closeMainMenu = () => {
       mobileMenu.classList.replace("translate-x-0", "translate-x-full");
       mobileMenu.classList.replace("opacity-100", "opacity-0");
       menuOverlay.classList.add("hidden");
-      document.body.style.overflow = "";
-    }
-    closeMobileMenu.addEventListener("click", closeAllMenus);
-    menuOverlay.addEventListener("click", closeAllMenus);
+      document.body.style.overflow = ""; // Réactive le scroll
 
-    // Ouvrir sous-menu Robes de Mariée
-    openMobileSubmenu.addEventListener("click", () => {
-      mobileMenu.classList.replace("translate-x-0", "translate-x-full");
-      mobileMenu.classList.replace("opacity-100", "opacity-0");
-      mobileSubmenu.classList.replace("translate-x-full", "translate-x-0");
-      mobileSubmenu.classList.replace("opacity-0", "opacity-100");
-    });
-    backToMainMenu.addEventListener("click", () => {
-      mobileSubmenu.classList.replace("translate-x-0", "translate-x-full");
-      mobileSubmenu.classList.replace("opacity-100", "opacity-0");
-      mobileMenu.classList.replace("translate-x-full", "translate-x-0");
-      mobileMenu.classList.replace("opacity-0", "opacity-100");
+      // Fermer tous les sous-menus quand le menu principal se ferme
+      closeSubmenu(robesSubmenu, toggleRobesBtn);
+      closeSubmenu(promoSubmenu, togglePromoBtn);
+    };
+
+    // Fonction pour ouvrir un sous-menu
+    const openSubmenu = (submenu, button) => {
+      const arrow = button.querySelector("[data-arrow]");
+      submenu.style.maxHeight = submenu.scrollHeight + "px"; // Définit la hauteur max à la hauteur du contenu
+      button.setAttribute("aria-expanded", "true");
+      if (arrow) arrow.classList.add("rotate-180");
+    };
+
+    // Fonction pour fermer un sous-menu
+    const closeSubmenu = (submenu, button) => {
+      const arrow = button.querySelector("[data-arrow]");
+      submenu.style.maxHeight = "0px"; // Réduit la hauteur max à 0
+      button.setAttribute("aria-expanded", "false");
+      if (arrow) arrow.classList.remove("rotate-180");
+    };
+
+    // Fonction pour gérer le clic sur un bouton de toggle
+    const handleToggleClick = (button, submenu, otherButton, otherSubmenu) => {
+      const isOpening =
+        submenu.style.maxHeight === "0px" || !submenu.style.maxHeight;
+
+      // Fermer l'autre sous-menu s'il est ouvert
+      if (
+        isOpening &&
+        otherSubmenu.style.maxHeight !== "0px" &&
+        otherSubmenu.style.maxHeight
+      ) {
+        closeSubmenu(otherSubmenu, otherButton);
+      }
+
+      // Ouvrir ou fermer le sous-menu cliqué
+      if (isOpening) {
+        openSubmenu(submenu, button);
+      } else {
+        closeSubmenu(submenu, button);
+      }
+    };
+
+    // Écouteurs d'événements
+    mobileMenuBtn.addEventListener("click", openMainMenu);
+    closeMobileMenu.addEventListener("click", closeMainMenu);
+    menuOverlay.addEventListener("click", closeMainMenu); // Ferme aussi en cliquant sur l'overlay
+
+    toggleRobesBtn.addEventListener("click", () => {
+      handleToggleClick(
+        toggleRobesBtn,
+        robesSubmenu,
+        togglePromoBtn,
+        promoSubmenu
+      );
     });
 
-    // Ouvrir sous-menu Promotions
-    openMobilePromoSubmenu.addEventListener("click", () => {
-      mobileMenu.classList.replace("translate-x-0", "translate-x-full");
-      mobileMenu.classList.replace("opacity-100", "opacity-0");
-      mobilePromoSubmenu.classList.replace("translate-x-full", "translate-x-0");
-      mobilePromoSubmenu.classList.replace("opacity-0", "opacity-100");
-    });
-    backToMainMenuFromPromo.addEventListener("click", () => {
-      mobilePromoSubmenu.classList.replace("translate-x-0", "translate-x-full");
-      mobilePromoSubmenu.classList.replace("opacity-100", "opacity-0");
-      mobileMenu.classList.replace("translate-x-full", "translate-x-0");
-      mobileMenu.classList.replace("opacity-0", "opacity-100");
+    togglePromoBtn.addEventListener("click", () => {
+      handleToggleClick(
+        togglePromoBtn,
+        promoSubmenu,
+        toggleRobesBtn,
+        robesSubmenu
+      );
     });
 
-    // Initialiser compteur favoris
-    updateHeaderFavorisCounters();
-    window.addEventListener("favorisUpdated", updateHeaderFavorisCounters);
-    window.addEventListener("favoritesUpdated", updateHeaderFavorisCounters);
+    // --- Logique Favoris (inchangée) ---
     function updateHeaderFavorisCounters() {
-      const favoris = JSON.parse(
-        localStorage.getItem("favoriteRobes") || "[]"
-      ).length;
-      document
-        .querySelectorAll("#favoris-count, #favorites-count")
-        .forEach((el) => (el.textContent = favoris));
+      try {
+        const favoris = JSON.parse(
+          localStorage.getItem("favoriteRobes") || "[]"
+        ).length;
+        // Met à jour tous les compteurs trouvés
+        document
+          .querySelectorAll("#favoris-count, #favorites-count")
+          .forEach((el) => {
+            if (el) el.textContent = favoris;
+          });
+        // Mise à jour spécifique pour les compteurs dans les tiroirs (s'ils utilisent ces ID)
+        const drawerCountMobile = document.querySelector(
+          "#favoriDrawerContent #favoris-count"
+        );
+        if (drawerCountMobile) drawerCountMobile.textContent = favoris;
+        const drawerCountDesktop = document.querySelector(
+          "#favorisDrawerDesktopContent #favorites-count"
+        );
+        if (drawerCountDesktop) drawerCountDesktop.textContent = favoris;
+      } catch (e) {
+        console.error(
+          "Erreur lors de la mise à jour du compteur de favoris:",
+          e
+        );
+      }
     }
+    // Appeler une première fois au chargement
+    updateHeaderFavorisCounters();
+    // Écouter les événements personnalisés pour mettre à jour
+    window.addEventListener("favorisUpdated", updateHeaderFavorisCounters); // Pour le tiroir mobile
+    window.addEventListener("favoritesUpdated", updateHeaderFavorisCounters); // Pour le tiroir desktop
   });
 </script>
