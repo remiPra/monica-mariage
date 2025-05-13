@@ -189,6 +189,10 @@ const { isVisible } = Astro.props;
     const submissionMessage = document.getElementById("submission-message");
     const closeLaterBtn = document.getElementById("close-later-btn");
 
+    // Constantes de configuration
+    const DISPLAY_DELAY_MS = 50000; // 50 secondes avant affichage
+    const REAPPEAR_AFTER_DAYS = 7; // Réapparaît après 7 jours même si fermé
+
     // Variables pour le tracking de formulaire
     let formFieldsHistory = [];
     let formStarted = false;
@@ -212,15 +216,7 @@ const { isVisible } = Astro.props;
       // Accessibilité - piéger le focus
       document.body.style.overflow = "hidden";
 
-      // Tracking de l'affichage du modal
-      if (window.sendGa4Event) {
-        window.sendGa4Event("trigger_modal_view", {
-          event_category: "Engagement",
-          event_label: "Contact Modal View",
-          form_name: "contact_form",
-          non_interaction: true,
-        });
-      }
+      // Pas de tracking pour l'affichage du modal (supprimé comme demandé)
     };
 
     // Fonction pour masquer la modale avec animation et tracking
@@ -236,7 +232,9 @@ const { isVisible } = Astro.props;
       document.body.style.overflow = "";
 
       if (permanent) {
-        sessionStorage.setItem("modalClosed", "true"); // Empêche le retour pendant la session
+        // Stocker la date de fermeture pour permettre une réapparition ultérieure
+        const currentDate = new Date().toISOString();
+        localStorage.setItem("modalClosed", currentDate);
       }
 
       // Tracking de l'abandon du formulaire s'il y a eu des interactions
@@ -507,33 +505,46 @@ const { isVisible } = Astro.props;
       }
     });
 
-    // Vérification pour afficher la modale avec un délai important pour ne pas affecter le LCP
+    // Vérification pour afficher la modale avec un délai
     const checkOverlayVisibility = () => {
-      // Vérifier si l'utilisateur a déjà fermé la modale dans cette session
-      if (sessionStorage.getItem("modalClosed") === "true") return;
+      // Vérifier si l'utilisateur a déjà fermé la modale
+      const modalClosedDate = localStorage.getItem("modalClosed");
+
+      if (modalClosedDate) {
+        // Convertir la date stockée et calculer le nombre de jours écoulés
+        const closedDate = new Date(modalClosedDate);
+        const currentDate = new Date();
+        const daysDifference = Math.floor(
+          (currentDate - closedDate) / (1000 * 60 * 60 * 24)
+        );
+
+        // Si le nombre de jours défini s'est écoulé, on peut réafficher le modal
+        if (daysDifference < REAPPEAR_AFTER_DAYS) {
+          return; // Ne pas afficher si la période de non-affichage n'est pas écoulée
+        }
+      }
 
       // Vérifier si nous avons déjà défini un temps pour la modale
-      const modalTimerSet = sessionStorage.getItem("modalTimerSet");
+      const modalTimerSet = localStorage.getItem("modalTimerSet");
 
       if (!modalTimerSet) {
         // Première visite sur le site, définir le temps actuel
-        sessionStorage.setItem("modalTimerSet", Date.now().toString());
+        localStorage.setItem("modalTimerSet", Date.now().toString());
 
-        // Différer l'affichage beaucoup plus longtemps (45 secondes) pour ne pas affecter le LCP
-        setTimeout(showOverlay, 20000);
+        // Différer l'affichage selon le délai configuré
+        setTimeout(showOverlay, DISPLAY_DELAY_MS);
         return;
       }
 
       // Calculer si le temps s'est écoulé depuis la première visite
       const timeSinceFirstVisit = Date.now() - parseInt(modalTimerSet);
-      const delayInMs = 20000; // 45 secondes
 
-      if (timeSinceFirstVisit >= delayInMs) {
+      if (timeSinceFirstVisit >= DISPLAY_DELAY_MS) {
         // Le temps est écoulé, afficher avec un léger délai supplémentaire
         setTimeout(showOverlay, 1000);
       } else {
         // Définir un minuteur pour le temps restant
-        const remainingTime = delayInMs - timeSinceFirstVisit;
+        const remainingTime = DISPLAY_DELAY_MS - timeSinceFirstVisit;
         setTimeout(showOverlay, remainingTime + 1000);
       }
     };
