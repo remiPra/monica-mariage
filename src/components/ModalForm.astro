@@ -12,7 +12,7 @@ const { isVisible } = Astro.props;
   <!-- Contenu du Modal -->
   <div
     id="modal-content"
-    class="relative bg-white p-8 rounded-2xl w-full max-w-lg shadow-xl transform transition-all duration-500 ease-in-out scale-95 translate-y-4"
+    class="relative bg-white p-8 rounded-2xl w-full max-w-md shadow-xl transform transition-all duration-500 ease-in-out scale-95 translate-y-4"
   >
     <!-- Bouton de fermeture élégant -->
     <button
@@ -39,143 +39,59 @@ const { isVisible } = Astro.props;
 
     <!-- En-tête avec style cohérent -->
     <div class="text-center mb-6">
-      <h2 class="font-vibes text-3xl text-[#af7749] mb-2">
-        Vous rêvez de la robe parfaite ?
+      <h2 class="font-vibes text-3xl text-[#af7749] mb-4">
+        Vous rêvez de trouver la robe parfaite pour votre mariage ?
       </h2>
 
       <!-- Séparateur décoratif -->
-      <div class="flex items-center justify-center gap-4 mb-4">
+      <div class="flex items-center justify-center gap-4 mb-5">
         <span class="h-px w-12 bg-[#C5A880]"></span>
-        <p class="text-[#8B7569] text-xs font-medium">PRENONS CONTACT</p>
+        <p class="text-[#8B7569] text-xs font-medium">UN CLIC, UNE RENCONTRE</p>
         <span class="h-px w-12 bg-[#C5A880]"></span>
       </div>
 
-      <p class="text-[#5F4B3F] text-center max-w-md mx-auto">
-        Laissez-nous vos coordonnées pour vous aider à trouver la robe de vos
-        rêves.
-      </p>
+      <p class="text-[#5F4B3F] text-center max-w-md mx-auto mb-6">
+        Une conversation personnalisée vaut mieux que mille recherches pour trouver votre robe idéale !      </p>
+      
+      <!-- Image décorative optionnelle -->
+      <div class="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden">
+        <img src="/logo-new.png" alt="Monica Mariage" class="w-full h-full object-cover" onerror="this.style.display='none'" />
+      </div>
     </div>
 
-    <!-- Formulaire de contact élégant -->
-    <form id="contact-form" class="space-y-4">
-      <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-[#5F4B3F] font-medium text-sm mb-1"
-            >Prénom *</label
-          >
-          <input
-            id="prenom"
-            name="prenom"
-            type="text"
-            placeholder="Votre prénom"
-            required
-            class="w-full p-3 border border-[#F0E6E2] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#af7749]/30 focus:border-[#af7749] transition"
-          />
-        </div>
-        <div>
-          <label class="block text-[#5F4B3F] font-medium text-sm mb-1"
-            >Nom *</label
-          >
-          <input
-            id="nom"
-            name="nom"
-            type="text"
-            placeholder="Votre nom"
-            required
-            class="w-full p-3 border border-[#F0E6E2] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#af7749]/30 focus:border-[#af7749] transition"
-          />
-        </div>
-      </div>
-
-      <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-[#5F4B3F] font-medium text-sm mb-1"
-            >Email *</label
-          >
-          <input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="Votre email"
-            required
-            class="w-full p-3 border border-[#F0E6E2] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#af7749]/30 focus:border-[#af7749] transition"
-          />
-        </div>
-        <div>
-          <label class="block text-[#5F4B3F] font-medium text-sm mb-1"
-            >Téléphone *</label
-          >
-          <input
-            id="telephone"
-            name="telephone"
-            type="tel"
-            placeholder="06 12 34 56 78"
-            required
-            class="w-full p-3 border border-[#F0E6E2] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#af7749]/30 focus:border-[#af7749] transition"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label class="block text-[#5F4B3F] font-medium text-sm mb-1"
-          >Message (optionnel)</label
+    <!-- Boutons simplifiés -->
+    <div class="space-y-4 mt-2">
+      <!-- Bouton OUI -->
+      <button
+        id="whatsapp-redirect-btn"
+        type="button"
+        class="w-full py-4 bg-[#af7749] text-white rounded-full shadow-md hover:bg-[#925c36] hover:scale-105 transition-all duration-300 font-medium flex items-center justify-center"
+      >
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          class="h-5 w-5 mr-2" 
+          viewBox="0 0 24 24" 
+          fill="currentColor"
         >
-        <textarea
-          id="message"
-          name="message"
-          rows="2"
-          placeholder="Parlez-nous de votre projet, vos inspirations, ou posez-nous vos questions..."
-          class="w-full p-3 border border-[#F0E6E2] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#af7749]/30 focus:border-[#af7749] transition"
-        ></textarea>
-      </div>
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path>
+        </svg>
+        Oui, je suis intéressée
+      </button>
+      
+      <!-- Bouton NON -->
+      <button
+        id="close-later-btn"
+        type="button"
+        class="w-full py-3 bg-transparent text-[#8B7569] hover:text-[#5F4B3F] transition-colors font-medium text-sm"
+      >
+        Pas maintenant, merci
+      </button>
+    </div>
 
-      <!-- Boutons d'action -->
-      <div class="flex flex-col sm:flex-row justify-between gap-3 mt-6">
-        <button
-          type="submit"
-          class="px-6 py-3 bg-[#af7749] text-white rounded-full shadow-md hover:bg-[#925c36] hover:scale-105 transition-all duration-300 font-medium"
-        >
-          Envoyer ma demande
-        </button>
-        <button
-          id="close-later-btn"
-          type="button"
-          class="px-6 py-3 bg-transparent text-[#8B7569] hover:text-[#5F4B3F] transition-colors underline font-medium"
-        >
-          Pas maintenant, je reviendrai plus tard
-        </button>
-
-        <!-- Message de confirmation avec animation -->
-        <div
-          id="submission-message"
-          class="hidden mt-4 p-4 bg-[#F3FAF3] border border-[#D1EAD1] rounded-lg text-center text-[#4B8B55]"
-        >
-          <svg
-            class="w-6 h-6 mx-auto mb-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 13l4 4L19 7"></path>
-          </svg>
-          <p class="font-medium">Merci ! Votre message a bien été envoyé.</p>
-          <p class="text-sm mt-1">
-            Nous vous répondrons dans les plus brefs délais.
-          </p>
-        </div>
-      </div>
-
-      <!-- Note de confidentialité -->
-      <p class="text-[#8B7569] text-xs text-center mt-6">
-        En soumettant ce formulaire, vous acceptez que vos données soient
-        utilisées exclusivement pour répondre à votre demande.
-      </p>
-    </form>
+    <!-- Note de confidentialité -->
+    <p class="text-[#8B7569] text-xs text-center mt-6">
+      Je vous répondrai moi-même dans la journée, pour que nous puissions commencer cette belle aventure ensemble !
+    </p>
   </div>
 </div>
 
@@ -185,24 +101,16 @@ const { isVisible } = Astro.props;
     const overlay = document.getElementById("contact-overlay");
     const modalContent = document.getElementById("modal-content");
     const closeButton = document.getElementById("close-overlay");
-    const contactForm = document.getElementById("contact-form");
-    const submissionMessage = document.getElementById("submission-message");
     const closeLaterBtn = document.getElementById("close-later-btn");
+    const whatsappRedirectBtn = document.getElementById("whatsapp-redirect-btn");
 
     // Constantes de configuration
-    const DISPLAY_DELAY_MS = 50000; // 50 secondes avant affichage
+    const DISPLAY_DELAY_MS = 30000; // 30 secondes avant affichage (réduit de 50s à 30s)
     const REAPPEAR_AFTER_DAYS = 7; // Réapparaît après 7 jours même si fermé
-
-    // Variables pour le tracking de formulaire
-    let formFieldsHistory = [];
-    let formStarted = false;
-    let formFields = {
-      prenom: false,
-      nom: false,
-      email: false,
-      telephone: false,
-      message: false,
-    };
+    
+    // Message pré-formaté pour WhatsApp
+    const whatsappMessage = encodeURIComponent("Bonjour Monica Mariage ! Je suis intéressée par vos robes de mariée et j'aimerais avoir plus d'informations sur votre collection.");
+    const whatsappLink = `https://wa.me/33668300960?text=${whatsappMessage}`;
 
     // Fonction pour afficher la modale avec animation et tracking
     const showOverlay = () => {
@@ -216,7 +124,14 @@ const { isVisible } = Astro.props;
       // Accessibilité - piéger le focus
       document.body.style.overflow = "hidden";
 
-      // Pas de tracking pour l'affichage du modal (supprimé comme demandé)
+      // Tracking de l'affichage du modal
+      if (window.sendGa4Event) {
+        window.sendGa4Event("trigger_modal_view", {
+          event_category: "Engagement",
+          event_label: "Simple Modal Viewed",
+          modal_type: "whatsapp_redirect"
+        });
+      }
     };
 
     // Fonction pour masquer la modale avec animation et tracking
@@ -237,46 +152,53 @@ const { isVisible } = Astro.props;
         localStorage.setItem("modalClosed", currentDate);
       }
 
-      // Tracking de l'abandon du formulaire s'il y a eu des interactions
-      if (formStarted && reason !== "form_submitted") {
-        const filledFields = Object.entries(formFields)
-          .filter(([_, filled]) => filled)
-          .map(([field, _]) => field);
-
-        if (window.sendGa4Event) {
-          window.sendGa4Event("trigger_form_abandon", {
-            event_category: "Conversion",
-            event_label: "Form Abandoned",
-            form_name: "contact_form",
-            form_step: formFieldsHistory.join(" > "),
-            fields_completed: filledFields.length,
-            fields_filled: filledFields.join(","),
-          });
-        }
-      }
-
       // Tracking de la fermeture du modal
       if (reason === "close_button" && window.sendGa4Event) {
         window.sendGa4Event("trigger_modal_close", {
           event_category: "Engagement",
           event_label: "Modal Closed",
           close_method: reason,
+          modal_type: "whatsapp_redirect"
         });
       } else if (reason === "close_later" && window.sendGa4Event) {
         window.sendGa4Event("trigger_modal_close_later", {
           event_category: "Engagement",
           event_label: "Modal Closed - Will Return Later",
+          modal_type: "whatsapp_redirect"
         });
       }
+    };
+
+    // Redirection WhatsApp avec tracking
+    const redirectToWhatsapp = () => {
+      // Tracking de la conversion
+      if (window.sendGa4Event) {
+        window.sendGa4Event("whatsapp_redirect", {
+          event_category: "Conversion",
+          event_label: "WhatsApp Redirect from Modal",
+          value: 1,
+          modal_type: "whatsapp_redirect"
+        });
+      }
+      
+      // Ouvrir WhatsApp dans un nouvel onglet
+      window.open(whatsappLink, "_blank");
+      
+      // Fermer le modal
+      hideOverlay(true, "whatsapp_redirect");
     };
 
     // Gestionnaires d'événements pour fermeture
     closeButton.addEventListener("click", () =>
       hideOverlay(true, "close_button")
     );
+    
     closeLaterBtn.addEventListener("click", () =>
       hideOverlay(true, "close_later")
     );
+    
+    // Gestionnaire pour le bouton de redirection WhatsApp
+    whatsappRedirectBtn.addEventListener("click", redirectToWhatsapp);
 
     // Permettre de fermer en cliquant à l'extérieur
     overlay.addEventListener("click", (e) => {
@@ -289,219 +211,6 @@ const { isVisible } = Astro.props;
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && overlay.classList.contains("opacity-100")) {
         hideOverlay(true, "escape_key");
-      }
-    });
-
-    // Tracking des interactions avec les champs du formulaire
-    const formInputs = contactForm.querySelectorAll("input, textarea");
-
-    // Suivi du focus initial sur les champs
-    formInputs.forEach((input) => {
-      input.addEventListener("focus", () => {
-        if (!formStarted) {
-          formStarted = true;
-
-          // Premier champ sur lequel l'utilisateur a cliqué
-          if (window.sendGa4Event) {
-            window.sendGa4Event("trigger_form_field_focus", {
-              event_category: "Engagement",
-              event_label: "First Field Focus",
-              field_name: input.name,
-              form_name: "contact_form",
-            });
-          }
-        }
-      });
-
-      // Suivi du remplissage des champs
-      input.addEventListener("blur", () => {
-        if (input.value.trim() !== "") {
-          // Marquer le champ comme rempli
-          if (!formFields[input.name]) {
-            formFields[input.name] = true;
-
-            // Ajouter à l'historique des champs remplis
-            formFieldsHistory.push(input.name);
-
-            if (window.sendGa4Event) {
-              window.sendGa4Event("trigger_form_field_filled", {
-                event_category: "Engagement",
-                event_label: "Field Filled",
-                field_name: input.name,
-                form_name: "contact_form",
-                field_position: formFieldsHistory.length,
-              });
-            }
-          }
-        }
-      });
-    });
-
-    // Soumission du formulaire avec animation et tracking
-    contactForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      // Collecter les données du formulaire
-      const formData = {
-        prenom: document.getElementById("prenom").value || "",
-        nom: document.getElementById("nom").value,
-        email: document.getElementById("email").value || "",
-        telephone: document.getElementById("telephone").value,
-        message: document.getElementById("message").value || "",
-      };
-
-      // Vérifier si les champs obligatoires sont remplis
-      if (!formData.nom || !formData.telephone) {
-        // Afficher un message d'erreur
-        submissionMessage.innerHTML = `
-          <svg class="w-6 h-6 mx-auto mb-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-          <p class="font-medium">Veuillez remplir les champs obligatoires</p>
-          <p class="text-sm mt-1">Le nom et le téléphone sont requis.</p>
-        `;
-        submissionMessage.classList.remove("hidden");
-        submissionMessage.classList.add("animate-fade-in");
-        submissionMessage.style.backgroundColor = "#FADEDE";
-        submissionMessage.style.borderColor = "#EABCBC";
-        submissionMessage.style.color = "#AF3B3B";
-
-        // Tracking des erreurs de soumission
-        if (window.sendGa4Event) {
-          window.sendGa4Event("trigger_form_submit_error", {
-            event_category: "Engagement",
-            event_label: "Form Submit Error",
-            form_name: "contact_form",
-            error_type: "missing_required_fields",
-          });
-        }
-
-        return;
-      }
-
-      try {
-        // Désactiver les champs pendant l'envoi
-        contactForm
-          .querySelectorAll("input, textarea, button")
-          .forEach((el) => {
-            el.disabled = true;
-          });
-
-        // Envoi des données à l'API
-        const response = await fetch(
-          "https://monica-mariage-next.vercel.app/api/send-email",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Erreur lors de l'envoi du formulaire");
-        }
-
-        // Tracking du succès de la soumission
-        if (window.sendGa4Event) {
-          window.sendGa4Event("trigger_form_submit_success", {
-            event_category: "Conversion",
-            event_label: "Form Submit Success",
-            form_name: "contact_form",
-            value: 1, // Valeur de conversion
-            fields_completed: Object.values(formFields).filter((v) => v).length,
-          });
-        }
-
-        // Afficher le message de confirmation si l'envoi est réussi
-        submissionMessage.innerHTML = `
-          <svg class="w-6 h-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-          <p class="font-medium">Merci ! Votre message a bien été envoyé.</p>
-          <p class="text-sm mt-1">Nous vous répondrons dans les plus brefs délais.</p>
-        `;
-        submissionMessage.classList.remove("hidden");
-        submissionMessage.classList.add("animate-fade-in");
-        submissionMessage.style.backgroundColor = "#F3FAF3";
-        submissionMessage.style.borderColor = "#D1EAD1";
-        submissionMessage.style.color = "#4B8B55";
-
-        // Fermer après un délai
-        setTimeout(() => {
-          hideOverlay(true, "form_submitted");
-
-          // Réinitialiser le formulaire après fermeture
-          setTimeout(() => {
-            contactForm.reset();
-            formStarted = false;
-            formFieldsHistory = [];
-            Object.keys(formFields).forEach((key) => (formFields[key] = false));
-
-            contactForm
-              .querySelectorAll("input, textarea, button")
-              .forEach((el) => {
-                el.disabled = false;
-              });
-            submissionMessage.classList.add("hidden");
-          }, 500);
-        }, 2500);
-      } catch (error) {
-        console.error("Erreur:", error);
-        // Gérer l'erreur
-        submissionMessage.innerHTML = `
-          <svg class="w-6 h-6 mx-auto mb-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-          <p class="font-medium">Une erreur est survenue</p>
-          <p class="text-sm mt-1">Veuillez réessayer ou nous contacter directement.</p>
-        `;
-        submissionMessage.classList.remove("hidden");
-        submissionMessage.classList.add("animate-fade-in");
-        submissionMessage.style.backgroundColor = "#FADEDE";
-        submissionMessage.style.borderColor = "#EABCBC";
-        submissionMessage.style.color = "#AF3B3B";
-
-        // Tracking des erreurs d'API
-        if (window.sendGa4Event) {
-          window.sendGa4Event("trigger_form_submit_error", {
-            event_category: "Engagement",
-            event_label: "Form Submit Error",
-            form_name: "contact_form",
-            error_type: "api_error",
-          });
-        }
-
-        // Réactiver les champs pour permettre une nouvelle tentative
-        contactForm
-          .querySelectorAll("input, textarea, button")
-          .forEach((el) => {
-            el.disabled = false;
-          });
-      }
-    });
-
-    // Tracking de l'abandon du formulaire si l'utilisateur quitte la page
-    window.addEventListener("beforeunload", () => {
-      // Si le formulaire a été commencé mais pas soumis avec succès
-      if (formStarted) {
-        const filledFields = Object.entries(formFields)
-          .filter(([_, filled]) => filled)
-          .map(([field, _]) => field);
-
-        // Note: cet événement peut ne pas être envoyé car la page se ferme
-        // mais nous tentons de l'envoyer pour la prise en charge via sendBeacon
-        if (window.sendGa4Event) {
-          window.sendGa4Event("trigger_form_abandon", {
-            event_category: "Conversion",
-            event_label: "Form Abandoned - Page Exit",
-            form_name: "contact_form",
-            form_step: formFieldsHistory.join(" > "),
-            fields_completed: filledFields.length,
-            fields_filled: filledFields.join(","),
-          });
-        }
       }
     });
 
@@ -531,7 +240,7 @@ const { isVisible } = Astro.props;
         // Première visite sur le site, définir le temps actuel
         localStorage.setItem("modalTimerSet", Date.now().toString());
 
-        // Différer l'affichage selon le délai configuré
+        // Différer l'affichage selon le délai configuré (réduit à 30 secondes)
         setTimeout(showOverlay, DISPLAY_DELAY_MS);
         return;
       }
