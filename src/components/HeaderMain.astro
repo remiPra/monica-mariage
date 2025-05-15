@@ -1,38 +1,38 @@
 ---
 // components/HeaderMain.astro
+// Définir un tableau d'images pour le diaporama
+const backgroundImages = [
+  "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1745826469/tcaos5odiq63jembckk8.avif",
+  "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1745254754/ylrvmsmxewylhvf6xywi.webp",
+  // Ajoutez d'autres URLs d'images Cloudinary ici
+];
 ---
 
-<div
-  class="relative mt-[100px] flex flex-col items-center w-full max-w-md mx-auto overflow-hidden rounded-lg"
->
+<div class="relative mt-[100px] flex flex-col items-center w-full max-w-md mx-auto overflow-hidden rounded-lg">
   <!-- Background image container using Cloudinary optimizations -->
   <div class="relative w-full h-[650px]">
-    <!-- Image principale (déjà préchargée dans le layout) -->
-    <img
-      src="https://res.cloudinary.com/dkbsvrpdc/image/upload/f_auto,q_auto:good,w_400/v1745254754/ylrvmsmxewylhvf6xywi.webp"
-      alt="Robe de mariée"
-      class="absolute inset-0 w-full h-full object-cover z-2"
-      width="400"
-      height="500"
-      loading="eager"
-      decoding="async"
-    />
+    <!-- Images préchargées avec la première visible par défaut -->
+    {backgroundImages.map((img, index) => (
+      <img
+        src={img}
+        alt="Robe de mariée"
+        class={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${index === 0 ? 'opacity-100 z-2' : 'opacity-0 z-1'}`}
+        width="400"
+        height="500"
+        loading={index === 0 ? "eager" : "lazy"}
+        decoding="async"
+        data-slideshow-image
+      />
+    ))}
 
     <!-- Beautiful overlay -->
-    <div
-      class="absolute inset-0 bg-gradient-to-b from-[#a37b63]/30 via-transparent to-black/50 z-1"
-    >
-    </div>
+    <div class="absolute inset-0 bg-gradient-to-b from-[#a37b63]/30 via-transparent to-black/50 z-3"></div>
 
     <!-- Content overlay -->
-    <div
-      class="absolute inset-0 z-10 flex flex-col items-center justify-between py-10 px-4"
-    >
+    <div class="absolute inset-0 z-10 flex flex-col items-center justify-between py-10 px-4">
       <!-- Brand name -->
       <div class="text-center w-full mt-8">
-        <h1
-          class="mt-[100px] text-5xl text-white font-cormorant drop-shadow-lg"
-        >
+        <h1 class="mt-[100px] text-5xl text-white font-cormorant drop-shadow-lg">
           MONICA
           <br />
           MARIAGE
@@ -43,9 +43,7 @@
       <div class="flex flex-col items-center w-full">
         <!-- See all button -->
         <a href="/robes-de-mariee">
-          <button
-            class="bg-white text-[#8a6d57] px-8 py-2 mt-[-320px] rounded-full text-sm font-medium mb-8 hover:bg-opacity-90 transition-all shadow-md"
-          >
+          <button class="bg-white text-[#8a6d57] px-8 py-2 mt-[-320px] rounded-full text-sm font-medium mb-8 hover:bg-opacity-90 transition-all shadow-md">
             VOIR TOUT
           </button>
         </a>
@@ -53,11 +51,36 @@
         <p class="text-center text-[#5a4536] text-md mb-6">
           Spécialiste de la <strong>robe de mariée sur-mesure</strong> depuis 2014,
           MonicaMariage vous reçoit en <strong>showroom</strong> — découvrez nos
-          collections <strong>princesse</strong>, <strong>bohème-chic</strong>, <strong
-            >sirène</strong
-          > et <strong>minimaliste</strong>.
+          collections <strong>princesse</strong>, <strong>bohème-chic</strong>, <strong>sirène</strong> et <strong>minimaliste</strong>.
         </p>
       </div>
     </div>
   </div>
 </div>
+
+<script defer>
+  // Script pour le diaporama d'images
+  document.addEventListener('DOMContentLoaded', () => {
+    const slideshowImages = document.querySelectorAll('[data-slideshow-image]');
+    if (slideshowImages.length <= 1) return;
+    
+    let currentImageIndex = 0;
+    
+    // Fonction pour passer à l'image suivante
+    function showNextImage() {
+      // Masquer l'image courante
+      slideshowImages[currentImageIndex].classList.remove('opacity-100');
+      slideshowImages[currentImageIndex].classList.add('opacity-0');
+      
+      // Passer à l'image suivante
+      currentImageIndex = (currentImageIndex + 1) % slideshowImages.length;
+      
+      // Afficher la nouvelle image courante
+      slideshowImages[currentImageIndex].classList.remove('opacity-0');
+      slideshowImages[currentImageIndex].classList.add('opacity-100');
+    }
+    
+    // Démarrer le diaporama avec un intervalle de 5 secondes
+    setInterval(showNextImage, 5000);
+  });
+</script>
