@@ -1,61 +1,63 @@
 ---
 import { Icon } from "astro-icon/components";
 
-// Palette de couleurs Monica Mariage
-// const primaryColor = "bg-[#a77c60]"; // Marron principal
-const primaryColor = "bg-[#C99A9A]"; // Marron principal
+// Couleur principale
+const primaryColor = "bg-gradient-to-r from-[#C99A9A] to-[#B98280]";
 ---
 
 <div
   id="appointment-bar"
-  class="fixed bottom-0 left-0 right-0 bg-white shadow-lg transform translate-y-full transition-transform duration-500 ease-out z-[40] flex justify-between items-center px-4 py-3"
+  class="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-[#F0E6E2] transform translate-y-full transition-transform duration-500 ease-out z-[40] flex justify-between items-center px-2 sm:px-4 py-2"
   client:idle
 >
-  <!-- Bouton pour ouvrir le modal -->
+  <!-- Bouton pour ouvrir le modal - version compacte pour mobile -->
   <button
-    id="appointment-button"
-    class={`${primaryColor} text-white px-5 py-3 rounded-lg font-semibold text-sm tracking-wide shadow-sm transition-all hover:shadow-md hover:brightness-105 hover:scale-[1.02] active:scale-[0.98] flex items-center mx-auto`}
-  >
-    <Icon name="mdi:calendar-clock" class="w-4 h-4 mr-2" />
-    <span class="hidden md:inline"
-      >Prendre rendez-vous pour essayer nos robes</span
-    >
-    <span class="md:hidden">Prendre rendez-vous</span>
-  </button>
+  id="appointment-button"
+  class={`${primaryColor} text-white px-3 sm:px-5 py-2 sm:py-3 rounded-lg font-semibold text-sm tracking-wide shadow-sm transition-all hover:shadow-md hover:brightness-105 hover:scale-[1.02] active:scale-[0.98] flex items-center mx-auto`}
+>
+  <div class="flex items-center justify-center">
+    <Icon name="mdi:help-circle-outline" class="w-4 h-4 mr-2" />
+    <!-- Version desktop -->
+    <span class="hidden sm:inline">Échangeons ensemble</span>
+    <!-- Version mobile ultra-compact -->
+    <span class="sm:hidden">Échangeons ici</span>
+    <Icon name="mdi:heart-outline" class="w-4 h-4 ml-2" />
+  </div>
+</button>
 
-  <!-- Icône pour fermer la barre -->
+  <!-- Icône pour fermer la barre - plus petite sur mobile -->
   <button
     id="close-appointment-bar"
-    class="text-[#a77c60] text-2xl transition-opacity duration-500 hover:opacity-70"
+    class="text-[#a77c60] text-lg sm:text-2xl transition-opacity duration-500 hover:opacity-70 ml-1"
     aria-label="Fermer la barre"
   >
-    <Icon name="mdi:close-circle-outline" />
+    <Icon name="mdi:close" class="w-4 h-4 sm:w-5 sm:h-5" />
   </button>
 </div>
 
-<!-- Fenêtre modale de contact -->
+<!-- Fenêtre modale de contact - adaptée pour mobile -->
 <div id="contact-modal" class="fixed inset-0 z-[500] hidden">
   <!-- Overlay avec flou -->
   <div class="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
 
-  <!-- Contenu de la modale -->
+  <!-- Contenu de la modale - adapté pour mobile -->
   <div
-    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-xl p-8 transform transition-all"
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] sm:w-full max-w-md bg-white rounded-2xl shadow-xl p-4 sm:p-8 transform transition-all"
   >
     <!-- En-tête avec titre et bouton de fermeture -->
     <div
-      class="flex justify-between items-center mb-6 border-b border-[#F0E6E2] pb-4"
+      class="flex justify-between items-center mb-4 border-b border-[#F0E6E2] pb-3"
     >
-      <h2 class="font-vibes text-3xl text-[#af7749]">Prenons contact</h2>
+      <h2 class="font-vibes text-2xl sm:text-3xl text-[#af7749]">Prenons contact</h2>
       <button
         id="close-modal-button"
-        class="rounded-full w-8 h-8 flex items-center justify-center text-[#8B7569] hover:bg-[#FDF8F7] transition-colors"
+        class="rounded-full w-7 h-7 flex items-center justify-center text-[#8B7569] hover:bg-[#FDF8F7] transition-colors"
         aria-label="Fermer"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
+          width="18"
+          height="18"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -69,66 +71,37 @@ const primaryColor = "bg-[#C99A9A]"; // Marron principal
       </button>
     </div>
 
-    <!-- Corps de la modale -->
-    <div class="text-center mb-8">
+    <!-- Corps de la modale - contenu réduit pour mobile -->
+    <div class="text-center mb-4 sm:mb-6">
       <!-- Séparateur décoratif -->
-      <div class="flex items-center justify-center gap-4 mb-4">
-        <span class="h-px w-12 bg-[#C5A880]"></span>
+      <div class="flex items-center justify-center gap-3 mb-3">
+        <span class="h-px w-10 bg-[#C5A880]"></span>
         <p class="text-[#8B7569] text-xs font-medium">CONTACTEZ-NOUS</p>
-        <span class="h-px w-12 bg-[#C5A880]"></span>
+        <span class="h-px w-10 bg-[#C5A880]"></span>
       </div>
 
-      <p class="text-[#5F4B3F] leading-relaxed mb-6 text-base md:text-lg">
-        Nous sommes disponibles sur plusieurs plateformes, choisissez votre
-        moyen de communication préféré :
+      <p class="text-[#5F4B3F] leading-relaxed mb-4 text-sm sm:text-base">
+        Comment souhaitez-vous échanger à propos de votre robe ?
       </p>
     </div>
 
-    <!-- Boutons de contact -->
-    <div class="space-y-3">
-      <a
-        id="contact-phone"
-        target="_blank"
-        href="tel:+33668300960"
-        class="flex
-      items-center justify-center bg-[#af7749] text-white p-4 rounded-full
-      w-full hover:bg-[#925c36] transition-all duration-300 group"
-      >
-        <div
-          class="w-8 h-8 mr-3 flex items-center justify-center bg-white/20 rounded-full"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
-            ></path>
-          </svg>
-        </div>
-        <span class="font-medium">Appelez-moi</span>
-      </a>
+    <!-- Boutons de contact - adaptés et espacés pour mobile -->
+    <div class="space-y-2 sm:space-y-3">
+      <!-- WhatsApp -->
       <a
         id="contact-whatsapp"
         target="_blank"
         href="https://wa.me/33668300960?text=Bonjour%20Monica%20Mariage%20!"
-        class="flex items-center justify-center bg-[#25D366] text-white p-4
-    rounded-full w-full hover:bg-[#1faa54] transition-all duration-300 group"
+        class="flex items-center justify-center bg-[#25D366] text-white p-3 sm:p-4
+        rounded-lg sm:rounded-full w-full hover:bg-[#1faa54] transition-all duration-300 group"
       >
         <div
-          class="w-8 h-8 mr-3 flex items-center justify-center bg-white/20 rounded-full"
+          class="w-7 h-7 sm:w-8 sm:h-8 mr-3 flex items-center justify-center bg-white/20 rounded-full"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
+            width="14"
+            height="14"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -141,24 +114,55 @@ const primaryColor = "bg-[#C99A9A]"; // Marron principal
             ></path>
           </svg>
         </div>
-        <span class="font-medium">WhatsApp</span>
+        <span class="font-medium text-sm sm:text-base">WhatsApp</span>
       </a>
+      
+      <!-- Téléphone -->
+      <a
+        id="contact-phone"
+        target="_blank"
+        href="tel:+33668300960"
+        class="flex items-center justify-center bg-[#af7749] text-white p-3 sm:p-4
+        rounded-lg sm:rounded-full w-full hover:bg-[#925c36] transition-all duration-300 group"
+      >
+        <div
+          class="w-7 h-7 sm:w-8 sm:h-8 mr-3 flex items-center justify-center bg-white/20 rounded-full"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+            ></path>
+          </svg>
+        </div>
+        <span class="font-medium text-sm sm:text-base">Appelez-moi</span>
+      </a>
+      
+      <!-- Instagram -->
       <a
         id="contact-instagram"
         target="_blank"
         href="https://www.instagram.com/monicamariage/"
-        class="flex items-center
-  justify-center bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45]
-  text-white p-4 rounded-full w-full hover:opacity-90 transition-all
-  duration-300 group"
+        class="flex items-center justify-center bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45]
+        text-white p-3 sm:p-4 rounded-lg sm:rounded-full w-full hover:opacity-90 transition-all
+        duration-300 group"
       >
         <div
-          class="w-8 h-8 mr-3 flex items-center justify-center bg-white/20 rounded-full"
+          class="w-7 h-7 sm:w-8 sm:h-8 mr-3 flex items-center justify-center bg-white/20 rounded-full"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
+            width="14"
+            height="14"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -171,249 +175,183 @@ const primaryColor = "bg-[#C99A9A]"; // Marron principal
             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
           </svg>
         </div>
-        <span class="font-medium">Instagram</span>
+        <span class="font-medium text-sm sm:text-base">Instagram</span>
       </a>
 
-      <!-- Pied de modale -->
-      <div class="mt-8 text-center">
-        <p class="text-[#8B7569] text-sm">
-          Nous répondons généralement dans les 24 heures
+      <!-- Pied de modale - plus petit sur mobile -->
+      <div class="mt-4 sm:mt-6 text-center">
+        <p class="text-[#8B7569] text-xs">
+          Je vous répondrai personnellement dans les 24 heures
         </p>
       </div>
-
-      <style>
-        /* Animation d'entrée et de sortie */
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
-        @keyframes scaleIn {
-          from {
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(0.9);
-          }
-          to {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-          }
-        }
-
-        #contact-modal.active {
-          display: block;
-          animation: fadeIn 0.3s ease forwards;
-        }
-
-        #contact-modal.active > div:last-child {
-          animation: scaleIn 0.3s ease forwards;
-        }
-      </style>
-
-      <script defer>
-        document.addEventListener("DOMContentLoaded", () => {
-          const modal = document.getElementById("contact-modal");
-          const closeButton = document.getElementById("close-modal-button");
-
-          // Fonction pour ouvrir la modale
-          window.openContactModal = function () {
-            modal.classList.add("active");
-            document.body.style.overflow = "hidden"; // Empêcher le défilement
-          };
-
-          // Fonction pour fermer la modale
-          function closeModal() {
-            modal.classList.remove("active");
-            document.body.style.overflow = ""; // Réactiver le défilement
-          }
-
-          // Gestionnaires d'événements
-          closeButton.addEventListener("click", closeModal);
-
-          // Fermer en cliquant sur l'overlay
-          modal.addEventListener("click", (e) => {
-            if (e.target === modal || e.target === modal.firstElementChild) {
-              closeModal();
-            }
-          });
-
-          // Fermer avec la touche Echap
-          document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape" && modal.classList.contains("active")) {
-              closeModal();
-            }
-          });
-        });
-      </script>
-
-      <script defer>
-        document.addEventListener("DOMContentLoaded", () => {
-          const appointmentBar = document.getElementById("appointment-bar");
-          const appointmentButton =
-            document.getElementById("appointment-button");
-          const closeButton = document.getElementById("close-appointment-bar");
-          const modal = document.getElementById("contact-modal");
-          const closeModalBtn = document.getElementById("close-modal-button");
-
-          // Contact options
-          const contactPhone = document.getElementById("contact-phone");
-          const contactWhatsapp = document.getElementById("contact-whatsapp");
-          const contactInstagram = document.getElementById("contact-instagram");
-
-          // Affichage automatique après 10s
-          if (sessionStorage.getItem("appointmentBarClosed") !== "true") {
-            setTimeout(() => {
-              if (appointmentBar) {
-                appointmentBar.classList.remove("translate-y-full");
-
-                // Tracking pour l'affichage de la barre
-                if (window.sendGa4Event) {
-                  window.sendGa4Event("appointment_bar_display", {
-                    event_category: "Engagement",
-                    event_label: "Barre rendez-vous affichée",
-                  });
-                }
-              }
-            }, 10000);
-          }
-
-          // Cacher la barre quand on clique sur la croix
-          closeButton?.addEventListener("click", (event) => {
-            event.stopPropagation(); // Empêcher le clic de propager à la barre
-            appointmentBar?.classList.add("translate-y-full");
-
-            // Tracking pour la fermeture de la barre
-            if (window.sendGa4Event) {
-              window.sendGa4Event("appointment_bar_close", {
-                event_category: "Engagement",
-                event_label: "Barre rendez-vous fermée",
-              });
-            }
-          });
-
-          // Ouvrir le modal en cliquant sur le bouton
-          appointmentButton?.addEventListener("click", () => {
-            modal?.classList.add("active");
-            document.body.style.overflow = "hidden";
-
-            // Tracking pour le clic sur le bouton de rendez-vous
-            if (window.sendGa4Event) {
-              window.sendGa4Event("appointment_button_click", {
-                event_category: "Conversion",
-                event_label: "Bouton prendre rendez-vous",
-                value: 1,
-              });
-            }
-          });
-
-          // Fermer le modal
-          closeModalBtn?.addEventListener("click", () => {
-            modal?.classList.remove("active");
-            document.body.style.overflow = "";
-
-            // Tracking pour la fermeture du modal
-            if (window.sendGa4Event) {
-              window.sendGa4Event("contact_modal_close", {
-                event_category: "Engagement",
-                event_label: "Modal contact fermé",
-              });
-            }
-          });
-
-          // Tracking des options de contact
-          contactPhone?.addEventListener("click", () => {
-            if (window.sendGa4Event) {
-              window.sendGa4Event("contact_option_selected", {
-                event_category: "Conversion",
-                event_label: "Téléphone",
-                contact_method: "phone",
-                value: 1,
-              });
-            }
-          });
-
-          contactWhatsapp?.addEventListener("click", () => {
-            if (window.sendGa4Event) {
-              window.sendGa4Event("contact_option_selected", {
-                event_category: "Conversion",
-                event_label: "WhatsApp",
-                contact_method: "whatsapp",
-                value: 1,
-              });
-            }
-          });
-
-          contactInstagram?.addEventListener("click", () => {
-            if (window.sendGa4Event) {
-              window.sendGa4Event("contact_option_selected", {
-                event_category: "Conversion",
-                event_label: "Instagram",
-                contact_method: "instagram",
-                value: 1,
-              });
-            }
-          });
-
-          // Performance monitoring pour le LCP - si nécessaire
-          if (typeof PerformanceObserver !== "undefined") {
-            try {
-              const lcpObserver = new PerformanceObserver((entryList) => {
-                const entries = entryList.getEntries();
-                const lastEntry = entries[entries.length - 1];
-
-                // Envoyer la valeur LCP à GA4 lorsque GA4 est chargé
-                if (window.sendGa4Event) {
-                  window.sendGa4Event("web_vitals", {
-                    event_category: "Web Vitals",
-                    event_label: "LCP",
-                    value: Math.round(lastEntry.startTime),
-                    metric_id: "LCP",
-                    non_interaction: true,
-                  });
-                }
-              });
-
-              lcpObserver.observe({
-                type: "largest-contentful-paint",
-                buffered: true,
-              });
-            } catch (e) {
-              console.error("LCP monitoring error:", e);
-            }
-          }
-        });
-      </script>
-
-      <style>
-        .slide-in {
-          animation: slideIn 0.6s forwards;
-        }
-
-        .slide-out {
-          animation: slideOut 0.6s forwards;
-        }
-
-        @keyframes slideIn {
-          from {
-            transform: translateY(100%);
-          }
-          to {
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes slideOut {
-          from {
-            transform: translateY(0);
-          }
-          to {
-            transform: translateY(100%);
-          }
-        }
-      </style>
     </div>
   </div>
 </div>
+
+<style>
+  /* Animations plus légères pour le mobile */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  #contact-modal.active {
+    display: block;
+    animation: fadeIn 0.3s ease forwards;
+  }
+
+  #contact-modal.active > div:last-child {
+    animation: scaleIn 0.3s ease forwards;
+  }
+  
+  /* Animation plus légère pour le bouton sur mobile */
+  @keyframes subtlePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+  }
+  
+  /* Animation appliquée uniquement sur les écrans plus grands */
+  @media (min-width: 640px) {
+    #appointment-button {
+      animation: subtlePulse 2s infinite;
+    }
+  }
+</style>
+
+<script defer>
+  document.addEventListener("DOMContentLoaded", () => {
+    const appointmentBar = document.getElementById("appointment-bar");
+    const appointmentButton = document.getElementById("appointment-button");
+    const closeButton = document.getElementById("close-appointment-bar");
+    const modal = document.getElementById("contact-modal");
+    const closeModalBtn = document.getElementById("close-modal-button");
+
+    // Contact options
+    const contactPhone = document.getElementById("contact-phone");
+    const contactWhatsapp = document.getElementById("contact-whatsapp");
+    const contactInstagram = document.getElementById("contact-instagram");
+
+    // Affichage automatique après 8s
+    if (sessionStorage.getItem("appointmentBarClosed") !== "true") {
+      setTimeout(() => {
+        if (appointmentBar) {
+          appointmentBar.classList.remove("translate-y-full");
+
+          // Tracking pour l'affichage de la barre
+          if (window.sendGa4Event) {
+            window.sendGa4Event("appointment_bar_display", {
+              event_category: "Engagement",
+              event_label: "Barre rendez-vous affichée",
+            });
+          }
+        }
+      }, 8000);
+    }
+
+    // Cacher la barre quand on clique sur la croix
+    closeButton?.addEventListener("click", (event) => {
+      event.stopPropagation(); // Empêcher le clic de propager à la barre
+      appointmentBar?.classList.add("translate-y-full");
+      
+      // Stocker dans sessionStorage pour ne pas réafficher dans la même session
+      sessionStorage.setItem("appointmentBarClosed", "true");
+
+      // Tracking pour la fermeture de la barre
+      if (window.sendGa4Event) {
+        window.sendGa4Event("appointment_bar_close", {
+          event_category: "Engagement",
+          event_label: "Barre rendez-vous fermée",
+        });
+      }
+    });
+
+    // Ouvrir le modal en cliquant sur le bouton
+    appointmentButton?.addEventListener("click", () => {
+      modal?.classList.add("active");
+      document.body.style.overflow = "hidden";
+
+      // Tracking pour le clic sur le bouton de rendez-vous
+      if (window.sendGa4Event) {
+        window.sendGa4Event("appointment_button_click", {
+          event_category: "Conversion",
+          event_label: "Bouton prendre rendez-vous",
+          value: 1,
+        });
+      }
+    });
+
+    // Fermer le modal
+    closeModalBtn?.addEventListener("click", () => {
+      modal?.classList.remove("active");
+      document.body.style.overflow = "";
+
+      // Tracking pour la fermeture du modal
+      if (window.sendGa4Event) {
+        window.sendGa4Event("contact_modal_close", {
+          event_category: "Engagement",
+          event_label: "Modal contact fermé",
+        });
+      }
+    });
+
+    // Fermer en cliquant sur l'overlay
+    modal?.addEventListener("click", (e) => {
+      if (e.target === modal || e.target === modal.firstElementChild) {
+        modal.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+    });
+
+    // Tracking des options de contact
+    contactPhone?.addEventListener("click", () => {
+      if (window.sendGa4Event) {
+        window.sendGa4Event("contact_option_selected", {
+          event_category: "Conversion",
+          event_label: "Téléphone",
+          contact_method: "phone",
+          value: 1,
+        });
+      }
+    });
+
+    contactWhatsapp?.addEventListener("click", () => {
+      if (window.sendGa4Event) {
+        window.sendGa4Event("contact_option_selected", {
+          event_category: "Conversion",
+          event_label: "WhatsApp",
+          contact_method: "whatsapp",
+          value: 1,
+        });
+      }
+    });
+
+    contactInstagram?.addEventListener("click", () => {
+      if (window.sendGa4Event) {
+        window.sendGa4Event("contact_option_selected", {
+          event_category: "Conversion",
+          event_label: "Instagram",
+          contact_method: "instagram",
+          value: 1,
+        });
+      }
+    });
+
+    // Fonction pour ouvrir la modale
+    window.openContactModal = function () {
+      modal?.classList.add("active");
+      document.body.style.overflow = "hidden"; // Empêcher le défilement
+    };
+  });
+</script>
