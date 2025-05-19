@@ -7,6 +7,7 @@ const {
   description = "Découvrez nos robes de mariée sur-mesure à Toulouse.",
   productImages = {}, // Objet contenant les URLs des images (mobile, tablet, desktop)
   swiper = true, // Activer Swiper.js par défaut
+  canonicalUrl = Astro.url.href, // AJOUT: Paramètre pour l'URL canonique
 } = Astro.props;
 
 const { mobile, tablet, desktop } = productImages;
@@ -15,6 +16,8 @@ const { mobile, tablet, desktop } = productImages;
 <BaseLayout title={title} description={description}>
   <Fragment slot="head">
     <!-- Préchargement responsive des images -->
+    <!-- URL Canonique - AJOUT -->
+    <link rel="canonical" href={canonicalUrl} />
     {
       mobile && (
         <link

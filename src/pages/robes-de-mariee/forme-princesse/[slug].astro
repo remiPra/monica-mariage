@@ -1,65 +1,45 @@
 ---
-import ProductLayout from "../../../layouts/ProductLayout.astro";
-import PrendreRendezVousButtonHome from "../../../components/PrendreRendezVousButtonHome.astro";
+import {
+  getAllRobes,
+  getRobeData,
+  getRandomDresses,
+  prepareRobeImages,
+} from "../../../lib/robeUtils";
+import RobeDetail from "../../../components/RobeDetails.astro"; // Assurez-vous que le nom correspond au fichier
 import { sanityClient } from "../../../sanityClient";
-import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
-import FavoriButton from "../../../components/FavoriButton.astro";
 
 // 1) Génération des chemins dynamiques pour chaque slug de robe
 export async function getStaticPaths() {
+  // Définir la sous-catégorie DANS la fonction getStaticPaths
+  const sousCategorie = "forme-princesse";
+
   const slugs = await sanityClient.fetch(`
-    *[_type == "robe" && category == "robes-de-mariee" && sousCategorie == "forme-princesse"].slug.current
+    *[_type == "robe" && category == "robes-de-mariee" && sousCategorie == "${sousCategorie}"].slug.current
   `);
-  return slugs.map((s) => ({ params: { slug: s } }));
+
+  return slugs.map((s) => ({
+    params: { slug: s },
+    // Passer la sous-catégorie comme prop pour qu'elle soit accessible plus tard
+    props: { sousCategorie },
+  }));
 }
 
-// 2) Lecture du paramètre de route
+// 2) Lecture du paramètre de route et des props
 const { slug } = Astro.params;
+const { sousCategorie } = Astro.props; // Récupérer la sous-catégorie depuis les props
 
-// 3) Fetch de tous les robes pour navigation
-const allRobes = await sanityClient.fetch(
-  `*[_type == "robe" && category == "robes-de-mariee" && sousCategorie == "forme-princesse"]{
-     "slug": slug.current,
-     dressName,
-     category,
-     sousCategorie
-  }`
-);
+// 3) Fetch de toutes les robes pour navigation
+const allRobes = await getAllRobes(sousCategorie);
 
 // 4) Récupération de la robe courante
-const robeData = await sanityClient.fetch(
-  `*[_type == "robe"
-     && category == "robes-de-mariee"
-     && sousCategorie == "forme-princesse"
-     && slug.current == $slug][0]{
-       title,
-       _id,
-       metaDescription,
-       dressName,
-       descriptionCourte,
-       category,
-       sousCategorie,
-       "imagesCloudinary": imagesCloudinary[]{ url, alt }
-  }`,
-  { slug }
-);
+const robeData = await getRobeData(slug, sousCategorie);
 
 if (!robeData) {
   throw new Error(`Robe introuvable pour le slug : ${slug}`);
 }
 
 // 5) Préparation des images pour le slider
-const robe = {
-  ...robeData,
-  images: (robeData.imagesCloudinary || []).map((img) => ({
-    alt: img.alt,
-    optimized: {
-      tablet: optimizeCloudinaryUrl(img.url, "desktop"), // Explicitement "desktop"
-      mobile: optimizeCloudinaryUrl(img.url, "mobile"), // Explicitement "mobile"
-    },
-    full: optimizeCloudinaryUrl(img.url, "full"),
-  })),
-};
+const robe = prepareRobeImages(robeData);
 
 // 6) Calcul des précédents/suivants
 const currentIndex = allRobes.findIndex((r) => r.slug === slug);
@@ -68,41 +48,7 @@ const prevItem =
 const nextItem = allRobes[(currentIndex + 1) % allRobes.length];
 
 // 7) Suggestions aléatoires
-const othersData = await sanityClient.fetch(
-  `*[_type == "robe"
-     && category == "robes-de-mariee"
-     && sousCategorie == "forme-princesse"
-     && slug.current != $slug]{
-       "slug": slug.current,
-         _id,
-       dressName,
-       category,
-       sousCategorie,
-       "imagesCloudinary": imagesCloudinary[]{ url, alt }
-  }`,
-  { slug }
-);
-const randomDresses = (othersData || [])
-  .map((d) => ({
-    ...d,
-    images: (d.imagesCloudinary || []).map((img) => ({
-      alt: img.alt,
-      optimized: {
-        tablet: optimizeCloudinaryUrl(img.url, {
-          w: 400,
-          h: 600,
-          crop: "fill",
-        }),
-        mobile: optimizeCloudinaryUrl(img.url, {
-          w: 200,
-          h: 300,
-          crop: "fill",
-        }),
-      },
-    })),
-  }))
-  .sort(() => 0.5 - Math.random())
-  .slice(0, 4);
+const randomDresses = await getRandomDresses(slug, sousCategorie);
 
 // Récupération de la première image pour préchargement
 const firstImage = robe.images.length > 0 ? robe.images[0] : null;
@@ -112,286 +58,18 @@ const productImages = firstImage
   ? {
       mobile: firstImage.optimized.mobile,
       tablet: firstImage.optimized.tablet,
-      desktop: firstImage.optimized.tablet, // Si vous n'avez pas de version desktop
+      desktop: firstImage.optimized.tablet,
     }
   : {};
 ---
 
-<ProductLayout
-  title={robe.title}
-  description={robe.metaDescription}
+<RobeDetail
+  robe={robe}
+  slug={slug}
+  allRobes={allRobes}
+  prevItem={prevItem}
+  nextItem={nextItem}
+  randomDresses={randomDresses}
   productImages={productImages}
->
-  <div
-    class="mt-20 max-w-7xl mx-auto px-4 lg:px-6 flex flex-col lg:flex-row gap-10"
-  >
-    <!-- Colonne slider + nav -->
-    <section class="w-full lg:w-3/5">
-      <div class="mt-8 flex items-center justify-between mb-6 px-2 py-3">
-        <!-- Précédent -->
-        <a
-          href={`/robes-de-mariee/${prevItem.sousCategorie}/${prevItem.slug}`}
-          class="flex items-center text-[#af7749] hover:text-[#C5A880] transition-colors"
-          title={`Voir la robe ${prevItem.dressName}`}
-        >
-          <!-- SVG flèche gauche -->
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-              clip-rule="evenodd"></path>
-          </svg>
-        </a>
-
-        <!-- Titre courant -->
-        <p class="text-[#af7749] font-vibes text-3xl text-center">
-          {
-            robe.dressName.charAt(0).toUpperCase() +
-              robe.dressName.slice(1).toLowerCase()
-          }
-        </p>
-
-        <!-- Suivant -->
-        <a
-          href={`/robes-de-mariee/${nextItem.sousCategorie}/${nextItem.slug}`}
-          class="flex items-center text-[#af7749] hover:text-[#C5A880] transition-colors"
-          title={`Voir la robe ${nextItem.dressName}`}
-        >
-          <!-- SVG flèche droite -->
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-              clip-rule="evenodd"></path>
-          </svg>
-        </a>
-      </div>
-
-      <!-- Slider Swiper -->
-      <div
-        class="relative w-full max-w-md h-[600px] md:h-full mx-auto overflow-hidden"
-      >
-        <div class="swiper-container shadow-lg">
-          <FavoriButton
-            imageId={robe._id}
-            robeSlug={slug}
-            position="absolute top-4 right-4 z-30"
-            robeName={robe.dressName}
-            imageUrl={robe.images[0]?.optimized.tablet}
-            imageAlt={robe.images[0]?.alt || robe.dressName}
-            sousCategorie={robe.sousCategorie}
-          />
-          <div class="swiper-wrapper">
-            {
-              robe.images.map((img, i) => (
-                <div class="swiper-slide overflow-hidden" key={i}>
-                  <div class="border border-[#C5A880] rounded-2xl h-full w-full overflow-hidden">
-                    <img
-                      src={img.optimized.tablet}
-                      alt={img.alt}
-                      class="object-cover w-full h-[600px] md:h-full"
-                      loading={i === 0 ? "eager" : "lazy"}
-                      fetchpriority={i === 0 ? "high" : "auto"}
-                      onclick={`openModal("${img.full}", "${img.alt}")`}
-                      decoding={i === 0 ? "sync" : "async"}
-                    />
-                  </div>
-                </div>
-              ))
-            }
-          </div>
-          <!-- Les contrôles du slider seront gérés par le JS -->
-        </div>
-
-        <!-- Conteneur de l'image statique qui sera remplacé par Swiper -->
-        {
-          firstImage && (
-            <div
-              class="no-js-image absolute inset-0 rounded-2xl"
-              style="display: none;"
-            >
-              <img
-                src={firstImage.optimized.tablet}
-                alt={firstImage.alt}
-                class="object-cover w-full h-full rounded-2xl"
-              />
-            </div>
-          )
-        }
-      </div>
-
-      <!-- Modal plein écran -->
-      <div
-        id="zoomModal"
-        class="fixed inset-0 bg-black bg-opacity-80 hidden items-center justify-center z-50"
-      >
-        <div class="relative w-full justify-center">
-          <button
-            id="closeModal"
-            class="fixed z-56 top-4 right-4 text-white text-3xl">&times;</button
-          >
-          <img
-            id="modalImage"
-            src=""
-            alt=""
-            class="max-w-full md:mx-auto object-contain rounded-lg shadow-lg"
-          />
-        </div>
-      </div>
-    </section>
-
-    <!-- Colonne infos -->
-    <section class="w-full lg:w-2/5 flex flex-col justify-center">
-      <h1 class="text-4xl font-vibes text-[#af7749] mb-4">
-        Robe de Mariée {
-          robe.dressName.charAt(0).toUpperCase() +
-            robe.dressName.slice(1).toLowerCase()
-        }
-      </h1>
-      <div
-        class="text-gray-700 text-lg leading-relaxed"
-        set:html={robe.descriptionCourte}
-      />
-
-      <div class="mt-10 text-center">
-        <PrendreRendezVousButtonHome />
-      </div>
-    </section>
-  </div>
-  <!-- Suggestions -->
-  <div class="max-w-7xl mb-20 mx-auto px-6 mt-20">
-    <h2 class="text-5xl font-vibes text-[#af7749] mb-8 text-center">
-      Vous pourriez aussi aimer
-    </h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      {
-        randomDresses.map((d, i) => (
-          <a
-            key={i}
-            href={`/robes-de-mariee/${d.sousCategorie}/${d.slug}`}
-            class="relative rounded-2xl overflow-hidden h-[300px] lg:h-[450px] shadow-md hover:shadow-lg transition-shadow"
-          >
-            <img
-              src={d.images[0]?.optimized.mobile}
-              alt={d.images[0]?.alt}
-              class="absolute inset-0 w-full h-full object-cover"
-              loading="lazy"
-            />
-            <div class="absolute inset-0 bg-[#af7749] opacity-20" />
-            <div class="absolute bottom-0 w-full p-4 text-center bg-gradient-to-t from-[#af7749] to-transparent">
-              <p class="text-white font-vibes text-3xl drop-shadow-lg">
-                {d.dressName.charAt(0).toUpperCase() +
-                  d.dressName.slice(1).toLowerCase()}
-              </p>
-            </div>
-          </a>
-        ))
-      }
-    </div>
-  </div>
-
-  <!-- Script optimisé pour le slider (maintenant directement dans la page) -->
-  <script>
-    // Affiche l'image statique si JS est désactivé
-    document.querySelector(".no-js-image").style.display = "block";
-
-    // Fonction d'initialisation du slider
-    function initSwiper() {
-      if (typeof Swiper !== "undefined") {
-        // Masque l'image statique une fois Swiper initialisé
-        const noJsImage = document.querySelector(".no-js-image");
-        if (noJsImage) noJsImage.style.display = "none";
-
-        // Initialise Swiper
-        new Swiper(".swiper-container", {
-          loop: true,
-          slidesPerView: 1,
-          autoplay: { delay: 3000 },
-          // Navigation configurable avec des boutons personnalisés si nécessaire
-        });
-      } else {
-        // Si Swiper n'est pas encore chargé, on réessaie plus tard
-        setTimeout(initSwiper, 100);
-      }
-    }
-
-    // Fonction pour configurer le modal
-    function setupModal() {
-      // Ouvre le modal
-      window.openModal = (src, alt) => {
-        const modal = document.getElementById("zoomModal");
-        const img = document.getElementById("modalImage");
-        img.src = src;
-        img.alt = alt;
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-      };
-
-      // Ferme le modal
-      document.getElementById("closeModal").addEventListener("click", () => {
-        document.getElementById("zoomModal").classList.add("hidden");
-        document.getElementById("zoomModal").classList.remove("flex");
-      });
-
-      // Fermer au clic sur le fond
-      document.getElementById("zoomModal").addEventListener("click", (e) => {
-        if (e.target.id === "zoomModal") {
-          e.currentTarget.classList.add("hidden");
-          e.currentTarget.classList.remove("flex");
-        }
-      });
-    }
-
-    // Utiliser l'intersection observer pour initialiser Swiper seulement quand le conteneur est visible
-    if ("IntersectionObserver" in window) {
-      const swiperContainer = document.querySelector(".swiper-container");
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              // Initialiser Swiper seulement quand le conteneur est dans le viewport
-              if ("requestIdleCallback" in window) {
-                requestIdleCallback(() => {
-                  initSwiper();
-                });
-              } else {
-                setTimeout(initSwiper, 1);
-              }
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.1 }
-      );
-
-      if (swiperContainer) {
-        observer.observe(swiperContainer);
-      }
-    } else {
-      // Fallback pour les navigateurs qui ne supportent pas IntersectionObserver
-      if (document.readyState !== "loading") {
-        initSwiper();
-      } else {
-        document.addEventListener("DOMContentLoaded", initSwiper);
-      }
-    }
-
-    // Configurer le modal dès que possible
-    if (document.readyState !== "loading") {
-      setupModal();
-    } else {
-      document.addEventListener("DOMContentLoaded", setupModal);
-    }
-  </script>
-</ProductLayout>
+  firstImage={firstImage}
+/>
