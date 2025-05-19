@@ -5,7 +5,7 @@ const { title, subtitle, buttonText, scrollTarget, iconSrc } = Astro.props;
 <section class="relative text-center pt-12 pb-28 px-6 sm:px-8 lg:px-12">
   <div class="max-w-5xl mx-auto">
     {/* Icône décorative */}
-    <div class="flex justify-center mb-4 mt-[100px]">
+    <div class="flex justify-center mb-4">
       <img
         src={iconSrc}
         alt="Icone promo"
@@ -32,7 +32,7 @@ const { title, subtitle, buttonText, scrollTarget, iconSrc } = Astro.props;
     {/* Bouton */}
     <button
       id="scroll-button"
-      class="mt-6 px-8 py-4 bg-[#C5A880] text-white text-lg font-medium rounded-full shadow-lg
+      class="mt-6 mb-[25px] px-8 py-4 bg-[#C5A880] text-white text-lg font-medium rounded-full shadow-lg
              hover:bg-[#A27E5D] hover:scale-105 transition-all duration-300 active:scale-95"
     >
       {buttonText}

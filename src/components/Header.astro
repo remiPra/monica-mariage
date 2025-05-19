@@ -23,33 +23,25 @@ const promoSubMenuItems = [
 
 <header id="header" class="fixed top-0 w-full z-50 bg-[#FDE9E6] shadow-md">
   <!-- Barre de contact Mobile uniquement -->
+  <!-- Bannière mobile – WhatsApp only -->
+  <!-- Bannière mobile – RDV sur WhatsApp -->
   <div
-    class="bg-[#A37B63] text-white text-sm py-2 px-4 flex justify-center lg:hidden"
+    class="md:hidden w-full bg-[#A37B63] text-white text-center py-3 shadow-md z-50"
   >
-    <div class="flex items-center gap-2">
-      <a
-        href="https://wa.me/33668300960"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="flex items-center gap-1"
+    <a
+      href="https://wa.me/33668300960"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center justify-center gap-2"
+    >
+      <Icon name="mdi:whatsapp" class="text-2xl" />
+      <span class="font-bold font-cormorant text-lg"
+        >RDV uniquement sur Whatsapp</span
       >
-        <Icon name="mdi:whatsapp" class="text-2xl" />
-      </a>
-      <a
-        href="tel:+33668300960"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="flex items-center gap-1 text-xl"
-      >
-        06 68 30 09 60
-      </a>
-      <a href="tel:+33668300960" class="flex items-center gap-1">
-        <Icon name="mdi:phone" class="text-2xl" />
-      </a>
-    </div>
+    </a>
   </div>
 
-  <!-- Navigation Desktop -->
+  <!-- Pour ajouter un padding-top au contenu sous la barre -->
   <nav
     class="hidden lg:flex bg-[#FDE9E6] items-center justify-between px-8 h-20"
   >
