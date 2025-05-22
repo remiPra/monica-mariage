@@ -1,82 +1,52 @@
 ---
 import { Icon } from "astro-icon/components";
-
-// Palette de couleurs Monica Mariage
-const primaryColor = "bg-[#a77c60]"; // Marron principal
 ---
 
-<!-- Bouton pour ouvrir le modal -->
+<!-- Bouton Premium pour ouvrir le modal -->
 <button
-  class="open-modal-button inline-block px-8 py-4 bg-[#C99A9A] text-white font-medium text-lg
-  rounded-full shadow-md hover:shadow-lg hover:scale-105 hover:bg-[#C27C74]
-  transition-all duration-300"
+  class="open-modal-button relative group inline-flex items-center justify-center px-8 py-4 
+  bg-gradient-to-r from-[#C99A9A] via-[#D8B4B4] to-[#C99A9A] text-white font-semibold text-lg
+  rounded-full shadow-[0_4px_14px_rgba(201,154,154,0.5)] hover:shadow-[0_7px_20px_rgba(201,154,154,0.7)]
+  overflow-hidden transition-all duration-300"
 >
-  <span>Prendre rendez-vous</span>
+  <!-- Effet brillant au survol -->
+  <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></span>
+  
+  <!-- Badge exclusif -->
+  <span class="absolute -top-1.5 -right-1.5 bg-[#af7749] text-white text-xs px-2 py-0.5 rounded-full shadow-md transform rotate-3 origin-top-right">
+    <span class="inline-block animate-pulse">Disponible</span>
+  </span>
+  
+  <!-- Icône et texte -->
+  <span class="flex items-center">
+    <span class="relative z-10 w-7 h-7 mr-3 bg-white/20 rounded-full flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
+      <Icon name="mdi:calendar-heart" class="w-4 h-4" />
+    </span>
+    <span class="relative z-10 mr-1">Réserver</span>
+    <span class="relative z-10 text-[#FFE4E1] font-light">mon essayage</span>
+  </span>
 </button>
 
-<!-- Fenêtre modale de contact -->
+<!-- Fenêtre modale de contact luxueuse -->
 <div class="contact-modal fixed inset-0 z-[500] hidden">
-  <!-- Overlay avec flou -->
-  <div class="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
+  <!-- Overlay avec flou élégant -->
+  <div class="absolute inset-0 bg-black/30 backdrop-blur-md"></div>
 
   <!-- Contenu de la modale -->
   <div
-    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-xl p-8 transform transition-all"
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] p-8 transform transition-all"
   >
-    <!-- En-tête avec titre et bouton de fermeture -->
-    <div
-      class="flex justify-between items-center mb-6 border-b border-[#F0E6E2] pb-4"
-    >
-      <h2 class="font-vibes text-3xl text-[#af7749]">Prenons contact</h2>
-      <button
-        class="close-modal-button rounded-full w-8 h-8 flex items-center justify-center text-[#8B7569] hover:bg-[#FDF8F7] transition-colors"
-        aria-label="Fermer"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-    </div>
-
-    <!-- Corps de la modale -->
-    <div class="text-center mb-8">
-      <!-- Séparateur décoratif -->
-      <div class="flex items-center justify-center gap-4 mb-4">
-        <span class="h-px w-12 bg-[#C5A880]"></span>
-        <p class="text-[#8B7569] text-xs font-medium">CONTACTEZ-NOUS</p>
-        <span class="h-px w-12 bg-[#C5A880]"></span>
-      </div>
-      <p class="text-[#5F4B3F] leading-relaxed mb-6 text-base md:text-lg">
-        Nous sommes disponibles sur plusieurs plateformes, choisissez votre
-        moyen de communication préféré :
-      </p>
-    </div>
-
-    <!-- Boutons de contact -->
-    <div class="space-y-3">
-      <a
-        target="_blank"
-        href="tel:+33668300960"
-        class="flex items-center justify-center bg-[#af7749] text-white p-4 rounded-full w-full hover:bg-[#925c36] transition-all duration-300 group"
-      >
-        <div
-          class="w-8 h-8 mr-3 flex items-center justify-center bg-white/20 rounded-full"
+    <!-- En-tête luxueux -->
+    <div class="flex justify-center relative mb-4">
+      <div class="absolute top-0 right-0">
+        <button
+          class="close-modal-button rounded-full w-8 h-8 flex items-center justify-center text-[#8B7569] hover:bg-[#FDF8F7] transition-colors"
+          aria-label="Fermer"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -84,87 +54,165 @@ const primaryColor = "bg-[#a77c60]"; // Marron principal
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-            <path
-              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
-            ></path>
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
-        </div>
-        <span class="font-medium">Appelez-moi</span>
-      </a>
-      <a
+        </button>
+      </div>
+      
+      <!-- Élégant logo central -->
+      <div class="w-16 h-16 rounded-full bg-[#f8f5f2] flex items-center justify-center mb-4 border-2 border-[#C99A9A]/30">
+        <img src="/logo-icon.png" alt="Monica Mariage" class="w-10 h-10 object-contain" onerror="this.src='/favicon.png'; this.onerror=null;" />
+      </div>
+    </div>
+    
+    <!-- Titre élégant -->
+    <h2 class="font-vibes text-4xl text-center text-[#af7749] mb-2 tracking-wide">Votre moment privilégié</h2>
+
+    <!-- Corps de la modale -->
+    <div class="text-center mb-6">
+      <!-- Séparateur décoratif premium -->
+      <div class="flex items-center justify-center gap-4 mb-6">
+        <span class="h-px w-16 bg-gradient-to-r from-transparent via-[#C5A880] to-transparent"></span>
+        <Icon name="mdi:diamond" class="w-4 h-4 text-[#C5A880]" />
+        <span class="h-px w-16 bg-gradient-to-r from-transparent via-[#C5A880] to-transparent"></span>
+      </div>
+      
+      <p class="text-[#5F4B3F] leading-relaxed mb-8 text-base md:text-lg max-w-xs mx-auto">
+        Comment souhaitez-vous échanger à propos de votre robe de mariée idéale ?
+      </p>
+    </div>
+
+    <!-- Boutons de contact premium -->
+    <div class="space-y-4">
+      <!-- WhatsApp - Mise en avant -->
+      
         target="_blank"
-        href="https://wa.me/33668300960?text=Bonjour%20Monica%20Mariage%20!"
-        class="flex items-center justify-center bg-[#25D366] text-white p-4 rounded-full w-full hover:bg-[#1faa54] transition-all duration-300 group"
+        href="https://wa.me/33668300960?text=Bonjour%20Monica%20Mariage%20!%20Je%20souhaite%20réserver%20un%20essayage%20pour%20découvrir%20vos%20collections%20de%20robes%20de%20mariée."
+        class="flex items-center justify-center bg-[#25D366] text-white p-4 rounded-xl w-full hover:bg-[#1faa54] hover:scale-[1.02] hover:shadow-lg transition-all duration-300 group relative overflow-hidden"
       >
+        <!-- Effet de vague au hover -->
+        <span class="absolute inset-0 w-full h-full bg-white opacity-0 group-hover:opacity-10 transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-700 ease-out"></span>
+        
         <div
-          class="w-8 h-8 mr-3 flex items-center justify-center bg-white/20 rounded-full"
+          class="w-10 h-10 mr-3 flex items-center justify-center bg-white/20 rounded-full"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
+            width="18"
+            height="18"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
+            class="group-hover:scale-110 transition-transform duration-300"
           >
             <path
               d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
             ></path>
           </svg>
         </div>
-        <span class="font-medium">WhatsApp</span>
+        <div class="flex flex-col items-start">
+          <span class="font-medium text-white">WhatsApp</span>
+          <span class="text-xs text-white/80">Réponse rapide garantie</span>
+        </div>
+        <!-- Indicateur de choix recommandé -->
+        <span class="absolute top-0 right-0 bg-white/90 text-[#25D366] text-[10px] px-2 py-0.5 rounded-bl-lg font-medium">RECOMMANDÉ</span>
       </a>
-      <a
+      
+      <!-- Téléphone -->
+      
         target="_blank"
-        href="https://www.instagram.com/monicamariage/"
-        class="flex items-center justify-center bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45] text-white p-4 rounded-full w-full hover:opacity-90 transition-all duration-300 group"
+        href="tel:+33668300960"
+        class="flex items-center justify-center bg-[#af7749] text-white p-4 rounded-xl w-full hover:bg-[#925c36] hover:scale-[1.02] transition-all duration-300 group"
       >
         <div
-          class="w-8 h-8 mr-3 flex items-center justify-center bg-white/20 rounded-full"
+          class="w-10 h-10 mr-3 flex items-center justify-center bg-white/20 rounded-full"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
+            width="18"
+            height="18"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
+            class="group-hover:scale-110 transition-transform duration-300"
+          >
+            <path
+              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+            ></path>
+          </svg>
+        </div>
+        <div class="flex flex-col items-start">
+          <span class="font-medium">Appelez-moi</span>
+          <span class="text-xs text-white/80">Échange direct et personnalisé</span>
+        </div>
+      </a>
+      
+      <!-- Instagram -->
+      
+        target="_blank"
+        href="https://www.instagram.com/monicamariage/"
+        class="flex items-center justify-center bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45] text-white p-4 rounded-xl w-full hover:opacity-90 hover:scale-[1.02] transition-all duration-300 group"
+      >
+        <div
+          class="w-10 h-10 mr-3 flex items-center justify-center bg-white/20 rounded-full"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="group-hover:scale-110 transition-transform duration-300"
           >
             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
             <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
           </svg>
         </div>
-        <span class="font-medium">Instagram</span>
+        <div class="flex flex-col items-start">
+          <span class="font-medium">Instagram</span>
+          <span class="text-xs text-white/80">Découvrez notre collection</span>
+        </div>
       </a>
 
-      <!-- Pied de modale -->
-      <div class="mt-8 text-center">
-        <p class="text-[#8B7569] text-sm">
-          Nous répondons généralement dans les 24 heures
-        </p>
+      <!-- Message rassurant -->
+      <div class="mt-8 text-center relative">
+        <div class="bg-[#f8f5f2] rounded-lg p-3 text-[#AF7749] text-sm flex items-center justify-center">
+          <Icon name="mdi:shield-check" class="w-5 h-5 mr-2 text-[#AF7749]" />
+          <span>Je vous répondrai personnellement dans les 24 heures</span>
+        </div>
+        
+        <!-- Astuce visuelle pour montrer que c'est Monica qui répond -->
+        <div class="absolute -bottom-5 right-4 flex items-center">
+          <span class="text-[10px] text-[#8B7569] mr-1">Monica</span>
+          <div class="w-4 h-4 rounded-full overflow-hidden shadow-sm">
+            <img src="/monica-portrait.jpg" alt="Monica" class="w-full h-full object-cover" onerror="this.style.display='none'" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <style>
-  /* Animation d'entrée et de sortie */
+  /* Animation d'entrée et de sortie luxueuse */
   @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
-  @keyframes scaleIn {
+  
+  @keyframes scaleInElegant {
     from {
       opacity: 0;
       transform: translate(-50%, -50%) scale(0.9);
@@ -174,21 +222,50 @@ const primaryColor = "bg-[#a77c60]"; // Marron principal
       transform: translate(-50%, -50%) scale(1);
     }
   }
+  
+  @keyframes floatAnimation {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+  }
+  
+  @keyframes pulseGlow {
+    0% { box-shadow: 0 4px 14px rgba(201,154,154,0.5); }
+    50% { box-shadow: 0 4px 20px rgba(201,154,154,0.8); }
+    100% { box-shadow: 0 4px 14px rgba(201,154,154,0.5); }
+  }
 
+  .open-modal-button {
+    animation: floatAnimation 3s ease-in-out infinite, pulseGlow 2s ease-in-out infinite;
+  }
+  
   .contact-modal.active {
     display: block;
-    animation: fadeIn 0.3s ease forwards;
+    animation: fadeIn 0.4s ease forwards;
   }
+  
   .contact-modal.active > div:last-child {
-    animation: scaleIn 0.3s ease forwards;
+    animation: scaleInElegant 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
   }
 </style>
 
-<script client:load>
+<script defer>
   document.addEventListener("DOMContentLoaded", () => {
     const modals = document.querySelectorAll(".contact-modal");
     const openButtons = document.querySelectorAll(".open-modal-button");
     const closeButtons = document.querySelectorAll(".close-modal-button");
+
+    // Event tracking pour Google Analytics
+    const trackEvent = (eventName, eventCategory, eventLabel, value = 1) => {
+      if (window.sendGa4Event) {
+        window.sendGa4Event(eventName, {
+          event_category: eventCategory,
+          event_label: eventLabel,
+          value: value,
+          date_clicked: new Date().toISOString().split("T")[0],
+        });
+      }
+    };
 
     openButtons.forEach((btn, index) => {
       btn.addEventListener("click", () => {
@@ -196,8 +273,24 @@ const primaryColor = "bg-[#a77c60]"; // Marron principal
         if (modal) {
           modal.classList.add("active");
           document.body.style.overflow = "hidden";
+          
+          // Track modal ouverture
+          trackEvent(
+            "appointment_modal_open",
+            "Engagement",
+            "Modal RDV ouvert",
+            1
+          );
         }
       });
+      
+      // Animation spéciale du bouton après quelques secondes
+      setTimeout(() => {
+        btn.classList.add("attention");
+        setTimeout(() => {
+          btn.classList.remove("attention");
+        }, 1000);
+      }, 5000);
     });
 
     closeButtons.forEach((btn, index) => {
@@ -206,6 +299,14 @@ const primaryColor = "bg-[#a77c60]"; // Marron principal
         if (modal) {
           modal.classList.remove("active");
           document.body.style.overflow = "";
+          
+          // Track modal fermeture
+          trackEvent(
+            "appointment_modal_close",
+            "Engagement",
+            "Modal RDV fermé par X",
+            0
+          );
         }
       });
     });
@@ -215,8 +316,54 @@ const primaryColor = "bg-[#a77c60]"; // Marron principal
         if (e.target === modal || e.target === modal.firstElementChild) {
           modal.classList.remove("active");
           document.body.style.overflow = "";
+          
+          // Track modal overlay click
+          trackEvent(
+            "appointment_modal_overlay_close",
+            "Engagement",
+            "Modal RDV fermé par overlay",
+            0
+          );
         }
       });
+      
+      // Track des clics sur les options de contact
+      const whatsappLink = modal.querySelector("a[href*='wa.me']");
+      const phoneLink = modal.querySelector("a[href*='tel:']");
+      const instagramLink = modal.querySelector("a[href*='instagram']");
+      
+      if (whatsappLink) {
+        whatsappLink.addEventListener("click", () => {
+          trackEvent(
+            "contact_option_selected",
+            "Conversion", 
+            "WhatsApp depuis Modal RDV",
+            1
+          );
+        });
+      }
+      
+      if (phoneLink) {
+        phoneLink.addEventListener("click", () => {
+          trackEvent(
+            "contact_option_selected",
+            "Conversion", 
+            "Téléphone depuis Modal RDV",
+            1
+          );
+        });
+      }
+      
+      if (instagramLink) {
+        instagramLink.addEventListener("click", () => {
+          trackEvent(
+            "contact_option_selected",
+            "Conversion", 
+            "Instagram depuis Modal RDV",
+            1
+          );
+        });
+      }
     });
 
     document.addEventListener("keydown", (e) => {
@@ -225,9 +372,33 @@ const primaryColor = "bg-[#a77c60]"; // Marron principal
           if (modal.classList.contains("active")) {
             modal.classList.remove("active");
             document.body.style.overflow = "";
+            
+            // Track escape key
+            trackEvent(
+              "appointment_modal_escape",
+              "Engagement",
+              "Modal RDV fermé par Escape",
+              0
+            );
           }
         });
       }
     });
+    
+    // Animation supplémentaire pour attirer l'attention
+    const addAttentionClass = () => {
+      openButtons.forEach((btn) => {
+        btn.classList.add("attention");
+        setTimeout(() => {
+          btn.classList.remove("attention");
+        }, 1000);
+      });
+    };
+    
+    // Affiche l'animation d'attention après que la page soit chargée depuis 15 secondes
+    setTimeout(addAttentionClass, 15000);
+    
+    // Affiche l'animation d'attention toutes les 2 minutes si l'utilisateur est toujours sur la page
+    setInterval(addAttentionClass, 120000);
   });
 </script>

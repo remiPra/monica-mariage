@@ -253,32 +253,36 @@
     return storedFavoris ? JSON.parse(storedFavoris) : [];
   }
   
-  function shareViaWhatsAppDesktop() {
-    const favoris = getFavorisFromStorage();
-    
-    if (favoris.length === 0) {
-      alert("Vous n'avez pas encore de robes favorites à partager.");
-      return;
-    }
-    
-    // Construire le message
-    let message = "Voici ma sélection de robes favorites de Monica Mariage:\n\n";
-    
-    // Ajouter chaque robe avec son lien
-    favoris.forEach((fav, index) => {
-      message += `${index + 1}. ${fav.name}: ${window.location.origin}/robes-de-mariee/${fav.sousCategorie}/${fav.slug}\n`;
-    });
-    
-    // Ajouter un message de conclusion
-    message += "\nJ'aimerais avoir votre avis sur cette sélection !";
-    
-    // Encoder le message pour l'URL
-    const encodedMessage = encodeURIComponent(message);
-    
-    // Créer l'URL WhatsApp et l'ouvrir
-    const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
-    window.open(whatsappUrl, '_blank');
+  function shareViaWhatsApp() {
+  const favoris = getFavorisFromStorage();
+  
+  if (favoris.length === 0) {
+    alert("Vous n'avez pas encore de robes favorites à partager.");
+    return;
   }
+  
+  // Construire le message
+  let message = "Bonjour, voici ma sélection de robes favorites de Monica Mariage:\n\n";
+  
+  // Ajouter chaque robe avec son lien et sous-catégorie
+  favoris.forEach((fav, index) => {
+    const sousCategorie = fav.sousCategorie || 'style-boheme-chic';
+    message += `${index + 1}. ${fav.name}: ${window.location.origin}/robes-de-mariee/${sousCategorie}/${fav.slug}\n`;
+  });
+  
+  // Ajouter un message de conclusion
+  message += "\nJ'aimerais avoir votre avis sur cette sélection et prendre rendez-vous pour les essayer !";
+  
+  // Encoder le message pour l'URL
+  const encodedMessage = encodeURIComponent(message);
+  
+  // Numéro de téléphone avec préfixe international (sans le + pour l'URL)
+  const phoneNumber = "33668300960";
+  
+  // Créer l'URL WhatsApp avec un numéro spécifique et l'ouvrir
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+  window.open(whatsappUrl, '_blank');
+}
 </script>
   
 <style>
