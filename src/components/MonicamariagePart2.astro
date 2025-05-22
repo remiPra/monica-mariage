@@ -72,11 +72,11 @@ const bestSellers = [
     </div>
 
     <!-- Contenu - cartes des robes -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
       {bestSellers.map((robe,index) => (
          <a
               href={robe.link}
-              class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[280px] md:h-[500px] shadow-md"
+              class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] md:h-[500px] shadow-md"
               data-index={index}
             >
               {/* Overlay dégradé */}
@@ -87,8 +87,8 @@ const bestSellers = [
                 src={robe.src}
                 alt={robe.label}
                 width="300"
-                height="400"
-                class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300"
+              
+                class=" absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300"
                 loading="lazy"
               />
 
