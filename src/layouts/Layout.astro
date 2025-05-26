@@ -1,24 +1,23 @@
 ---
-// Layout.astro
-// import SpeedInsights from "@vercel/speed-insights/astro";
+// Layout.astro with Exit-Intent WhatsApp Modal
 
 import Header from "../components/Header.astro";
 import "../styles/global.css";
 import FloatingButton from "../components/FloatingButton.astro";
-import Footer from "../components/Footer.astro";
-import ModalForm from "../components/ModalForm.astro";
-import AppointmentBar from "../components/AppointmentBar.astro";
 import FolatingButtonWhatsapp from "../components/FolatingButtonWhatsapp.astro";
+import Footer from "../components/Footer.astro";
+import AppointmentBar from "../components/AppointmentBar.astro";
+import ModalForm from "../components/ModalForm.astro";
 import WhatsAppModalForm from "../components/WhatsAppModalForm.astro";
 import PwaBanner from "../components/PwaBanner.astro";
 import ImagePreloader from "../components/ImagePreloader.astro";
+
 const {
   title = "Monica Mariage - Boutique de Robes de Mariée",
   description = "Découvrez nos robes de mariée sur-mesure à Toulouse.",
-  mainImageUrl = "", // Nouvelle prop pour l'image principale
+  mainImageUrl = "",
 } = Astro.props;
 
-// Définir l'ID Google Analytics ici pour qu'il soit accessible dans le script différé
 const analyticsId = "G-H8RDXC45EX";
 ---
 
@@ -34,34 +33,16 @@ const analyticsId = "G-H8RDXC45EX";
     <meta property="og:description" content={description} />
     <meta property="og:image" content="/images/cover-robes.jpg" />
     <meta property="og:url" content={Astro.url} />
-    <link
-      rel="preload"
-      href="/fonts/great-vibes-v19-latin-regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <meta
-      name="google-site-verification"
-      content="QZD7-gTqD8tysnfl8u7beciJFOu2agCDqSI1oH5ma54"
-    />
-    <link
-      rel="preload"
-      href="/fonts/cormorant-garamond-v19-latin-regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <link rel="preload" href="/fonts/great-vibes-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/cormorant-garamond-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
 
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Préchargement conditionnel de l'image principale -->
     {mainImageUrl && <ImagePreloader imageUrl={mainImageUrl} />}
 
-    <!-- Schéma JSON-LD simplifié pour tout le site -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -82,29 +63,12 @@ const analyticsId = "G-H8RDXC45EX";
         },
         "image": "https://monicamariage.com/images/cover-robes.jpg",
         "openingHoursSpecification": [
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": [
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday"
-            ],
-            "opens": "10:00",
-            "closes": "19:00"
-          },
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Saturday"],
-            "opens": "10:00",
-            "closes": "18:00"
-          }
+          {"@type": "OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"10:00","closes":"19:00"},
+          {"@type": "OpeningHoursSpecification","dayOfWeek":["Saturday"],"opens":"10:00","closes":"18:00"}
         ]
       }
     </script>
 
-    <!-- Slot pour d'autres éléments head spécifiques -->
     <slot name="head" />
   </head>
   <body>
@@ -114,53 +78,54 @@ const analyticsId = "G-H8RDXC45EX";
     <Footer />
     <AppointmentBar />
     <ModalForm isVisible={false} />
+
+    <!-- Exit-intent WhatsApp Modal -->
+    <div id="exit-whatsapp-modal" style="display:none;">
+      <WhatsAppModalForm isVisible={true} message="Avant de partir, réservez votre essayage par WhatsApp" />
+    </div>
+
+    <script>
+      (() => {
+        let exitShown = false;
+        function showExitModal() {
+          const modal = document.getElementById('exit-whatsapp-modal');
+          modal.style.display = 'block';
+        }
+        function handleMouseLeave(e) {
+          if (e.clientY <= 0 && !exitShown) {
+            exitShown = true;
+            showExitModal();
+          }
+        }
+        document.addEventListener('mouseout', handleMouseLeave);
+      })();
+    </script>
   </body>
 
-  <!-- Chargement différé de Google Analytics pour optimiser le LCP -->
   <script define:vars={{ analyticsId }}>
-    // Initialiser la file d'attente pour les événements avant le chargement de GA4
     window.dataLayer = window.dataLayer || [];
-    window.gtag = function () {
-      dataLayer.push(arguments);
-    };
+    window.gtag = function() { dataLayer.push(arguments); };
     window.ga4Loaded = false;
 
-    // Fonction améliorée pour envoyer des événements
-    window.sendGa4Event = function (eventName, params = {}) {
+    window.sendGa4Event = function(eventName, params = {}) {
       if (window.ga4Loaded) {
-        // Si GA4 est chargé, envoyer l'événement immédiatement
-        gtag("event", eventName, params);
-        console.log(`📊 GA4 Event sent: ${eventName}`, params);
+        gtag('event', eventName, params);
       } else {
-        // Sinon, attendre que GA4 soit chargé
-        console.log(`⏳ Waiting for GA4 to load before sending: ${eventName}`);
-        document.addEventListener(
-          "ga4Ready",
-          function () {
-            gtag("event", eventName, params);
-            console.log(`📊 GA4 Event sent (delayed): ${eventName}`, params);
-          },
-          { once: true }
-        );
+        document.addEventListener('ga4Ready', () => gtag('event', eventName, params), { once: true });
       }
     };
 
-    // Chargement différé de Google Analytics après 4 secondes
     setTimeout(() => {
-      const script = document.createElement("script");
+      const script = document.createElement('script');
       script.async = true;
       script.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsId}`;
       document.head.appendChild(script);
-
-      script.onload = function () {
-        gtag("js", new Date());
-        gtag("config", analyticsId);
-
-        // Marquer GA4 comme chargé et déclencher l'événement
+      script.onload = () => {
+        gtag('js', new Date());
+        gtag('config', analyticsId);
         window.ga4Loaded = true;
-        document.dispatchEvent(new Event("ga4Ready"));
-        console.log("✅ Google Analytics 4 is ready");
+        document.dispatchEvent(new Event('ga4Ready'));
       };
-    }, 4000); // Délai de 4 secondes pour optimiser le LCP
+    }, 4000);
   </script>
 </html>
