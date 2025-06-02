@@ -52,41 +52,24 @@ import Layout from "../layouts/Layout.astro";
         "slogan": "Des modèles uniques et un accompagnement personnalisé",
         "geo": {
           "@type": "GeoCoordinates",
-          "latitude": "43.50767187110942",
-          "longitude": "1.323562676013496"
-        }
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "AboutPage",
-        "name": "Pourquoi choisir Monica Mariage",
-        "description": "Des modèles uniques et un accompagnement personnalisé pour le plus beau jour de votre vie",
-        "mainEntity": [
+          "latitude": 43.50767187110942,
+          "longitude": 1.323562676013496
+        },
+        "makesOffer": [
           {
-            "@type": "Service",
-            "name": "Expertise en robes de mariée",
-            "description": "Depuis 2014, notre équipe passionnée a accompagné plus de 1000 futures mariées",
-            "provider": {
-              "@type": "LocalBusiness",
-              "name": "Monica Mariage"
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Robes de mariée sur-mesure",
+              "description": "Expertise en robes de mariée depuis 2014"
             }
           },
           {
-            "@type": "Service",
-            "name": "Service personnalisé",
-            "description": "Chaque rendez-vous est privé dans notre showroom de Seysses près de Toulouse",
-            "provider": {
-              "@type": "LocalBusiness",
-              "name": "Monica Mariage"
-            }
-          },
-          {
-            "@type": "Service",
-            "name": "Collections exclusives",
-            "description": "Robes princesse, évasées et bohème-chic de créateurs reconnus",
-            "provider": {
-              "@type": "LocalBusiness",
-              "name": "Monica Mariage"
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Service personnalisé",
+              "description": "Rendez-vous privés dans notre showroom"
             }
           }
         ]
