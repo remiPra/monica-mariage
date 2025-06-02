@@ -19,6 +19,115 @@ const joursSemaine = [
   title="Monica Mariage - Contact"
   description="Réservez votre essayage de robe de mariée à Toulouse chez Monica Mariage. Notre équipe vous accompagne dans le choix de votre robe sur-mesure. Showroom à 15 min du centre de Toulouse"
 >
+  <script type="application/ld+json" slot="head">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Monica Mariage",
+        "description": "Boutique de robes de mariée sur-mesure à Toulouse",
+        "url": "https://monicamariage.com",
+        "telephone": "+33668300960",
+        "email": "monicamariage@hotmail.com",
+        "priceRange": "€€",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "1220 chemin de brouquere",
+          "addressLocality": "Seysses",
+          "addressRegion": "Occitanie",
+          "postalCode": "31600",
+          "addressCountry": "FR"
+        },
+        "image": "https://monicamariage.com/images/cover-robes.jpg",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday"],
+            "opens": "12:00",
+            "closes": "19:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Tuesday"],
+            "opens": "14:00",
+            "closes": "19:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Wednesday"],
+            "opens": "12:30",
+            "closes": "19:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Thursday"],
+            "opens": "00:00",
+            "closes": "00:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Friday"],
+            "opens": "09:00",
+            "closes": "19:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Saturday"],
+            "opens": "09:00",
+            "closes": "19:00"
+          }
+        ],
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "43.50767187110942",
+          "longitude": "1.323562676013496"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "ContactPage",
+        "name": "Contact Monica Mariage",
+        "description": "Réservez votre essayage de robe de mariée",
+        "mainEntity": {
+          "@type": "ContactPoint",
+          "telephone": "+33668300960",
+          "contactType": "customer service",
+          "availableLanguage": "French",
+          "hoursAvailable": {
+            "@type": "OpeningHoursSpecification",
+            "opens": "09:00",
+            "closes": "20:00",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday"
+            ]
+          }
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Essayage de robe de mariée",
+        "description": "Rendez-vous privé pour essayer nos robes de mariée",
+        "provider": {
+          "@type": "LocalBusiness",
+          "name": "Monica Mariage"
+        },
+        "serviceType": "Consultation personnalisée",
+        "availableChannel": {
+          "@type": "ServiceChannel",
+          "servicePhone": "+33668300960",
+          "serviceUrl": "https://monicamariage.com/prendre-rendez-vous"
+        }
+      }
+    ]
+  </script>
+
   <div class="container mx-auto my-[70px]">
     <!-- Disposition horizontale -->
     <div class="mt-[100px] md:mt-0 flex-col w-full flex md:flex-row">

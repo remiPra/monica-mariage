@@ -8,6 +8,91 @@ import Layout from "../layouts/Layout.astro";
   title="Monica Mariage - Contact"
   description="Réservez votre essayage de robe de mariée à Toulouse chez Monica Mariage. Notre équipe vous accompagne dans le choix de votre robe sur-mesure. Showroom à 15 min du centre de Toulouse"
 >
+  <script type="application/ld+json" slot="head">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Monica Mariage",
+        "description": "Boutique de robes de mariée sur-mesure à Toulouse",
+        "url": "https://monicamariage.com",
+        "telephone": "+33668300960",
+        "email": "monicamariage@hotmail.com",
+        "priceRange": "€€",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "1220 chemin de brouquere",
+          "addressLocality": "Seysses",
+          "addressRegion": "Occitanie",
+          "postalCode": "31600",
+          "addressCountry": "FR"
+        },
+        "image": "https://monicamariage.com/images/cover-robes.jpg",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "10:00",
+            "closes": "19:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Saturday"],
+            "opens": "10:00",
+            "closes": "18:00"
+          }
+        ],
+        "foundingDate": "2014",
+        "slogan": "Des modèles uniques et un accompagnement personnalisé",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "43.50767187110942",
+          "longitude": "1.323562676013496"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        "name": "Pourquoi choisir Monica Mariage",
+        "description": "Des modèles uniques et un accompagnement personnalisé pour le plus beau jour de votre vie",
+        "mainEntity": [
+          {
+            "@type": "Service",
+            "name": "Expertise en robes de mariée",
+            "description": "Depuis 2014, notre équipe passionnée a accompagné plus de 1000 futures mariées",
+            "provider": {
+              "@type": "LocalBusiness",
+              "name": "Monica Mariage"
+            }
+          },
+          {
+            "@type": "Service",
+            "name": "Service personnalisé",
+            "description": "Chaque rendez-vous est privé dans notre showroom de Seysses près de Toulouse",
+            "provider": {
+              "@type": "LocalBusiness",
+              "name": "Monica Mariage"
+            }
+          },
+          {
+            "@type": "Service",
+            "name": "Collections exclusives",
+            "description": "Robes princesse, évasées et bohème-chic de créateurs reconnus",
+            "provider": {
+              "@type": "LocalBusiness",
+              "name": "Monica Mariage"
+            }
+          }
+        ]
+      }
+    ]
+  </script>
   <!-- En-tête de page "Pourquoi nous choisir" -->
   <section
     class="mt-[100px] relative text-center pt-12 pb-28 px-6 sm:px-8 lg:px-12 bg-pink-light"

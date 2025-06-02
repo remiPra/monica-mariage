@@ -4,22 +4,28 @@ import { Icon } from "astro-icon/components";
 
 <!-- Bouton Premium pour ouvrir le modal -->
 <button
-  class="open-modal-button relative group inline-flex items-center justify-center px-8 py-4 
+  class="open-modal-button relative group inline-flex items-center justify-center px-8 py-4
   bg-gradient-to-r from-[#C99A9A] via-[#D8B4B4] to-[#C99A9A] text-white font-semibold text-lg
   rounded-full shadow-[0_4px_14px_rgba(201,154,154,0.5)] hover:shadow-[0_7px_20px_rgba(201,154,154,0.7)]
   overflow-hidden transition-all duration-300"
 >
   <!-- Effet brillant au survol -->
-  <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></span>
-  
+  <span
+    class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"
+  ></span>
+
   <!-- Badge exclusif -->
-  <span class="absolute -top-1.5 -right-1.5 bg-[#af7749] text-white text-xs px-2 py-0.5 rounded-full shadow-md transform rotate-3 origin-top-right">
+  <span
+    class="absolute -top-1.5 -right-1.5 bg-[#af7749] text-white text-xs px-2 py-0.5 rounded-full shadow-md transform rotate-3 origin-top-right"
+  >
     <span class="inline-block animate-pulse">Disponible</span>
   </span>
-  
+
   <!-- Icône et texte -->
   <span class="flex items-center">
-    <span class="relative z-10 w-7 h-7 mr-3 bg-white/20 rounded-full flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
+    <span
+      class="relative z-10 w-7 h-7 mr-3 bg-white/20 rounded-full flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300"
+    >
       <Icon name="mdi:calendar-heart" class="w-4 h-4" />
     </span>
     <span class="relative z-10 mr-1">Réserver</span>
@@ -59,27 +65,45 @@ import { Icon } from "astro-icon/components";
           </svg>
         </button>
       </div>
-      
+
       <!-- Élégant logo central -->
-      <div class="w-16 h-16 rounded-full bg-[#f8f5f2] flex items-center justify-center mb-4 border-2 border-[#C99A9A]/30">
-        <img src="/logo-icon.png" alt="Monica Mariage" class="w-10 h-10 object-contain" onerror="this.src='/favicon.png'; this.onerror=null;" />
+      <div
+        class="w-16 h-16 rounded-full bg-[#f8f5f2] flex items-center justify-center mb-4 border-2 border-[#C99A9A]/30"
+      >
+        <img
+          src="/logo-new.png"
+          alt="Monica Mariage"
+          class="w-10 h-10 object-contain"
+          onerror="this.src='/favicon.png'; this.onerror=null;"
+        />
       </div>
     </div>
-    
+
     <!-- Titre élégant -->
-    <h2 class="font-vibes text-4xl text-center text-[#af7749] mb-2 tracking-wide">Votre moment privilégié</h2>
+    <h2
+      class="font-vibes text-4xl text-center text-[#af7749] mb-2 tracking-wide"
+    >
+      Votre moment privilégié
+    </h2>
 
     <!-- Corps de la modale -->
     <div class="text-center mb-6">
       <!-- Séparateur décoratif premium -->
       <div class="flex items-center justify-center gap-4 mb-6">
-        <span class="h-px w-16 bg-gradient-to-r from-transparent via-[#C5A880] to-transparent"></span>
+        <span
+          class="h-px w-16 bg-gradient-to-r from-transparent via-[#C5A880] to-transparent"
+        ></span>
         <Icon name="mdi:diamond" class="w-4 h-4 text-[#C5A880]" />
-        <span class="h-px w-16 bg-gradient-to-r from-transparent via-[#C5A880] to-transparent"></span>
+        <span
+          class="h-px w-16 bg-gradient-to-r from-transparent via-[#C5A880] to-transparent"
+        ></span>
       </div>
-      
-      <p class="text-[#5F4B3F] leading-relaxed mb-8 text-base md:text-lg max-w-xs mx-auto">
-        Comment souhaitez-vous échanger à propos de votre robe de mariée idéale ?
+
+      <p
+        class="text-[#5F4B3F] leading-relaxed mb-8 text-base md:text-lg max-w-xs mx-auto"
+      >
+        Comment souhaitez-vous échanger à propos de votre robe de mariée idéale
+        ?
       </p>
     </div>
 
@@ -92,8 +116,10 @@ import { Icon } from "astro-icon/components";
         class="flex items-center justify-center bg-[#25D366] text-white p-4 rounded-xl w-full hover:bg-[#1faa54] hover:scale-[1.02] hover:shadow-lg transition-all duration-300 group relative overflow-hidden"
       >
         <!-- Effet de vague au hover -->
-        <span class="absolute inset-0 w-full h-full bg-white opacity-0 group-hover:opacity-10 transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-700 ease-out"></span>
-        
+        <span
+          class="absolute inset-0 w-full h-full bg-white opacity-0 group-hover:opacity-10 transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-700 ease-out"
+        ></span>
+
         <div
           class="w-10 h-10 mr-3 flex items-center justify-center bg-white/20 rounded-full"
         >
@@ -119,9 +145,12 @@ import { Icon } from "astro-icon/components";
           <span class="text-xs text-white/80">Réponse rapide garantie</span>
         </div>
         <!-- Indicateur de choix recommandé -->
-        <span class="absolute top-0 right-0 bg-white/90 text-[#25D366] text-[10px] px-2 py-0.5 rounded-bl-lg font-medium">RECOMMANDÉ</span>
+        <span
+          class="absolute top-0 right-0 bg-white/90 text-[#25D366] text-[10px] px-2 py-0.5 rounded-bl-lg font-medium"
+          >RECOMMANDÉ</span
+        >
       </a>
-      
+
       <!-- Téléphone -->
       <a
         target="_blank"
@@ -150,10 +179,12 @@ import { Icon } from "astro-icon/components";
         </div>
         <div class="flex flex-col items-start">
           <span class="font-medium">Appelez-moi</span>
-          <span class="text-xs text-white/80">Échange direct et personnalisé</span>
+          <span class="text-xs text-white/80"
+            >Échange direct et personnalisé</span
+          >
         </div>
       </a>
-      
+
       <!-- Instagram -->
       <a
         target="_blank"
@@ -188,16 +219,23 @@ import { Icon } from "astro-icon/components";
 
       <!-- Message rassurant -->
       <div class="mt-8 text-center relative">
-        <div class="bg-[#f8f5f2] rounded-lg p-3 text-[#AF7749] text-sm flex items-center justify-center">
+        <div
+          class="bg-[#f8f5f2] rounded-lg p-3 text-[#AF7749] text-sm flex items-center justify-center"
+        >
           <Icon name="mdi:shield-check" class="w-5 h-5 mr-2 text-[#AF7749]" />
           <span>Je vous répondrai personnellement dans les 24 heures</span>
         </div>
-        
+
         <!-- Astuce visuelle pour montrer que c'est Monica qui répond -->
         <div class="absolute -bottom-5 right-4 flex items-center">
           <span class="text-[10px] text-[#8B7569] mr-1">Monica</span>
           <div class="w-4 h-4 rounded-full overflow-hidden shadow-sm">
-            <img src="/monica-portrait.jpg" alt="Monica" class="w-full h-full object-cover" onerror="this.style.display='none'" />
+            <img
+              src="/logo-new.png"
+              alt="Monica"
+              class="w-full h-full object-cover"
+              onerror="this.style.display='none'"
+            />
           </div>
         </div>
       </div>
@@ -208,10 +246,14 @@ import { Icon } from "astro-icon/components";
 <style>
   /* Animation d'entrée et de sortie luxueuse */
   @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
-  
+
   @keyframes scaleInElegant {
     from {
       opacity: 0;
@@ -222,30 +264,45 @@ import { Icon } from "astro-icon/components";
       transform: translate(-50%, -50%) scale(1);
     }
   }
-  
+
   @keyframes floatAnimation {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-5px); }
-    100% { transform: translateY(0px); }
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
   }
-  
+
   @keyframes pulseGlow {
-    0% { box-shadow: 0 4px 14px rgba(201,154,154,0.5); }
-    50% { box-shadow: 0 4px 20px rgba(201,154,154,0.8); }
-    100% { box-shadow: 0 4px 14px rgba(201,154,154,0.5); }
+    0% {
+      box-shadow: 0 4px 14px rgba(201, 154, 154, 0.5);
+    }
+    50% {
+      box-shadow: 0 4px 20px rgba(201, 154, 154, 0.8);
+    }
+    100% {
+      box-shadow: 0 4px 14px rgba(201, 154, 154, 0.5);
+    }
   }
 
   .open-modal-button {
-    animation: floatAnimation 3s ease-in-out infinite, pulseGlow 2s ease-in-out infinite;
+    animation:
+      floatAnimation 3s ease-in-out infinite,
+      pulseGlow 2s ease-in-out infinite;
   }
-  
+
   .contact-modal.active {
     display: block;
     animation: fadeIn 0.4s ease forwards;
   }
-  
+
   .contact-modal.active > div:last-child {
-    animation: scaleInElegant 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation: scaleInElegant 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+      forwards;
   }
 </style>
 
@@ -273,7 +330,7 @@ import { Icon } from "astro-icon/components";
         if (modal) {
           modal.classList.add("active");
           document.body.style.overflow = "hidden";
-          
+
           // Track modal ouverture
           trackEvent(
             "appointment_modal_open",
@@ -283,7 +340,7 @@ import { Icon } from "astro-icon/components";
           );
         }
       });
-      
+
       // Animation spéciale du bouton après quelques secondes
       setTimeout(() => {
         btn.classList.add("attention");
@@ -299,7 +356,7 @@ import { Icon } from "astro-icon/components";
         if (modal) {
           modal.classList.remove("active");
           document.body.style.overflow = "";
-          
+
           // Track modal fermeture
           trackEvent(
             "appointment_modal_close",
@@ -316,7 +373,7 @@ import { Icon } from "astro-icon/components";
         if (e.target === modal || e.target === modal.firstElementChild) {
           modal.classList.remove("active");
           document.body.style.overflow = "";
-          
+
           // Track modal overlay click
           trackEvent(
             "appointment_modal_overlay_close",
@@ -326,39 +383,39 @@ import { Icon } from "astro-icon/components";
           );
         }
       });
-      
+
       // Track des clics sur les options de contact
       const whatsappLink = modal.querySelector("a[href*='wa.me']");
       const phoneLink = modal.querySelector("a[href*='tel:']");
       const instagramLink = modal.querySelector("a[href*='instagram']");
-      
+
       if (whatsappLink) {
         whatsappLink.addEventListener("click", () => {
           trackEvent(
             "contact_option_selected",
-            "Conversion", 
+            "Conversion",
             "WhatsApp depuis Modal RDV",
             1
           );
         });
       }
-      
+
       if (phoneLink) {
         phoneLink.addEventListener("click", () => {
           trackEvent(
             "contact_option_selected",
-            "Conversion", 
+            "Conversion",
             "Téléphone depuis Modal RDV",
             1
           );
         });
       }
-      
+
       if (instagramLink) {
         instagramLink.addEventListener("click", () => {
           trackEvent(
             "contact_option_selected",
-            "Conversion", 
+            "Conversion",
             "Instagram depuis Modal RDV",
             1
           );
@@ -372,7 +429,7 @@ import { Icon } from "astro-icon/components";
           if (modal.classList.contains("active")) {
             modal.classList.remove("active");
             document.body.style.overflow = "";
-            
+
             // Track escape key
             trackEvent(
               "appointment_modal_escape",
@@ -384,7 +441,7 @@ import { Icon } from "astro-icon/components";
         });
       }
     });
-    
+
     // Animation supplémentaire pour attirer l'attention
     const addAttentionClass = () => {
       openButtons.forEach((btn) => {
@@ -394,10 +451,10 @@ import { Icon } from "astro-icon/components";
         }, 1000);
       });
     };
-    
+
     // Affiche l'animation d'attention après que la page soit chargée depuis 15 secondes
     setTimeout(addAttentionClass, 15000);
-    
+
     // Affiche l'animation d'attention toutes les 2 minutes si l'utilisateur est toujours sur la page
     setInterval(addAttentionClass, 120000);
   });

@@ -11,5 +11,7 @@ const {
 
 <Layout title={title} description={description} mainImageUrl={mainImageUrl}>
   <!-- Pas de schema spécifique ici, nous utilisons celui défini dans Layout.astro -->
+  <slot name="head" slot="head" />
+
   <slot />
 </Layout>
