@@ -1,57 +1,37 @@
 ---
-const bestSellers = [
-  {
-    src: "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-princesse-emile-5-gallery-mobile.webp",
-    alt: "Robe de mariée Emil - Monica Mariage Toulouse",
-    label: "Emil",
-    link: "/robes-de-mariee/forme-princesse",
-  },
-  {
-    src: "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-princesse-kapella-9-gallery-desktop.webp",
-    alt: "Robe de mariée Kapella - Monica Mariage Toulouse",
-    label: "Kapella",
-    link: "/robes-de-mariee/forme-princesse",
-  },
-  {
-    src: "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1745254763/cihdt2yyp9kvhpvgtkf0.webp",
-    alt: "Robe de mariée Brenda - Monica Mariage Toulouse",
-    label: "Brenda",
-    link: "/robes-de-mariee/forme-princesse",
-  },
-  {   
-    src: "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1742801955/images_optimisees/bnq0lb1icg4ka3ioynoz.webp",
-    alt: "Robe de mariée Agathe - Monica Mariage Toulouse",
-    label: "Agathe",
-    link: "/robes-de-mariee/style-boheme-chic",     
-  },
-  {
-    src: "/images/robes/gallery/mobile/monica-mariage-robe-de-mariee-style-boheme-chic-tina-14-gallery-mobile.webp",
-    alt: "Robe de mariée Tina - Monica Mariage Toulouse",
-    label: "Tina",
-    link: "/robes-de-mariee/style-boheme-chic",
-  },
-  {
-    src: "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1747854869/tux0gidi5fsvpy0xbgir.webp",
-    alt: "Robe de mariée Perlina - Monica Mariage Toulouse",
-    label: "Perlina",
-    link: "/robes-de-mariee/forme-princesse",
-  },
-  
-  
-  {
-    src: "/images/robes/gallery/tablet/monica-mariage-robe-de-mariee-style-boheme-chic-keme-17-gallery-tablet.webp",
-    alt: "Robe de mariée Keme - Monica Mariage Toulouse",
-    label: "Keme",
-    link: "/robes-de-mariee/style-boheme-chic",
-  },
-  {
-    src: "/images/robes/gallery/desktop/monica-mariage-robe-de-mariee-sirene-vegas-9-gallery-desktop.webp",
-    alt: "Robe de mariée Vegas - Monica Mariage Toulouse",
-    label: "Vegas",
-    link: "/robes-de-mariee/forme-sirene",
-  },
-  
-];
+import { sanityClient } from '../sanityClient';
+
+// Fonction pour optimiser les URLs Cloudinary en AVIF
+const getOptimizedImageUrl = (url, format = 'avif') => {
+  if (url?.includes('cloudinary.com')) {
+    // Transformation Cloudinary : format AVIF avec qualité automatique
+    return url.replace('/upload/', `/upload/f_${format},q_auto,w_400/`);
+  }
+  return url;
+};
+
+// Récupérer les bestsellers depuis Sanity
+const bestsellerQuery = `*[_type == "bestseller" && isActive == true][0]{
+  robesBestseller[] | order(position asc) {
+    imageUrl,
+    robe->{
+      dressName,
+      "slug": slug.current,
+      sousCategorie,
+      imagesCloudinary[]{url, alt}
+    }
+  }
+}`;
+
+const data = await sanityClient.fetch(bestsellerQuery);
+
+// Transformer pour correspondre à votre structure actuelle avec optimisation AVIF
+const bestSellers = data?.robesBestseller?.map((item) => ({
+  src: getOptimizedImageUrl(item.imageUrl || item.robe?.imagesCloudinary?.[0]?.url),
+  alt: `Robe de mariée ${item.robe?.dressName} - Monica Mariage Toulouse`,
+  label: item.robe?.dressName,
+  link: `/robes-de-mariee/${item.robe?.sousCategorie}`,
+})) || [];
 ---
 
 <section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
@@ -82,13 +62,12 @@ const bestSellers = [
               {/* Overlay dégradé */}
               {/* <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" /> */}
 
-              {/* Image */}
+              {/* Image optimisée en AVIF */}
               <img
                 src={robe.src}
-                alt={robe.label}
+                alt={robe.alt}
                 width="400"
-              
-                class=" absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300"
+                class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300"
                 loading="lazy"
               />
 
