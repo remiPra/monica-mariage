@@ -63,32 +63,17 @@ const analyticsId = "G-H8RDXC45EX";
     <FolatingButtonWhatsapp />
     <Footer />
     <AppointmentBar />
-    <ModalForm isVisible={false} />
+    <!-- <ModalForm isVisible={false} /> -->
 
     <!-- Exit-intent WhatsApp Modal -->
-    <div id="exit-whatsapp-modal" style="display:none;">
+    <!-- <div id="exit-whatsapp-modal" style="display:none;">
       <WhatsAppModalForm
         isVisible={true}
         message="Avant de partir, réservez votre essayage par WhatsApp"
       />
-    </div>
+    </div> -->
 
-    <script>
-      (() => {
-        let exitShown = false;
-        function showExitModal() {
-          const modal = document.getElementById("exit-whatsapp-modal");
-          modal.style.display = "block";
-        }
-        function handleMouseLeave(e) {
-          if (e.clientY <= 0 && !exitShown) {
-            exitShown = true;
-            showExitModal();
-          }
-        }
-        document.addEventListener("mouseout", handleMouseLeave);
-      })();
-    </script>
+
   </body>
 
   <script define:vars={{ analyticsId }}>
