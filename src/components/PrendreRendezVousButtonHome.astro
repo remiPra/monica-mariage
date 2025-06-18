@@ -3,23 +3,17 @@ import { Icon } from "astro-icon/components";
 ---
 
 <!-- Bouton Premium pour ouvrir le modal -->
+ <!-- Bouton Premium pour ouvrir le modal -->
 <button
   class="open-modal-button relative group inline-flex items-center justify-center px-8 py-4
-  bg-gradient-to-r from-[#C99A9A] via-[#D8B4B4] to-[#C99A9A] text-white font-semibold text-lg
-  rounded-full shadow-[0_4px_14px_rgba(201,154,154,0.5)] hover:shadow-[0_7px_20px_rgba(201,154,154,0.7)]
+  bg-gradient-to-r from-[#AF7749] via-[#C5A880] to-[#AF7749] text-white font-semibold text-lg
+  rounded-full shadow-[0_4px_14px_rgba(175,119,73,0.4)] hover:shadow-[0_7px_20px_rgba(175,119,73,0.6)]
   overflow-hidden transition-all duration-300"
 >
   <!-- Effet brillant au survol -->
   <span
     class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"
   ></span>
-
-  <!-- Badge exclusif -->
-  <span
-    class="absolute -top-1.5 -right-1.5 bg-[#af7749] text-white text-xs px-2 py-0.5 rounded-full shadow-md transform rotate-3 origin-top-right"
-  >
-    <span class="inline-block animate-pulse">Disponible</span>
-  </span>
 
   <!-- Icône et texte -->
   <span class="flex items-center">
@@ -29,7 +23,7 @@ import { Icon } from "astro-icon/components";
       <Icon name="mdi:calendar-heart" class="w-4 h-4" />
     </span>
     <span class="relative z-10 mr-1">Réserver</span>
-    <span class="relative z-10 text-[#FFE4E1] font-light">mon essayage</span>
+    <span class="relative z-10 text-white/90 font-light">mon essayage</span>
   </span>
 </button>
 
@@ -112,8 +106,7 @@ import { Icon } from "astro-icon/components";
       <!-- WhatsApp - Mise en avant -->
       <a
         target="_blank"
-        href="https://wa.me/33668300960?text=Bonjour%20Monica%20Mariage%20!%20Je%20souhaite%20réserver%20un%20essayage%20pour%20découvrir%20vos%20collections%20de%20robes%20de%20mariée."
-        class="flex items-center justify-center bg-[#25D366] text-white p-4 rounded-xl w-full hover:bg-[#1faa54] hover:scale-[1.02] hover:shadow-lg transition-all duration-300 group relative overflow-hidden"
+href="https://wa.me/33668300960?text=Bonjour%20Monica%20Mariage%2C%0AJe%20souhaiterais%20réserver%20un%20rendez-vous%20pour%20un%20essayage%20afin%20de%20découvrir%20vos%20collections%20de%20robes%20de%20mariée.%0AVoici%20quelques%20informations%20qui%20pourront%20vous%20aider%20à%20mieux%20me%20conseiller%20%3A%0A%0ADate%20de%20mon%20mariage%20%3A%0A%0AMa%20taille%20habituelle%20(en%20vêtements%20du%20quotidien%2036%2C%2038%2C%2040...)%20%3A%0A%0AStyle%20de%20robe%20souhaité%20(princesse%2C%20bohème%2C%20sirène...)%20%3A%0A%0ABudget%20prévu%20%3A%0A%0A%0AMerci%20d'avance%20pour%20votre%20retour%2C%0ABien%20à%20vous%2C%0ANom%20prénom"        class="flex items-center justify-center bg-[#25D366] text-white p-4 rounded-xl w-full hover:bg-[#1faa54] hover:scale-[1.02] hover:shadow-lg transition-all duration-300 group relative overflow-hidden"
       >
         <!-- Effet de vague au hover -->
         <span
@@ -151,39 +144,7 @@ import { Icon } from "astro-icon/components";
         >
       </a>
 
-      <!-- Téléphone -->
-      <a
-        target="_blank"
-        href="tel:+33668300960"
-        class="flex items-center justify-center bg-[#af7749] text-white p-4 rounded-xl w-full hover:bg-[#925c36] hover:scale-[1.02] transition-all duration-300 group"
-      >
-        <div
-          class="w-10 h-10 mr-3 flex items-center justify-center bg-white/20 rounded-full"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="group-hover:scale-110 transition-transform duration-300"
-          >
-            <path
-              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
-            ></path>
-          </svg>
-        </div>
-        <div class="flex flex-col items-start">
-          <span class="font-medium">Appelez-moi</span>
-          <span class="text-xs text-white/80"
-            >Échange direct et personnalisé</span
-          >
-        </div>
-      </a>
+   
 
       <!-- Instagram -->
       <a
