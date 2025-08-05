@@ -31,8 +31,9 @@ const analyticsId = "G-H8RDXC45EX";
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs Optimization Data" />
+
     <meta property="og:image" content="/images/cover-robes.jpg" />
-    <meta property="og:url" content={Astro.url} />
     <link
       rel="preload"
       href="/fonts/great-vibes-v19-latin-regular.woff2"
@@ -52,9 +53,14 @@ const analyticsId = "G-H8RDXC45EX";
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
-
+    <link rel="canonical" href="https://www.monicamariage.com/">
     {mainImageUrl && <ImagePreloader imageUrl={mainImageUrl} />}
-
+    <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Boutique de Robes de Mariée - Monica Mariage Toulouse">
+<meta name="twitter:description" content="Monica Mariage : boutique de robes de mariée sur-mesure à Toulouse...">
+<meta name="twitter:image" content="https://www.monicamariage.com/images/cover-robes.jpg">
+<meta name="robots" content="index, follow">
+    <meta property="og:url" content="https://www.monicamariage.com/">
     <slot name="head" />
   </head>
   <body>
