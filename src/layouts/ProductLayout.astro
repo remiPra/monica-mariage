@@ -1,25 +1,32 @@
 ---
-// src/layouts/ProductLayout.astro - Version améliorée
-import Layout from "./Layout.astro";
+// src/layouts/ProductLayout.astro - Version autonome
+import Header from "../components/Header.astro";
+import "../styles/global.css";
+import FloatingButton from "../components/FloatingButton.astro";
+import FolatingButtonWhatsapp from "../components/FolatingButtonWhatsapp.astro";
+import Footer from "../components/Footer.astro";
+import AppointmentBar from "../components/AppointmentBar.astro";
+import ImagePreloader from "../components/ImagePreloader.astro";
 
 const {
-  title,
-  description,
-  mainImageUrl,
+  title = "Monica Mariage - Boutique de Robes de Mariée",
+  description = "Découvrez nos robes de mariée sur-mesure à Toulouse.",
+  mainImageUrl = "",
   product,
   breadcrumbs = [],
   collection = false,
   ...rest
 } = Astro.props;
 
+const analyticsId = "G-H8RDXC45EX";
+
 // Fonction pour nettoyer le HTML de la description
 function cleanDescription(desc) {
   if (!desc) return "";
-  // Enlever les balises HTML et garder seulement le texte
   return desc
-    .replace(/<[^>]*>/g, " ") // Remplacer les balises par des espaces
-    .replace(/\s+/g, " ") // Remplacer les espaces multiples par un seul
-    .trim(); // Enlever les espaces en début/fin
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 // Générer le JSON-LD selon le type de page
@@ -166,16 +173,92 @@ if (collection && product?.items) {
 }
 ---
 
-<Layout 
-  title={title} 
-  description={description} 
-  mainImageUrl={mainImageUrl}
-  {...rest}
->
-  <!-- JSON-LD Schema -->
-  {Object.keys(jsonLdData).length > 0 && (
-    <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLdData, null, 2)} />
-  )}
-  
-  <slot />
-</Layout>
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-site-verification" content="rq53avWhuLrrx3ABvRJ12myweeaU47sTzsWdbNOatsU" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs Optimization Data" />
+
+    <meta property="og:image" content="/images/cover-robes.jpg" />
+    <link
+      rel="preload"
+      href="/fonts/great-vibes-v19-latin-regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/cormorant-garamond-v19-latin-regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="https://www.monicamariage.com/">
+    {mainImageUrl && <ImagePreloader imageUrl={mainImageUrl} />}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content="https://www.monicamariage.com/images/cover-robes.jpg">
+    <meta name="robots" content="index, follow">
+    <meta property="og:url" content="https://www.monicamariage.com/">
+    
+    <!-- JSON-LD Schema pour produits -->
+    {Object.keys(jsonLdData).length > 0 && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLdData, null, 2)} />
+    )}
+    
+    <slot name="head" />
+  </head>
+  <body>
+    <Header />
+    <slot />
+    <FolatingButtonWhatsapp />
+    <Footer />
+    <AppointmentBar />
+  </body>
+
+  <script define:vars={{ analyticsId }}>
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () {
+      dataLayer.push(arguments);
+    };
+    window.ga4Loaded = false;
+
+    window.sendGa4Event = function (eventName, params = {}) {
+      if (window.ga4Loaded) {
+        gtag("event", eventName, params);
+      } else {
+        document.addEventListener(
+          "ga4Ready",
+          () => gtag("event", eventName, params),
+          { once: true }
+        );
+      }
+    };
+
+    setTimeout(() => {
+      const script = document.createElement("script");
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsId}`;
+      document.head.appendChild(script);
+      script.onload = () => {
+        gtag("js", new Date());
+        gtag("config", analyticsId);
+        window.ga4Loaded = true;
+        document.dispatchEvent(new Event("ga4Ready"));
+      };
+    }, 4000);
+  </script>
+</html>

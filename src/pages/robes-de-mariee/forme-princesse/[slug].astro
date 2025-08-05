@@ -1,67 +1,104 @@
 ---
-import {
-  getAllRobes,
-  getRobeData,
-  getRandomDresses,
-  prepareRobeImages,
-} from "../../../lib/robeUtils";
-import RobeDetail from "../../../components/RobeDetails.astro";
 import ProductLayout from "../../../layouts/ProductLayout.astro";
+import PrendreRendezVousButtonHome from "../../../components/PrendreRendezVousButtonHome.astro";
 import { sanityClient } from "../../../sanityClient";
+import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
+import FavoriButton from "../../../components/FavoriButton.astro";
 
 // 1) Génération des chemins dynamiques pour chaque slug de robe
 export async function getStaticPaths() {
-  // Définir la sous-catégorie DANS la fonction getStaticPaths
-  const sousCategorie = "forme-princesse";
-  
   const slugs = await sanityClient.fetch(`
-    *[_type == "robe" && category == "robes-de-mariee" && sousCategorie == "${sousCategorie}"].slug.current
+    *[_type == "robe" && category == "robes-de-mariee" && sousCategorie == "forme-princesse"].slug.current
   `);
-  
-  return slugs.map((s) => ({
-    params: { slug: s },
-    // Passer la sous-catégorie comme prop pour qu'elle soit accessible plus tard
-    props: { sousCategorie },
-  }));
+  return slugs.map((s) => ({ params: { slug: s } }));
 }
 
-// 2) Lecture du paramètre de route et des props
+// 2) Lecture du paramètre de route
 const { slug } = Astro.params;
-const { sousCategorie } = Astro.props as { sousCategorie: string }; // Récupérer la sous-catégorie depuis les props
 
-// 3) Fetch de toutes les robes pour navigation
-const allRobes = await getAllRobes(sousCategorie);
+// 3) Fetch de tous les robes pour navigation
+const allRobes = await sanityClient.fetch(
+  `*[_type == "robe" && category == "robes-de-mariee" && sousCategorie == "forme-princesse"]{
+     "slug": slug.current,
+     dressName,
+     category,
+     sousCategorie
+  }`
+);
 
 // 4) Récupération de la robe courante
-const robeData = await getRobeData(slug, sousCategorie);
+const robeData = await sanityClient.fetch(
+  `*[_type == "robe"
+     && category == "robes-de-mariee"
+     && sousCategorie == "forme-princesse"
+     && slug.current == $slug][0]{
+       title,
+       _id,
+       metaDescription,
+       dressName,
+       descriptionCourte,
+       category,
+       sousCategorie,
+       price,
+       "imagesCloudinary": imagesCloudinary[]{ url, alt }
+  }`,
+  { slug }
+);
 
 if (!robeData) {
   throw new Error(`Robe introuvable pour le slug : ${slug}`);
 }
 
 // 5) Préparation des images pour le slider
-const robe = prepareRobeImages(robeData);
+const robe = {
+  ...robeData,
+  images: (robeData.imagesCloudinary || []).map((img) => ({
+    alt: img.alt,
+    optimized: {
+      tablet: optimizeCloudinaryUrl(img.url, "desktop"),
+      mobile: optimizeCloudinaryUrl(img.url, "mobile"),
+    },
+    full: optimizeCloudinaryUrl(img.url, "full"),
+  })),
+};
 
 // 6) Calcul des précédents/suivants
 const currentIndex = allRobes.findIndex((r) => r.slug === slug);
-const prevItem =
-  allRobes[(currentIndex - 1 + allRobes.length) % allRobes.length];
+const prevItem = allRobes[(currentIndex - 1 + allRobes.length) % allRobes.length];
 const nextItem = allRobes[(currentIndex + 1) % allRobes.length];
 
 // 7) Suggestions aléatoires
-const randomDresses = await getRandomDresses(slug, sousCategorie);
+const othersData = await sanityClient.fetch(
+  `*[_type == "robe"
+     && category == "robes-de-mariee"
+     && sousCategorie == "forme-princesse"
+     && slug.current != $slug]{
+       "slug": slug.current,
+         _id,
+       dressName,
+       category,
+       sousCategorie,
+       "imagesCloudinary": imagesCloudinary[]{ url, alt }
+  }`,
+  { slug }
+);
+
+const randomDresses = (othersData || [])
+  .map((d) => ({
+    ...d,
+    images: (d.imagesCloudinary || []).map((img) => ({
+      alt: img.alt,
+      optimized: {
+        tablet: optimizeCloudinaryUrl(img.url, { w: 400, h: 600, crop: "fill" }),
+        mobile: optimizeCloudinaryUrl(img.url, { w: 200, h: 300, crop: "fill" }),
+      },
+    })),
+  }))
+  .sort(() => 0.5 - Math.random())
+  .slice(0, 4);
 
 // Récupération de la première image pour préchargement
 const firstImage = robe.images.length > 0 ? robe.images[0] : null;
-
-// Configuration des images pour le préchargement
-const productImages = firstImage
-  ? {
-      mobile: firstImage.optimized.mobile,
-      tablet: firstImage.optimized.tablet,
-      desktop: firstImage.optimized.tablet,
-    }
-  : {};
 
 // Préparer les données produit pour le JSON-LD
 const productData = {
@@ -70,37 +107,367 @@ const productData = {
   metaDescription: robe.metaDescription,
   imagesCloudinary: robe.imagesCloudinary,
   price: robe.price,
-  sousCategorie: sousCategorie,
-  url: `https://monicamariage.com/robes-de-mariee/${sousCategorie}/${slug}`
+  sousCategorie: "forme-princesse",
+  url: `https://monicamariage.com/robes-de-mariee/forme-princesse/${slug}`
 };
 
 // Breadcrumbs
 const breadcrumbs = [
   { name: "Accueil", url: "https://monicamariage.com" },
   { name: "Robes de mariée", url: "https://monicamariage.com/robes-de-mariee" },
-  { 
-    name: sousCategorie.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()), 
-    url: `https://monicamariage.com/robes-de-mariee/${sousCategorie}` 
-  },
+  { name: "Forme Princesse", url: "https://monicamariage.com/robes-de-mariee/forme-princesse" },
   { name: robe.dressName, url: productData.url }
 ];
 ---
 
 <ProductLayout
-  title={`${robe.dressName} - Robe de Mariée Princesse | Monica Mariage Toulouse`}
+  title={robe.title || `${robe.dressName} - Robe de Mariée Princesse | Monica Mariage Toulouse`}
   description={robe.metaDescription || `Découvrez la robe ${robe.dressName}, une création élégante de notre collection princesse chez Monica Mariage à Toulouse.`}
   product={productData}
   breadcrumbs={breadcrumbs}
-  mainImageUrl={firstImage?.optimized?.desktop}
+  mainImageUrl={firstImage?.optimized?.tablet}
 >
-  <RobeDetail
-    robe={robe}
-    slug={slug}
-    allRobes={allRobes}
-    prevItem={prevItem}
-    nextItem={nextItem}
-    randomDresses={randomDresses}
-    productImages={productImages}
-    firstImage={firstImage}
+  <!-- Préchargement de la première image -->
+  {firstImage && (
+    <link
+      rel="preload"
+      href={firstImage.optimized.tablet}
+      as="image"
+      fetchpriority="high"
+      slot="head"
+    />
+  )}
+
+  <!-- Chargement du CSS Swiper -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    media="print"
+    onload="this.media='all'"
+    slot="head"
   />
+  <noscript slot="head">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+  </noscript>
+
+  <div class="mt-[120px] md:mt-20 max-w-7xl mx-auto px-4 lg:px-6 flex flex-col lg:flex-row gap-10">
+    <!-- Colonne slider + nav -->
+    <section class="w-full lg:w-3/5">
+      <!-- Navigation précédent/suivant -->
+      <div class="mt-8 flex items-center justify-between mb-6 px-2 py-3">
+        <!-- Précédent -->
+        <a
+          href={`/robes-de-mariee/${prevItem.sousCategorie}/${prevItem.slug}`}
+          class="flex items-center text-[#af7749] hover:text-[#C5A880] transition-colors"
+          title={`Voir la robe ${prevItem.dressName}`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </a>
+
+        <!-- Titre courant -->
+        <p class="text-[#af7749] font-vibes text-3xl text-center">
+          {
+            robe.dressName.charAt(0).toUpperCase() +
+              robe.dressName.slice(1).toLowerCase()
+          }
+        </p>
+
+        <!-- Suivant -->
+        <a
+          href={`/robes-de-mariee/${nextItem.sousCategorie}/${nextItem.slug}`}
+          class="flex items-center text-[#af7749] hover:text-[#C5A880] transition-colors"
+          title={`Voir la robe ${nextItem.dressName}`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Slider Swiper -->
+      <div class="relative w-full max-w-lg h-[600px] lg:h-[700px] mx-auto overflow-hidden">
+        <div class="swiper-container shadow-lg h-full">
+          <FavoriButton
+            imageId={robe._id}
+            robeSlug={slug}
+            position="absolute top-4 right-4 z-30"
+            robeName={robe.dressName}
+            imageUrl={robe.images[0]?.optimized.tablet}
+            imageAlt={robe.images[0]?.alt || robe.dressName}
+            sousCategorie={robe.sousCategorie}
+          />
+          <div class="swiper-wrapper">
+            {
+              robe.images.map((img, i) => (
+                <div class="swiper-slide overflow-hidden" key={i}>
+                  <div class="border border-[#C5A880] rounded-2xl h-full w-full overflow-hidden">
+                    <img
+                      src={img.optimized.tablet}
+                      alt={img.alt}
+                      class="object-cover w-full h-full"
+                      loading={i === 0 ? "eager" : "lazy"}
+                      fetchpriority={i === 0 ? "high" : "auto"}
+                      onclick={`openModal("${img.full}", "${img.alt}")`}
+                      decoding={i === 0 ? "sync" : "async"}
+                    />
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+          <!-- Contrôles du slider -->
+          <div class="swiper-button-prev custom-swiper-button-prev"></div>
+          <div class="swiper-button-next custom-swiper-button-next"></div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+        <!-- Image statique pour fallback -->
+        {
+          firstImage && (
+            <div class="no-js-image absolute inset-0 rounded-2xl">
+              <img
+                src={firstImage.optimized.tablet}
+                alt={firstImage.alt}
+                class="object-cover w-full h-full rounded-2xl"
+              />
+            </div>
+          )
+        }
+      </div>
+
+      <!-- Modal plein écran -->
+      <div
+        id="zoomModal"
+        class="fixed inset-0 bg-black bg-opacity-80 hidden items-center justify-center z-50"
+      >
+        <div class="relative w-full justify-center">
+          <button
+            id="closeModal"
+            class="fixed z-56 top-4 right-4 text-white text-3xl">&times;</button
+          >
+          <img
+            id="modalImage"
+            src=""
+            alt=""
+            class="max-w-full md:mx-auto object-contain rounded-lg shadow-lg"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Colonne infos -->
+    <section class="w-full lg:w-2/5 flex flex-col justify-center">
+      <h1 class="text-4xl font-vibes text-[#af7749] mb-4">
+        Robe de Mariée {
+          robe.dressName.charAt(0).toUpperCase() +
+            robe.dressName.slice(1).toLowerCase()
+        }
+      </h1>
+      <div
+        class="text-gray-700 text-lg leading-relaxed"
+        set:html={robe.descriptionCourte}
+      />
+
+      <div class="mt-10 text-center">
+        <PrendreRendezVousButtonHome />
+      </div>
+    </section>
+  </div>
+
+  <!-- Suggestions -->
+  <div class="max-w-7xl mb-20 mx-auto px-6 mt-20">
+    <h2 class="text-5xl font-vibes text-[#af7749] mb-8 text-center">
+      Vous pourriez aussi aimer
+    </h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {
+        randomDresses.map((d, i) => (
+          <a
+            key={i}
+            href={`/robes-de-mariee/${d.sousCategorie}/${d.slug}`}
+            class="relative rounded-2xl overflow-hidden h-[300px] lg:h-[450px] shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+          >
+            <img
+              src={d.images[0]?.optimized.mobile}
+              alt={d.images[0]?.alt}
+              class="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-[#af7749] opacity-20" />
+            <div class="absolute bottom-0 w-full p-4 text-center bg-gradient-to-t from-[#af7749] to-transparent">
+              <p class="text-white font-vibes text-2xl lg:text-3xl drop-shadow-lg">
+                {d.dressName.charAt(0).toUpperCase() +
+                  d.dressName.slice(1).toLowerCase()}
+              </p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Styles CSS -->
+  <style>
+    /* Image statique visible par défaut */
+    .no-js-image {
+      display: block;
+    }
+
+    /* Personnalisation des contrôles Swiper */
+    .custom-swiper-button-prev,
+    .custom-swiper-button-next {
+      color: #c5a880;
+    }
+
+    .custom-swiper-button-prev:after,
+    .custom-swiper-button-next:after {
+      font-size: 18px;
+    }
+
+    .custom-swiper-button-prev:hover,
+    .custom-swiper-button-next:hover {
+      color: #a27e5d;
+    }
+
+    /* Pagination */
+    .swiper-pagination-bullet {
+      background: #c5a880;
+    }
+
+    .swiper-pagination-bullet-active {
+      background: #af7749;
+    }
+  </style>
+
+  <!-- Script principal -->
+  <script is:inline>
+    // Fonction d'initialisation de Swiper
+    function initSwiper() {
+      if (typeof Swiper !== "undefined") {
+        console.log("Initialisation de Swiper...");
+        
+        // Masquer l'image statique
+        const noJsImage = document.querySelector(".no-js-image");
+        if (noJsImage) noJsImage.style.display = "none";
+
+        // Initialiser Swiper
+        new Swiper(".swiper-container", {
+          loop: true,
+          slidesPerView: 1,
+          autoplay: { 
+            delay: 5000,
+            disableOnInteraction: false 
+          },
+          navigation: {
+            nextEl: ".custom-swiper-button-next",
+            prevEl: ".custom-swiper-button-prev",
+          },
+          pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+          },
+          effect: 'fade',
+          fadeEffect: {
+            crossFade: true
+          }
+        });
+      } else {
+        // Réessayer si Swiper n'est pas encore chargé
+        setTimeout(initSwiper, 100);
+      }
+    }
+
+    // Charger Swiper puis l'initialiser
+    function loadAndInitSwiper() {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js';
+      script.onload = initSwiper;
+      script.onerror = () => console.error('Erreur de chargement de Swiper');
+      document.head.appendChild(script);
+    }
+
+    // Observer l'intersection pour charger Swiper seulement quand nécessaire
+    if ("IntersectionObserver" in window) {
+      const swiperContainer = document.querySelector(".swiper-container");
+      
+      if (swiperContainer) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                loadAndInitSwiper();
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+        
+        observer.observe(swiperContainer);
+      }
+    } else {
+      // Fallback pour les anciens navigateurs
+      if (document.readyState !== "loading") {
+        loadAndInitSwiper();
+      } else {
+        document.addEventListener("DOMContentLoaded", loadAndInitSwiper);
+      }
+    }
+
+    // Configuration du modal (indépendant de Swiper)
+    document.addEventListener("DOMContentLoaded", () => {
+      const modal = document.getElementById("zoomModal");
+      const modalImage = document.getElementById("modalImage");
+      const closeModalBtn = document.getElementById("closeModal");
+
+      window.openModal = (src, alt) => {
+        if (modal && modalImage) {
+          modalImage.src = src;
+          modalImage.alt = alt;
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+        }
+      };
+
+      const closeModal = () => {
+        if (modal) {
+          modal.classList.add("hidden");
+          modal.classList.remove("flex");
+        }
+      };
+
+      if (closeModalBtn) {
+        closeModalBtn.addEventListener("click", closeModal);
+      }
+      
+      if (modal) {
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) {
+            closeModal();
+          }
+        });
+      }
+    });
+  </script>
 </ProductLayout>
