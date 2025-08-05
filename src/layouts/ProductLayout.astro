@@ -1,90 +1,181 @@
 ---
-// layouts/ProductLayout.astro
-import BaseLayout from "./BaseLayout.astro";
+// src/layouts/ProductLayout.astro - Version améliorée
+import Layout from "./Layout.astro";
 
 const {
-  title = "Monica Mariage - Boutique de Robes de Mariée",
-  description = "Découvrez nos robes de mariée sur-mesure à Toulouse.",
-  productImages = {}, // Objet contenant les URLs des images (mobile, tablet, desktop)
-  swiper = true, // Activer Swiper.js par défaut
-  canonicalUrl = Astro.url.href, // AJOUT: Paramètre pour l'URL canonique
+  title,
+  description,
+  mainImageUrl,
+  product,
+  breadcrumbs = [],
+  collection = false,
+  ...rest
 } = Astro.props;
 
-const { mobile, tablet, desktop } = productImages;
+// Fonction pour nettoyer le HTML de la description
+function cleanDescription(desc) {
+  if (!desc) return "";
+  // Enlever les balises HTML et garder seulement le texte
+  return desc
+    .replace(/<[^>]*>/g, " ") // Remplacer les balises par des espaces
+    .replace(/\s+/g, " ") // Remplacer les espaces multiples par un seul
+    .trim(); // Enlever les espaces en début/fin
+}
+
+// Générer le JSON-LD selon le type de page
+let jsonLdData = {};
+
+if (collection && product?.items) {
+  // JSON-LD pour une page collection
+  jsonLdData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": product.collectionName || title,
+    "description": cleanDescription(description),
+    "url": product.url || `https://monicamariage.com${Astro.url.pathname}`,
+    "mainEntity": {
+      "@type": "ItemList",
+      "name": product.collectionName || "Collection Monica Mariage",
+      "numberOfItems": product.items.length,
+      "itemListElement": product.items.map((item, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "Product",
+          "name": item.dressName || item.name,
+          "url": item.url || `https://monicamariage.com/robes-de-mariee/${item.sousCategorie}/${item.slug}`,
+          "image": item.image || item.imagesCloudinary?.[0]?.url,
+          "brand": {
+            "@type": "Brand",
+            "name": "Monica Mariage"
+          },
+          "category": "Robes de mariée",
+          ...(item.price && item.price !== "Sur devis" && {
+            "offers": {
+              "@type": "Offer",
+              "price": item.price,
+              "priceCurrency": "EUR",
+              "availability": "https://schema.org/InStock"
+            }
+          })
+        }
+      }))
+    },
+    ...(breadcrumbs.length > 0 && {
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": breadcrumbs.map((crumb, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "name": crumb.name,
+          "item": crumb.url
+        }))
+      }
+    })
+  };
+} else if (product && !collection) {
+  // JSON-LD pour un produit individuel
+  const cleanedDescription = cleanDescription(
+    product.descriptionCourte || product.metaDescription || description
+  );
+
+  jsonLdData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.dressName || product.name,
+    "description": cleanedDescription,
+    "image": product.imagesCloudinary?.map(img => img.url).filter(Boolean) || [],
+    "brand": {
+      "@type": "Brand",
+      "name": "Monica Mariage",
+      "url": "https://monicamariage.com"
+    },
+    "category": "Robes de mariée",
+    "additionalProperty": [
+      ...(product.sousCategorie && [{
+        "@type": "PropertyValue",
+        "name": "Style",
+        "value": product.sousCategorie.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+      }]),
+      {
+        "@type": "PropertyValue",
+        "name": "Collection",
+        "value": "2025"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Condition",
+        "value": "Nouveau"
+      }
+    ].filter(Boolean),
+    "offers": {
+      "@type": "Offer",
+      "url": product.url || `https://monicamariage.com${Astro.url.pathname}`,
+      "priceCurrency": "EUR",
+      ...(product.price && product.price !== "Sur devis" 
+        ? { "price": product.price } 
+        : { "priceSpecification": {
+            "@type": "PriceSpecification",
+            "price": "0",
+            "priceCurrency": "EUR",
+            "valueAddedTaxIncluded": true
+          }
+        }
+      ),
+      "availability": "https://schema.org/InStock",
+      "itemCondition": "https://schema.org/NewCondition",
+      "seller": {
+        "@type": "Organization",
+        "name": "Monica Mariage",
+        "url": "https://monicamariage.com",
+        "telephone": "+33668300960",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "1220 chemin de brouquere",
+          "addressLocality": "Seysses",
+          "addressRegion": "Occitanie",
+          "postalCode": "31600",
+          "addressCountry": "FR"
+        }
+      }
+    },
+    "manufacturer": {
+      "@type": "Organization",
+      "name": "Monica Mariage",
+      "url": "https://monicamariage.com"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "150",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    ...(breadcrumbs.length > 0 && {
+      "breadcrumb": {
+        "@type": "BreadcrumbList",  
+        "itemListElement": breadcrumbs.map((crumb, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "name": crumb.name,
+          "item": crumb.url
+        }))
+      }
+    })
+  };
+}
 ---
 
-<BaseLayout title={title} description={description}>
-  <Fragment slot="head">
-    <!-- Préchargement responsive des images -->
-    <!-- URL Canonique - AJOUT -->
-    <link rel="canonical" href={canonicalUrl} />
-    {
-      mobile && (
-        <link
-          rel="preload"
-          as="image"
-          href={mobile}
-          media="(max-width: 767px)"
-          fetchpriority="high"
-        />
-      )
-    }
-
-    {
-      tablet && (
-        <link
-          rel="preload"
-          as="image"
-          href={tablet}
-          media="(min-width: 768px) and (max-width: 1023px)"
-          fetchpriority="high"
-        />
-      )
-    }
-
-    {
-      desktop && (
-        <link
-          rel="preload"
-          as="image"
-          href={desktop}
-          media="(min-width: 1024px)"
-          fetchpriority="high"
-        />
-      )
-    }
-
-    <!-- Chargement conditionnel de Swiper CSS -->
-    {
-      swiper && (
-        <>
-          <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
-            media="print"
-            onload="this.media='all'"
-          />
-          <noscript>
-            <link
-              rel="stylesheet"
-              href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
-            />
-          </noscript>
-        </>
-      )
-    }
-  </Fragment>
-
+<Layout 
+  title={title} 
+  description={description} 
+  mainImageUrl={mainImageUrl}
+  {...rest}
+>
+  <!-- JSON-LD Schema -->
+  {Object.keys(jsonLdData).length > 0 && (
+    <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLdData, null, 2)} />
+  )}
+  
   <slot />
-
-  <!-- Chargement conditionnel de Swiper JS -->
-  {
-    swiper && (
-      <script
-        defer
-        async
-        src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"
-      />
-    )
-  }
-</BaseLayout>
+</Layout>

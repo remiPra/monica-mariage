@@ -5,18 +5,19 @@ import {
   getRandomDresses,
   prepareRobeImages,
 } from "../../../lib/robeUtils";
-import RobeDetail from "../../../components/RobeDetails.astro"; // Assurez-vous que le nom correspond au fichier
+import RobeDetail from "../../../components/RobeDetails.astro";
+import ProductLayout from "../../../layouts/ProductLayout.astro";
 import { sanityClient } from "../../../sanityClient";
 
 // 1) Génération des chemins dynamiques pour chaque slug de robe
 export async function getStaticPaths() {
   // Définir la sous-catégorie DANS la fonction getStaticPaths
   const sousCategorie = "forme-princesse";
-
+  
   const slugs = await sanityClient.fetch(`
     *[_type == "robe" && category == "robes-de-mariee" && sousCategorie == "${sousCategorie}"].slug.current
   `);
-
+  
   return slugs.map((s) => ({
     params: { slug: s },
     // Passer la sous-catégorie comme prop pour qu'elle soit accessible plus tard
@@ -26,7 +27,7 @@ export async function getStaticPaths() {
 
 // 2) Lecture du paramètre de route et des props
 const { slug } = Astro.params;
-const { sousCategorie } = Astro.props; // Récupérer la sous-catégorie depuis les props
+const { sousCategorie } = Astro.props as { sousCategorie: string }; // Récupérer la sous-catégorie depuis les props
 
 // 3) Fetch de toutes les robes pour navigation
 const allRobes = await getAllRobes(sousCategorie);
@@ -61,15 +62,45 @@ const productImages = firstImage
       desktop: firstImage.optimized.tablet,
     }
   : {};
+
+// Préparer les données produit pour le JSON-LD
+const productData = {
+  dressName: robe.dressName,
+  descriptionCourte: robe.descriptionCourte,
+  metaDescription: robe.metaDescription,
+  imagesCloudinary: robe.imagesCloudinary,
+  price: robe.price,
+  sousCategorie: sousCategorie,
+  url: `https://monicamariage.com/robes-de-mariee/${sousCategorie}/${slug}`
+};
+
+// Breadcrumbs
+const breadcrumbs = [
+  { name: "Accueil", url: "https://monicamariage.com" },
+  { name: "Robes de mariée", url: "https://monicamariage.com/robes-de-mariee" },
+  { 
+    name: sousCategorie.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()), 
+    url: `https://monicamariage.com/robes-de-mariee/${sousCategorie}` 
+  },
+  { name: robe.dressName, url: productData.url }
+];
 ---
 
-<RobeDetail
-  robe={robe}
-  slug={slug}
-  allRobes={allRobes}
-  prevItem={prevItem}
-  nextItem={nextItem}
-  randomDresses={randomDresses}
-  productImages={productImages}
-  firstImage={firstImage}
-/>
+<ProductLayout
+  title={`${robe.dressName} - Robe de Mariée Princesse | Monica Mariage Toulouse`}
+  description={robe.metaDescription || `Découvrez la robe ${robe.dressName}, une création élégante de notre collection princesse chez Monica Mariage à Toulouse.`}
+  product={productData}
+  breadcrumbs={breadcrumbs}
+  mainImageUrl={firstImage?.optimized?.desktop}
+>
+  <RobeDetail
+    robe={robe}
+    slug={slug}
+    allRobes={allRobes}
+    prevItem={prevItem}
+    nextItem={nextItem}
+    randomDresses={randomDresses}
+    productImages={productImages}
+    firstImage={firstImage}
+  />
+</ProductLayout>

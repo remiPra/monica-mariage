@@ -1,5 +1,5 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
+import ProductLayout from "../../../layouts/ProductLayout.astro";
 import HeroSection from "../../../components/HeroSection.astro";
 import { sanityClient } from "../../../sanityClient";
 import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
@@ -55,11 +55,34 @@ const preloadImageUrls = robes
   .slice(0, 4)
   .map((robe) => robe.images[0]?.optimizedImages.gallery.mobile)
   .filter(Boolean);
+
+// Préparer les données de collection pour le JSON-LD
+const collectionData = {
+  collectionName: "Robes de Mariée Princesse",
+  url: "https://monicamariage.com/robes-de-mariee/forme-princesse",
+  items: robes.map(robe => ({
+    dressName: robe.dressName,
+    slug: robe.slug,
+    sousCategorie: robe.sousCategorie,
+    image: robe.images[0]?.optimizedImages?.gallery?.mobile,
+    url: `https://monicamariage.com/robes-de-mariee/${robe.sousCategorie}/${robe.slug}`
+  }))
+};
+
+// Breadcrumbs
+const breadcrumbs = [
+  { name: "Accueil", url: "https://monicamariage.com" },
+  { name: "Robes de mariée", url: "https://monicamariage.com/robes-de-mariee" },
+  { name: "Forme Princesse", url: "https://monicamariage.com/robes-de-mariee/forme-princesse" }
+];
 ---
 
-<Layout
+<ProductLayout
   title="Robes de Mariée Princesse à Toulouse | Monica Mariage"
   description="Robes de mariée princesse à Toulouse. Modèles volumineux et féeriques chez Monica Mariage pour réaliser votre rêve de conte de fées. Essayages personnalisés."
+  product={collectionData}
+  breadcrumbs={breadcrumbs}
+  collection={true}
 >
   <!-- Préchargement des images critiques -->
   {
@@ -86,7 +109,6 @@ const preloadImageUrls = robes
         {
           robes.map((robe, index) => (
             <a
-              key={robe._id}
               href={`/robes-de-mariee/${robe.sousCategorie}/${robe.slug}`}
               class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] lg:h-[420px] shadow-md"
               data-index={index}
@@ -166,4 +188,4 @@ const preloadImageUrls = robes
       </style>
     </div>
   </section>
-</Layout>
+</ProductLayout>
