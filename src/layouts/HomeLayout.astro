@@ -74,4 +74,28 @@ const inject = (url: string, dpr: 1 | 2) =>
     <Footer />
     <AppointmentBar />
   </body>
-</html>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const viewportHeight = window.innerHeight;
+    
+      document.querySelectorAll("img").forEach(img => {
+        const rect = img.getBoundingClientRect();
+    
+        // Si l'image est affichée au-dessous de la ligne de flottaison
+        if (rect.top > viewportHeight) {
+          img.setAttribute("loading", "lazy");
+          img.setAttribute("decoding", "async");
+    
+          // Taille responsive par défaut si absente
+          if (!img.hasAttribute("sizes")) {
+            img.setAttribute(
+              "sizes",
+              "(max-width:640px) 100vw, (max-width:1024px) 50vw, 25vw"
+            );
+          }
+        }
+      });
+    });
+    </script>
+    
+  </html>
