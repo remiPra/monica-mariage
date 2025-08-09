@@ -1,5 +1,5 @@
 ---
-import StandardLayout from "../layouts/StandardLayout.astro";
+import HomeLayout from "../layouts/HomeLayout.astro";
 import Welcome from "../components/Welcome.astro";
 import VideoSlider from "../components/VideoSlider.astro";
 import MonicamariagePart1 from "../components/MonicamariagePart1.astro";
@@ -9,18 +9,19 @@ import MonicaMariageBlocDestockage from "../components/MonicaMariageBlocDestocka
 import FAQAccordionHome from "../components/FaqAccordionHome.astro";
 import HeaderMain from "../components/HeaderMain.astro";
 
-// Image principale pour préchargement
-const heroImageUrl =
-  "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1745826469/tcaos5odiq63jembckk8.avif";
+// Les 2 images du diaporama mobile (URL Cloudinary d’ORIGINE)
+const preloadRaw = [
+  "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1747856330/lrwdz2fhf9gboamqbkt2.avif",
+  "https://res.cloudinary.com/dkbsvrpdc/image/upload/v1745254754/ylrvmsmxewylhvf6xywi.webp",
+];
 
-// Les données de schema ne sont plus utilisées, mais gardées pour compatibilité
 const homeSchemaData = {};
 ---
 
-<StandardLayout
+<HomeLayout
   title="Boutique de Robes de Mariée - Monica Mariage Toulouse"
   description="Monica Mariage : boutique de robes de mariée sur-mesure à Toulouse. Découvrez nos modèles princesse, évasée, bohème-chic, fourreau et sirène à prix abordables. Showroom à 15 min de Toulouse."
-  mainImageUrl={heroImageUrl}
+  preloadRaw={preloadRaw}
 >
   <script type="application/ld+json" slot="head">
     [
@@ -43,34 +44,11 @@ const homeSchemaData = {};
         },
         "image": "https://monicamariage.com/images/cover-robes.jpg",
         "openingHoursSpecification": [
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": [
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday"
-            ],
-            "opens": "10:00",
-            "closes": "19:00"
-          },
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Saturday"],
-            "opens": "10:00",
-            "closes": "18:00"
-          }
+          { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "10:00", "closes": "19:00" },
+          { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday"], "opens": "10:00", "closes": "18:00" }
         ],
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": "43.50767187110942",
-          "longitude": "1.323562676013496"
-        },
-        "areaServed": {
-          "@type": "City",
-          "name": "Toulouse"
-        },
+        "geo": { "@type": "GeoCoordinates", "latitude": "43.50767187110942", "longitude": "1.323562676013496" },
+        "areaServed": { "@type": "City", "name": "Toulouse" },
         "serviceType": "Robes de mariée sur-mesure",
         "foundingDate": "2014"
       },
@@ -80,10 +58,7 @@ const homeSchemaData = {};
         "name": "Monica Mariage",
         "url": "https://monicamariage.com",
         "description": "Boutique de robes de mariée sur-mesure à Toulouse",
-        "publisher": {
-          "@type": "Organization",
-          "name": "Monica Mariage"
-        },
+        "publisher": { "@type": "Organization", "name": "Monica Mariage" },
         "potentialAction": {
           "@type": "SearchAction",
           "target": "https://monicamariage.com/toutes-nos-robes?q={search_term_string}",
@@ -92,6 +67,7 @@ const homeSchemaData = {};
       }
     ]
   </script>
+
   <div class="hidden md:block">
     <VideoSlider />
   </div>
@@ -103,4 +79,4 @@ const homeSchemaData = {};
   <GoogleReviews />
   <MonicaMariageBlocDestockage />
   <FAQAccordionHome />
-</StandardLayout>
+</HomeLayout>

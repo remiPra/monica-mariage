@@ -1,0 +1,77 @@
+---
+// layouts/HomeLayout.astro
+import Header from "../components/Header.astro";
+import "../styles/global.css";
+import FloatingButton from "../components/FloatingButton.astro";
+import FolatingButtonWhatsapp from "../components/FolatingButtonWhatsapp.astro";
+import Footer from "../components/Footer.astro";
+import AppointmentBar from "../components/AppointmentBar.astro";
+// (on ne réutilise pas ImagePreloader ici)
+
+const {
+  title = "Monica Mariage - Boutique de Robes de Mariée",
+  description = "Découvrez nos robes de mariée sur-mesure à Toulouse.",
+  // URLs Cloudinary d’origine (sans transformations) à précharger
+  preloadRaw = [] as string[],
+} = Astro.props;
+
+// Helpers: applique les transformations Cloudinary (taille mobile header)
+const W = 448; // max-w-md = 28rem
+const H = 650;
+const inject = (url: string, dpr: 1 | 2) =>
+  url.replace(
+    "/upload/",
+    `/upload/f_auto,q_auto,c_fill,w_${W},h_${H},dpr_${dpr}/`
+  );
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs Optimization Data" />
+
+    <meta property="og:image" content="/images/cover-robes.jpg" />
+    <link rel="preload" href="/fonts/great-vibes-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/cormorant-garamond-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="https://www.monicamariage.com/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Boutique de Robes de Mariée - Monica Mariage Toulouse">
+    <meta name="twitter:description" content="Monica Mariage : boutique de robes de mariée sur-mesure à Toulouse...">
+    <meta name="twitter:image" content="https://www.monicamariage.com/images/cover-robes.jpg">
+    <meta name="robots" content="index, follow">
+    <meta property="og:url" content="https://www.monicamariage.com/">
+
+    <!-- Preconnect Cloudinary -->
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+
+    <!-- Preload des 2 premières images du diaporama mobile (1x & 2x) -->
+    {preloadRaw.slice(0, 2).map((raw) => (
+      <link
+        rel="preload"
+        as="image"
+        href={inject(raw, 2)}
+        imagesrcset={`${inject(raw, 1)} 1x, ${inject(raw, 2)} 2x`}
+        imagesizes="(max-width: 480px) 100vw, 28rem"
+      />
+    ))}
+
+    <slot name="head" />
+  </head>
+  <body>
+    <Header />
+    <slot />
+    <FolatingButtonWhatsapp />
+    <Footer />
+    <AppointmentBar />
+  </body>
+</html>
