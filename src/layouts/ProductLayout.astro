@@ -1,7 +1,5 @@
 ---
-// src/layouts/ProductLayout.astro - Version Corrigée par Gérard
 import Header from "../components/Header.astro";
-// import "../styles/global.css";
 import FloatingButton from "../components/FloatingButton.astro";
 import FolatingButtonWhatsapp from "../components/FolatingButtonWhatsapp.astro";
 import Footer from "../components/Footer.astro";
@@ -15,12 +13,16 @@ const {
   product,
   breadcrumbs = [],
   collection = false,
+  canonicalUrl, // 👈 Recevoir l'URL canonique
   ...rest
 } = Astro.props;
 
 const analyticsId = "G-H8RDXC45EX";
 
-// La fonction pour nettoyer le HTML reste la même, c'est bien.
+// 👇 Utiliser l'URL canonique passée, JAMAIS Astro.url.href en production
+const finalCanonicalUrl = canonicalUrl || 'https://monicamariage.com';
+
+// Fonction pour nettoyer le HTML
 function cleanDescription(desc) {
   if (!desc) return "";
   return desc.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
@@ -29,13 +31,13 @@ function cleanDescription(desc) {
 let jsonLdData = {};
 
 if (collection && product?.items) {
-  // Le JSON-LD pour les collections était déjà bon.
+  // JSON-LD pour les collections
   jsonLdData = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "name": product.collectionName || title,
     "description": cleanDescription(description),
-    "url": product.url || Astro.url.href, // On utilise Astro.url.href pour être sûr.
+    "url": finalCanonicalUrl,
     "mainEntity": {
       "@type": "ItemList",
       "name": product.collectionName || "Collection Monica Mariage",
@@ -83,11 +85,16 @@ if (collection && product?.items) {
     "name": product.dressName || product.name,
     "description": cleanedDescription,
     "image": product.imagesCloudinary?.map(img => img.url).filter(Boolean) || [],
-    "brand": { "@type": "Brand", "name": "Monica Mariage", "url": "https://monicamariage.com" },
+    "brand": { 
+      "@type": "Brand", 
+      "name": "Monica Mariage", 
+      "url": "https://monicamariage.com" 
+    },
     "category": "Robes de mariée",
     "additionalProperty": [
       ...(product.sousCategorie && [{
-        "@type": "PropertyValue", "name": "Style",
+        "@type": "PropertyValue", 
+        "name": "Style",
         "value": product.sousCategorie.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
       }]),
       { "@type": "PropertyValue", "name": "Collection", "value": "2025" },
@@ -95,168 +102,201 @@ if (collection && product?.items) {
     ].filter(Boolean),
     "offers": {
       "@type": "Offer",
-      "url": Astro.url.href, // <-- CORRECTION N°1 : URL dynamique
+      "url": finalCanonicalUrl, // 👈 URL canonique propre
       "priceCurrency": "EUR",
-      // --- CORRECTION N°2 : LOGIQUE DE PRIX ---
-      // On ajoute le prix seulement s'il est numérique et valide.
-      ...(product.price && product.price !== "Sur devis" && { "price": product.price }),
+      // Ajouter le prix seulement s'il est numérique et valide
+      ...(product.price && product.price !== "Sur devis" && !isNaN(parseFloat(product.price)) && { 
+        "price": product.price 
+      }),
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/NewCondition",
       "seller": {
-        "@type": "Organization", "name": "Monica Mariage", "url": "https://monicamariage.com",
+        "@type": "Organization", 
+        "name": "Monica Mariage", 
+        "url": "https://monicamariage.com",
         "telephone": "+33668300960",
         "address": {
-          "@type": "PostalAddress", "streetAddress": "1220 chemin de brouquere", "addressLocality": "Seysses",
-          "addressRegion": "Occitanie", "postalCode": "31600", "addressCountry": "FR"
+          "@type": "PostalAddress", 
+          "streetAddress": "1220 chemin de brouquere", 
+          "addressLocality": "Seysses",
+          "addressRegion": "Occitanie", 
+          "postalCode": "31600", 
+          "addressCountry": "FR"
         }
       }
     },
-    "manufacturer": { "@type": "Organization", "name": "Monica Mariage", "url": "https://monicamariage.com" },
+    "manufacturer": { 
+      "@type": "Organization", 
+      "name": "Monica Mariage", 
+      "url": "https://monicamariage.com" 
+    },
     "aggregateRating": {
-      "@type": "AggregateRating", "ratingValue": "4.8", "reviewCount": "150",
-      "bestRating": "5", "worstRating": "1"
+      "@type": "AggregateRating", 
+      "ratingValue": "4.8", 
+      "reviewCount": "150",
+      "bestRating": "5", 
+      "worstRating": "1"
     },
     ...(breadcrumbs.length > 0 && {
       "breadcrumb": {
         "@type": "BreadcrumbList",  
         "itemListElement": breadcrumbs.map((crumb, index) => ({
-          "@type": "ListItem", "position": index + 1, "name": crumb.name, "item": crumb.url
+          "@type": "ListItem", 
+          "position": index + 1, 
+          "name": crumb.name, 
+          "item": crumb.url
         }))
       }
     })
   };
 }
 ---
+
 <!doctype html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="rq53avWhuLrrx3ABvRJ12myweeaU47sTzsWdbNOatsU" />
+    
+    <!-- Titre et description -->
     <title>{title}</title>
     <meta name="description" content={description} />
+    
+    <!-- 👇 URL canonique et Open Graph CORRIGÉES -->
+    <link rel="canonical" href={finalCanonicalUrl} />
+    <meta property="og:url" content={finalCanonicalUrl} />
+    
+    <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://monicamariage.com/images/cover-robes.jpg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Monica Mariage" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://monicamariage.com/images/cover-robes.jpg" />
+    
+    <!-- Robots et autres meta -->
+    <meta name="robots" content="index, follow" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs Optimization Data" />
 
-    <meta property="og:image" content="/images/cover-robes.jpg" />
+    <!-- Preload des polices -->
     <link rel="preload" href="/fonts/great-vibes-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/cormorant-garamond-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
 
+    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
-
-    <!-- MONSIEUR GÉRARD CORRIGE ICI : La balise canonique est maintenant DYNAMIQUE -->
-    <link rel="canonical" href={Astro.url.href} />
     
+    <!-- Préchargement d'image principale si fournie -->
     {mainImageUrl && <ImagePreloader imageUrl={mainImageUrl} />}
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content={title}>
-    <meta name="twitter:description" content={description}>
-    <meta name="twitter:image" content="https://www.monicamariage.com/images/cover-robes.jpg">
-    <meta name="robots" content="index, follow">
 
-    <!-- MONSIEUR GÉRARD CORRIGE AUSSI ICI : L'URL pour les réseaux sociaux est maintenant DYNAMIQUE -->
-    <meta property="og:url" content={Astro.url.href} />
+    <!-- Styles CSS inline pour les polices -->
     <style>
       /* cormorant-garamond-regular - latin */
-@font-face {
-  font-display: swap;
-  font-family: "Cormorant Garamond";
-  font-style: normal;
-  font-weight: 400;
-  src: url("/fonts/cormorant-garamond-v19-latin-regular.woff2") format("woff2");
-}
-
-/* Vos autres déclarations de polices existantes */
-@font-face {
-  font-family: "Dancing Script";
-  src: url("/fonts/dancing-script-v25-latin-regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* great-vibes-regular - latin */
-@font-face {
-  font-display: swap;
-  font-family: "Great Vibes";
-  font-style: normal;
-  font-weight: 400;
-  src: url("/fonts/great-vibes-v19-latin-regular.woff2") format("woff2");
-}
-
-[x-cloak] {
-  display: none !important;
-}
-
-/* Ajoutez cette classe pour utiliser la police Cormorant */
-.font-cormorant {
-  font-family: "Cormorant Garamond", serif !important;
-}
-
-.font-vibes {
-  font-family: "Great Vibes", cursive !important;
-}
-
-a,
-h2,
-p,
-button,
-.font-lora {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif !important;
-}
-
-a,
-p,
-button {
-  font-size: 20px;
-}
-
-    </style>
-    <!-- Le JSON-LD est injecté ici, maintenant avec la logique de prix corrigée -->
-    {Object.keys(jsonLdData).length > 0 && (
-      <script type="application/ld+json" set:html={JSON.stringify(jsonLdData, null, 2)} />
-    )}
-    
-    <slot name="head" />
-  </head>
-  <body>
-    <Header />
-    <slot />
-    <FolatingButtonWhatsapp />
-    <Footer />
-    <AppointmentBar />
-  </body>
-
-  <script define:vars={{ analyticsId }}>
-    // Le script Google Analytics reste inchangé.
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { dataLayer.push(arguments); };
-    window.ga4Loaded = false;
-
-    window.sendGa4Event = function (eventName, params = {}) {
-      if (window.ga4Loaded) {
-        gtag("event", eventName, params);
-      } else {
-        document.addEventListener("ga4Ready", () => gtag("event", eventName, params), { once: true });
+      @font-face {
+        font-display: swap;
+        font-family: "Cormorant Garamond";
+        font-style: normal;
+        font-weight: 400;
+        src: url("/fonts/cormorant-garamond-v19-latin-regular.woff2") format("woff2");
       }
-    };
 
-    setTimeout(() => {
-      const script = document.createElement("script");
-      script.async = true;
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsId}`;
-      document.head.appendChild(script);
-      script.onload = () => {
-        gtag("js", new Date());
-        gtag("config", analyticsId);
-        window.ga4Loaded = true;
-        document.dispatchEvent(new Event("ga4Ready"));
-      };
-    }, 4000);
-  </script>
+      /* Dancing Script */
+      @font-face {
+        font-family: "Dancing Script";
+        src: url("/fonts/dancing-script-v25-latin-regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      /* great-vibes-regular - latin */
+      @font-face {
+        font-display: swap;
+        font-family: "Great Vibes";
+        font-style: normal;
+        font-weight: 400;
+        src: url("/fonts/great-vibes-v19-latin-regular.woff2") format("woff2");
+      }
+
+      [x-cloak] {
+        display: none !important;
+      }
+
+      /* Classes pour utiliser les polices */
+      .font-cormorant {
+        font-family: "Cormorant Garamond", serif !important;
+      }
+
+      .font-vibes {
+        font-family: "Great Vibes", cursive !important;
+      }
+
+      a,
+      h2,
+      p,
+      button,
+      .font-lora {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif !important;
+      }
+
+      a,
+      p,
+      button {
+        font-size: 20px;
+      }
+    </style>
+    
+    <!-- JSON-LD structuré -->
+   {Object.keys(jsonLdData).length > 0 && (
+     <script type="application/ld+json" set:html={JSON.stringify(jsonLdData, null, 2)} />
+   )}
+   
+   <slot name="head" />
+ </head>
+ <body>
+   <Header />
+   <slot />
+   <FolatingButtonWhatsapp />
+   <Footer />
+   <AppointmentBar />
+ </body>
+
+ <!-- Script Google Analytics -->
+ <script define:vars={{ analyticsId }}>
+   // Configuration Google Analytics
+   window.dataLayer = window.dataLayer || [];
+   window.gtag = function () { dataLayer.push(arguments); };
+   window.ga4Loaded = false;
+
+   window.sendGa4Event = function (eventName, params = {}) {
+     if (window.ga4Loaded) {
+       gtag("event", eventName, params);
+     } else {
+       document.addEventListener("ga4Ready", () => gtag("event", eventName, params), { once: true });
+     }
+   };
+
+   // Chargement différé de Google Analytics
+   setTimeout(() => {
+     const script = document.createElement("script");
+     script.async = true;
+     script.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsId}`;
+     document.head.appendChild(script);
+     script.onload = () => {
+       gtag("js", new Date());
+       gtag("config", analyticsId);
+       window.ga4Loaded = true;
+       document.dispatchEvent(new Event("ga4Ready"));
+     };
+   }, 4000);
+ </script>
 </html>

@@ -4,6 +4,7 @@ import PrendreRendezVousButtonHome from "../../../components/PrendreRendezVousBu
 import { sanityClient } from "../../../sanityClient";
 import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
 import FavoriButton from "../../../components/FavoriButton.astro";
+import { buildProductUrl } from "../../../utils/urls.js";
 
 // 1) Génération des chemins dynamiques pour chaque slug de robe
 export async function getStaticPaths() {
@@ -16,7 +17,10 @@ export async function getStaticPaths() {
 // 2) Lecture du paramètre de route
 const { slug } = Astro.params;
 
-// 3) Fetch de tous les robes pour navigation
+// 3) Construire l'URL canonique PROPREMENT
+const canonicalUrl = buildProductUrl('robes-de-mariee', 'forme-princesse', slug);
+
+// 4) Fetch de tous les robes pour navigation
 const allRobes = await sanityClient.fetch(
   `*[_type == "robe" && category == "robes-de-mariee" && sousCategorie == "forme-princesse"]{
      "slug": slug.current,
@@ -26,7 +30,7 @@ const allRobes = await sanityClient.fetch(
   }`
 );
 
-// 4) Récupération de la robe courante
+// 5) Récupération de la robe courante
 const robeData = await sanityClient.fetch(
   `*[_type == "robe"
      && category == "robes-de-mariee"
@@ -49,7 +53,7 @@ if (!robeData) {
   throw new Error(`Robe introuvable pour le slug : ${slug}`);
 }
 
-// 5) Préparation des images pour le slider
+// 6) Préparation des images pour le slider
 const robe = {
   ...robeData,
   images: (robeData.imagesCloudinary || []).map((img) => ({
@@ -62,12 +66,12 @@ const robe = {
   })),
 };
 
-// 6) Calcul des précédents/suivants
+// 7) Calcul des précédents/suivants
 const currentIndex = allRobes.findIndex((r) => r.slug === slug);
 const prevItem = allRobes[(currentIndex - 1 + allRobes.length) % allRobes.length];
 const nextItem = allRobes[(currentIndex + 1) % allRobes.length];
 
-// 7) Suggestions aléatoires
+// 8) Suggestions aléatoires
 const othersData = await sanityClient.fetch(
   `*[_type == "robe"
      && category == "robes-de-mariee"
@@ -100,7 +104,7 @@ const randomDresses = (othersData || [])
 // Récupération de la première image pour préchargement
 const firstImage = robe.images.length > 0 ? robe.images[0] : null;
 
-// Préparer les données produit pour le JSON-LD
+// Préparer les données produit pour le JSON-LD avec URL canonique
 const productData = {
   dressName: robe.dressName,
   descriptionCourte: robe.descriptionCourte,
@@ -108,15 +112,15 @@ const productData = {
   imagesCloudinary: robe.imagesCloudinary,
   price: robe.price,
   sousCategorie: "forme-princesse",
-  url: `https://monicamariage.com/robes-de-mariee/forme-princesse/${slug}`
+  url: canonicalUrl
 };
 
-// Breadcrumbs
+// Breadcrumbs avec URLs absolues correctes
 const breadcrumbs = [
   { name: "Accueil", url: "https://monicamariage.com" },
   { name: "Robes de mariée", url: "https://monicamariage.com/robes-de-mariee" },
   { name: "Forme Princesse", url: "https://monicamariage.com/robes-de-mariee/forme-princesse" },
-  { name: robe.dressName, url: productData.url }
+  { name: robe.dressName, url: canonicalUrl }
 ];
 ---
 
@@ -126,6 +130,7 @@ const breadcrumbs = [
   product={productData}
   breadcrumbs={breadcrumbs}
   mainImageUrl={firstImage?.optimized?.tablet}
+  canonicalUrl={canonicalUrl}
 >
   <!-- Préchargement de la première image -->
   {firstImage && (
