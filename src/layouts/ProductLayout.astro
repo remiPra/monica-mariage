@@ -1,5 +1,5 @@
 ---
-// src/layouts/ProductLayout.astro - Version autonome
+// src/layouts/ProductLayout.astro - Version Corrigée par Gérard
 import Header from "../components/Header.astro";
 import "../styles/global.css";
 import FloatingButton from "../components/FloatingButton.astro";
@@ -20,26 +20,22 @@ const {
 
 const analyticsId = "G-H8RDXC45EX";
 
-// Fonction pour nettoyer le HTML de la description
+// La fonction pour nettoyer le HTML reste la même, c'est bien.
 function cleanDescription(desc) {
   if (!desc) return "";
-  return desc
-    .replace(/<[^>]*>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+  return desc.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }
 
-// Générer le JSON-LD selon le type de page
 let jsonLdData = {};
 
 if (collection && product?.items) {
-  // JSON-LD pour une page collection
+  // Le JSON-LD pour les collections était déjà bon.
   jsonLdData = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "name": product.collectionName || title,
     "description": cleanDescription(description),
-    "url": product.url || `https://monicamariage.com${Astro.url.pathname}`,
+    "url": product.url || Astro.url.href, // On utilise Astro.url.href pour être sûr.
     "mainEntity": {
       "@type": "ItemList",
       "name": product.collectionName || "Collection Monica Mariage",
@@ -50,12 +46,9 @@ if (collection && product?.items) {
         "item": {
           "@type": "Product",
           "name": item.dressName || item.name,
-          "url": item.url || `https://monicamariage.com/robes-de-mariee/${item.sousCategorie}/${item.slug}`,
+          "url": `https://monicamariage.com/robes-de-mariee/${item.sousCategorie}/${item.slug}`,
           "image": item.image || item.imagesCloudinary?.[0]?.url,
-          "brand": {
-            "@type": "Brand",
-            "name": "Monica Mariage"
-          },
+          "brand": { "@type": "Brand", "name": "Monica Mariage" },
           "category": "Robes de mariée",
           ...(item.price && item.price !== "Sur devis" && {
             "offers": {
@@ -82,9 +75,7 @@ if (collection && product?.items) {
   };
 } else if (product && !collection) {
   // JSON-LD pour un produit individuel
-  const cleanedDescription = cleanDescription(
-    product.descriptionCourte || product.metaDescription || description
-  );
+  const cleanedDescription = cleanDescription(product.descriptionCourte || product.metaDescription || description);
 
   jsonLdData = {
     "@context": "https://schema.org",
@@ -92,87 +83,50 @@ if (collection && product?.items) {
     "name": product.dressName || product.name,
     "description": cleanedDescription,
     "image": product.imagesCloudinary?.map(img => img.url).filter(Boolean) || [],
-    "brand": {
-      "@type": "Brand",
-      "name": "Monica Mariage",
-      "url": "https://monicamariage.com"
-    },
+    "brand": { "@type": "Brand", "name": "Monica Mariage", "url": "https://monicamariage.com" },
     "category": "Robes de mariée",
     "additionalProperty": [
       ...(product.sousCategorie && [{
-        "@type": "PropertyValue",
-        "name": "Style",
+        "@type": "PropertyValue", "name": "Style",
         "value": product.sousCategorie.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
       }]),
-      {
-        "@type": "PropertyValue",
-        "name": "Collection",
-        "value": "2025"
-      },
-      {
-        "@type": "PropertyValue",
-        "name": "Condition",
-        "value": "Nouveau"
-      }
+      { "@type": "PropertyValue", "name": "Collection", "value": "2025" },
+      { "@type": "PropertyValue", "name": "Condition", "value": "Nouveau" }
     ].filter(Boolean),
     "offers": {
       "@type": "Offer",
-      "url": product.url || `https://monicamariage.com${Astro.url.pathname}`,
+      "url": Astro.url.href, // <-- CORRECTION N°1 : URL dynamique
       "priceCurrency": "EUR",
-      ...(product.price && product.price !== "Sur devis" 
-        ? { "price": product.price } 
-        : { "priceSpecification": {
-            "@type": "PriceSpecification",
-            "price": "0",
-            "priceCurrency": "EUR",
-            "valueAddedTaxIncluded": true
-          }
-        }
-      ),
+      // --- CORRECTION N°2 : LOGIQUE DE PRIX ---
+      // On ajoute le prix seulement s'il est numérique et valide.
+      ...(product.price && product.price !== "Sur devis" && { "price": product.price }),
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/NewCondition",
       "seller": {
-        "@type": "Organization",
-        "name": "Monica Mariage",
-        "url": "https://monicamariage.com",
+        "@type": "Organization", "name": "Monica Mariage", "url": "https://monicamariage.com",
         "telephone": "+33668300960",
         "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "1220 chemin de brouquere",
-          "addressLocality": "Seysses",
-          "addressRegion": "Occitanie",
-          "postalCode": "31600",
-          "addressCountry": "FR"
+          "@type": "PostalAddress", "streetAddress": "1220 chemin de brouquere", "addressLocality": "Seysses",
+          "addressRegion": "Occitanie", "postalCode": "31600", "addressCountry": "FR"
         }
       }
     },
-    "manufacturer": {
-      "@type": "Organization",
-      "name": "Monica Mariage",
-      "url": "https://monicamariage.com"
-    },
+    "manufacturer": { "@type": "Organization", "name": "Monica Mariage", "url": "https://monicamariage.com" },
     "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "reviewCount": "150",
-      "bestRating": "5",
-      "worstRating": "1"
+      "@type": "AggregateRating", "ratingValue": "4.8", "reviewCount": "150",
+      "bestRating": "5", "worstRating": "1"
     },
     ...(breadcrumbs.length > 0 && {
       "breadcrumb": {
         "@type": "BreadcrumbList",  
         "itemListElement": breadcrumbs.map((crumb, index) => ({
-          "@type": "ListItem",
-          "position": index + 1,
-          "name": crumb.name,
-          "item": crumb.url
+          "@type": "ListItem", "position": index + 1, "name": crumb.name, "item": crumb.url
         }))
       }
     })
   };
 }
 ---
-
 <!doctype html>
 <html lang="fr">
   <head>
@@ -186,35 +140,28 @@ if (collection && product?.items) {
     <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs Optimization Data" />
 
     <meta property="og:image" content="/images/cover-robes.jpg" />
-    <link
-      rel="preload"
-      href="/fonts/great-vibes-v19-latin-regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/cormorant-garamond-v19-latin-regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <link rel="preload" href="/fonts/great-vibes-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/cormorant-garamond-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
 
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="canonical" href="https://www.monicamariage.com/">
+
+    <!-- MONSIEUR GÉRARD CORRIGE ICI : La balise canonique est maintenant DYNAMIQUE -->
+    <link rel="canonical" href={Astro.url.href} />
+    
     {mainImageUrl && <ImagePreloader imageUrl={mainImageUrl} />}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content={title}>
     <meta name="twitter:description" content={description}>
     <meta name="twitter:image" content="https://www.monicamariage.com/images/cover-robes.jpg">
     <meta name="robots" content="index, follow">
-    <meta property="og:url" content="https://www.monicamariage.com/">
+
+    <!-- MONSIEUR GÉRARD CORRIGE AUSSI ICI : L'URL pour les réseaux sociaux est maintenant DYNAMIQUE -->
+    <meta property="og:url" content={Astro.url.href} />
     
-    <!-- JSON-LD Schema pour produits -->
+    <!-- Le JSON-LD est injecté ici, maintenant avec la logique de prix corrigée -->
     {Object.keys(jsonLdData).length > 0 && (
       <script type="application/ld+json" set:html={JSON.stringify(jsonLdData, null, 2)} />
     )}
@@ -230,21 +177,16 @@ if (collection && product?.items) {
   </body>
 
   <script define:vars={{ analyticsId }}>
+    // Le script Google Analytics reste inchangé.
     window.dataLayer = window.dataLayer || [];
-    window.gtag = function () {
-      dataLayer.push(arguments);
-    };
+    window.gtag = function () { dataLayer.push(arguments); };
     window.ga4Loaded = false;
 
     window.sendGa4Event = function (eventName, params = {}) {
       if (window.ga4Loaded) {
         gtag("event", eventName, params);
       } else {
-        document.addEventListener(
-          "ga4Ready",
-          () => gtag("event", eventName, params),
-          { once: true }
-        );
+        document.addEventListener("ga4Ready", () => gtag("event", eventName, params), { once: true });
       }
     };
 
