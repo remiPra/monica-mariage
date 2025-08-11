@@ -1,16 +1,33 @@
+
 ---
 import { sanityClient } from '../sanityClient';
 
-// Fonction pour optimiser les URLs Cloudinary en AVIF
-const getOptimizedImageUrl = (url, format = 'avif') => {
-  if (url?.includes('cloudinary.com')) {
-    // Transformation Cloudinary : format AVIF avec qualité automatique
-    return url.replace('/upload/', `/upload/f_${format},q_auto,w_400/`);
+const generateImageSources = (baseUrl) => {
+  // Si l'URL n'est pas de Cloudinary, on ne fait rien de spécial.
+  if (!baseUrl?.includes('cloudinary.com')) {
+    return { src: baseUrl, srcset: '' };
   }
-  return url;
+
+  // On définit les différentes tailles d'images que l'on veut rendre disponibles.
+  // 400px pour les petits écrans, 600px pour les moyens, 800px pour les grands.
+  const widths = [400, 600, 800];
+
+  // On construit la chaîne de caractères pour l'attribut `srcset`.
+  // Exemple de résultat : "url_400px.webp 400w, url_600px.webp 600w, ..."
+  const srcset = widths
+    .map(width => {
+      const optimizedUrl = baseUrl.replace('/upload/', `/upload/f_auto,q_auto,w_${width}/`);
+      return `${optimizedUrl} ${width}w`;
+    })
+    .join(', ');
+
+  // On retourne un objet complet avec une image par défaut (src) et la liste des options (srcset).
+  return {
+    src: baseUrl.replace('/upload/', '/upload/f_auto,q_auto,w_400/'),
+    srcset: srcset,
+  };
 };
 
-// Récupérer les bestsellers depuis Sanity
 const bestsellerQuery = `*[_type == "bestseller" && isActive == true][0]{
   robesBestseller[] | order(position asc) {
     imageUrl,
@@ -25,25 +42,29 @@ const bestsellerQuery = `*[_type == "bestseller" && isActive == true][0]{
 
 const data = await sanityClient.fetch(bestsellerQuery);
 
-// Transformer pour correspondre à votre structure actuelle avec optimisation AVIF
-const bestSellers = data?.robesBestseller?.map((item) => ({
-  src: getOptimizedImageUrl(item.imageUrl || item.robe?.imagesCloudinary?.[0]?.url),
-  alt: `Robe de mariée ${item.robe?.dressName} - Monica Mariage Toulouse`,
-  label: item.robe?.dressName,
-  link: `/robes-de-mariee/${item.robe?.sousCategorie}`,
-})) || [];
+// On met à jour la transformation des données pour utiliser notre nouvelle logique.
+const bestSellers = data?.robesBestseller?.map((item) => {
+  // On trouve l'URL de base de l'image.
+  const baseUrl = item.imageUrl || item.robe?.imagesCloudinary?.[0]?.url;
+
+  return {
+    // On génère notre objet image complet (src + srcset).
+    image: generateImageSources(baseUrl),
+    alt: `Robe de mariée ${item.robe?.dressName} - Monica Mariage Toulouse`,
+    label: item.robe?.dressName,
+    // CORRECTION IMPORTANTE : Le lien pointe maintenant vers la page de la robe spécifique.
+    link: `/robes-de-mariee/${item.robe?.sousCategorie}/${item.robe?.slug}`,
+  };
+}) || [];
 ---
 
 <section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]">
   <div class="container mx-auto px-4 max-w-6xl">
     <!-- En-tête avec titre et éléments décoratifs -->
     <div class="flex flex-col items-center mb-10">
-      <!-- Titre élégant -->
       <h2 class="font-vibes text-center text-4xl md:text-5xl text-[#af7749] mb-2">
         Nos BestSellers
       </h2>
-      
-      <!-- Trait décoratif -->
       <div class="flex items-center justify-center gap-4 mb-6">
         <span class="h-px w-16 bg-[#C5A880]"></span>
         <p class="text-[#8B7569] text-xs font-medium">SÉLECTION EXCLUSIVE</p>
@@ -53,33 +74,30 @@ const bestSellers = data?.robesBestseller?.map((item) => ({
 
     <!-- Contenu - cartes des robes -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      {bestSellers.map((robe,index) => (
+      {bestSellers.map((robe, index) => (
          <a
-              href={robe.link}
+              href={robe.link} 
               class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] md:h-[500px] shadow-md"
               data-index={index}
             >
-              {/* Overlay dégradé */}
-              {/* <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" /> */}
-
-              {/* Image optimisée en AVIF */}
+              
+              <!-- LA BALISE IMG ENTIÈREMENT CORRIGÉE -->
               <img
-                src={robe.src}
+                src={robe.image.src}
+                srcset={robe.image.srcset}
+                sizes="(max-width: 767px) 100vw, 23vw"
                 alt={robe.alt}
                 width="400"
+                height="500"
                 class="absolute top-0 w-full h-full object-cover rounded hover:scale-105 transition-transform duration-300"
                 loading="lazy"
               />
 
-           
-          
           <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-4 md:p-6 rounded-b-2xl z-20">
             <p class="text-white font-vibes text-2xl md:text-3xl mb-2 md:mb-4 drop-shadow-lg">
-  {robe.label?.charAt(0).toUpperCase() + robe.label?.slice(1).toLowerCase()}
+              {robe.label?.charAt(0).toUpperCase() + robe.label?.slice(1).toLowerCase()}
             </p>
-            
-            <!-- Bouton visible sur desktop uniquement -->
- <button class="bg-[#C5A880] mx-auto block text-sm text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] hover:scale-105 transition-all duration-300">
+            <button class="bg-[#C5A880] mx-auto block text-sm text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] hover:scale-105 transition-all duration-300">
               Découvrir cette robe
             </button>
           </div>
@@ -93,9 +111,8 @@ const bestSellers = data?.robesBestseller?.map((item) => ({
         Découvrez notre sélection de robes emblématiques, conçues pour sublimer chaque future mariée.
         Nos créations s'adaptent à tous les styles et toutes les silhouettes.
       </p>
-      
       <a
-        href="/robes-de-mariee"
+        href="/toutes-nos-robes"
         class="inline-block bg-[#C99A9A] text-white py-3 px-8 rounded-full shadow-md hover:bg-[#BA8B8B] hover:scale-105 transition-all duration-300"
       >
         Voir toutes nos robes
