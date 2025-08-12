@@ -131,7 +131,7 @@ const whatsappLink =
       // Tracking du clic sur le bouton WhatsApp - SEUL ÉVÉNEMENT CONSERVÉ
       contactButton?.addEventListener("click", () => {
         if (window.sendGa4Event) {
-          window.sendGa4Event("whatsapp_rdv_click", {
+          window.sendGa4Event("btn_prendre_rdv", {
             event_category: "Conversion",
             event_label: "Prise de rendez-vous WhatsApp",
             value: 1,
