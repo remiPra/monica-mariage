@@ -173,7 +173,7 @@ const { isVisible } = Astro.props;
     const redirectToWhatsapp = () => {
       // Tracking de la conversion
       if (window.sendGa4Event) {
-        window.sendGa4Event("whatsapp_redirect", {
+        window.sendGa4Event("modal_auto_whatsapp_clic", {
           event_category: "Conversion",
           event_label: "WhatsApp Redirect from Modal",
           value: 1,
