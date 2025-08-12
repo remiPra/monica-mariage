@@ -41,6 +41,8 @@ const robeData = await sanityClient.fetch(
        metaDescription,
        dressName,
        descriptionCourte,
+        contenuEnrichi,  
+       faqHtml,         
        category,
        sousCategorie,
        price,
@@ -331,6 +333,28 @@ const breadcrumbs = [
       }
     </div>
   </div>
+
+  <!-- faqhtml -->
+   
+  <!-- Contenu enrichi -->
+  {robe.contenuEnrichi && (
+    <div class="max-w-7xl mx-auto px-4 lg:px-6 mt-16">
+      <div 
+        class="bg-[#FFF4F2] p-8 rounded-2xl prose prose-lg max-w-none"
+        set:html={robe.contenuEnrichi}
+      />
+    </div>
+  )}
+
+  <!-- FAQ -->
+  {robe.faqHtml && (
+    <div class="max-w-7xl mx-auto px-4 lg:px-6 mt-8">
+      <div 
+        class="bg-[#FFF4F2] p-8 rounded-2xl prose prose-lg max-w-none"
+        set:html={robe.faqHtml}
+      />
+    </div>
+  )}
 
   <!-- Styles CSS -->
   <style>
