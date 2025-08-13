@@ -6,6 +6,7 @@ import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
 import FavoriButton from "../../../components/FavoriButton.astro";
 import { buildProductUrl } from "../../../utils/urls.js";
 
+
 // 1) Génération des chemins dynamiques pour chaque slug de robe
 export async function getStaticPaths() {
   const slugs = await sanityClient.fetch(`
@@ -301,7 +302,13 @@ const breadcrumbs = [
       </div>
     </section>
   </div>
-
+  <!-- Contenu enrichi -->
+  {robe.contenuEnrichi && (
+      <div class="mt-20"
+    
+        set:html={robe.contenuEnrichi}
+      />
+  )}
   <!-- Suggestions -->
   <div class="max-w-7xl mb-20 mx-auto px-6 mt-20">
     <h2 class="text-5xl font-vibes text-[#af7749] mb-8 text-center">
@@ -336,25 +343,18 @@ const breadcrumbs = [
 
   <!-- faqhtml -->
    
-  <!-- Contenu enrichi -->
-  {robe.contenuEnrichi && (
-    <div class="max-w-7xl mx-auto px-4 lg:px-6 mt-16">
-      <div 
-        class="bg-[#FFF4F2] p-8 rounded-2xl prose prose-lg max-w-none"
-        set:html={robe.contenuEnrichi}
-      />
-    </div>
-  )}
 
-  <!-- FAQ -->
+
+  
   {robe.faqHtml && (
     <div class="max-w-7xl mx-auto px-4 lg:px-6 mt-8">
       <div 
-        class="bg-[#FFF4F2] p-8 rounded-2xl prose prose-lg max-w-none"
         set:html={robe.faqHtml}
       />
     </div>
   )}
+ 
+  
 
   <!-- Styles CSS -->
   <style>
@@ -469,7 +469,46 @@ const breadcrumbs = [
       const modal = document.getElementById("zoomModal");
       const modalImage = document.getElementById("modalImage");
       const closeModalBtn = document.getElementById("closeModal");
+        const accordionTriggers = document.querySelectorAll(".accordion-trigger");
 
+      accordionTriggers.forEach((trigger) => {
+        trigger.addEventListener("click", () => {
+          const expanded = trigger.getAttribute("aria-expanded") === "true";
+          const content = trigger.nextElementSibling;
+          const icon = trigger.querySelector("span:last-child");
+
+          // Fermer tous les autres accordéons
+          accordionTriggers.forEach((otherTrigger) => {
+            if (
+              otherTrigger !== trigger &&
+              otherTrigger.getAttribute("aria-expanded") === "true"
+            ) {
+              otherTrigger.setAttribute("aria-expanded", "false");
+              const otherContent = otherTrigger.nextElementSibling;
+              const otherIcon = otherTrigger.querySelector("span:last-child");
+
+              otherContent.style.maxHeight = "0";
+              otherContent.style.opacity = "0";
+              otherIcon.style.transform = "rotate(0deg)";
+            }
+          });
+
+          // Ouvrir/fermer l'accordéon actuel
+          if (expanded) {
+            // Fermer
+            trigger.setAttribute("aria-expanded", "false");
+            content.style.maxHeight = "0";
+            content.style.opacity = "0";
+            icon.style.transform = "rotate(0deg)";
+          } else {
+            // Ouvrir
+            trigger.setAttribute("aria-expanded", "true");
+            content.style.maxHeight = content.scrollHeight + "px";
+            content.style.opacity = "1";
+            // icon.style.transform = "rotate(45deg)";
+          }
+        });
+      });
       window.openModal = (src, alt) => {
         if (modal && modalImage) {
           modalImage.src = src;
