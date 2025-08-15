@@ -1,0 +1,156 @@
+---
+// --- IMPORTATION DES COMPOSANTS DE LA PAGE ---
+import Header from "../components/Header.astro";
+import FolatingButtonWhatsapp from "../components/FolatingButtonWhatsapp.astro";
+import Footer from "../components/Footer.astro";
+import AppointmentBar from "../components/AppointmentBar.astro";
+
+// --- DÉFINITION DES VARIABLES SEO POUR CETTE PAGE ---
+const pageTitle = "Mentions Légales - Monica Mariage";
+const pageDescription = "Consultez les mentions légales du site monicamariage.com : informations sur l'éditeur, l'hébergement, la propriété intellectuelle et la protection des données personnelles.";
+const canonicalURL = Astro.url.href; // Génère l'URL canonique correcte pour cette page
+
+// Variable pour le script Google Analytics
+const analyticsId = "G-H8RDXC45EX";
+---
+
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {/* --- SECTION SEO COMPLÈTE ET SPÉCIFIQUE AUX MENTIONS LÉGALES --- */}
+    
+    <!-- Titre et Description -->
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+
+    <!-- Robots et URL Canonique -->
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph (Pour le partage sur les réseaux sociaux) -->
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content="Monica Mariage" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://www.monicamariage.com/images/cover-robes.jpg" /> {/* Image générique */}
+
+    <!-- Twitter Card (Pour le partage sur Twitter) -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content="https://www.monicamariage.com/images/cover-robes.jpg" /> {/* Image générique */}
+    
+    {/* --- FIN DE LA SECTION SEO --- */}
+
+    <!-- Éléments techniques : Vérification Google, Polices, Icônes, etc. -->
+    <meta name="google-site-verification" content="rq53avWhuLrrx3ABvRJ12myweeaU47sTzsWdbNOatsU" />
+    <link rel="preload" href="/fonts/great-vibes-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/cormorant-garamond-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+</head>
+
+<body>
+    <Header />
+
+    <main class="pt-24">
+      <section class="py-16 bg-gradient-to-b from-white to-[#FDE9E6]">
+        <div class="container mx-auto px-4 max-w-4xl">
+          <div class="text-center mb-12">
+            <h1 class="font-vibes text-5xl text-[#af7749] mb-4">Mentions Légales</h1>
+            <div class="flex items-center justify-center gap-4 mb-8">
+              <span class="h-px w-16 bg-[#C5A880]"></span>
+              <p class="text-[#8B7569] text-sm font-medium">INFORMATIONS OFFICIELLES</p>
+              <span class="h-px w-16 bg-[#C5A880]"></span>
+            </div>
+          </div>
+  
+          <div class="bg-white rounded-2xl shadow-sm p-8 space-y-8 text-[#5F4B3F]">
+            
+            <!-- 1. Éditeur du site -->
+            <div>
+              <h2 class="text-2xl font-semibold mb-4">1. Éditeur du site</h2>
+              <p class="mb-2"><strong>Dénomination sociale :</strong> Monica Mariage</p>
+              <p class="mb-2"><strong>Forme juridique :</strong> Entreprise Individuelle</p>
+              <p class="mb-2"><strong>Siège social :</strong> 1220 chemin de brouquere, 31600 Seysses, France</p>
+              <p class="mb-2"><strong>Numéro de téléphone :</strong> +33 6 68 30 09 60</p>
+              <p class="mb-2"><strong>Adresse e-mail :</strong> monicamariage@hotmail.com</p>
+              <p class="mb-2"><strong>Numéro SIRET :</strong> [Numéro de SIRET à compléter]</p>
+              <p><strong>TVA intracommunautaire :</strong> Non applicable, art. 293 B du CGI</p>
+            </div>
+  
+            <!-- 2. Directeur de la publication -->
+            <div>
+              <h2 class="text-2xl font-semibold mb-4">2. Directeur de la publication</h2>
+              <p>Le directeur de la publication est <strong>Madame Monica Wang</strong>, en sa qualité de gérante.</p>
+            </div>
+  
+            <!-- 3. Hébergement -->
+            <div>
+              <h2 class="text-2xl font-semibold mb-4">3. Hébergement</h2>
+              <p class="mb-2">Le site https://www.monicamariage.com est hébergé par :</p>
+              <p class="mb-2"><strong>Société :</strong> Vercel Inc.</p>
+              <p class="mb-2"><strong>Siège social :</strong> 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis</p>
+              <p><strong>Contact :</strong> privacy@vercel.com</p>
+            </div>
+  
+            <!-- 4. Propriété intellectuelle -->
+            <div>
+              <h2 class="text-2xl font-semibold mb-4">4. Propriété intellectuelle</h2>
+              <p class="leading-relaxed">
+                L'ensemble de ce site (contenus, textes, images, vidéos, logos) constitue une œuvre protégée par la législation en vigueur sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés. La reproduction, représentation ou diffusion, intégrale ou partielle, du site sur quelque support que ce soit est formellement interdite sauf autorisation expresse du directeur de la publication.
+              </p>
+            </div>
+  
+            <!-- 5. Protection des données personnelles -->
+            <div>
+              <h2 class="text-2xl font-semibold mb-4">5. Protection des données personnelles</h2>
+              <p class="leading-relaxed">
+                Les informations recueillies via les formulaires de contact sont utilisées uniquement pour répondre à vos demandes. Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Pour plus d'informations, veuillez consulter notre <a href="/politique-de-confidentialite" class="text-[#af7749] underline hover:text-[#C99A9A]">Politique de Confidentialité</a>.
+              </p>
+            </div>
+  
+            <!-- 6. Cookies -->
+            <div>
+              <h2 class="text-2xl font-semibold mb-4">6. Cookies</h2>
+              <p class="leading-relaxed">
+                Le site utilise des cookies à des fins de mesure d'audience (Google Analytics) pour améliorer l'expérience utilisateur. Aucune information personnelle n'est collectée à des fins commerciales. Vous pouvez configurer la gestion des cookies dans les paramètres de votre navigateur.
+              </p>
+            </div>
+
+            <!-- 7. Crédits -->
+            <div>
+                <h2 class="text-2xl font-semibold mb-4">7. Crédits</h2>
+                <p class="leading-relaxed">
+                    <strong>Conception et développement du site :</strong> [Nom de l'agence ou du développeur, si applicable]<br />
+                    <strong>Photographies :</strong> [Nom du photographe ou de la banque d'images, si applicable]
+                </p>
+            </div>
+
+            <p class="text-center text-sm text-[#8B7569] pt-4">
+                Dernière mise à jour : 15 août 2025
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <FolatingButtonWhatsapp />
+    <Footer />
+    <AppointmentBar />
+
+    <!-- Script Google Analytics -->
+    <script define:vars={{ analyticsId }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', analyticsId);
+    </script>
+</body>
+</html>

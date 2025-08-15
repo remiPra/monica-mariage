@@ -1,0 +1,355 @@
+---
+// --- IMPORTATION DES COMPOSANTS DE LA PAGE ---
+import Header from "../components/Header.astro";
+import FolatingButtonWhatsapp from "../components/FolatingButtonWhatsapp.astro";
+import Footer from "../components/Footer.astro";
+import AppointmentBar from "../components/AppointmentBar.astro";
+
+// --- DÉFINITION DES VARIABLES SEO POUR CETTE PAGE ---
+const pageTitle = "Politique de Confidentialité - Monica Mariage";
+const pageDescription = "Politique de confidentialité et protection des données personnelles de Monica Mariage. Conformité RGPD pour vos informations personnelles.";
+const canonicalURL = Astro.url.href; // Génère l'URL canonique correcte
+
+// Variable pour le script Google Analytics
+const analyticsId = "G-H8RDXC45EX";
+---
+
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {/* --- SECTION SEO COMPLÈTE ET SPÉCIFIQUE À LA POLITIQUE DE CONFIDENTIALITÉ --- */}
+    
+    <!-- Titre et Description -->
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+
+    <!-- Robots et URL Canonique -->
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph (Pour le partage sur les réseaux sociaux) -->
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content="Monica Mariage" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://www.monicamariage.com/images/cover-robes.jpg" />
+
+    <!-- Twitter Card (Pour le partage sur Twitter) -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content="https://www.monicamariage.com/images/cover-robes.jpg" />
+    
+    {/* --- FIN DE LA SECTION SEO --- */}
+
+    <!-- Éléments techniques : Vérification Google, Polices, Icônes, etc. -->
+    <meta name="google-site-verification" content="rq53avWhuLrrx3ABvRJ12myweeaU47sTzsWdbNOatsU" />
+    <link rel="preload" href="/fonts/great-vibes-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/cormorant-garamond-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+</head>
+
+<body>
+    <Header />
+
+    <main class="pt-24">
+      <section class="py-16 bg-gradient-to-b from-white to-[#FDE9E6]">
+        <div class="container mx-auto px-4 max-w-4xl">
+          <div class="text-center mb-12">
+            <h1 class="font-vibes text-5xl text-[#af7749] mb-4">Politique de Confidentialité</h1>
+            <div class="flex items-center justify-center gap-4 mb-8">
+              <span class="h-px w-16 bg-[#C5A880]"></span>
+              <p class="text-[#8B7569] text-sm font-medium">PROTECTION DE VOS DONNÉES</p>
+              <span class="h-px w-16 bg-[#C5A880]"></span>
+            </div>
+          </div>
+  
+          <div class="bg-white rounded-2xl shadow-sm p-8 space-y-8">
+            <!-- Introduction -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">Introduction</h2>
+              <p class="text-[#5F4B3F] mb-4">
+                Monica Mariage s'engage à protéger la confidentialité et la sécurité de vos 
+                données personnelles. Cette politique explique comment nous collectons, 
+                utilisons et protégeons vos informations.
+              </p>
+              <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                <p class="text-[#5F4B3F]">
+                  <strong>Responsable du traitement :</strong> Monica Wang - Monica Mariage<br>
+                  <strong>Contact :</strong> monicamariage@hotmail.com | 06 68 30 09 60
+                </p>
+              </div>
+            </div>
+  
+            <!-- Données collectées -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">1. Données personnelles collectées</h2>
+              
+              <h3 class="text-lg font-semibold text-[#5F4B3F] mb-3">1.1 Données d'identification</h3>
+              <ul class="text-[#5F4B3F] space-y-1 list-disc list-inside mb-4">
+                <li>Nom et prénom</li>
+                <li>Adresse email</li>
+                <li>Numéro de téléphone</li>
+                <li>Adresse postale (si nécessaire)</li>
+              </ul>
+  
+              <h3 class="text-lg font-semibold text-[#5F4B3F] mb-3">1.2 Données liées au projet</h3>
+              <ul class="text-[#5F4B3F] space-y-1 list-disc list-inside mb-4">
+                <li>Date de mariage</li>
+                <li>Préférences de style</li>
+                <li>Mesures corporelles</li>
+                <li>Budget estimé</li>
+                <li>Messages et échanges</li>
+              </ul>
+  
+              <h3 class="text-lg font-semibold text-[#5F4B3F] mb-3">1.3 Données de navigation</h3>
+              <ul class="text-[#5F4B3F] space-y-1 list-disc list-inside">
+                <li>Cookies de Google Analytics (anonymisés)</li>
+                <li>Adresse IP (anonymisée)</li>
+                <li>Pages visitées</li>
+                <li>Durée de visite</li>
+              </ul>
+            </div>
+  
+            <!-- Finalités -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">2. Finalités du traitement</h2>
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">📞 Gestion des rendez-vous</h3>
+                  <p class="text-[#5F4B3F] text-sm">
+                    Planification et suivi de vos rendez-vous dans notre showroom
+                  </p>
+                </div>
+                <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">👗 Création sur-mesure</h3>
+                  <p class="text-[#5F4B3F] text-sm">
+                    Conception de votre robe selon vos mesures et préférences
+                  </p>
+                </div>
+                <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">💬 Communication</h3>
+                  <p class="text-[#5F4B3F] text-sm">
+                    Réponses à vos questions et suivi de votre projet
+                  </p>
+                </div>
+                <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">📊 Amélioration du service</h3>
+                  <p class="text-[#5F4B3F] text-sm">
+                    Analyse anonyme pour améliorer notre site et nos services
+                  </p>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Base légale -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">3. Base légale du traitement</h2>
+              <div class="bg-[#FDF8F7] p-6 rounded-lg">
+                <ul class="text-[#5F4B3F] space-y-2">
+                  <li><strong>• Consentement :</strong> pour l'envoi d'informations et la communication</li>
+                  <li><strong>• Exécution du contrat :</strong> pour la création et livraison de votre robe</li>
+                  <li><strong>• Intérêt légitime :</strong> pour l'amélioration de nos services</li>
+                  <li><strong>• Obligation légale :</strong> pour la facturation et la comptabilité</li>
+                </ul>
+              </div>
+            </div>
+  
+            <!-- Destinataires -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">4. Destinataires des données</h2>
+              <p class="text-[#5F4B3F] mb-4">
+                Vos données personnelles sont traitées uniquement par Monica Mariage et ne sont 
+                jamais vendues, louées ou échangées avec des tiers.
+              </p>
+              <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                <p class="text-[#5F4B3F] text-sm">
+                  <strong>Exceptions :</strong> Partage limité avec nos prestataires techniques 
+                  (hébergement web, analytics) dans le respect de la confidentialité.
+                </p>
+              </div>
+            </div>
+  
+            <!-- Durée de conservation -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">5. Durée de conservation</h2>
+              <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">👤 Données clients</h3>
+                  <ul class="text-[#5F4B3F] text-sm space-y-1">
+                    <li>• Prospects : 3 ans maximum</li>
+                    <li>• Clients : 10 ans (obligations comptables)</li>
+                    <li>• Mesures : conservées tant que nécessaire</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">📊 Données techniques</h3>
+                  <ul class="text-[#5F4B3F] text-sm space-y-1">
+                    <li>• Cookies analytics : 26 mois</li>
+                    <li>• Logs de connexion : 12 mois</li>
+                    <li>• Données anonymisées : sans limite</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Droits -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">6. Vos droits</h2>
+              <p class="text-[#5F4B3F] mb-4">
+                Conformément au RGPD, vous disposez des droits suivants sur vos données personnelles :
+              </p>
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">✅ Droit d'accès</h3>
+                  <p class="text-[#5F4B3F] text-sm">
+                    Connaître les données que nous détenons sur vous
+                  </p>
+                </div>
+                <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">✏️ Droit de rectification</h3>
+                  <p class="text-[#5F4B3F] text-sm">
+                    Corriger ou mettre à jour vos informations
+                  </p>
+                </div>
+                <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">🗑️ Droit d'effacement</h3>
+                  <p class="text-[#5F4B3F] text-sm">
+                    Demander la suppression de vos données
+                  </p>
+                </div>
+                <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">⏸️ Droit d'opposition</h3>
+                  <p class="text-[#5F4B3F] text-sm">
+                    Vous opposer au traitement de vos données
+                  </p>
+                </div>
+                <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">📦 Droit à la portabilité</h3>
+                  <p class="text-[#5F4B3F] text-sm">
+                    Récupérer vos données dans un format lisible
+                  </p>
+                </div>
+                <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">⏹️ Droit de limitation</h3>
+                  <p class="text-[#5F4B3F] text-sm">
+                    Limiter le traitement de vos données
+                  </p>
+                </div>
+              </div>
+              
+              <div class="bg-[#af7749] text-white p-4 rounded-lg mt-6">
+                <h3 class="font-semibold mb-2">💡 Comment exercer vos droits ?</h3>
+                <p class="text-sm mb-2">
+                  Contactez-nous par email à <strong>monicamariage@hotmail.com</strong> 
+                  ou par téléphone au <strong>06 68 30 09 60</strong>
+                </p>
+                <p class="text-sm">
+                  Réponse garantie sous 30 jours • Joindre une pièce d'identité pour sécuriser votre demande
+                </p>
+              </div>
+            </div>
+   
+            <!-- Sécurité -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">7. Sécurité des données</h2>
+              <p class="text-[#5F4B3F] mb-4">
+                Monica Mariage met en œuvre des mesures techniques et organisationnelles 
+                appropriées pour protéger vos données personnelles :
+              </p>
+              <div class="grid md:grid-cols-3 gap-4">
+                <div class="text-center">
+                  <div class="w-16 h-16 bg-[#C99A9A] rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12c5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                  </div>
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">🔒 Chiffrement</h3>
+                  <p class="text-[#5F4B3F] text-sm">Connexion HTTPS sécurisée</p>
+                </div>
+                <div class="text-center">
+                  <div class="w-16 h-16 bg-[#C99A9A] rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6z"/></svg>
+                  </div>
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">🏠 Stockage local</h3>
+                  <p class="text-[#5F4B3F] text-sm">Données stockées en France</p>
+                </div>
+                <div class="text-center">
+                  <div class="w-16 h-16 bg-[#C99A9A] rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5l1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                  </div>
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">🔐 Accès restreint</h3>
+                  <p class="text-[#5F4B3F] text-sm">Personnel autorisé uniquement</p>
+                </div>
+              </div>
+            </div>
+   
+            <!-- Cookies -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">8. Cookies et traceurs</h2>
+              <p class="text-[#5F4B3F] mb-4">Notre site utilise des cookies pour améliorer votre expérience de navigation :</p>
+              <div class="space-y-4">
+                <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">📊 Google Analytics</h3>
+                  <p class="text-[#5F4B3F] text-sm mb-2">Analyse anonyme de l'audience pour améliorer notre site</p>
+                  <p class="text-[#5F4B3F] text-xs">Données anonymisées • Pas de profilage publicitaire • Durée : 26 mois</p>
+                </div>
+                <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                  <h3 class="font-semibold text-[#5F4B3F] mb-2">⚙️ Cookies techniques</h3>
+                  <p class="text-[#5F4B3F] text-sm">Nécessaires au fonctionnement du site (navigation, sécurité)</p>
+                </div>
+              </div>
+              <div class="bg-[#af7749] text-white p-4 rounded-lg mt-4">
+                <h3 class="font-semibold mb-2">🍪 Gestion des cookies</h3>
+                <p class="text-sm">Vous pouvez désactiver les cookies dans les paramètres de votre navigateur ou utiliser des extensions de blocage.</p>
+              </div>
+            </div>
+   
+            <!-- Transferts -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">9. Transferts de données hors UE</h2>
+              <p class="text-[#5F4B3F] mb-4">Vos données personnelles sont traitées principalement en France. Certains services tiers (Google Analytics, hébergement Vercel) peuvent transférer des données techniques aux États-Unis, dans le respect des clauses contractuelles types de la Commission Européenne garantissant un niveau de protection adéquat.</p>
+            </div>
+   
+            <!-- Réclamations -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">10. Réclamations</h2>
+              <p class="text-[#5F4B3F] mb-4">
+                Si vous estimez que vos droits ne sont pas respectés, vous pouvez nous contacter ou déposer une réclamation auprès de la CNIL (Commission Nationale de l'Informatique et des Libertés) : <a href="https://www.cnil.fr" class="text-[#af7749] hover:underline">www.cnil.fr</a>.
+              </p>
+            </div>
+   
+            <!-- Modifications -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">11. Modifications de la politique</h2>
+              <p class="text-[#5F4B3F]">
+                Cette politique de confidentialité peut être mise à jour. La date de la dernière mise à jour sera toujours indiquée en bas de page.
+              </p>
+            </div>
+   
+            <p class="text-center text-[#8B7569] text-sm pt-4 border-t border-gray-200">
+              Politique de confidentialité mise à jour le 15 août 2025
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <FolatingButtonWhatsapp />
+    <Footer />
+    <AppointmentBar />
+
+    <!-- Script Google Analytics -->
+    <script define:vars={{ analyticsId }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', analyticsId);
+    </script>
+</body>
+</html> 

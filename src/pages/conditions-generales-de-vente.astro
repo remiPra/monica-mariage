@@ -1,0 +1,283 @@
+---
+// --- IMPORTATION DES COMPOSANTS DE LA PAGE ---
+import Header from "../components/Header.astro";
+import FolatingButtonWhatsapp from "../components/FolatingButtonWhatsapp.astro";
+import Footer from "../components/Footer.astro";
+import AppointmentBar from "../components/AppointmentBar.astro";
+
+// --- DÉFINITION DES VARIABLES SEO POUR CETTE PAGE ---
+const pageTitle = "Conditions Générales de Vente - Monica Mariage";
+const pageDescription = "Consultez les conditions générales de vente de Monica Mariage. Tarifs, délais, modalités de paiement et garanties pour vos robes de mariée sur-mesure à Toulouse.";
+const canonicalURL = Astro.url.href; // Génère l'URL canonique correcte pour cette page
+
+// Variable pour le script Google Analytics
+const analyticsId = "G-H8RDXC45EX";
+---
+
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {/* --- SECTION SEO COMPLÈTE ET SPÉCIFIQUE AUX CGV --- */}
+    
+    <!-- Titre et Description -->
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+
+    <!-- Robots et URL Canonique -->
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph (Pour le partage sur les réseaux sociaux) -->
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content="Monica Mariage" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://www.monicamariage.com/images/cover-robes.jpg" />
+
+    <!-- Twitter Card (Pour le partage sur Twitter) -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content="https://www.monicamariage.com/images/cover-robes.jpg" />
+    
+    {/* --- FIN DE LA SECTION SEO --- */}
+
+    <!-- Éléments techniques : Vérification Google, Polices, Icônes, etc. -->
+    <meta name="google-site-verification" content="rq53avWhuLrrx3ABvRJ12myweeaU47sTzsWdbNOatsU" />
+    <link rel="preload" href="/fonts/great-vibes-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/cormorant-garamond-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+</head>
+
+<body>
+    <Header />
+
+    <main class="pt-24">
+      <section class="py-16 bg-gradient-to-b from-white to-[#FDE9E6]">
+        <div class="container mx-auto px-4 max-w-4xl">
+          <div class="text-center mb-12">
+            <h1 class="font-vibes text-5xl text-[#af7749] mb-4">Conditions Générales de Vente</h1>
+            <div class="flex items-center justify-center gap-4 mb-8">
+              <span class="h-px w-16 bg-[#C5A880]"></span>
+              <p class="text-[#8B7569] text-sm font-medium">MODALITÉS DE COMMANDE</p>
+              <span class="h-px w-16 bg-[#C5A880]"></span>
+            </div>
+          </div>
+  
+          <div class="bg-white rounded-2xl shadow-sm p-8 space-y-8">
+            <!-- Préambule -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">Préambule</h2>
+              <p class="text-[#5F4B3F]">
+                Les présentes conditions générales de vente (CGV) s'appliquent à toutes les 
+                commandes passées auprès de Monica Mariage pour la création de robes de mariée 
+                sur-mesure. Toute commande implique l'acceptation pleine et entière de ces conditions.
+              </p>
+            </div>
+  
+            <!-- Article 1 -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">1. Objet et champ d'application</h2>
+              <p class="text-[#5F4B3F] mb-4">
+                Monica Mariage propose des services de création et confection de robes de mariée 
+                sur-mesure dans son showroom situé à Seysses (31600).
+              </p>
+              <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                <p class="text-[#5F4B3F]">
+                  <strong>Services inclus :</strong> Conception, création, essayages, retouches nécessaires
+                </p>
+              </div>
+            </div>
+  
+            <!-- Article 2 -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">2. Tarifs et modalités de paiement</h2>
+              
+              <h3 class="text-lg font-semibold text-[#5F4B3F] mb-3">2.1 Tarifs</h3>
+              <div class="bg-[#FDF8F7] p-4 rounded-lg mb-4">
+                <p class="text-[#5F4B3F] mb-2">
+                  <strong>Gamme de prix :</strong> 750€ à 1850€ TTC
+                </p>
+                <p class="text-[#5F4B3F]">
+                  Le prix final est déterminé en fonction du modèle choisi, des tissus sélectionnés 
+                  et des personnalisations demandées.
+                </p>
+              </div>
+  
+              <h3 class="text-lg font-semibold text-[#5F4B3F] mb-3">2.2 Modalités de paiement</h3>
+              <ul class="text-[#5F4B3F] space-y-2 list-disc list-inside">
+                <li><strong>50%</strong> à la signature du devis (acompte)</li>
+                <li><strong>25%</strong> au premier essayage</li>
+                <li><strong>25%</strong> à la livraison de la robe</li>
+              </ul>
+              <p class="text-[#5F4B3F] mt-3 text-sm">
+                Paiements acceptés : espèces, chèque, virement bancaire.
+              </p>
+            </div>
+  
+            <!-- Article 3 -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">3. Commande et devis</h2>
+              <p class="text-[#5F4B3F] mb-4">
+                Toute commande fait l'objet d'un devis détaillé précisant :
+              </p>
+              <ul class="text-[#5F4B3F] space-y-2 list-disc list-inside">
+                <li>Le modèle de robe choisi</li>
+                <li>Les tissus et accessoires sélectionnés</li>
+                <li>Les mesures prises</li>
+                <li>Le prix total</li>
+                <li>Les délais de confection</li>
+                <li>Les modalités de paiement</li>
+              </ul>
+              <p class="text-[#5F4B3F] mt-4">
+                Le devis signé et l'acompte versé valent acceptation de la commande.
+              </p>
+            </div>
+  
+            <!-- Article 4 -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">4. Délais de confection</h2>
+              <div class="bg-[#FDF8F7] p-4 rounded-lg">
+                <p class="text-[#5F4B3F] mb-2">
+                  <strong>Délai standard :</strong> 6 semaines maximum à compter de la signature du devis
+                </p>
+                <p class="text-[#5F4B3F]">
+                  Ce délai peut être adapté selon vos contraintes et nos disponibilités.
+                </p>
+              </div>
+            </div>
+  
+            <!-- Article 5 -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">5. Essayages et retouches</h2>
+              <p class="text-[#5F4B3F] mb-4">
+                Le prix comprend les essayages nécessaires et les retouches standard pour 
+                l'ajustement de la robe à votre morphologie.
+              </p>
+              <p class="text-[#5F4B3F]">
+                Les modifications importantes demandées après validation du premier essayage 
+                peuvent faire l'objet d'un supplément.
+              </p>
+            </div>
+  
+            <!-- Article 6 -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">6. Livraison</h2>
+              <p class="text-[#5F4B3F] mb-4">
+                La robe est remise en main propre dans notre showroom à Seysses sur rendez-vous.
+              </p>
+              <p class="text-[#5F4B3F]">
+                Un service de livraison à domicile peut être organisé sur demande dans un rayon 
+                de 50km autour de Toulouse (frais supplémentaires).
+              </p>
+            </div>
+  
+            <!-- Article 7 -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">7. Droit de rétractation</h2>
+              <p class="text-[#5F4B3F] mb-4">
+                Conformément à l'article L221-28 du Code de la consommation, le droit de 
+                rétractation ne s'applique pas aux biens confectionnés selon les spécifications 
+                du consommateur ou nettement personnalisés.
+              </p>
+              <p class="text-[#5F4B3F]">
+                Les robes de mariée étant créées sur-mesure selon vos mesures et préférences, 
+                aucun droit de rétractation ne peut être exercé.
+              </p>
+            </div>
+  
+            <!-- Article 8 -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">8. Garanties</h2>
+              <h3 class="text-lg font-semibold text-[#5F4B3F] mb-3">8.1 Garantie qualité</h3>
+              <p class="text-[#5F4B3F] mb-4">
+                Monica Mariage garantit la qualité des matériaux utilisés et la conformité 
+                de la robe aux spécifications du devis.
+              </p>
+              
+              <h3 class="text-lg font-semibold text-[#5F4B3F] mb-3">8.2 Garantie retouches</h3>
+              <p class="text-[#5F4B3F]">
+                Les retouches mineures sont garanties pendant 30 jours après la livraison 
+                (ajustement de l'ourlet, serrage/desserrage de 1 taille maximum).
+              </p>
+            </div>
+  
+            <!-- Article 9 -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">9. Annulation</h2>
+              <p class="text-[#5F4B3F] mb-4">
+                En cas d'annulation de la commande par le client :
+              </p>
+              <ul class="text-[#5F4B3F] space-y-2 list-disc list-inside">
+                <li><strong>Avant le début de confection :</strong> remboursement de 80% de l'acompte</li>
+                <li><strong>Après le début de confection :</strong> l'acompte reste acquis</li>
+                <li><strong>Après le premier essayage :</strong> le montant déjà versé reste acquis</li>
+              </ul>
+            </div>
+  
+            <!-- Article 10 -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">10. Force majeure</h2>
+              <p class="text-[#5F4B3F]">
+                Monica Mariage ne saurait être tenue responsable de l'inexécution de ses 
+                obligations en cas de force majeure (maladie, accident, catastrophe naturelle, etc.).
+              </p>
+            </div>
+  
+            <!-- Article 11 -->
+            <div>
+              <h2 class="text-2xl font-semibold text-[#5F4B3F] mb-4">11. Règlement des litiges</h2>
+              <p class="text-[#5F4B3F] mb-4">
+                En cas de litige, nous privilégions une résolution amiable. 
+                À défaut d'accord, le litige sera porté devant les tribunaux compétents.
+              </p>
+              <p class="text-[#5F4B3F] text-sm">
+                Conformément à la réglementation, le consommateur peut recourir à une médiation 
+                gratuite en cas de litige.
+              </p>
+            </div>
+  
+            <!-- Contact -->
+            <div class="bg-[#af7749] text-white p-6 rounded-lg">
+              <h3 class="text-xl font-semibold mb-3">Questions sur nos CGV ?</h3>
+              <p class="mb-3">N'hésitez pas à nous contacter pour toute clarification :</p>
+              <div class="grid sm:grid-cols-2 gap-3 text-sm">
+                <div>
+                  <p><strong>📞 Téléphone :</strong> 06 68 30 09 60</p>
+                  <p><strong>✉️ Email :</strong> monicamariage@hotmail.com</p>
+                </div>
+                <div>
+                  <p><strong>📍 Showroom :</strong> 1220 chemin de brouquere</p>
+                  <p>31600 Seysses (sur RDV)</p>
+                </div>
+              </div>
+            </div>
+  
+            <p class="text-center text-[#8B7569] text-sm">
+              CGV applicables à compter du 1er janvier 2025
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <FolatingButtonWhatsapp />
+    <Footer />
+    <AppointmentBar />
+
+    <!-- Script Google Analytics -->
+    <script define:vars={{ analyticsId }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', analyticsId);
+    </script>
+</body>
+</html>
