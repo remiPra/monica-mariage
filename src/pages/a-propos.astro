@@ -1,0 +1,464 @@
+---
+// Fichier: src/pages/a-propos.astro
+import HomeLayout from "../layouts/HomeLayout.astro";
+---
+
+<HomeLayout
+  title="À propos de Monica Mariage - Créatrice de robes de mariée à Toulouse depuis 2014"
+  description="Découvrez l'histoire de Monica Mariage, créatrice passionnée de robes de mariée sur-mesure depuis 2014. Expertise, savoir-faire et accompagnement personnalisé dans notre showroom privé à Seysses près de Toulouse."
+>
+  <!-- Schema JSON-LD pour la page About -->
+  <script type="application/ld+json" slot="head">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Monica Wang",
+      "jobTitle": "Créatrice de robes de mariée",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Monica Mariage",
+        "url": "https://www.monicamariage.com",
+        "sameAs": [
+          "https://www.instagram.com/monicamariage/",
+          "https://wa.me/33668300960"
+        ]
+      },
+      "description": "Créatrice passionnée de robes de mariée sur-mesure depuis 2014, spécialisée dans l'accompagnement personnalisé des futures mariées",
+      "knowsAbout": [
+        "Robes de mariée sur-mesure",
+        "Couture traditionnelle",
+        "Conseil en mariage",
+        "Morphologie féminine",
+        "Design de robes",
+        "Retouches haute couture"
+      ],
+      "areaServed": {
+        "@type": "Place",
+        "name": "Toulouse et Occitanie"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "1220 chemin de brouquere",
+        "addressLocality": "Seysses",
+        "addressRegion": "Occitanie",
+        "postalCode": "31600",
+        "addressCountry": "FR"
+      },
+      "foundingDate": "2014",
+      "email": "monicamariage@hotmail.com",
+      "telephone": "+33668300960"
+    }
+  </script>
+
+  <main class="pt-24 mt-[100px]">
+    <!-- Section Hero -->
+    <section class="py-16 bg-gradient-to-b h-800 from-white to-[#FDE9E6]">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <div class="text-center mb-12">
+          <!-- Logo/Image de Monica -->
+          <div class="w-32 h-32 mb-6 mx-auto">
+            <img 
+              src="/image/iconerobe.png" 
+              alt="Monica Mariage - Créatrice de robes de mariée" 
+              width="128" 
+              height="128" 
+              class="w-full h-full object-cover rounded-full border-4 border-[#F0E6E2] shadow-lg"
+              loading="eager"
+            />
+          </div>
+          
+          <h1 class="font-vibes text-5xl md:text-6xl text-[#af7749] mb-4">
+            L'histoire de Monica Mariage
+          </h1>
+          
+          <!-- Trait décoratif -->
+          <div class="flex items-center justify-center gap-4 mb-8">
+            <span class="h-px w-16 bg-[#C5A880]"></span>
+            <p class="text-[#8B7569] text-sm font-medium">CRÉATRICE PASSIONNÉE DEPUIS 2014</p>
+            <span class="h-px w-16 bg-[#C5A880]"></span>
+          </div>
+          
+          <p class="text-xl text-[#5F4B3F] leading-relaxed max-w-3xl mx-auto">
+            "Chaque mariée mérite une robe unique qui raconte son histoire d'amour"
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Histoire personnelle -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <div class="grid lg:grid-cols-2 gap-12 items-center mb-16">
+          <div class="order-2 w-32 h-32 lg:order-1">
+            <img 
+              src="/image/monica-atelier.jpg" 
+              alt="Monica dans son atelier de création" 
+              class=" rounded-2xl shadow-xl w-full hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+              onerror="this.src='/image/iconerobe.png'"
+            />
+          </div>
+          <div class="order-1 lg:order-2">
+            <h2 class="text-3xl md:text-4xl font-semibold text-[#5F4B3F] mb-6">
+              Une passion devenue expertise
+            </h2>
+            <p class="text-[#5F4B3F] leading-relaxed mb-6 text-lg">
+              Depuis <strong>2014</strong>, Monica Mariage accompagne les futures mariées de Toulouse 
+              et sa région dans la création de leur robe de rêve. Spécialisée dans le 
+              <strong>sur-mesure</strong>, Monica met son expertise au service de chaque mariée pour 
+              créer une robe unique qui correspond parfaitement à sa personnalité et 
+              sa silhouette.
+            </p>
+            <p class="text-[#5F4B3F] leading-relaxed mb-6 text-lg">
+              Installée dans un <strong>showroom privé à Seysses</strong>, Monica privilégie un 
+              accompagnement personnalisé dans un cadre intimiste, loin de l'agitation 
+              des grands salons. Chaque rendez-vous est un moment privilégié où la 
+              future mariée est notre seule priorité.
+            </p>
+            <div class="bg-[#FDF8F7] border-l-4 border-[#C99A9A] p-6 rounded-r-lg">
+              <p class="text-[#5F4B3F] italic font-medium">
+                "Mon objectif ? Que chaque mariée se sente belle, confiante et unique 
+                le jour de son mariage. C'est pour cela que je crée des robes sur-mesure 
+                qui s'adaptent à chaque femme."
+              </p>
+              <span class="text-[#af7749] font-semibold mt-2 block">— Monica</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Savoir-faire -->
+    <section class="py-16 bg-gradient-to-b from-[#FDF8F7] to-white">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-semibold text-[#5F4B3F] mb-6">
+            Notre savoir-faire unique
+          </h2>
+          <p class="text-[#8B7569] text-lg max-w-2xl mx-auto">
+            Plus qu'une simple boutique, Monica Mariage offre une expérience sur-mesure 
+            complète pour créer la robe de vos rêves.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 mb-16">
+          <!-- Création sur-mesure -->
+          <div class="text-center group hover:scale-105 transition-transform duration-300">
+            <div class="w-20 h-20 bg-gradient-to-br from-[#C99A9A] to-[#af7749] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                <circle cx="12" cy="12" r="8" stroke="white" stroke-width="2" fill="none"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-[#5F4B3F] mb-3">Création 100% sur-mesure</h3>
+            <p class="text-[#8B7569] leading-relaxed">
+              Chaque robe est créée selon vos mesures exactes, vos préférences de style 
+              et votre morphologie unique.
+            </p>
+          </div>
+
+          <!-- Accompagnement personnalisé -->
+          <div class="text-center group hover:scale-105 transition-transform duration-300">
+            <div class="w-20 h-20 bg-gradient-to-br from-[#C99A9A] to-[#af7749] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+                <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-[#5F4B3F] mb-3">Accompagnement expert</h3>
+            <p class="text-[#8B7569] leading-relaxed">
+              Conseils personnalisés pour choisir le style, les tissus et les détails 
+              qui vous sublimeront le jour J.
+            </p>
+          </div>
+
+          <!-- Showroom privé -->
+          <div class="text-center group hover:scale-105 transition-transform duration-300">
+            <div class="w-20 h-20 bg-gradient-to-br from-[#C99A9A] to-[#af7749] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-[#5F4B3F] mb-3">Showroom privé</h3>
+            <p class="text-[#8B7569] leading-relaxed">
+              Rendez-vous exclusifs dans un cadre intimiste et chaleureux, 
+              sans contrainte de temps ni pression commerciale.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Chiffres clés -->
+    <section class="py-16 bg-[#af7749] text-white">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-semibold mb-4">
+            Monica Mariage en chiffres
+          </h2>
+          <p class="text-white/90 text-lg">
+            Plus de 10 ans d'expertise au service des futures mariées
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-4 gap-8 text-center">
+          <div class="group">
+            <div class="text-4xl md:text-5xl font-bold mb-2 text-[#FDE9E6]">11</div>
+            <div class="text-lg font-medium mb-1">Années</div>
+            <div class="text-white/80 text-sm">d'expérience depuis 2014</div>
+          </div>
+          <div class="group">
+            <div class="text-4xl md:text-5xl font-bold mb-2 text-[#FDE9E6]">750€-1850€</div>
+            <div class="text-lg font-medium mb-1">Tarifs</div>
+            <div class="text-white/80 text-sm">transparents et justes</div>
+          </div>
+          <div class="group">
+            <div class="text-4xl md:text-5xl font-bold mb-2 text-[#FDE9E6]">4.2★</div>
+            <div class="text-lg font-medium mb-1">Note Google</div>
+            <div class="text-white/80 text-sm">sur 151 avis clients</div>
+          </div>
+          <div class="group">
+            <div class="text-4xl md:text-5xl font-bold mb-2 text-[#FDE9E6]">6</div>
+            <div class="text-lg font-medium mb-1">Semaines</div>
+            <div class="text-white/80 text-sm">délai de confection</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Pourquoi choisir -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-semibold text-[#5F4B3F] mb-6">
+            Pourquoi choisir Monica Mariage ?
+          </h2>
+          <p class="text-[#8B7569] text-lg max-w-2xl mx-auto">
+            Découvrez ce qui fait la différence dans notre approche unique 
+            de la création de robes de mariée.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <!-- Avantage 1 -->
+          <div class="flex items-start bg-[#FDF8F7] p-6 rounded-xl hover:shadow-md transition-shadow">
+            <div class="w-8 h-8 bg-[#C99A9A] rounded-full flex-shrink-0 mr-4 mt-1 flex items-center justify-center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-[#5F4B3F] mb-2 text-lg">
+                Expertise reconnue depuis 2014
+              </h3>
+              <p class="text-[#8B7569]">
+                Plus de 10 années d'expérience dans la création de robes de mariée, 
+                avec une connaissance approfondie de toutes les morphologies et tous les styles.
+              </p>
+            </div>
+          </div>
+
+          <!-- Avantage 2 -->
+          <div class="flex items-start bg-[#FDF8F7] p-6 rounded-xl hover:shadow-md transition-shadow">
+            <div class="w-8 h-8 bg-[#C99A9A] rounded-full flex-shrink-0 mr-4 mt-1 flex items-center justify-center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-[#5F4B3F] mb-2 text-lg">
+                Prix transparents et justes
+              </h3>
+              <p class="text-[#8B7569]">
+                Tarifs de 750€ à 1850€ annoncés dès le premier rendez-vous, 
+                avec possibilité de paiement en 3 fois sans frais.
+              </p>
+            </div>
+          </div>
+
+          <!-- Avantage 3 -->
+          <div class="flex items-start bg-[#FDF8F7] p-6 rounded-xl hover:shadow-md transition-shadow">
+            <div class="w-8 h-8 bg-[#C99A9A] rounded-full flex-shrink-0 mr-4 mt-1 flex items-center justify-center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-[#5F4B3F] mb-2 text-lg">
+                Satisfaction client exceptionnelle
+              </h3>
+              <p class="text-[#8B7569]">
+                Note de 4.2/5 sur 151 avis Google, témoignant de la qualité 
+                de notre service et de nos créations.
+              </p>
+            </div>
+          </div>
+
+          <!-- Avantage 4 -->
+          <div class="flex items-start bg-[#FDF8F7] p-6 rounded-xl hover:shadow-md transition-shadow">
+            <div class="w-8 h-8 bg-[#C99A9A] rounded-full flex-shrink-0 mr-4 mt-1 flex items-center justify-center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-[#5F4B3F] mb-2 text-lg">
+                Proximité et accessibilité
+              </h3>
+              <p class="text-[#8B7569]">
+                Showroom facilement accessible depuis Toulouse et toute la région Occitanie, 
+                avec parking gratuit et sans contrainte de temps.
+              </p>
+            </div>
+          </div>
+
+          <!-- Avantage 5 -->
+          <div class="flex items-start bg-[#FDF8F7] p-6 rounded-xl hover:shadow-md transition-shadow">
+            <div class="w-8 h-8 bg-[#C99A9A] rounded-full flex-shrink-0 mr-4 mt-1 flex items-center justify-center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-[#5F4B3F] mb-2 text-lg">
+                Toutes tailles et tous styles
+              </h3>
+              <p class="text-[#8B7569]">
+                Créations adaptées jusqu'à la taille 44, dans tous les styles : 
+                princesse, sirène, bohème, minimaliste.
+              </p>
+            </div>
+          </div>
+
+          <!-- Avantage 6 -->
+          <div class="flex items-start bg-[#FDF8F7] p-6 rounded-xl hover:shadow-md transition-shadow">
+            <div class="w-8 h-8 bg-[#C99A9A] rounded-full flex-shrink-0 mr-4 mt-1 flex items-center justify-center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-[#5F4B3F] mb-2 text-lg">
+                Délais courts respectés
+              </h3>
+              <p class="text-[#8B7569]">
+                Création de votre robe en 6 semaines maximum, parfait pour les mariages 
+                organisés dans l'urgence ou les demandes tardives.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Témoignages -->
+    <section class="py-16 bg-gradient-to-b from-[#FDF8F7] to-white">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-semibold text-[#5F4B3F] mb-6">
+            Ce que disent nos mariées
+          </h2>
+          <p class="text-[#8B7569] text-lg">
+            Découvrez les témoignages authentiques de nos clientes
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Témoignage 1 -->
+          <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-[#F0E6E2]">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 bg-[#C99A9A] rounded-full flex items-center justify-center mr-4">
+                <span class="text-white font-semibold">M</span>
+              </div>
+              <div>
+                <h4 class="font-semibold text-[#5F4B3F]">Mathilda</h4>
+                <div class="text-[#B68E75]">★★★★★</div>
+              </div>
+            </div>
+            <p class="text-[#5F4B3F] italic leading-relaxed">
+              "Monica est très gentille et professionnelle ! Elle a su être à l'écoute 
+              durant le choix de ma robe de mariée et nous avons trouvé ensemble ma PÉPITE."
+            </p>
+          </div>
+
+          <!-- Témoignage 2 -->
+          <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-[#F0E6E2]">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 bg-[#C99A9A] rounded-full flex items-center justify-center mr-4">
+                <span class="text-white font-semibold">A</span>
+              </div>
+              <div>
+                <h4 class="font-semibold text-[#5F4B3F]">Amélie</h4>
+                <div class="text-[#B68E75]">★★★★★</div>
+              </div>
+            </div>
+            <p class="text-[#5F4B3F] italic leading-relaxed">
+              "J'ai passé le plus beau jour de ma vie dans une robe dans laquelle 
+              je me sentais belle ! Je recommande grandement Monica les yeux fermés."
+            </p>
+          </div>
+
+          <!-- Témoignage 3 -->
+          <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-[#F0E6E2]">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 bg-[#C99A9A] rounded-full flex items-center justify-center mr-4">
+                <span class="text-white font-semibold">E</span>
+              </div>
+              <div>
+                <h4 class="font-semibold text-[#5F4B3F]">Emmanuelle</h4>
+                <div class="text-[#B68E75]">★★★★★</div>
+              </div>
+            </div>
+            <p class="text-[#5F4B3F] italic leading-relaxed">
+              "Merci Monica pour ton accompagnement, ton professionnalisme et ta gentillesse. 
+              Choisir sa robe avec toi n'était que du bonheur !"
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section CTA finale -->
+    <section class="py-16 bg-gradient-to-r from-[#af7749] to-[#925c36] text-white">
+      <div class="container mx-auto px-4 max-w-4xl text-center">
+        <h2 class="text-3xl md:text-4xl font-semibold mb-6">
+          Prête à créer la robe de vos rêves ?
+        </h2>
+        <p class="text-xl mb-8 text-white/90 leading-relaxed">
+          Rencontrons-nous dans notre showroom privé à Seysses pour donner vie 
+          à votre vision et créer ensemble votre robe de mariée unique.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <a 
+            href="/prendre-rendez-vous" 
+            class="inline-flex items-center bg-white text-[#af7749] px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors shadow-lg"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="mr-2">
+              <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14a2 2 0 0 0 2 2h14c1.11 0 2-.89 2-2V5a2 2 0 0 0-2-2m0 16H5V9h14z"/>
+            </svg>
+            Prendre rendez-vous
+          </a>
+          
+          <a 
+            href="https://wa.me/33668300960" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-[#af7749] transition-colors"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="mr-2">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            WhatsApp
+          </a>
+        </div>
+        
+        <div class="mt-8 text-center">
+          <p class="text-white/80 text-sm">
+            📍 1220 chemin de brouquere, 31600 Seysses<br>
+            📞 06 68 30 09 60 | ✉️ monicamariage@hotmail.com
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</HomeLayout>
