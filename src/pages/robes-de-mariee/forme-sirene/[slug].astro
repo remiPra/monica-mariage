@@ -1,191 +1,541 @@
 ---
 import ProductLayout from "../../../layouts/ProductLayout.astro";
-import HeroSection from "../../../components/HeroSection.astro";
+import PrendreRendezVousButtonHome from "../../../components/PrendreRendezVousButtonHome.astro";
 import { sanityClient } from "../../../sanityClient";
 import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
 import FavoriButton from "../../../components/FavoriButton.astro";
-import FavoriDrawer from "../../../components/FavoriDrawer.astro";
+import { buildProductUrl } from "../../../utils/urls.js";
 
-// 🔍 DEBUG : récupérer TOUTES les robes pour inspection
-const allDocs = await sanityClient.fetch(`
-  *[_type == "robe"]{
-    _id,
-    dressName,
-    category,
-    sousCategorie,
-    "slug": slug.current,
-    imagesCloudinary[]{ url, alt }
-  }
-`);
-console.log("🚀 SANITY: allDocs =", JSON.stringify(allDocs, null, 2));
 
-// 1) Récupération des robes
-const robesData = await sanityClient.fetch(`       
-  *[_type == "robe"
-    && category == "robes-de-mariee"
-    && sousCategorie == "forme-sirene"]
-  | order(order asc){
-    _id,
-    dressName,
-    category,
-    sousCategorie,
-    "slug": slug.current,
-    order,
-    imagesCloudinary[]{ url, alt }
-  }
-`);
+// 1) Génération des chemins dynamiques pour chaque slug de robe
+export async function getStaticPaths() {
+  const slugs = await sanityClient.fetch(`
+    *[_type == "robe" && category == "robes-de-mariee" && sousCategorie == "forme-sirene"].slug.current
+  `);
+  return slugs.map((s) => ({ params: { slug: s } }));
+}
 
-// 2) Mapping et optimisation des images
-const robes = (robesData || []).map((robe) => ({
-  ...robe,
-  images: (robe.imagesCloudinary || []).map((img) => ({
+// 2) Lecture du paramètre de route
+const { slug } = Astro.params;
+
+// 3) Construire l'URL canonique PROPREMENT
+const canonicalUrl = buildProductUrl('robes-de-mariee', 'forme-sirene', slug);
+
+// 4) Fetch de tous les robes pour navigation
+const allRobes = await sanityClient.fetch(
+  `*[_type == "robe" && category == "robes-de-mariee" && sousCategorie == "forme-sirene"]{
+     "slug": slug.current,
+     dressName,
+     category,
+     sousCategorie
+  }`
+);
+
+// 5) Récupération de la robe courante
+const robeData = await sanityClient.fetch(
+  `*[_type == "robe"
+     && category == "robes-de-mariee"
+     && sousCategorie == "forme-sirene"
+     && slug.current == $slug][0]{
+       title,
+       _id,
+       metaDescription,
+       dressName,
+       descriptionCourte,
+        contenuEnrichi,  
+       faqHtml,         
+       category,
+       sousCategorie,
+       price,
+       "imagesCloudinary": imagesCloudinary[]{ url, alt }
+  }`,
+  { slug }
+);
+
+if (!robeData) {
+  throw new Error(`Robe introuvable pour le slug : ${slug}`);
+}
+
+// 6) Préparation des images pour le slider
+const robe = {
+  ...robeData,
+  images: (robeData.imagesCloudinary || []).map((img) => ({
     alt: img.alt,
-    optimizedImages: {
-      gallery: {
-        desktop: optimizeCloudinaryUrl(img.url, false), // mode desktop
-        tablet: optimizeCloudinaryUrl(img.url, false), // même chose pour tablet
-        mobile: optimizeCloudinaryUrl(img.url, "imageMobileGallery"), // celui-ci est correct
-      },
+    optimized: {
+      tablet: optimizeCloudinaryUrl(img.url, "desktop"),
+      mobile: optimizeCloudinaryUrl(img.url, "mobile"),
     },
+    full: optimizeCloudinaryUrl(img.url, "full"),
   })),
-}));
-
-// Préparer les URLs des premières images visibles pour le préchargement
-const preloadImageUrls = robes
-  .slice(0, 4)
-  .map((robe) => robe.images[0]?.optimizedImages.gallery.mobile)
-  .filter(Boolean);
-
-// Préparer les données de collection pour le JSON-LD
-const collectionData = {
-  collectionName: "Robes de Mariée Princesse",
-  url: "https://monicamariage.com/robes-de-mariee/forme-sirene",
-  items: robes.map(robe => ({
-    dressName: robe.dressName,
-    slug: robe.slug,
-    sousCategorie: robe.sousCategorie,
-    image: robe.images[0]?.optimizedImages?.gallery?.mobile,
-    url: `https://monicamariage.com/robes-de-mariee/${robe.sousCategorie}/${robe.slug}`
-  }))
 };
 
-// Breadcrumbs
+// 7) Calcul des précédents/suivants
+const currentIndex = allRobes.findIndex((r) => r.slug === slug);
+const prevItem = allRobes[(currentIndex - 1 + allRobes.length) % allRobes.length];
+const nextItem = allRobes[(currentIndex + 1) % allRobes.length];
+
+// 8) Suggestions aléatoires
+const othersData = await sanityClient.fetch(
+  `*[_type == "robe"
+     && category == "robes-de-mariee"
+     && sousCategorie == "forme-sirene"
+     && slug.current != $slug]{
+       "slug": slug.current,
+         _id,
+       dressName,
+       category,
+       sousCategorie,
+       "imagesCloudinary": imagesCloudinary[]{ url, alt }
+  }`,
+  { slug }
+);
+
+const randomDresses = (othersData || [])
+  .map((d) => ({
+    ...d,
+    images: (d.imagesCloudinary || []).map((img) => ({
+      alt: img.alt,
+      optimized: {
+        tablet: optimizeCloudinaryUrl(img.url, { w: 400, h: 600, crop: "fill" }),
+        mobile: optimizeCloudinaryUrl(img.url, { w: 200, h: 300, crop: "fill" }),
+      },
+    })),
+  }))
+  .sort(() => 0.5 - Math.random())
+  .slice(0, 4);
+
+// Récupération de la première image pour préchargement
+const firstImage = robe.images.length > 0 ? robe.images[0] : null;
+
+// Préparer les données produit pour le JSON-LD avec URL canonique
+const productData = {
+  dressName: robe.dressName,
+  descriptionCourte: robe.descriptionCourte,
+  metaDescription: robe.metaDescription,
+  imagesCloudinary: robe.imagesCloudinary,
+  price: robe.price,
+  sousCategorie: "forme-sirene",
+  url: canonicalUrl
+};
+
+// Breadcrumbs avec URLs absolues correctes
 const breadcrumbs = [
   { name: "Accueil", url: "https://monicamariage.com" },
   { name: "Robes de mariée", url: "https://monicamariage.com/robes-de-mariee" },
-  { name: "Forme Princesse", url: "https://monicamariage.com/robes-de-mariee/forme-sirene" }
+  { name: "Forme Princesse", url: "https://monicamariage.com/robes-de-mariee/forme-sirene" },
+  { name: robe.dressName, url: canonicalUrl }
 ];
 ---
 
 <ProductLayout
-  title="Robes de Mariée Princesse à Toulouse | Monica Mariage"
-  description="Robes de mariée princesse à Toulouse. Modèles volumineux et féeriques chez Monica Mariage pour réaliser votre rêve de conte de fées. Essayages personnalisés."
-  product={collectionData}
+  title={robe.title || `${robe.dressName} - Robe de Mariée Princesse | Monica Mariage Toulouse`}
+  description={robe.metaDescription || `Découvrez la robe ${robe.dressName}, une création élégante de notre collection princesse chez Monica Mariage à Toulouse.`}
+  product={productData}
   breadcrumbs={breadcrumbs}
-  collection={true}
+  mainImageUrl={firstImage?.optimized?.tablet}
+  canonicalUrl={canonicalUrl}
 >
-  <!-- Préchargement des images critiques -->
-  {
-    preloadImageUrls.map((url) => (
-      <link rel="preload" href={url} as="image" fetchpriority="high" />
-    ))
-  }
-
-  <section
-    style="margin-top: 120px;"
-    class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]"
-  >
-    <HeroSection
-      title="Robes de Mariée Princesse et Évasée | Collection Toulouse"
-      subtitle="Des modèles volumineux et féeriques pour un mariage digne d'un conte de fées"
-      buttonText="Découvrir la collection"
-      scrollTarget="#robes-collection"
-      iconSrc="/image/iconerobe.png"
+  <!-- Préchargement de la première image -->
+  {firstImage && (
+    <link
+      rel="preload"
+      href={firstImage.optimized.tablet}
+      as="image"
+      fetchpriority="high"
+      slot="head"
     />
-    <div class="flex justify-center px-4" id="robes">
-      <div
-        class="grid mb-[100px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full"
-      >
-        {
-          robes.map((robe, index) => (
-            <a
-              href={`/robes-de-mariee/${robe.sousCategorie}/${robe.slug}`}
-              class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] lg:h-[420px] shadow-md"
-              data-index={index}
-            >
-              {/* Overlay dégradé */}
-              {/*    <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />*/}
-              {/* Bouton Favoris */}
-              <FavoriButton
-                imageId={robe._id}
-                robeSlug={robe.slug}
-                sousCategorie={robe.sousCategorie}
-              />
-              {/* Image */}
-              {robe.images[0] ? (
-                <img
-                  src={robe.images[0].optimizedImages.gallery.mobile}
-                  alt={robe.images[0].alt || robe.dressName}
-                  width="300"
-                  height="500"
-                  fetchpriority={index < 2 ? "high" : "auto"}
-                  class="w-full absolute top-0 h-auto object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
-                  loading={index < 4 ? "eager" : "lazy"}
-                  decoding={index < 4 ? "sync" : "async"}
-                />
-              ) : (
-                <div class="absolute inset-0 bg-gray-200 flex items-center justify-center">
-                  <span class="text-gray-600">Image non disponible</span>
-                </div>
-              )}
+  )}
 
-              {/* Contenu bas */}
-              <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
-                <p class="text-white font-vibes text-4xl mb-4 drop-shadow-lg">
-                  {robe.dressName.charAt(0).toUpperCase() +
-                    robe.dressName.slice(1).toLowerCase()}
-                </p>
-                <button class="bg-[#C5A880] text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
-                  Découvrir cette robe
-                </button>
-              </div>
-            </a>
-          ))
+  <!-- Chargement du CSS Swiper -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    media="print"
+    onload="this.media='all'"
+    slot="head"
+  />
+  <noscript slot="head">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+  </noscript>
+
+  <div class="mt-[120px] md:mt-20 max-w-7xl mx-auto px-4 lg:px-6 flex flex-col lg:flex-row gap-10">
+    <!-- Colonne slider + nav -->
+    <section class="w-full lg:w-3/5">
+      <!-- Navigation précédent/suivant -->
+      <div class="mt-8 flex items-center justify-between mb-6 px-2 py-3">
+        <!-- Précédent -->
+        <a
+          href={`/robes-de-mariee/${prevItem.sousCategorie}/${prevItem.slug}`}
+          class="flex items-center text-[#af7749] hover:text-[#C5A880] transition-colors"
+          title={`Voir la robe ${prevItem.dressName}`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </a>
+
+        <!-- Titre courant -->
+        <p class="text-[#af7749] font-vibes text-3xl text-center">
+          {
+            robe.dressName.charAt(0).toUpperCase() +
+              robe.dressName.slice(1).toLowerCase()
+          }
+        </p>
+
+        <!-- Suivant -->
+        <a
+          href={`/robes-de-mariee/${nextItem.sousCategorie}/${nextItem.slug}`}
+          class="flex items-center text-[#af7749] hover:text-[#C5A880] transition-colors"
+          title={`Voir la robe ${nextItem.dressName}`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Slider Swiper -->
+      <div class="relative w-full max-w-lg h-[600px] lg:h-[700px] mx-auto overflow-hidden">
+        <div class="swiper-container shadow-lg h-full">
+          <FavoriButton
+            imageId={robe._id}
+            robeSlug={slug}
+            position="absolute top-4 right-4 z-30"
+            robeName={robe.dressName}
+            imageUrl={robe.images[0]?.optimized.tablet}
+            imageAlt={robe.images[0]?.alt || robe.dressName}
+            sousCategorie={robe.sousCategorie}
+          />
+          <div class="swiper-wrapper">
+            {
+              robe.images.map((img, i) => (
+                <div class="swiper-slide overflow-hidden" key={i}>
+                  <div class="border border-[#C5A880] rounded-2xl h-full w-full overflow-hidden">
+                    <img
+                      src={img.optimized.tablet}
+                      alt={img.alt}
+                      class="object-cover w-full h-full"
+                      loading={i === 0 ? "eager" : "lazy"}
+                      fetchpriority={i === 0 ? "high" : "auto"}
+                      onclick={`openModal("${img.full}", "${img.alt}")`}
+                      decoding={i === 0 ? "sync" : "async"}
+                    />
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+          <!-- Contrôles du slider -->
+          <div class="swiper-button-prev custom-swiper-button-prev"></div>
+          <div class="swiper-button-next custom-swiper-button-next"></div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+        <!-- Image statique pour fallback -->
+        {
+          firstImage && (
+            <div class="no-js-image absolute inset-0 rounded-2xl">
+              <img
+                src={firstImage.optimized.tablet}
+                alt={firstImage.alt}
+                class="object-cover w-full h-full rounded-2xl"
+              />
+            </div>
+          )
         }
       </div>
 
-      <script defer>
-        // Amélioration du script d'animation pour ne pas retarder le LCP
-        document.addEventListener("DOMContentLoaded", () => {
-          // Initialiser immédiatement les images visibles
-          const observer = new IntersectionObserver((entries) => {
+      <!-- Modal plein écran -->
+      <div
+        id="zoomModal"
+        class="fixed inset-0 bg-black bg-opacity-80 hidden items-center justify-center z-50"
+      >
+        <div class="relative w-full justify-center">
+          <button
+            id="closeModal"
+            class="fixed z-56 top-4 right-4 text-white text-3xl">&times;</button
+          >
+          <img
+            id="modalImage"
+            src=""
+            alt=""
+            class="max-w-full md:mx-auto object-contain rounded-lg shadow-lg"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Colonne infos -->
+    <section class="w-full lg:w-2/5 flex flex-col justify-center">
+      <h1 class="text-4xl font-vibes text-[#af7749] mb-4">
+        Robe de Mariée {
+          robe.dressName.charAt(0).toUpperCase() +
+            robe.dressName.slice(1).toLowerCase()
+        }
+      </h1>
+      <div
+        class="text-gray-700 text-lg leading-relaxed"
+        set:html={robe.descriptionCourte}
+      />
+
+      <div class="mt-10 text-center">
+        <PrendreRendezVousButtonHome />
+      </div>
+    </section>
+  </div>
+  <!-- Contenu enrichi -->
+  {robe.contenuEnrichi && (
+      <div class="mt-20"
+    
+        set:html={robe.contenuEnrichi}
+      />
+  )}
+  <!-- Suggestions -->
+  <div class="max-w-7xl mb-20 mx-auto px-6 mt-20">
+    <h2 class="text-5xl font-vibes text-[#af7749] mb-8 text-center">
+      Vous pourriez aussi aimer
+    </h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {
+        randomDresses.map((d, i) => (
+          <a
+            key={i}
+            href={`/robes-de-mariee/${d.sousCategorie}/${d.slug}`}
+            class="relative rounded-2xl overflow-hidden h-[300px] lg:h-[450px] shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+          >
+            <img
+              src={d.images[0]?.optimized.mobile}
+              alt={d.images[0]?.alt}
+              class="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-[#af7749] opacity-20" />
+            <div class="absolute bottom-0 w-full p-4 text-center bg-gradient-to-t from-[#af7749] to-transparent">
+              <p class="text-white font-vibes text-2xl lg:text-3xl drop-shadow-lg">
+                {d.dressName.charAt(0).toUpperCase() +
+                  d.dressName.slice(1).toLowerCase()}
+              </p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- faqhtml -->
+   
+
+
+  
+  {robe.faqHtml && (
+    <div class="max-w-7xl mx-auto px-4 lg:px-6 mt-8">
+      <div 
+        set:html={robe.faqHtml}
+      />
+    </div>
+  )}
+ 
+  
+
+  <!-- Styles CSS -->
+  <style>
+    /* Image statique visible par défaut */
+    .no-js-image {
+      display: block;
+    }
+
+    /* Personnalisation des contrôles Swiper */
+    .custom-swiper-button-prev,
+    .custom-swiper-button-next {
+      color: #c5a880;
+    }
+
+    .custom-swiper-button-prev:after,
+    .custom-swiper-button-next:after {
+      font-size: 18px;
+    }
+
+    .custom-swiper-button-prev:hover,
+    .custom-swiper-button-next:hover {
+      color: #a27e5d;
+    }
+
+    /* Pagination */
+    .swiper-pagination-bullet {
+      background: #c5a880;
+    }
+
+    .swiper-pagination-bullet-active {
+      background: #af7749;
+    }
+  </style>
+
+  <!-- Script principal -->
+  <script is:inline>
+    // Fonction d'initialisation de Swiper
+    function initSwiper() {
+      if (typeof Swiper !== "undefined") {
+        console.log("Initialisation de Swiper...");
+        
+        // Masquer l'image statique
+        const noJsImage = document.querySelector(".no-js-image");
+        if (noJsImage) noJsImage.style.display = "none";
+
+        // Initialiser Swiper
+        new Swiper(".swiper-container", {
+          loop: true,
+          slidesPerView: 1,
+          autoplay: { 
+            delay: 5000,
+            disableOnInteraction: false 
+          },
+          navigation: {
+            nextEl: ".custom-swiper-button-next",
+            prevEl: ".custom-swiper-button-prev",
+          },
+          pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+          },
+          effect: 'fade',
+          fadeEffect: {
+            crossFade: true
+          }
+        });
+      } else {
+        // Réessayer si Swiper n'est pas encore chargé
+        setTimeout(initSwiper, 100);
+      }
+    }
+
+    // Charger Swiper puis l'initialiser
+    function loadAndInitSwiper() {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js';
+      script.onload = initSwiper;
+      script.onerror = () => console.error('Erreur de chargement de Swiper');
+      document.head.appendChild(script);
+    }
+
+    // Observer l'intersection pour charger Swiper seulement quand nécessaire
+    if ("IntersectionObserver" in window) {
+      const swiperContainer = document.querySelector(".swiper-container");
+      
+      if (swiperContainer) {
+        const observer = new IntersectionObserver(
+          (entries) => {
             entries.forEach((entry) => {
               if (entry.isIntersecting) {
-                entry.target.classList.add("active");
+                loadAndInitSwiper();
                 observer.unobserve(entry.target);
               }
             });
+          },
+          { threshold: 0.1 }
+        );
+        
+        observer.observe(swiperContainer);
+      }
+    } else {
+      // Fallback pour les anciens navigateurs
+      if (document.readyState !== "loading") {
+        loadAndInitSwiper();
+      } else {
+        document.addEventListener("DOMContentLoaded", loadAndInitSwiper);
+      }
+    }
+
+    // Configuration du modal (indépendant de Swiper)
+    document.addEventListener("DOMContentLoaded", () => {
+      const modal = document.getElementById("zoomModal");
+      const modalImage = document.getElementById("modalImage");
+      const closeModalBtn = document.getElementById("closeModal");
+        const accordionTriggers = document.querySelectorAll(".accordion-trigger");
+
+      accordionTriggers.forEach((trigger) => {
+        trigger.addEventListener("click", () => {
+          const expanded = trigger.getAttribute("aria-expanded") === "true";
+          const content = trigger.nextElementSibling;
+          const icon = trigger.querySelector("span:last-child");
+
+          // Fermer tous les autres accordéons
+          accordionTriggers.forEach((otherTrigger) => {
+            if (
+              otherTrigger !== trigger &&
+              otherTrigger.getAttribute("aria-expanded") === "true"
+            ) {
+              otherTrigger.setAttribute("aria-expanded", "false");
+              const otherContent = otherTrigger.nextElementSibling;
+              const otherIcon = otherTrigger.querySelector("span:last-child");
+
+              otherContent.style.maxHeight = "0";
+              otherContent.style.opacity = "0";
+              otherIcon.style.transform = "rotate(0deg)";
+            }
           });
 
-          document.querySelectorAll(".fade-in").forEach((el) => {
-            observer.observe(el);
-          });
+          // Ouvrir/fermer l'accordéon actuel
+          if (expanded) {
+            // Fermer
+            trigger.setAttribute("aria-expanded", "false");
+            content.style.maxHeight = "0";
+            content.style.opacity = "0";
+            icon.style.transform = "rotate(0deg)";
+          } else {
+            // Ouvrir
+            trigger.setAttribute("aria-expanded", "true");
+            content.style.maxHeight = content.scrollHeight + "px";
+            content.style.opacity = "1";
+            // icon.style.transform = "rotate(45deg)";
+          }
         });
-      </script>
+      });
+      window.openModal = (src, alt) => {
+        if (modal && modalImage) {
+          modalImage.src = src;
+          modalImage.alt = alt;
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+        }
+      };
 
-      <style>
-        .fade-in {
-          opacity: 0;
-          transform: translateY(10px);
-          transition:
-            opacity 0.6s ease-in-out,
-            transform 0.6s ease-in-out;
+      const closeModal = () => {
+        if (modal) {
+          modal.classList.add("hidden");
+          modal.classList.remove("flex");
         }
-        .fade-in.active {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      </style>
-    </div>
-  </section>
+      };
+
+      if (closeModalBtn) {
+        closeModalBtn.addEventListener("click", closeModal);
+      }
+      
+      if (modal) {
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) {
+            closeModal();
+          }
+        });
+      }
+    });
+  </script>
 </ProductLayout>
