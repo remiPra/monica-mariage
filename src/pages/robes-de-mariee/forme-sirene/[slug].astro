@@ -214,7 +214,7 @@ const breadcrumbs = [
       </div>
 
       <!-- Slider Swiper -->
-      <div class="relative w-full max-w-lg h-[600px] lg:h-[700px] mx-auto overflow-hidden">
+      <div class="relative w-full max-w-lg h-[1000px] lg:h-[1000px] mx-auto overflow-hidden">
         <div class="swiper-container shadow-lg h-full">
           <FavoriButton
             imageId={robe._id}
@@ -231,33 +231,31 @@ const breadcrumbs = [
                 <div class="swiper-slide overflow-hidden" key={i}>
                   <div class="border border-[#C5A880] rounded-2xl h-full w-full overflow-hidden">
                     <img
-                      src={img.optimized.tablet}
-                      alt={img.alt}
-                      class="object-cover w-full h-full"
-                      loading={i === 0 ? "eager" : "lazy"}
-                      fetchpriority={i === 0 ? "high" : "auto"}
-                      onclick={`openModal("${img.full}", "${img.alt}")`}
-                      decoding={i === 0 ? "sync" : "async"}
-                    />
+  src={img.optimized.tablet}
+  alt={img.alt}
+  class="object-cover w-full h-full" // Changé de object-contain à object-cover
+  loading={i === 0 ? "eager" : "lazy"}
+  fetchpriority={i === 0 ? "high" : "auto"}
+  onclick={`openModal("${img.full}", "${img.alt}")`}
+  decoding={i === 0 ? "sync" : "async"}
+/>
                   </div>
                 </div>
               ))
             }
           </div>
-          <!-- Contrôles du slider -->
           <div class="swiper-button-prev custom-swiper-button-prev"></div>
           <div class="swiper-button-next custom-swiper-button-next"></div>
           <div class="swiper-pagination"></div>
         </div>
 
-        <!-- Image statique pour fallback -->
         {
           firstImage && (
             <div class="no-js-image absolute inset-0 rounded-2xl">
               <img
                 src={firstImage.optimized.tablet}
                 alt={firstImage.alt}
-                class="object-cover w-full h-full rounded-2xl"
+                class="object-contain w-full h-full rounded-2xl"
               />
             </div>
           )
