@@ -7,7 +7,7 @@ import FavoriButton from "../../../components/FavoriButton.astro";
 import { buildProductUrl } from "../../../utils/urls.js";
 
 
-// 1) Génération des chemins dynamiques pour chaque slug de robe
+// 1) GÃ©nÃ©ration des chemins dynamiques pour chaque slug de robe
 export async function getStaticPaths() {
   const slugs = await sanityClient.fetch(`
     *[_type == "robe" && category == "robes-de-mariee" && sousCategorie == "forme-princesse"].slug.current
@@ -15,7 +15,7 @@ export async function getStaticPaths() {
   return slugs.map((s) => ({ params: { slug: s } }));
 }
 
-// 2) Lecture du paramètre de route
+// 2) Lecture du paramÃ¨tre de route
 const { slug } = Astro.params;
 
 // 3) Construire l'URL canonique PROPREMENT
@@ -31,7 +31,7 @@ const allRobes = await sanityClient.fetch(
   }`
 );
 
-// 5) Récupération de la robe courante
+// 5) RÃ©cupÃ©ration de la robe courante
 const robeData = await sanityClient.fetch(
   `*[_type == "robe"
      && category == "robes-de-mariee"
@@ -56,7 +56,7 @@ if (!robeData) {
   throw new Error(`Robe introuvable pour le slug : ${slug}`);
 }
 
-// 6) Préparation des images pour le slider
+// 6) PrÃ©paration des images pour le slider
 const robe = {
   ...robeData,
   images: (robeData.imagesCloudinary || []).map((img) => ({
@@ -69,12 +69,12 @@ const robe = {
   })),
 };
 
-// 7) Calcul des précédents/suivants
+// 7) Calcul des prÃ©cÃ©dents/suivants
 const currentIndex = allRobes.findIndex((r) => r.slug === slug);
 const prevItem = allRobes[(currentIndex - 1 + allRobes.length) % allRobes.length];
 const nextItem = allRobes[(currentIndex + 1) % allRobes.length];
 
-// 8) Suggestions aléatoires
+// 8) Suggestions alÃ©atoires
 const othersData = await sanityClient.fetch(
   `*[_type == "robe"
      && category == "robes-de-mariee"
@@ -104,10 +104,10 @@ const randomDresses = (othersData || [])
   .sort(() => 0.5 - Math.random())
   .slice(0, 4);
 
-// Récupération de la première image pour préchargement
+// RÃ©cupÃ©ration de la premiÃ¨re image pour prÃ©chargement
 const firstImage = robe.images.length > 0 ? robe.images[0] : null;
 
-// Préparer les données produit pour le JSON-LD avec URL canonique
+// PrÃ©parer les donnÃ©es produit pour le JSON-LD avec URL canonique
 const productData = {
   dressName: robe.dressName,
   descriptionCourte: robe.descriptionCourte,
@@ -121,21 +121,20 @@ const productData = {
 // Breadcrumbs avec URLs absolues correctes
 const breadcrumbs = [
   { name: "Accueil", url: "https://monicamariage.com" },
-  { name: "Robes de mariée", url: "https://monicamariage.com/robes-de-mariee" },
+  { name: "Robes de mariÃ©e", url: "https://monicamariage.com/robes-de-mariee" },
   { name: "Forme Princesse", url: "https://monicamariage.com/robes-de-mariee/forme-princesse" },
   { name: robe.dressName, url: canonicalUrl }
 ];
 ---
 
 <ProductLayout
-  title={robe.title || `${robe.dressName} - Robe de Mariée Princesse | Monica Mariage Toulouse`}
-  description={robe.metaDescription || `Découvrez la robe ${robe.dressName}, une création élégante de notre collection princesse chez Monica Mariage à Toulouse.`}
+  title={robe.title || `${robe.dressName} - Robe de MariÃ©e Princesse | Monica Mariage Toulouse`}
+  description={robe.metaDescription || `DÃ©couvrez la robe ${robe.dressName}, une crÃ©ation Ã©lÃ©gante de notre collection princesse chez Monica Mariage Ã  Toulouse.`}
   product={productData}
   breadcrumbs={breadcrumbs}
   mainImageUrl={firstImage?.optimized?.tablet}
   canonicalUrl={canonicalUrl}
 >
-  <!-- Préchargement de la première image -->
   {firstImage && (
     <link
       rel="preload"
@@ -146,7 +145,6 @@ const breadcrumbs = [
     />
   )}
 
-  <!-- Chargement du CSS Swiper -->
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
@@ -162,11 +160,8 @@ const breadcrumbs = [
   </noscript>
 
   <div class="mt-[120px] md:mt-20 max-w-7xl mx-auto px-4 lg:px-6 flex flex-col lg:flex-row gap-10">
-    <!-- Colonne slider + nav -->
     <section class="w-full lg:w-3/5">
-      <!-- Navigation précédent/suivant -->
       <div class="mt-8 flex items-center justify-between mb-6 px-2 py-3">
-        <!-- Précédent -->
         <a
           href={`/robes-de-mariee/${prevItem.sousCategorie}/${prevItem.slug}`}
           class="flex items-center text-[#af7749] hover:text-[#C5A880] transition-colors"
@@ -185,7 +180,6 @@ const breadcrumbs = [
           </svg>
         </a>
 
-        <!-- Titre courant -->
         <p class="text-[#af7749] font-vibes text-3xl text-center">
           {
             robe.dressName.charAt(0).toUpperCase() +
@@ -193,7 +187,6 @@ const breadcrumbs = [
           }
         </p>
 
-        <!-- Suivant -->
         <a
           href={`/robes-de-mariee/${nextItem.sousCategorie}/${nextItem.slug}`}
           class="flex items-center text-[#af7749] hover:text-[#C5A880] transition-colors"
@@ -213,8 +206,7 @@ const breadcrumbs = [
         </a>
       </div>
 
-      <!-- Slider Swiper -->
-      <div class="relative w-full max-w-lg h-[600px] lg:h-[700px] mx-auto overflow-hidden">
+      <div class="relative w-full max-w-lg h-[1000px] lg:h-[1000px] mx-auto overflow-hidden">
         <div class="swiper-container shadow-lg h-full">
           <FavoriButton
             imageId={robe._id}
@@ -231,40 +223,37 @@ const breadcrumbs = [
                 <div class="swiper-slide overflow-hidden" key={i}>
                   <div class="border border-[#C5A880] rounded-2xl h-full w-full overflow-hidden">
                     <img
-                      src={img.optimized.tablet}
-                      alt={img.alt}
-                      class="object-cover w-full h-full"
-                      loading={i === 0 ? "eager" : "lazy"}
-                      fetchpriority={i === 0 ? "high" : "auto"}
-                      onclick={`openModal("${img.full}", "${img.alt}")`}
-                      decoding={i === 0 ? "sync" : "async"}
-                    />
+  src={img.optimized.tablet}
+  alt={img.alt}
+  class="object-cover w-full h-full" // Changé de object-contain à object-cover
+  loading={i === 0 ? "eager" : "lazy"}
+  fetchpriority={i === 0 ? "high" : "auto"}
+  onclick={`openModal("${img.full}", "${img.alt}")`}
+  decoding={i === 0 ? "sync" : "async"}
+/>
                   </div>
                 </div>
               ))
             }
           </div>
-          <!-- Contrôles du slider -->
           <div class="swiper-button-prev custom-swiper-button-prev"></div>
           <div class="swiper-button-next custom-swiper-button-next"></div>
           <div class="swiper-pagination"></div>
         </div>
 
-        <!-- Image statique pour fallback -->
         {
           firstImage && (
             <div class="no-js-image absolute inset-0 rounded-2xl">
               <img
                 src={firstImage.optimized.tablet}
                 alt={firstImage.alt}
-                class="object-cover w-full h-full rounded-2xl"
+                class="object-contain w-full h-full rounded-2xl"
               />
             </div>
           )
         }
       </div>
 
-      <!-- Modal plein écran -->
       <div
         id="zoomModal"
         class="fixed inset-0 bg-black bg-opacity-80 hidden items-center justify-center z-50"
@@ -284,10 +273,9 @@ const breadcrumbs = [
       </div>
     </section>
 
-    <!-- Colonne infos -->
     <section class="w-full lg:w-2/5 flex flex-col justify-center">
       <h1 class="text-4xl font-vibes text-[#af7749] mb-4">
-        Robe de Mariée {
+        Robe de MariÃ©e {
           robe.dressName.charAt(0).toUpperCase() +
             robe.dressName.slice(1).toLowerCase()
         }
@@ -302,14 +290,12 @@ const breadcrumbs = [
       </div>
     </section>
   </div>
-  <!-- Contenu enrichi -->
   {robe.contenuEnrichi && (
       <div class="mt-20"
     
         set:html={robe.contenuEnrichi}
       />
   )}
-  <!-- Suggestions -->
   <div class="max-w-7xl mb-20 mx-auto px-6 mt-20">
     <h2 class="text-5xl font-vibes text-[#af7749] mb-8 text-center">
       Vous pourriez aussi aimer
@@ -341,11 +327,6 @@ const breadcrumbs = [
     </div>
   </div>
 
-  <!-- faqhtml -->
-   
-
-
-  
   {robe.faqHtml && (
     <div class="max-w-7xl mx-auto px-4 lg:px-6 mt-8">
       <div 
@@ -356,14 +337,13 @@ const breadcrumbs = [
  
   
 
-  <!-- Styles CSS -->
   <style>
-    /* Image statique visible par défaut */
+    /* Image statique visible par dÃ©faut */
     .no-js-image {
       display: block;
     }
 
-    /* Personnalisation des contrôles Swiper */
+    /* Personnalisation des contrÃ´les Swiper */
     .custom-swiper-button-prev,
     .custom-swiper-button-next {
       color: #c5a880;
@@ -389,7 +369,6 @@ const breadcrumbs = [
     }
   </style>
 
-  <!-- Script principal -->
   <script is:inline>
     // Fonction d'initialisation de Swiper
     function initSwiper() {
@@ -422,7 +401,7 @@ const breadcrumbs = [
           }
         });
       } else {
-        // Réessayer si Swiper n'est pas encore chargé
+        // RÃ©essayer si Swiper n'est pas encore chargÃ©
         setTimeout(initSwiper, 100);
       }
     }
@@ -436,7 +415,7 @@ const breadcrumbs = [
       document.head.appendChild(script);
     }
 
-    // Observer l'intersection pour charger Swiper seulement quand nécessaire
+    // Observer l'intersection pour charger Swiper seulement quand nÃ©cessaire
     if ("IntersectionObserver" in window) {
       const swiperContainer = document.querySelector(".swiper-container");
       
@@ -464,7 +443,7 @@ const breadcrumbs = [
       }
     }
 
-    // Configuration du modal (indépendant de Swiper)
+    // Configuration du modal (indÃ©pendant de Swiper)
     document.addEventListener("DOMContentLoaded", () => {
       const modal = document.getElementById("zoomModal");
       const modalImage = document.getElementById("modalImage");
@@ -477,7 +456,7 @@ const breadcrumbs = [
           const content = trigger.nextElementSibling;
           const icon = trigger.querySelector("span:last-child");
 
-          // Fermer tous les autres accordéons
+          // Fermer tous les autres accordÃ©ons
           accordionTriggers.forEach((otherTrigger) => {
             if (
               otherTrigger !== trigger &&
@@ -493,7 +472,7 @@ const breadcrumbs = [
             }
           });
 
-          // Ouvrir/fermer l'accordéon actuel
+          // Ouvrir/fermer l'accordÃ©on actuel
           if (expanded) {
             // Fermer
             trigger.setAttribute("aria-expanded", "false");
