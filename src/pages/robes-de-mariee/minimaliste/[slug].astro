@@ -1,10 +1,11 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
-// import BreadCrumbs from "../../../components/BreadCrumbs.astro";
+import ProductLayout from "../../../layouts/ProductLayout.astro";
 import PrendreRendezVousButtonHome from "../../../components/PrendreRendezVousButtonHome.astro";
 import { sanityClient } from "../../../sanityClient";
 import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
 import FavoriButton from "../../../components/FavoriButton.astro";
+import { buildProductUrl } from "../../../utils/urls.js";
+
 
 // 1) Génération des chemins dynamiques pour chaque slug de robe
 export async function getStaticPaths() {
@@ -17,7 +18,10 @@ export async function getStaticPaths() {
 // 2) Lecture du paramètre de route
 const { slug } = Astro.params;
 
-// 3) Fetch de tous les robes pour navigation
+// 3) Construire l'URL canonique PROPREMENT
+const canonicalUrl = buildProductUrl('robes-de-mariee', 'minimaliste', slug);
+
+// 4) Fetch de tous les robes pour navigation
 const allRobes = await sanityClient.fetch(
   `*[_type == "robe" && category == "robes-de-mariee" && sousCategorie == "minimaliste"]{
      "slug": slug.current,
@@ -27,7 +31,7 @@ const allRobes = await sanityClient.fetch(
   }`
 );
 
-// 4) Récupération de la robe courante
+// 5) Récupération de la robe courante
 const robeData = await sanityClient.fetch(
   `*[_type == "robe"
      && category == "robes-de-mariee"
@@ -38,8 +42,11 @@ const robeData = await sanityClient.fetch(
        metaDescription,
        dressName,
        descriptionCourte,
+        contenuEnrichi,  
+       faqHtml,         
        category,
        sousCategorie,
+       price,
        "imagesCloudinary": imagesCloudinary[]{ url, alt }
   }`,
   { slug }
@@ -49,27 +56,25 @@ if (!robeData) {
   throw new Error(`Robe introuvable pour le slug : ${slug}`);
 }
 
-// 5) Préparation des images pour le slider
-// 5) Préparation des images pour le slider
+// 6) Préparation des images pour le slider
 const robe = {
   ...robeData,
   images: (robeData.imagesCloudinary || []).map((img) => ({
     alt: img.alt,
     optimized: {
-      tablet: optimizeCloudinaryUrl(img.url, "desktop"), // Explicitement "desktop"
-      mobile: optimizeCloudinaryUrl(img.url, "mobile"), // Explicitement "mobile"
+      tablet: optimizeCloudinaryUrl(img.url, "desktop"),
+      mobile: optimizeCloudinaryUrl(img.url, "mobile"),
     },
     full: optimizeCloudinaryUrl(img.url, "full"),
   })),
 };
 
-// 6) Calcul des précédents/suivants
+// 7) Calcul des précédents/suivants
 const currentIndex = allRobes.findIndex((r) => r.slug === slug);
-const prevItem =
-  allRobes[(currentIndex - 1 + allRobes.length) % allRobes.length];
+const prevItem = allRobes[(currentIndex - 1 + allRobes.length) % allRobes.length];
 const nextItem = allRobes[(currentIndex + 1) % allRobes.length];
 
-// 7) Suggestions aléatoires
+// 8) Suggestions aléatoires
 const othersData = await sanityClient.fetch(
   `*[_type == "robe"
      && category == "robes-de-mariee"
@@ -84,22 +89,15 @@ const othersData = await sanityClient.fetch(
   }`,
   { slug }
 );
+
 const randomDresses = (othersData || [])
   .map((d) => ({
     ...d,
     images: (d.imagesCloudinary || []).map((img) => ({
       alt: img.alt,
       optimized: {
-        tablet: optimizeCloudinaryUrl(img.url, {
-          w: 400,
-          h: 600,
-          crop: "fill",
-        }),
-        mobile: optimizeCloudinaryUrl(img.url, {
-          w: 200,
-          h: 300,
-          crop: "fill",
-        }),
+        tablet: optimizeCloudinaryUrl(img.url, { w: 400, h: 600, crop: "fill" }),
+        mobile: optimizeCloudinaryUrl(img.url, { w: 200, h: 300, crop: "fill" }),
       },
     })),
   }))
@@ -108,109 +106,65 @@ const randomDresses = (othersData || [])
 
 // Récupération de la première image pour préchargement
 const firstImage = robe.images.length > 0 ? robe.images[0] : null;
+
+// Préparer les données produit pour le JSON-LD avec URL canonique
+const productData = {
+  dressName: robe.dressName,
+  descriptionCourte: robe.descriptionCourte,
+  metaDescription: robe.metaDescription,
+  imagesCloudinary: robe.imagesCloudinary,
+  price: robe.price,
+  sousCategorie: "minimaliste",
+  url: canonicalUrl
+};
+
+// Breadcrumbs avec URLs absolues correctes
+const breadcrumbs = [
+  { name: "Accueil", url: "https://monicamariage.com" },
+  { name: "Robes de mariée", url: "https://monicamariage.com/robes-de-mariee" },
+  { name: "Forme Princesse", url: "https://monicamariage.com/robes-de-mariee/minimaliste" },
+  { name: robe.dressName, url: canonicalUrl }
+];
 ---
 
-<Layout title={robe.title} description={robe.metaDescription}>
-  <!-- Préchargement de la première image pour améliorer le LCP -->
-  {
-    firstImage && (
-      <link
-        rel="preload"
-        href={
-          typeof window !== "undefined" && window.innerWidth < 768
-            ? firstImage.optimized.mobile
-            : firstImage.optimized.tablet
-        }
-        as="image"
-        fetchpriority="high"
-        media={
-          typeof window !== "undefined" && window.innerWidth < 768
-            ? "(max-width: 767px)"
-            : "(min-width: 768px)"
-        }
-      />
-    )
-  }
+<ProductLayout
+  title={robe.title || `${robe.dressName} - Robe de Mariée Princesse | Monica Mariage Toulouse`}
+  description={robe.metaDescription || `Découvrez la robe ${robe.dressName}, une création élégante de notre collection princesse chez Monica Mariage à Toulouse.`}
+  product={productData}
+  breadcrumbs={breadcrumbs}
+  mainImageUrl={firstImage?.optimized?.tablet}
+  canonicalUrl={canonicalUrl}
+>
+  <!-- Préchargement de la première image -->
+  {firstImage && (
+    <link
+      rel="preload"
+      href={firstImage.optimized.tablet}
+      as="image"
+      fetchpriority="high"
+      slot="head"
+    />
+  )}
 
-  <!-- Chargement optimisé du CSS Swiper -->
+  <!-- Chargement du CSS Swiper -->
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
     media="print"
     onload="this.media='all'"
+    slot="head"
   />
-  <noscript>
+  <noscript slot="head">
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
     />
   </noscript>
 
-  <!-- Chargement différé du JS Swiper -->
-  <script
-    defer
-    async
-    src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-
-  <style>
-    /* Personnalisation des flèches du slider Swiper */
-    .custom-swiper-button-prev,
-    .custom-swiper-button-next {
-      color: #c5a880;
-    }
-
-    .custom-swiper-button-prev:after,
-    .custom-swiper-button-next:after {
-      font-size: 24px;
-    }
-
-    .custom-swiper-button-prev:hover,
-    .custom-swiper-button-next:hover {
-      color: #a27e5d;
-    }
-
-    .nav-robe-btn {
-      display: flex;
-      align-items: center;
-      color: #af7749;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      transition: all 0.3s ease;
-      font-weight: 500;
-    }
-
-    .nav-robe-btn:hover {
-      background-color: rgba(197, 168, 128, 0.1);
-      color: #c5a880;
-    }
-
-    .category-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
-      padding: 0 0.5rem;
-    }
-
-    .category-pill {
-      background-color: #f9f5f0;
-      color: #af7749;
-      padding: 0.5rem 1.25rem;
-      border-radius: 2rem;
-      font-size: 0.9rem;
-      border: 1px solid #c5a880;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-  </style>
-
-  <div
-    class="mt-[120px] md:mt-20 max-w-7xl mx-auto px-4 lg:px-6 flex flex-col lg:flex-row gap-10"
-  >
+  <div class="mt-[120px] md:mt-20 max-w-7xl mx-auto px-4 lg:px-6 flex flex-col lg:flex-row gap-10">
     <!-- Colonne slider + nav -->
     <section class="w-full lg:w-3/5">
-      <!-- <BreadCrumbs /> -->
+      <!-- Navigation précédent/suivant -->
       <div class="mt-8 flex items-center justify-between mb-6 px-2 py-3">
         <!-- Précédent -->
         <a
@@ -218,7 +172,6 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
           class="flex items-center text-[#af7749] hover:text-[#C5A880] transition-colors"
           title={`Voir la robe ${prevItem.dressName}`}
         >
-          <!-- SVG flèche gauche -->
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 w-6"
@@ -246,7 +199,6 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
           class="flex items-center text-[#af7749] hover:text-[#C5A880] transition-colors"
           title={`Voir la robe ${nextItem.dressName}`}
         >
-          <!-- SVG flèche droite -->
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 w-6"
@@ -261,11 +213,9 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
         </a>
       </div>
 
-      <!-- Slider Swiper avec chargement prioritaire de la première image -->
-      <div
-        class="relative w-full max-w-md h-[600px] md:h-full mx-auto overflow-hidden"
-      >
-        <div class="swiper-container shadow-lg">
+      <!-- Slider Swiper -->
+      <div class="relative w-full max-w-lg h-[1000px] lg:h-[1000px] mx-auto overflow-hidden">
+        <div class="swiper-container shadow-lg h-full">
           <FavoriButton
             imageId={robe._id}
             robeSlug={slug}
@@ -281,35 +231,31 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
                 <div class="swiper-slide overflow-hidden" key={i}>
                   <div class="border border-[#C5A880] rounded-2xl h-full w-full overflow-hidden">
                     <img
-                      src={img.optimized.tablet}
-                      alt={img.alt}
-                      class="object-cover w-full h-[600px] md:h-full"
-                      loading={i === 0 ? "eager" : "lazy"}
-                      fetchpriority={i === 0 ? "high" : "auto"}
-                      onclick={`openModal("${img.full}", "${img.alt}")`}
-                      decoding={i === 0 ? "sync" : "async"}
-                    />
+  src={img.optimized.tablet}
+  alt={img.alt}
+  class="object-cover w-full h-full" // Changé de object-contain à object-cover
+  loading={i === 0 ? "eager" : "lazy"}
+  fetchpriority={i === 0 ? "high" : "auto"}
+  onclick={`openModal("${img.full}", "${img.alt}")`}
+  decoding={i === 0 ? "sync" : "async"}
+/>
                   </div>
                 </div>
               ))
             }
           </div>
-          <!-- Contrôles du slider -->
           <div class="swiper-button-prev custom-swiper-button-prev"></div>
           <div class="swiper-button-next custom-swiper-button-next"></div>
+          <div class="swiper-pagination"></div>
         </div>
 
-        <!-- Conteneur de l'image statique qui sera remplacé par Swiper -->
         {
           firstImage && (
-            <div
-              class="no-js-image absolute inset-0 rounded-2xl"
-              style="display: none;"
-            >
+            <div class="no-js-image absolute inset-0 rounded-2xl">
               <img
                 src={firstImage.optimized.tablet}
                 alt={firstImage.alt}
-                class="object-cover w-full h-full rounded-2xl"
+                class="object-contain w-full h-full rounded-2xl"
               />
             </div>
           )
@@ -354,6 +300,13 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
       </div>
     </section>
   </div>
+  <!-- Contenu enrichi -->
+  {robe.contenuEnrichi && (
+      <div class="mt-20"
+    
+        set:html={robe.contenuEnrichi}
+      />
+  )}
   <!-- Suggestions -->
   <div class="max-w-7xl mb-20 mx-auto px-6 mt-20">
     <h2 class="text-5xl font-vibes text-[#af7749] mb-8 text-center">
@@ -365,7 +318,7 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
           <a
             key={i}
             href={`/robes-de-mariee/${d.sousCategorie}/${d.slug}`}
-            class="relative rounded-2xl overflow-hidden h-[300px] lg:h-[450px] shadow-md hover:shadow-lg transition-shadow"
+            class="relative rounded-2xl overflow-hidden h-[300px] lg:h-[450px] shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
           >
             <img
               src={d.images[0]?.optimized.mobile}
@@ -375,7 +328,7 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
             />
             <div class="absolute inset-0 bg-[#af7749] opacity-20" />
             <div class="absolute bottom-0 w-full p-4 text-center bg-gradient-to-t from-[#af7749] to-transparent">
-              <p class="text-white font-vibes text-3xl drop-shadow-lg">
+              <p class="text-white font-vibes text-2xl lg:text-3xl drop-shadow-lg">
                 {d.dressName.charAt(0).toUpperCase() +
                   d.dressName.slice(1).toLowerCase()}
               </p>
@@ -386,101 +339,201 @@ const firstImage = robe.images.length > 0 ? robe.images[0] : null;
     </div>
   </div>
 
-  <!-- Script optimisé -->
-  <script>
-    // Affiche l'image statique si JS est désactivé
-    document.querySelector(".no-js-image").style.display = "block";
+  <!-- faqhtml -->
+   
 
-    // Fonction d'initialisation du slider
+
+  
+  {robe.faqHtml && (
+    <div class="max-w-7xl mx-auto px-4 lg:px-6 mt-8">
+      <div 
+        set:html={robe.faqHtml}
+      />
+    </div>
+  )}
+ 
+  
+
+  <!-- Styles CSS -->
+  <style>
+    /* Image statique visible par défaut */
+    .no-js-image {
+      display: block;
+    }
+
+    /* Personnalisation des contrôles Swiper */
+    .custom-swiper-button-prev,
+    .custom-swiper-button-next {
+      color: #c5a880;
+    }
+
+    .custom-swiper-button-prev:after,
+    .custom-swiper-button-next:after {
+      font-size: 18px;
+    }
+
+    .custom-swiper-button-prev:hover,
+    .custom-swiper-button-next:hover {
+      color: #a27e5d;
+    }
+
+    /* Pagination */
+    .swiper-pagination-bullet {
+      background: #c5a880;
+    }
+
+    .swiper-pagination-bullet-active {
+      background: #af7749;
+    }
+  </style>
+
+  <!-- Script principal -->
+  <script is:inline>
+    // Fonction d'initialisation de Swiper
     function initSwiper() {
       if (typeof Swiper !== "undefined") {
-        // Masque l'image statique une fois Swiper initialisé
+        console.log("Initialisation de Swiper...");
+        
+        // Masquer l'image statique
         const noJsImage = document.querySelector(".no-js-image");
         if (noJsImage) noJsImage.style.display = "none";
 
-        // Initialise Swiper
+        // Initialiser Swiper
         new Swiper(".swiper-container", {
           loop: true,
           slidesPerView: 1,
-          autoplay: { delay: 3000 },
+          autoplay: { 
+            delay: 5000,
+            disableOnInteraction: false 
+          },
           navigation: {
             nextEl: ".custom-swiper-button-next",
             prevEl: ".custom-swiper-button-prev",
           },
+          pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+          },
+          effect: 'fade',
+          fadeEffect: {
+            crossFade: true
+          }
         });
       } else {
-        // Si Swiper n'est pas encore chargé, on réessaie plus tard
+        // Réessayer si Swiper n'est pas encore chargé
         setTimeout(initSwiper, 100);
       }
     }
 
-    // Fonction pour configurer le modal
-    function setupModal() {
-      // Ouvre le modal
-      window.openModal = (src, alt) => {
-        const modal = document.getElementById("zoomModal");
-        const img = document.getElementById("modalImage");
-        img.src = src;
-        img.alt = alt;
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-      };
-
-      // Ferme le modal
-      document.getElementById("closeModal").addEventListener("click", () => {
-        document.getElementById("zoomModal").classList.add("hidden");
-        document.getElementById("zoomModal").classList.remove("flex");
-      });
-
-      // Fermer au clic sur le fond
-      document.getElementById("zoomModal").addEventListener("click", (e) => {
-        if (e.target.id === "zoomModal") {
-          e.currentTarget.classList.add("hidden");
-          e.currentTarget.classList.remove("flex");
-        }
-      });
+    // Charger Swiper puis l'initialiser
+    function loadAndInitSwiper() {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js';
+      script.onload = initSwiper;
+      script.onerror = () => console.error('Erreur de chargement de Swiper');
+      document.head.appendChild(script);
     }
 
-    // Utiliser l'intersection observer pour initialiser Swiper seulement quand le conteneur est visible
+    // Observer l'intersection pour charger Swiper seulement quand nécessaire
     if ("IntersectionObserver" in window) {
       const swiperContainer = document.querySelector(".swiper-container");
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              // Initialiser Swiper seulement quand le conteneur est dans le viewport
-              if ("requestIdleCallback" in window) {
-                requestIdleCallback(() => {
-                  initSwiper();
-                });
-              } else {
-                setTimeout(initSwiper, 1);
-              }
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.1 }
-      );
-
+      
       if (swiperContainer) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                loadAndInitSwiper();
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+        
         observer.observe(swiperContainer);
       }
     } else {
-      // Fallback pour les navigateurs qui ne supportent pas IntersectionObserver
+      // Fallback pour les anciens navigateurs
       if (document.readyState !== "loading") {
-        initSwiper();
+        loadAndInitSwiper();
       } else {
-        document.addEventListener("DOMContentLoaded", initSwiper);
+        document.addEventListener("DOMContentLoaded", loadAndInitSwiper);
       }
     }
 
-    // Configurer le modal dès que possible
-    if (document.readyState !== "loading") {
-      setupModal();
-    } else {
-      document.addEventListener("DOMContentLoaded", setupModal);
-    }
+    // Configuration du modal (indépendant de Swiper)
+    document.addEventListener("DOMContentLoaded", () => {
+      const modal = document.getElementById("zoomModal");
+      const modalImage = document.getElementById("modalImage");
+      const closeModalBtn = document.getElementById("closeModal");
+        const accordionTriggers = document.querySelectorAll(".accordion-trigger");
+
+      accordionTriggers.forEach((trigger) => {
+        trigger.addEventListener("click", () => {
+          const expanded = trigger.getAttribute("aria-expanded") === "true";
+          const content = trigger.nextElementSibling;
+          const icon = trigger.querySelector("span:last-child");
+
+          // Fermer tous les autres accordéons
+          accordionTriggers.forEach((otherTrigger) => {
+            if (
+              otherTrigger !== trigger &&
+              otherTrigger.getAttribute("aria-expanded") === "true"
+            ) {
+              otherTrigger.setAttribute("aria-expanded", "false");
+              const otherContent = otherTrigger.nextElementSibling;
+              const otherIcon = otherTrigger.querySelector("span:last-child");
+
+              otherContent.style.maxHeight = "0";
+              otherContent.style.opacity = "0";
+              otherIcon.style.transform = "rotate(0deg)";
+            }
+          });
+
+          // Ouvrir/fermer l'accordéon actuel
+          if (expanded) {
+            // Fermer
+            trigger.setAttribute("aria-expanded", "false");
+            content.style.maxHeight = "0";
+            content.style.opacity = "0";
+            icon.style.transform = "rotate(0deg)";
+          } else {
+            // Ouvrir
+            trigger.setAttribute("aria-expanded", "true");
+            content.style.maxHeight = content.scrollHeight + "px";
+            content.style.opacity = "1";
+            // icon.style.transform = "rotate(45deg)";
+          }
+        });
+      });
+      window.openModal = (src, alt) => {
+        if (modal && modalImage) {
+          modalImage.src = src;
+          modalImage.alt = alt;
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+        }
+      };
+
+      const closeModal = () => {
+        if (modal) {
+          modal.classList.add("hidden");
+          modal.classList.remove("flex");
+        }
+      };
+
+      if (closeModalBtn) {
+        closeModalBtn.addEventListener("click", closeModal);
+      }
+      
+      if (modal) {
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) {
+            closeModal();
+          }
+        });
+      }
+    });
   </script>
-</Layout>
+</ProductLayout>
