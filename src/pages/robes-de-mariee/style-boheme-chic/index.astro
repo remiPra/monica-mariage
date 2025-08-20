@@ -1,25 +1,35 @@
 ---
-import ProductLayout from "../../../layouts/ProductLayout.astro";
-import HeroSection from "../../../components/HeroSection.astro";
+// -----------------------------------------------------------------------------
+// SECTION 1 : IMPORTS (fusion des deux fichiers)
+// -----------------------------------------------------------------------------
 import { sanityClient } from "../../../sanityClient";
 import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
+
+// Composants de la page
+import HeroSection from "../../../components/HeroSection.astro";
 import FavoriButton from "../../../components/FavoriButton.astro";
 import FavoriDrawer from "../../../components/FavoriDrawer.astro";
 
-// 🔍 DEBUG : récupérer TOUTES les robes pour inspection
-const allDocs = await sanityClient.fetch(`
-  *[_type == "robe"]{
-    _id,
-    dressName,
-    category,
-    sousCategorie,
-    "slug": slug.current,
-    imagesCloudinary[]{ url, alt }
-  }
-`);
-console.log("🚀 SANITY: allDocs =", JSON.stringify(allDocs, null, 2));
+// Composants du Layout (maintenant intégrés)
+import Header from "../../../components/Header.astro";
+import FolatingButtonWhatsapp from "../../../components/FolatingButtonWhatsapp.astro";
+import Footer from "../../../components/Footer.astro";
+import AppointmentBar from "../../../components/AppointmentBar.astro";
+import ImagePreloader from "../../../components/ImagePreloader.astro";
+import "../../../styles/global.css";
 
-// 1) Récupération des robes
+
+// -----------------------------------------------------------------------------
+// SECTION 2 : RÉCUPÉRATION DES DONNÉES (logique de votre page)
+// -----------------------------------------------------------------------------
+// 1) Définition des métadonnées et de l'URL canonique de la page
+const pageMetadata = {
+  title: "Robes de Mariée Bohème Chic à Toulouse | Monica Mariage",
+  description: "Robes de mariée bohème chic à Toulouse. Créations fluides et romantiques en dentelle et mousseline chez Monica Mariage. Essayages personnalisés sur-mesure.",
+  canonicalUrl: "https://monicamariage.com/robes-de-mariee/style-boheme-chic" // URL canonique spécifique à CETTE page
+};
+
+// 2) Récupération des robes depuis Sanity
 const robesData = await sanityClient.fetch(`       
   *[_type == "robe"
     && category == "robes-de-mariee"
@@ -35,31 +45,31 @@ const robesData = await sanityClient.fetch(`
   }
 `);
 
-// 2) Mapping et optimisation des images
+// 3) Mapping et optimisation des images
 const robes = (robesData || []).map((robe) => ({
   ...robe,
   images: (robe.imagesCloudinary || []).map((img) => ({
     alt: img.alt,
     optimizedImages: {
       gallery: {
-        desktop: optimizeCloudinaryUrl(img.url, false), // mode desktop
-        tablet: optimizeCloudinaryUrl(img.url, false), // même chose pour tablet
-        mobile: optimizeCloudinaryUrl(img.url, "imageMobileGallery"), // celui-ci est correct
+        desktop: optimizeCloudinaryUrl(img.url, false),
+        tablet: optimizeCloudinaryUrl(img.url, false),
+        mobile: optimizeCloudinaryUrl(img.url, "imageMobileGallery"),
       },
     },
   })),
 }));
 
-// Préparer les URLs des premières images visibles pour le préchargement
+// 4) Préparation des URLs pour le préchargement
 const preloadImageUrls = robes
   .slice(0, 4)
   .map((robe) => robe.images[0]?.optimizedImages.gallery.mobile)
   .filter(Boolean);
 
-// Préparer les données de collection pour le JSON-LD
+// 5) Préparation des données de collection pour le JSON-LD
 const collectionData = {
-  collectionName: "Robes de Mariée Princesse",
-  url: "https://monicamariage.com/robes-de-mariee/style-boheme-chic",
+  collectionName: "Robes de Mariée Bohème Chic",
+  url: pageMetadata.canonicalUrl,
   items: robes.map(robe => ({
     dressName: robe.dressName,
     slug: robe.slug,
@@ -69,21 +79,126 @@ const collectionData = {
   }))
 };
 
-// Breadcrumbs
+// 6) Préparation des Breadcrumbs
 const breadcrumbs = [
   { name: "Accueil", url: "https://monicamariage.com" },
   { name: "Robes de mariée", url: "https://monicamariage.com/robes-de-mariee" },
-  { name: "Forme Princesse", url: "https://monicamariage.com/robes-de-mariee/style-boheme-chic" }
+  { name: "Style Bohème Chic", url: "https://monicamariage.com/robes-de-mariee/style-boheme-chic"}
 ];
+
+
+// -----------------------------------------------------------------------------
+// SECTION 3 : LOGIQUE DU LAYOUT (intégrée ici)
+// -----------------------------------------------------------------------------
+const analyticsId = "G-H8RDXC45EX";
+
+// Utilisation de l'URL canonique définie ci-dessus
+const finalCanonicalUrl = pageMetadata.canonicalUrl;
+
+// Fonction pour nettoyer le HTML des descriptions
+function cleanDescription(desc) {
+  if (!desc) return "";
+  return desc.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+}
+
+// Génération du JSON-LD pour la page de collection
+const jsonLdData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": collectionData.collectionName || pageMetadata.title,
+  "description": cleanDescription(pageMetadata.description),
+  "url": finalCanonicalUrl,
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": collectionData.collectionName,
+    "numberOfItems": collectionData.items.length,
+    "itemListElement": collectionData.items.map((item, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Product",
+        "name": item.dressName,
+        "url": item.url,
+        "image": item.image,
+        "brand": { "@type": "Brand", "name": "Monica Mariage" },
+        "category": "Robes de mariée",
+      }
+    }))
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": breadcrumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": crumb.name,
+      "item": crumb.url
+    }))
+  }
+};
 ---
 
-<ProductLayout
-  title="Robes de Mariée Princesse à Toulouse | Monica Mariage"
-  description="Robes de mariée princesse à Toulouse. Modèles volumineux et féeriques chez Monica Mariage pour réaliser votre rêve de conte de fées. Essayages personnalisés."
-  product={collectionData}
-  breadcrumbs={breadcrumbs}
-  collection={true}
->
+<!-- 
+  ==============================================================================
+  SECTION 4 : STRUCTURE HTML (anciennement le Layout)
+  ==============================================================================
+-->
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="rq53avWhuLrrx3ABvRJ12myweeaU47sTzsWdbNOatsU" />
+  
+  <!-- Titre et description -->
+  <title>{pageMetadata.title}</title>
+  <meta name="description" content={pageMetadata.description} />
+  
+  <!-- URL canonique et Open Graph (utilisant finalCanonicalUrl) -->
+  <link rel="canonical" href={finalCanonicalUrl} />
+  <meta property="og:url" content={finalCanonicalUrl} />
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content={pageMetadata.title} />
+  <meta property="og:description" content={pageMetadata.description} />
+  <meta property="og:image" content="https://monicamariage.com/images/cover-robes.jpg" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Monica Mariage" />
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={pageMetadata.title} />
+  <meta name="twitter:description" content={pageMetadata.description} />
+  <meta name="twitter:image" content="https://monicamariage.com/images/cover-robes.jpg" />
+  
+  <!-- Robots et autres meta -->
+  <meta name="robots" content="index, follow" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs Optimization Data" />
+
+  <!-- Preload des polices -->
+  <link rel="preload" href="/fonts/great-vibes-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/cormorant-garamond-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  
+  <!-- JSON-LD structuré -->
+  {Object.keys(jsonLdData).length > 0 && (
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLdData, null, 2)} />
+  )}
+
+</head>
+<body>
+  <Header />
+
+  <!-- 
+    ==============================================================================
+    SECTION 5 : CONTENU DE LA PAGE (votre contenu original)
+    ==============================================================================
+  -->
+
   <!-- Préchargement des images critiques -->
   {
     preloadImageUrls.map((url) => (
@@ -91,101 +206,354 @@ const breadcrumbs = [
     ))
   }
 
-  <section
-    style="margin-top: 120px;"
-    class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]"
-  >
-    <HeroSection
-      title="Robes de Mariée Princesse et Évasée | Collection Toulouse"
-      subtitle="Des modèles volumineux et féeriques pour un mariage digne d'un conte de fées"
-      buttonText="Découvrir la collection"
-      scrollTarget="#robes-collection"
-      iconSrc="/image/iconerobe.png"
-    />
-    <div class="flex justify-center px-4" id="robes">
-      <div
-        class="grid mb-[100px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full"
-      >
-        {
-          robes.map((robe, index) => (
-            <a
-              href={`/robes-de-mariee/${robe.sousCategorie}/${robe.slug}`}
-              class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] lg:h-[420px] shadow-md"
-              data-index={index}
-            >
-              {/* Overlay dégradé */}
-              {/*    <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />*/}
-              {/* Bouton Favoris */}
-              <FavoriButton
-                imageId={robe._id}
-                robeSlug={robe.slug}
-                sousCategorie={robe.sousCategorie}
-              />
-              {/* Image */}
-              {robe.images[0] ? (
-                <img
-                  src={robe.images[0].optimizedImages.gallery.mobile}
-                  alt={robe.images[0].alt || robe.dressName}
-                  width="300"
-                  height="500"
-                  fetchpriority={index < 2 ? "high" : "auto"}
-                  class="w-full absolute top-0 h-auto object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
-                  loading={index < 4 ? "eager" : "lazy"}
-                  decoding={index < 4 ? "sync" : "async"}
+  <main>
+    <section
+      style="margin-top: 120px;"
+      class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]"
+    >
+      <HeroSection
+        title="Robes de Mariée Bohème Chic | Collection Toulouse"
+        subtitle="Des créations fluides et romantiques pour un mariage naturel et authentique"
+        buttonText="Découvrir la collection"
+        scrollTarget="#robes-collection"
+        iconSrc="/image/iconerobe.png"
+      />
+      <div class="flex justify-center px-4" id="robes">
+        <div
+          class="grid mb-[100px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full"
+        >
+          {
+            robes.map((robe, index) => (
+              <a
+                href={`/robes-de-mariee/${robe.sousCategorie}/${robe.slug}`}
+                class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] lg:h-[420px] shadow-md"
+                data-index={index}
+              >
+                <FavoriButton
+                  imageId={robe._id}
+                  robeSlug={robe.slug}
+                  sousCategorie={robe.sousCategorie}
                 />
-              ) : (
-                <div class="absolute inset-0 bg-gray-200 flex items-center justify-center">
-                  <span class="text-gray-600">Image non disponible</span>
-                </div>
-              )}
+                {robe.images[0] ? (
+                  <img
+                    src={robe.images[0].optimizedImages.gallery.mobile}
+                    alt={robe.images[0].alt || robe.dressName}
+                    width="300"
+                    height="500"
+                    fetchpriority={index < 2 ? "high" : "auto"}
+                    class="w-full absolute top-0 h-auto object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
+                    loading={index < 4 ? "eager" : "lazy"}
+                    decoding={index < 4 ? "sync" : "async"}
+                  />
+                ) : (
+                  <div class="absolute inset-0 bg-gray-200 flex items-center justify-center">
+                    <span class="text-gray-600">Image non disponible</span>
+                  </div>
+                )}
 
-              {/* Contenu bas */}
-              <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
-                <p class="text-white font-vibes text-4xl mb-4 drop-shadow-lg">
-                  {robe.dressName.charAt(0).toUpperCase() +
-                    robe.dressName.slice(1).toLowerCase()}
-                </p>
-                <button class="bg-[#C5A880] text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
-                  Découvrir cette robe
-                </button>
+                <div class="absolute bottom-0 left-0 w-full text-center bg-gradient-to-t from-[#af7749] to-transparent p-6 rounded-b-2xl z-20">
+                  <p class="text-white font-vibes text-4xl mb-4 drop-shadow-lg">
+                    {robe.dressName.charAt(0).toUpperCase() +
+                      robe.dressName.slice(1).toLowerCase()}
+                  </p>
+                  <button class="bg-[#C5A880] text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-[#A27E5D] transition-all">
+                    Découvrir cette robe
+                  </button>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+
+        <script defer>
+          document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("active");
+                  observer.unobserve(entry.target);
+                }
+              });
+            });
+
+            document.querySelectorAll(".fade-in").forEach((el) => {
+              observer.observe(el);
+            });
+          });
+        </script>
+
+        <style>
+          .fade-in {
+            opacity: 0;
+            transform: translateY(10px);
+            transition:
+              opacity 0.6s ease-in-out,
+              transform 0.6s ease-in-out;
+          }
+          .fade-in.active {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        </style>
+      </div>
+    </section>
+
+    <section class="py-12 bg-gradient-to-b from-[#FDE9E6] to-white">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <div class="flex flex-col items-center mb-8">
+          <div class="flex justify-center mb-6">
+            <div class="bg-white border-[#F0E6E2] w-32 h-32 border-2 rounded-full p-3 shadow-lg flex items-center justify-center">
+              <img src="/icons/monica-mariage-icon6.webp" alt="Icône style bohème chic" class="w-full h-full object-contain rounded-full">
+            </div>
+          </div>
+          <h2 class="font-vibes text-center text-4xl md:text-5xl text-[#af7749] mb-2">
+            Style Bohème Chic sur-Mesure
+          </h2>
+          <div class="flex items-center justify-center gap-4 mb-8">
+            <span class="h-px w-12 bg-[#C5A880]"></span>
+            <p class="text-[#8B7569] text-sm text-center font-medium">L'EXPERTISE MONICA MARIAGE</p>
+            <span class="h-px w-12 bg-[#C5A880]"></span>
+          </div>
+        </div>
+        <div class="max-w-4xl mx-auto text-center font-lora text-[#5F4B3F] leading-relaxed mb-12">
+          <p class="text-base md:text-lg mb-8">
+            Nos <strong>robes de mariée bohème chic sur-mesure</strong> capturent l'esprit libre et romantique avec leurs silhouettes fluides en <strong>mousseline de soie</strong> et <strong>dentelles artisanales</strong>. Chaque robe de mariée se personnalise entièrement lors de vos <strong>essayages privés</strong> dans notre showroom toulousain : fluidité des manches, profondeur du décolleté, longueur asymétrique.
+          </p>
+          <p class="text-base md:text-lg mb-8">
+            Notre expertise dans ce style naturel permet d'adapter chaque détail à votre personnalité : <strong>décolletés en V plongeants</strong> pour un effet allongeant, <strong>manches évasées ou transparentes</strong> et <strong>ajustements jusqu'à la taille 44</strong>. De 750€ à 1850€, nos créations allient authenticité bohème et raffinement moderne.
+          </p>
+        </div>
+
+        <!-- ***** DÉBUT DE LA SECTION ACCORDÉON RÉ-INTÉGRÉE ***** -->
+        <div class="max-w-3xl mx-auto">
+          <div class="space-y-4">
+            
+            <!-- Accordéon 1 - Notre approche sur-mesure -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-[#F0E6E2] hover:shadow-md transition-all duration-300">
+              <button class="w-full text-left px-6 py-5 text-[#5F4B3F] flex justify-between items-center accordion-trigger">
+                <div class="flex items-center gap-4">
+                  <img src="/icons/monica-mariage-icon4.webp" alt="Icône process" class="w-8 h-8 object-contain">
+                  <span class="font-cormorant text-[#5F4B3F] font-medium text-lg">
+                    Notre approche sur-mesure style bohème chic
+                  </span>
+                </div>
+                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-[#FDF8F7] border border-[#F0E6E2] text-[#af7749] transition-transform duration-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                </span>
+              </button>
+              <div class="accordion-content max-h-0 opacity-0 overflow-hidden transition-all duration-300">
+                <div class="px-6 py-5 border-t border-[#F0E6E2] bg-[#FEFBFA]">
+                  <ul class="max-w-2xl mx-auto text-sm md:text-base space-y-2">
+                    <li class="flex items-center gap-3">
+                      <img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0">
+                      <span><strong>Consultation style</strong> : définition de votre vision bohème et de vos inspirations</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0">
+                      <span><strong>Essayages créatifs</strong> : adaptation des volumes et fluidités selon votre silhouette</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0">
+                      <span><strong>Personnalisation détails</strong> : choix des dentelles, manches et finitions artisanales</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0">
+                      <span><strong>Suivi personnalisé</strong> : accompagnement jusqu'à la livraison de votre création unique</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </a>
-          ))
-        }
+            </div>
+
+            <!-- Accordéon 2 - Matières et finitions -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-[#F0E6E2] hover:shadow-md transition-all duration-300">
+              <button class="w-full text-left px-6 py-5 text-[#5F4B3F] flex justify-between items-center accordion-trigger">
+                <div class="flex items-center gap-4">
+                  <img src="/icons/monica-mariage-icon3.webp" alt="Icône matières" class="w-8 h-8 object-contain">
+                  <span class="font-cormorant text-[#5F4B3F] font-medium text-lg">
+                    Matières naturelles et finitions artisanales
+                  </span>
+                </div>
+                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-[#FDF8F7] border border-[#F0E6E2] text-[#af7749] transition-transform duration-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                </span>
+              </button>
+              <div class="accordion-content max-h-0 opacity-0 overflow-hidden transition-all duration-300">
+                <div class="px-6 py-5 border-t border-[#F0E6E2] bg-[#FEFBFA]">
+                  <p class="text-base text-center mb-4 text-[#5F4B3F] leading-relaxed font-lora">
+                    Nos robes bohème chic privilégient des matières naturelles et fluides pour un rendu authentique et un confort absolu.
+                  </p>
+                  <ul class="max-w-2xl mx-auto text-sm md:text-base space-y-2">
+                    <li class="flex items-center gap-3">
+                      <img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0">
+                      <span><strong>Mousseline de soie</strong> : fluidité naturelle et tombé parfait pour l'esprit bohème</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0">
+                      <span><strong>Dentelles artisanales</strong> : motifs floraux et géométriques travaillés à la main</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0">
+                      <span><strong>Crêpe et georgette</strong> : textures naturelles pour un drapé élégant</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0">
+                      <span><strong>Finitions délicates</strong> : broderies perlées et applications florales subtiles</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Accordéon 3 - Conseils morphologie -->
+            <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-[#F0E6E2] hover:shadow-md transition-all duration-300">
+              <button class="w-full text-left px-6 py-5 text-[#5F4B3F] flex justify-between items-center accordion-trigger">
+                <div class="flex items-center gap-4">
+                  <img src="/icons/monica-mariage-icon1.webp" alt="Icône conseils" class="w-8 h-8 object-contain">
+                  <span class="font-cormorant text-[#5F4B3F] font-medium text-lg">
+                    Conseils selon votre style naturel
+                  </span>
+                </div>
+                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-[#FDF8F7] border border-[#F0E6E2] text-[#af7749] transition-transform duration-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                </span>
+              </button>
+              <div class="accordion-content max-h-0 opacity-0 overflow-hidden transition-all duration-300">
+                <div class="px-6 py-5 border-t border-[#F0E6E2] bg-[#FEFBFA]">
+                  <p class="text-base text-center mb-4 text-[#5F4B3F] leading-relaxed font-lora">
+                    Le style bohème chic s'adapte à toutes les silhouettes avec nos conseils personnalisés pour un look naturel et authentique.
+                  </p>
+                  <ul class="max-w-2xl mx-auto text-sm md:text-base space-y-2">
+                    <li class="flex items-center gap-3">
+                      <img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0">
+                      <span><strong>Décolletés en V</strong> : pour allonger la silhouette et créer une ligne élégante</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0">
+                      <span><strong>Manches fluides</strong> : évasées ou transparentes selon vos préférences</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0">
+                      <span><strong>Taille empire</strong> : pour mettre en valeur le buste et créer une ligne fluide</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0">
+                      <span><strong>Liberté de mouvement</strong> : coupes confortables pour danser toute la nuit</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CTA final -->
+        <div class="text-center mt-12">
+          <a href="/contact" class="inline-flex items-center gap-3 bg-[#af7749] text-white font-semibold px-8 py-4 rounded-full shadow-lg hover:bg-[#8B5A3C] transition-all duration-300">
+            <img src="/icons/monica-mariage-icon5.webp" alt="Icône contact" class="w-6 h-6">
+            <span>Prendre rendez-vous</span>
+          </a>
+        </div>
+
       </div>
 
-      <script defer>
-        // Amélioration du script d'animation pour ne pas retarder le LCP
-        document.addEventListener("DOMContentLoaded", () => {
-          // Initialiser immédiatement les images visibles
-          const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("active");
-                observer.unobserve(entry.target);
+      <!-- ***** SCRIPT ACCORDÉON INTÉGRÉ ***** -->
+      <script>
+      (function() {
+        function initAccordionSelfContained() {
+          const accordionTriggers = document.querySelectorAll('.accordion-trigger');
+          
+          accordionTriggers.forEach(trigger => {
+            trigger.addEventListener('click', function() {
+              const expanded = this.getAttribute('aria-expanded') === 'true';
+              const content = this.nextElementSibling;
+              const iconContainer = this.querySelector("span:last-child");
+
+              // Fermer tous les autres accordéons
+              accordionTriggers.forEach(otherTrigger => {
+                if (otherTrigger !== this) {
+                  const otherContent = otherTrigger.nextElementSibling;
+                  const otherIconContainer = otherTrigger.querySelector("span:last-child");
+                  
+                  if (otherContent) {
+                    otherContent.style.maxHeight = "0";
+                    otherContent.style.opacity = "0";
+                  }
+                  if (otherIconContainer) {
+                    otherIconContainer.style.transform = "rotate(0deg)";
+                  }
+                }
+              });
+
+              // Ouvrir ou fermer l'accordéon cliqué
+              if (expanded) {
+                this.setAttribute("aria-expanded", "false");
+                if (content) {
+                  content.style.maxHeight = "0";
+                  content.style.opacity = "0";
+                }
+                if (iconContainer) {
+                  iconContainer.style.transform = "rotate(0deg)";
+                }
+              } else {
+                this.setAttribute("aria-expanded", "true");
+                if (content) {
+                  content.style.maxHeight = content.scrollHeight + "px";
+                  content.style.opacity = "1";
+                }
+                if (iconContainer) {
+                  iconContainer.style.transform = "rotate(0deg)";
+                }
               }
             });
           });
+        }
 
-          document.querySelectorAll(".fade-in").forEach((el) => {
-            observer.observe(el);
-          });
-        });
+        // Exécuter le script une fois que le DOM est prêt
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initAccordionSelfContained);
+        } else {
+          initAccordionSelfContained();
+        }
+      })();
       </script>
+    </section>
+  </main>
+  
+  <!-- 
+    ==============================================================================
+    SECTION 6 : FIN DE BODY (anciennement dans le Layout)
+    ==============================================================================
+  -->
+  <FolatingButtonWhatsapp />
+  <Footer />
+  <AppointmentBar />
+</body>
 
-      <style>
-        .fade-in {
-          opacity: 0;
-          transform: translateY(10px);
-          transition:
-            opacity 0.6s ease-in-out,
-            transform 0.6s ease-in-out;
-        }
-        .fade-in.active {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      </style>
-    </div>
-  </section>
-</ProductLayout>
+<!-- Script Google Analytics -->
+<script define:vars={{ analyticsId }}>
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { dataLayer.push(arguments); };
+  setTimeout(() => {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsId}`;
+    document.head.appendChild(script);
+    script.onload = () => {
+      gtag("js", new Date());
+      gtag("config", analyticsId);
+    };
+  }, 4000);
+</script>
+</html>
+
