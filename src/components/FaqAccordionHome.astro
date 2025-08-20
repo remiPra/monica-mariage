@@ -32,6 +32,16 @@ Apporter vos chaussures propres de mariage (ou une paire au talon équivalent)
 Immortaliser l’essayage en photos, en gardant à l’esprit que chaque modèle pourra être ajusté`,
   },
   {
+    question: "Combien d'essayages sont inclus dans le sur-mesure ?",
+    answer: `Votre parcours sur-mesure comprend généralement 3 essayages personnalisés dans notre showroom :
+
+- Premier essayage : validation du style, des proportions et des détails (dentelle, décolleté, longueur)
+- Deuxième essayage : ajustements intermédiaires après les premières retouches  
+- Essayage final : vérification de la perfection des ajustements avant livraison
+
+Chaque séance se déroule dans l'intimité de notre atelier, avec conseils morphologie personnalisés.`,
+  },
+  {
     question: "Quelles sont les modalités de paiement ?",
     answer: `Pour faciliter votre achat, nous proposons un paiement en trois fois :
       • 50% à la commande
@@ -82,7 +92,7 @@ Ce jour-là, offrez-vous la paix intérieure qu’exige un choix si intime : con
 ---
 
 <section class="py-12 bg-gradient-to-b from-white to-[#FDE9E6]" client:idle>
-  <script type="application/ld+json">
+  <script type="application/ld+json" set:html={`
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -118,10 +128,18 @@ Ce jour-là, offrez-vous la paix intérieure qu’exige un choix si intime : con
         "@type": "Answer",
         "text": "Votre rendez-vous se déroule dans notre showroom privé à Seysses, dans une atmosphère intime. Nous échangerons sur vos inspirations, votre budget, vos contraintes de date et vos préférences de style."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Combien d'essayages sont inclus dans le sur-mesure ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Votre parcours sur-mesure comprend généralement 3 essayages personnalisés : validation du style, ajustements intermédiaires, et essayage final avant livraison."
+      }
     }
   ]
 }
-</script>
+`}></script>
   <div class="container mx-auto px-4 max-w-6xl">
     <!-- En-tête avec icône et titre -->
     <div class="flex flex-col items-center mb-8">
@@ -214,7 +232,7 @@ Ce jour-là, offrez-vous la paix intérieure qu’exige un choix si intime : con
     </div>
   </div>
 
-  <script async defer>
+  <script>
     document.addEventListener("DOMContentLoaded", () => {
       const faqTriggers = document.querySelectorAll(".faq-trigger");
 
