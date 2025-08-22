@@ -63,7 +63,7 @@ if (collection && product?.items) {
       }))
     },
     ...(breadcrumbs.length > 0 && {
-      "breadcrumb": {
+      "breadcrumbList": {
         "@type": "BreadcrumbList",
         "itemListElement": breadcrumbs.map((crumb, index) => ({
           "@type": "ListItem",
@@ -135,7 +135,7 @@ if (collection && product?.items) {
       "worstRating": "1"
     },
     ...(breadcrumbs.length > 0 && {
-      "breadcrumb": {
+      "breadcrumbList": {
         "@type": "BreadcrumbList",  
         "itemListElement": breadcrumbs.map((crumb, index) => ({
           "@type": "ListItem", 
