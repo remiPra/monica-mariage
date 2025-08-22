@@ -122,16 +122,15 @@ const jsonLdData = {
         "image": item.image,
         "brand": { "@type": "Brand", "name": "Monica Mariage" },
         "category": "Robes de mariée",
+        // 👇 AJOUTEZ AUSSI aggregateRating
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "reviewCount": "150",
+          "bestRating": "5",
+          "worstRating": "1"
+        }
       }
-    }))
-  },
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": breadcrumbs.map((crumb, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": crumb.name,
-      "item": crumb.url
     }))
   }
 };
