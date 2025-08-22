@@ -116,13 +116,19 @@ const jsonLdData = {
       "@type": "ListItem",
       "position": index + 1,
       "item": {
-        "@type": "Product",
-        "name": item.dressName,
-        "url": item.url,
-        "image": item.image,
-        "brand": { "@type": "Brand", "name": "Monica Mariage" },
-        "category": "Robes de mariée",
-      }
+  "@type": "Product",
+  "name": item.dressName,
+  "url": item.url,
+  "image": item.image,
+  "brand": { "@type": "Brand", "name": "Monica Mariage" },
+  "category": "Robes de mariée",
+  "offers": {
+    "@type": "Offer",
+    "availability": "https://schema.org/InStock",
+    "priceCurrency": "EUR",
+    "price": "Sur demande"
+  }
+}
     }))
   },
   "breadcrumb": {
