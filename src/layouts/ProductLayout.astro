@@ -53,15 +53,12 @@ if (collection && product?.items) {
           "image": item.image || item.imagesCloudinary?.[0]?.url,
           "brand": { "@type": "Brand", "name": "Monica Mariage" },
           "category": "Robes de mariée",
-          ...(item.price && item.price !== "Sur devis" && {
-            "offers": {
-              "@type": "Offer",
-              "priceRange": "750€-1850€",
-              "price": "999.00",
-              "priceCurrency": "EUR",
-              "availability": "https://schema.org/InStock"
-            }
-          })
+          "offers": {
+            "@type": "Offer",
+            "availability": "https://schema.org/InStock",
+            "priceCurrency": "EUR",
+            "price": "1200.00"
+          }
         }
       }))
     },
@@ -104,14 +101,10 @@ if (collection && product?.items) {
     ].filter(Boolean),
     "offers": {
       "@type": "Offer",
-      "url": finalCanonicalUrl, // 👈 URL canonique propre
+      "url": finalCanonicalUrl,
       "priceCurrency": "EUR",
-      // Ajouter le prix seulement s'il est numérique et valide
-      ...(product.price && product.price !== "Sur devis" && !isNaN(parseFloat(product.price)) && { 
-        "priceRange": "750€-1850€",
-        "price":"999.00"
-
-      }),
+      "price": "1200.00",
+      "priceRange": "750€-1850€",
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/NewCondition",
       "seller": {
@@ -200,64 +193,6 @@ if (collection && product?.items) {
     
     <!-- Préchargement d'image principale si fournie -->
     {mainImageUrl && <ImagePreloader imageUrl={mainImageUrl} />}
-
-    <!-- Styles CSS inline pour les polices -->
-    <!-- <style>
-      /* cormorant-garamond-regular - latin */
-      @font-face {
-        font-display: swap;
-        font-family: "Cormorant Garamond";
-        font-style: normal;
-        font-weight: 400;
-        src: url("/fonts/cormorant-garamond-v19-latin-regular.woff2") format("woff2");
-      }
-
-      /* Dancing Script */
-      @font-face {
-        font-family: "Dancing Script";
-        src: url("/fonts/dancing-script-v25-latin-regular.woff2") format("woff2");
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
-      }
-
-      /* great-vibes-regular - latin */
-      @font-face {
-        font-display: swap;
-        font-family: "Great Vibes";
-        font-style: normal;
-        font-weight: 400;
-        src: url("/fonts/great-vibes-v19-latin-regular.woff2") format("woff2");
-      }
-
-      [x-cloak] {
-        display: none !important;
-      }
-
-      /* Classes pour utiliser les polices */
-      .font-cormorant {
-        font-family: "Cormorant Garamond", serif !important;
-      }
-
-      .font-vibes {
-        font-family: "Great Vibes", cursive !important;
-      }
-
-      a,
-      h2,
-      p,
-      button,
-      .font-lora {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          "Helvetica Neue", Arial, sans-serif !important;
-      }
-
-      a,
-      p,
-      button {
-        font-size: 20px;
-      }
-    </style> -->
     
     <!-- JSON-LD structuré -->
    {Object.keys(jsonLdData).length > 0 && (
