@@ -1,0 +1,436 @@
+---
+// --- IMPORTATION DES COMPOSANTS NÉCESSAIRES ---
+import Header from "../components/Header.astro";
+import FolatingButtonWhatsapp from "../components/FolatingButtonWhatsapp.astro";
+import Footer from "../components/Footer.astro";
+import AppointmentBar from "../components/AppointmentBar.astro";
+import "../styles/global.css";
+
+// --- DÉFINITION DES VARIABLES SEO POUR CETTE PAGE ---
+const pageTitle = "Boutique Robe de Mariée Toulouse - Showroom Privé Monica Mariage Seysses";
+const pageDescription = "Boutique spécialisée robes de mariée près Toulouse. Showroom privé 80m² à Seysses, créations sur-mesure. 15 min du centre Toulouse, parking gratuit. ☎️ 06 68 30 09 60";
+const canonicalURL = Astro.url.href; 
+const pageImage = "https://www.monicamariage.com/showroom-monica-mariage.webp"; 
+const analyticsId = "G-H8RDXC45EX";
+
+// Données pour les avantages boutique
+const avantagesItems = [
+  {
+    icon: "🏠",
+    title: "Showroom privé 80m²",
+    description: "Espace intime et personnalisé, loin de l'agitation des grandes boutiques toulousaines. Essayage en toute tranquillité."
+  },
+  {
+    icon: "🅿️",
+    title: "Parking gratuit",
+    description: "Stationnement gratuit devant le showroom, contrairement aux centres-villes de Toulouse où le parking est payant."
+  },
+  {
+    icon: "⏰",
+    title: "Rendez-vous dédiés",
+    description: "Créneaux personnalisés sans attente, accompagnement individuel pendant toute la durée de votre visite."
+  },
+  {
+    icon: "💰",
+    title: "Prix créateur direct",
+    description: "Tarifs sans intermédiaires, de 750€ à 1850€ pour des créations sur-mesure de qualité."
+  },
+  {
+    icon: "🎨",
+    title: "Sur-mesure exclusif",
+    description: "Créations adaptées à votre morphologie et personnalité, retouches incluses pour un ajustement parfait."
+  },
+  {
+    icon: "✨",
+    title: "Expertise depuis 2014",
+    description: "Plus de 10 ans d'expérience au service des mariées toulousaines, 4.2★ sur 151 avis Google."
+  }
+];
+
+// Données pour les villes desservies
+const villesDesservies = [
+  { zone: "Centre Toulouse", villes: ["Capitole", "Saint-Cyprien", "Esquirol", "Compans-Caffarelli"], temps: "15 min" },
+  { zone: "Ouest Toulouse", villes: ["Colomiers", "Blagnac", "Tournefeuille", "Plaisance-du-Touch"], temps: "10-15 min" },
+  { zone: "Sud Toulouse", villes: ["Muret", "Portet-sur-Garonne", "Cugnaux", "Villeneuve-Tolosane"], temps: "5-10 min" },
+  { zone: "Nord-Ouest", villes: ["Léguevin", "L'Isle-Jourdain", "Pibrac", "Cornebarrieu"], temps: "15-20 min" },
+  { zone: "Haute-Garonne", villes: ["Saint-Gaudens", "Montastruc", "Revel", "Auterive"], temps: "30-45 min" }
+];
+
+// Témoignages de mariées locales
+const temoignagesLocaux = [
+  {
+    nom: "Sarah de Colomiers",
+    note: 5,
+    commentaire: "Showroom magnifique à 10 minutes de chez moi ! Monica a créé ma robe de rêve, parfaitement ajustée. Le parking gratuit est un vrai plus.",
+    date: "Mariée en juin 2024"
+  },
+  {
+    nom: "Émilie de Toulouse Centre",
+    note: 5,
+    commentaire: "Alternative parfaite aux boutiques bondées du centre-ville. Rdv personnalisé, conseils experts, et ma robe était sublime !",
+    date: "Mariée en septembre 2024"
+  },
+  {
+    nom: "Lucie de Muret",
+    note: 5,
+    commentaire: "Proximité idéale depuis Muret, accueil chaleureux. Monica a su cerner mes goûts dès le premier essayage. Je recommande !",
+    date: "Mariée en mai 2024"
+  }
+];
+---
+
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalURL} />
+    
+    <meta name="ai-content-declaration" content="human-generated">
+    <meta name="content-type-ai" content="local-business">
+    <meta name="expertise-level" content="expert">
+    <meta name="content-freshness" content="monthly">
+
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={pageImage} />
+    <meta property="og:type" content="business.business" />
+    <meta property="og:site_name" content="Monica Mariage" />
+    <meta property="business:contact_data:locality" content="Seysses" />
+    <meta property="business:contact_data:region" content="Haute-Garonne" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={pageImage} />
+    
+    <!-- Schema LocalBusiness pour SEO local -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": "https://www.monicamariage.com/boutique-robe-mariee-toulouse",
+      "name": "Monica Mariage - Boutique Robe de Mariée Toulouse",
+      "description": "Boutique spécialisée robes de mariée près Toulouse. Showroom privé, créations sur-mesure, parking gratuit.",
+      "url": "https://www.monicamariage.com",
+      "telephone": "+33668300960",
+      "email": "monicamariage@hotmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "1220 chemin de brouquere",
+        "addressLocality": "Seysses",
+        "addressRegion": "Occitanie", 
+        "postalCode": "31600",
+        "addressCountry": "FR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "43.4985",
+        "longitude": "1.3016"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "10:00",
+          "closes": "18:00"
+        }
+      ],
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Toulouse"
+        },
+        {
+          "@type": "City", 
+          "name": "Seysses"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Haute-Garonne"
+        }
+      ],
+      "priceRange": "750€-1850€",
+      "image": "https://www.monicamariage.com/showroom-monica-mariage.webp",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.2",
+        "reviewCount": "151"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Robes de Mariée sur-mesure",
+        "itemListElement": [
+          {
+            "@type": "OfferCatalog",
+            "name": "Robes Princesse"
+          },
+          {
+            "@type": "OfferCatalog", 
+            "name": "Robes Sirène"
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Robes Bohème Chic"
+          }
+        ]
+      }
+    }
+    </script>
+
+    <meta name="google-site-verification" content="rq53avWhuLrrx3ABvRJ12myweeaU47sTzsWdbNOatsU" />
+    <link rel="preload" href="/fonts/great-vibes-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/cormorant-garamond-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
+</head>
+
+<body>
+    <Header />
+
+    <main class="pt-24 mt-[100px]">
+      <!-- Hero Section -->
+      <section class="py-16 bg-gradient-to-b h-800 from-white to-[#FDE9E6]">
+        <div class="container mx-auto px-4 max-w-6xl">
+          <div class="text-center mb-12">
+            <div class="w-32 h-32 mb-6 mx-auto">
+              <img 
+                src="/image/iconerobe.png" 
+                alt="Boutique robe de mariée Toulouse - Monica Mariage" 
+                width="128" 
+                height="128" 
+                class="w-full h-full object-cover rounded-full border-4 border-[#F0E6E2] shadow-lg"
+                loading="eager"
+              />
+            </div>
+            <h1 class="font-vibes text-4xl md:text-5xl text-[#af7749] mb-4">
+              Boutique Robe de Mariée Toulouse
+            </h1>
+            <div class="flex items-center justify-center gap-4 mb-8">
+              <span class="h-px w-16 bg-[#C5A880]"></span>
+              <p class="text-[#8B7569] text-sm font-medium">SHOWROOM PRIVÉ À SEYSSES - 15 MIN DE TOULOUSE</p>
+              <span class="h-px w-16 bg-[#C5A880]"></span>
+            </div>
+            <p class="text-xl text-[#5F4B3F] leading-relaxed max-w-3xl mx-auto">
+              "Votre alternative aux boutiques traditionnelles toulousaines : un showroom privé de 80m² avec parking gratuit"
+            </p>
+            <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+              <a 
+                href="tel:+33668300960" 
+                class="bg-[#af7749] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#9d6a42] transition-colors"
+              >
+                📞 Appeler depuis Toulouse
+              </a>
+              <a 
+                href="https://maps.google.com/?q=1220+chemin+de+brouquere+31600+Seysses" 
+                target="_blank"
+                class="border-2 border-[#af7749] text-[#af7749] px-8 py-3 rounded-full font-semibold hover:bg-[#af7749] hover:text-white transition-colors"
+              >
+                🗺️ Itinéraire depuis Toulouse
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Avantages Boutique -->
+      <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 max-w-6xl">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-semibold text-[#5F4B3F] mb-6">
+              Pourquoi choisir notre boutique près de Toulouse ?
+            </h2>
+            <p class="text-[#8B7569] text-lg max-w-2xl mx-auto">
+              Contrairement aux boutiques traditionnelles de Toulouse, Monica Mariage vous offre une expérience unique et personnalisée.
+            </p>
+          </div>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {avantagesItems.map(item => (
+              <div class="text-center group hover:scale-105 transition-transform duration-300 p-6 bg-[#FDF8F7] rounded-lg">
+                <div class="text-4xl mb-4">{item.icon}</div>
+                <h3 class="text-xl font-semibold text-[#5F4B3F] mb-3">{item.title}</h3>
+                <p class="text-[#8B7569] leading-relaxed">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- Accessibilité depuis Toulouse -->
+      <section class="py-16 bg-gradient-to-b from-[#FDF8F7] to-white">
+        <div class="container mx-auto px-4 max-w-6xl">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-semibold text-[#5F4B3F] mb-6">
+              Facilement accessible depuis tout Toulouse
+            </h2>
+            <p class="text-[#8B7569] text-lg max-w-2xl mx-auto">
+              Notre showroom à Seysses dessert toute la région toulousaine avec un accès facile et un parking gratuit.
+            </p>
+          </div>
+          
+          <div class="bg-[#FDF8F7] border border-[#F0E6E2] p-8 rounded-2xl mb-12">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <h3 class="text-2xl font-semibold text-[#5F4B3F] mb-4">🚗 Depuis le centre de Toulouse</h3>
+                <div class="space-y-3 text-[#5F4B3F]">
+                  <p><strong>⏱️ Temps de trajet :</strong> 15 minutes</p>
+                  <p><strong>🛣️ Accès :</strong> Autoroute A64, sortie Seysses</p>
+                  <p><strong>🅿️ Parking :</strong> Gratuit devant le showroom</p>
+                  <p><strong>📍 Adresse GPS :</strong> 1220 chemin de brouquere, 31600 Seysses</p>
+                </div>
+              </div>
+              <div class="text-center">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                  <div class="text-3xl mb-3">🎯</div>
+                  <h4 class="font-semibold text-[#5F4B3F] mb-2">Localisation idéale</h4>
+                  <p class="text-[#8B7569] text-sm">Entre Toulouse et Muret, accessible depuis toute la Haute-Garonne</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {villesDesservies.map(zone => (
+              <div class="bg-white p-6 rounded-lg shadow-sm border border-[#F0E6E2]">
+                <h4 class="text-lg font-semibold text-[#5F4B3F] mb-3">{zone.zone}</h4>
+                <p class="text-sm text-[#af7749] font-medium mb-3">⏱️ {zone.temps}</p>
+                <ul class="text-[#8B7569] text-sm space-y-1">
+                  {zone.villes.map(ville => (
+                    <li>• {ville}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- Témoignages locaux -->
+      <section class="py-16 bg-[#af7749] text-white">
+        <div class="container mx-auto px-4 max-w-6xl">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-semibold mb-4">
+              Témoignages de mariées toulousaines
+            </h2>
+            <p class="text-white/90 text-lg">
+              Découvrez l'expérience de nos clientes de Toulouse et sa région
+            </p>
+          </div>
+          <div class="grid md:grid-cols-3 gap-8">
+            {temoignagesLocaux.map(temoignage => (
+              <div class="bg-white/10 backdrop-blur-sm p-6 rounded-lg">
+                <div class="flex mb-3">
+                  {[...Array(temoignage.note)].map((_, i) => (
+                    <span key={i} class="text-yellow-300 text-xl">★</span>
+                  ))}
+                </div>
+                <p class="text-white/90 italic mb-4">"{temoignage.commentaire}"</p>
+                <div class="border-t border-white/20 pt-3">
+                  <p class="font-semibold">{temoignage.nom}</p>
+                  <p class="text-white/70 text-sm">{temoignage.date}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- Nos services pour Toulouse -->
+      <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 max-w-6xl">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-semibold text-[#5F4B3F] mb-6">
+              Nos services pour les mariées toulousaines
+            </h2>
+          </div>
+          <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-[#FDF8F7] p-8 rounded-lg">
+              <h3 class="text-xl font-semibold text-[#5F4B3F] mb-4">
+                🎨 Créations sur-mesure près de Toulouse
+              </h3>
+              <p class="text-[#8B7569] mb-4">Robes entièrement personnalisées selon vos goûts et votre morphologie. De la conception à la livraison, nous vous accompagnons.</p>
+              <ul class="text-[#8B7569] text-sm space-y-1">
+                <li>• Consultation style personnalisée</li>
+                <li>• Choix des tissus et détails</li>
+                <li>• Essayages et ajustements</li>
+                <li>• Livraison garantie pour votre mariage</li>
+              </ul>
+              <p class="text-[#8B7569] mt-4">
+                En savoir plus sur 
+                <a href="/a-propos" class="text-[#af7749] hover:underline">l'histoire de Monica</a> 
+                et sa passion pour la création.
+              </p>
+            </div>
+            <div class="bg-[#FDF8F7] p-8 rounded-lg">
+              <h3 class="text-xl font-semibold text-[#5F4B3F] mb-4">
+                👗 Essayage privé showroom Toulouse
+              </h3>
+              <p class="text-[#8B7569] mb-4">Séance d'essayage dans notre showroom privé, sans stress ni contrainte de temps. Conseil expert inclus.</p>
+              <ul class="text-[#8B7569] text-sm space-y-1">
+                <li>• Rendez-vous personnalisé</li>
+                <li>• Showroom privatisé 80m²</li>
+                <li>• Conseil morphologie expert</li>
+                <li>• Plus de 50 robes à disposition</li>
+              </ul>
+              <p class="text-[#8B7569] mt-4">
+                Découvrez 
+                <a href="/toutes-nos-robes" class="text-[#af7749] hover:underline">toutes nos collections</a> 
+                disponibles à l'essayage.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Final -->
+      <section class="py-16 bg-gradient-to-r from-[#af7749] to-[#C99A9A] text-white text-center">
+        <div class="container mx-auto px-4 max-w-4xl">
+          <h2 class="text-3xl md:text-4xl font-semibold mb-6">
+            Prête à découvrir votre robe de rêve près de Toulouse ?
+          </h2>
+          <p class="text-xl mb-8 text-white/90">
+            Réservez votre créneau dans notre showroom privé à Seysses
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a 
+              href="https://wa.me/33668300960?text=Bonjour, je souhaite prendre rendez-vous depuis Toulouse" 
+              target="_blank"
+              class="bg-white text-[#af7749] px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
+            >
+              💬 WhatsApp - RDV immédiat
+            </a>
+            <a 
+              href="tel:+33668300960" 
+              class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-[#af7749] transition-colors inline-flex items-center justify-center gap-2"
+            >
+              📞 06 68 30 09 60
+            </a>
+          </div>
+          <p class="mt-6 text-white/80 text-sm">
+            📍 À seulement 15 minutes du centre de Toulouse • Parking gratuit • Showroom privé 80m²
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+    <FolatingButtonWhatsapp />
+    <Footer />
+    <AppointmentBar />
+
+    <script define:vars={{ analyticsId }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', analyticsId);
+    </script>
+</body>
+</html>
