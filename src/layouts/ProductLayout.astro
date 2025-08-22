@@ -107,7 +107,8 @@ if (collection && product?.items) {
       "priceCurrency": "EUR",
       // Ajouter le prix seulement s'il est numérique et valide
       ...(product.price && product.price !== "Sur devis" && !isNaN(parseFloat(product.price)) && { 
-        "price": product.price 
+        "priceRange": "750€-1850€",
+
       }),
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/NewCondition",
