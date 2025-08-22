@@ -126,7 +126,12 @@ const jsonLdData = {
     "@type": "Offer",
     "availability": "https://schema.org/InStock",
     "priceCurrency": "EUR",
-    "price": "Sur demande"
+    "priceSpecification": {
+    "@type": "PriceSpecification",
+    "minPrice": "750.00",
+    "maxPrice": "1850.00",
+    "priceCurrency": "EUR"
+  }
   }
 }
     }))
