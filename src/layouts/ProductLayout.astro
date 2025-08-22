@@ -56,7 +56,7 @@ if (collection && product?.items) {
           ...(item.price && item.price !== "Sur devis" && {
             "offers": {
               "@type": "Offer",
-              "price": item.price,
+              "priceRange": "750€-1850€",
               "priceCurrency": "EUR",
               "availability": "https://schema.org/InStock"
             }
