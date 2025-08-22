@@ -122,6 +122,13 @@ const jsonLdData = {
         "image": item.image,
         "brand": { "@type": "Brand", "name": "Monica Mariage" },
         "category": "Robes de mariée",
+        "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.2",     // ✅ Vraie note Google Business
+    "reviewCount": "169",     // ✅ Vrai nombre d'avis
+    "bestRating": "5",
+    "worstRating": "1"
+  }
       }
     }))
   },
