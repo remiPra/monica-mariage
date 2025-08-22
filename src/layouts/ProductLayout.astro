@@ -62,17 +62,7 @@ if (collection && product?.items) {
         }
       }))
     },
-    ...(breadcrumbs.length > 0 && {
-      "breadcrumbList": {
-        "@type": "BreadcrumbList",
-        "itemListElement": breadcrumbs.map((crumb, index) => ({
-          "@type": "ListItem",
-          "position": index + 1,
-          "name": crumb.name,
-          "item": crumb.url
-        }))
-      }
-    })
+  
   };
 } else if (product && !collection) {
   // JSON-LD pour un produit individuel
@@ -134,17 +124,7 @@ if (collection && product?.items) {
       "bestRating": "5", 
       "worstRating": "1"
     },
-    ...(breadcrumbs.length > 0 && {
-      "breadcrumbList": {
-        "@type": "BreadcrumbList",  
-        "itemListElement": breadcrumbs.map((crumb, index) => ({
-          "@type": "ListItem", 
-          "position": index + 1, 
-          "name": crumb.name, 
-          "item": crumb.url
-        }))
-      }
-    })
+   
   };
 }
 ---
