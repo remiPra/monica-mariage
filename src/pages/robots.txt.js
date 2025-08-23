@@ -1,14 +1,35 @@
 // src/pages/robots.txt.js
 export function get() {
-  const baseUrl = "https://monicamariage.com"; // Sans www, cohérent avec le sitemap
+  const baseUrl = "https://monicamariage.com"; // cohérent avec ton sitemap
 
   return {
-    body: `User-agent: *
+    body: `# ================================
+# robots.txt — Monica Mariage (AEO optimisé)
+# ================================
+
+# Autoriser tous les crawlers classiques
+User-agent: *
 Allow: /
 
-Sitemap: ${baseUrl}/sitemap.xml`,
-    headers: {
-      "Content-Type": "text/plain",
-    },
+# Autoriser explicitement les crawlers IA
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Sitemap
+Sitemap: ${baseUrl}/sitemap.xml
+`,
+    headers: { "Content-Type": "text/plain" },
   };
 }
