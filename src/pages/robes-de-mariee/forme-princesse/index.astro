@@ -116,13 +116,27 @@ const jsonLdData = {
       "@type": "ListItem",
       "position": index + 1,
       "item": {
-        "@type": "Product",
-        "name": item.dressName,
-        "url": item.url,
-        "image": item.image,
-        "brand": { "@type": "Brand", "name": "Monica Mariage" },
-        "category": "Robes de mariée",
-      }
+  "@type": "Product",
+  "name": item.dressName,
+  "url": item.url,
+  "image": item.image,
+  "brand": { "@type": "Brand", "name": "Monica Mariage" },
+  "category": "Robes de mariée",
+  "offers": {
+    "@type": "Offer",
+    "availability": "https://schema.org/InStock",
+    "priceCurrency": "EUR",
+    "price":"950.00",
+    "priceSpecification": {
+    "@type": "PriceSpecification",
+    "minPrice": "750.00",
+    "maxPrice": "1850.00",
+    "priceCurrency": "EUR",
+    "price": "1200.00"  // Prix moyen de votre fourchette
+
+  }
+  }
+}
     }))
   },
   "breadcrumb": {
@@ -149,6 +163,8 @@ const jsonLdData = {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="rq53avWhuLrrx3ABvRJ12myweeaU47sTzsWdbNOatsU" />
   
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#ffffff" />
   <!-- Titre et description -->
   <title>{pageMetadata.title}</title>
   <meta name="description" content={pageMetadata.description} />

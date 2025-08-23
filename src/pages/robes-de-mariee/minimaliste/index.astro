@@ -122,6 +122,13 @@ const jsonLdData = {
         "image": item.image,
         "brand": { "@type": "Brand", "name": "Monica Mariage" },
         "category": "Robes de mariée",
+        "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.2",     // ✅ Vraie note Google Business
+    "reviewCount": "169",     // ✅ Vrai nombre d'avis
+    "bestRating": "5",
+    "worstRating": "1"
+  }
       }
     }))
   },
@@ -157,6 +164,8 @@ const jsonLdData = {
   <link rel="canonical" href={finalCanonicalUrl} />
   <meta property="og:url" content={finalCanonicalUrl} />
   
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#ffffff" />
   <!-- Open Graph -->
   <meta property="og:title" content={pageMetadata.title} />
   <meta property="og:description" content={pageMetadata.description} />

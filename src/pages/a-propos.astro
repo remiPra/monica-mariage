@@ -1,19 +1,59 @@
 ---
 // --- IMPORTATION DES COMPOSANTS NÉCESSAIRES ---
-// On importe ici les composants qui étaient gérés par l'ancien Layout
 import Header from "../components/Header.astro";
 import FolatingButtonWhatsapp from "../components/FolatingButtonWhatsapp.astro";
 import Footer from "../components/Footer.astro";
 import AppointmentBar from "../components/AppointmentBar.astro";
 import "../styles/global.css";
+
 // --- DÉFINITION DES VARIABLES SEO POUR CETTE PAGE ---
 const pageTitle = "À propos de Monica Mariage - Créatrice de robes de mariée à Toulouse depuis 2014";
-const pageDescription = "Découvrez l'histoire de Monica Mariage, créatrice passionnée de robes de mariée sur-mesure depuis 2014. Expertise, savoir-faire et accompagnement personnalisé dans notre showroom privé à Seysses près de Toulouse.";
-const canonicalURL = Astro.url.href; // Génère automatiquement l'URL correcte pour cette page
-const pageImage = "https://www.monicamariage.com/showroom-monica-mariage.webp"; // Image la plus pertinente de la page pour le partage
-
-// Variable pour le script Google Analytics
+const pageDescription = "Découvrez Monica, créatrice passionnée de robes de mariée sur-mesure à Toulouse depuis 2014. Visitez notre showroom privé à Seysses.";
+const canonicalURL = Astro.url.href; 
+const pageImage = "https://www.monicamariage.com/showroom-monica-mariage.webp"; 
 const analyticsId = "G-H8RDXC45EX";
+
+// Données pour la FAQ
+const faqItems = [
+  {
+    question: "Quelle est la philosophie de Monica Mariage ?",
+    answer: "Notre philosophie est de vous accompagner dans la création d'une robe qui reflète votre personnalité, en mettant l'accent sur des tissus de haute qualité, sélectionnés avec soin auprès de partenaires de renom comme Anna Sposa."
+  },
+  {
+    question: "Pourquoi avoir choisi Seysses pour le showroom ?",
+    answer: "Nous avons déménagé notre showroom de Toulouse à Seysses pour offrir un espace plus grand et plus intime, idéalement conçu pour l'essayage de votre future robe de mariée. Notre showroom de plus de 80 m² vous permet de vivre une expérience unique et confortable, loin de l'agitation de la ville."
+  },
+  {
+    question: "Combien de robes puis-je essayer dans le showroom ?",
+    answer: "Le showroom de Monica Mariage dispose d'une collection permanente d'au moins 50 robes de mariée. Ce large choix vous permet de trouver différents styles et modèles pour votre essayage."
+  },
+  {
+    question: "Comment se déroule un premier rendez-vous ?",
+    answer: "Vous pouvez prendre rendez-vous par WhatsApp ou via notre page Contact pour un moment privilégié d'essayage et de découverte. Nous prendrons le temps de discuter de vos envies et de vos inspirations."
+  },
+  {
+    question: "Proposez-vous des retouches sur les robes ?",
+    answer: "Oui, la retouche est une étape essentielle de notre service sur-mesure. Chaque robe est ajustée à votre morphologie pour une coupe et un tombé parfaits."
+  },
+  {
+    question: "Quels sont les délais de confection d'une robe sur-mesure ?",
+    answer: "Les délais de confection varient généralement de six semaines à plusieurs mois, selon la complexité de la robe et la période de l'année. Nous vous invitons à nous contacter le plus tôt possible pour vous assurer d'avoir votre robe à temps pour le grand jour."
+  }
+];
+
+// Données structurées pour la FAQ
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqItems.map(item => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer
+    }
+  }))
+};
 ---
 
 <!doctype html>
@@ -22,37 +62,35 @@ const analyticsId = "G-H8RDXC45EX";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    {/* --- SECTION SEO COMPLÈTE ET SPÉCIFIQUE À LA PAGE "À PROPOS" --- */}
-    
-    <!-- Titre et Description -->
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#ffffff" />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
-
-    <!-- Robots et URL Canonique (Indique à Google que cette page est l'originale) -->
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonicalURL} />
+    
+    <meta name="ai-content-declaration" content="human-generated">
+    <meta name="content-type-ai" content="factual">
+    <meta name="expertise-level" content="expert">
+    <meta name="content-freshness" content="monthly">
 
-    <!-- Open Graph (Pour le partage sur Facebook, WhatsApp, etc.) -->
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={pageImage} />
-    <meta property="og:type" content="profile" /> {/* "profile" est pertinent pour une page décrivant une personne */}
+    <meta property="og:type" content="profile" />
     <meta property="og:site_name" content="Monica Mariage" />
     <meta property="profile:first_name" content="Monica" />
-    <meta property="profile:last_name" content="Wang" />
 
-    <!-- Twitter Card (Pour le partage sur Twitter) -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={pageImage} />
     
-    <!-- Données Structurées (JSON-LD) pour la créatrice (aide Google à comprendre qui vous êtes) -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Person",
-      "name": "Monica Wang",
+      "name": "Monica",
       "jobTitle": "Créatrice de robes de mariée",
       "worksFor": {
         "@type": "Organization",
@@ -63,8 +101,8 @@ const analyticsId = "G-H8RDXC45EX";
           "https://wa.me/33668300960"
         ]
       },
-      "description": "Créatrice passionnée de robes de mariée sur-mesure depuis 2014, spécialisée dans l'accompagnement personnalisé des futures mariées.",
-      "knowsAbout": ["Robes de mariée sur-mesure", "Couture traditionnelle", "Conseil en mariage", "Morphologie féminine", "Design de robes", "Retouches haute couture"],
+      "description": "Créatrice passionnée qui a fondé Monica Mariage en 2014, mue par son amour pour les robes de mariée et son désir de proposer des créations uniques et de qualité.",
+      "knowsAbout": ["Robes de mariée sur-mesure", "Tissus de qualité", "Accompagnement personnalisé"],
       "areaServed": {
         "@type": "Place",
         "name": "Toulouse et Occitanie"
@@ -82,9 +120,8 @@ const analyticsId = "G-H8RDXC45EX";
       "telephone": "+33668300960"
     })} />
     
-    {/* --- FIN DE LA SECTION SEO --- */}
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
-    <!-- Éléments techniques : Vérification Google, Polices, Icônes, etc. -->
     <meta name="google-site-verification" content="rq53avWhuLrrx3ABvRJ12myweeaU47sTzsWdbNOatsU" />
     <link rel="preload" href="/fonts/great-vibes-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/cormorant-garamond-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
@@ -99,7 +136,6 @@ const analyticsId = "G-H8RDXC45EX";
     <Header />
 
     <main class="pt-24 mt-[100px]">
-      <!-- Section Hero -->
       <section class="py-16 bg-gradient-to-b h-800 from-white to-[#FDE9E6]">
         <div class="container mx-auto px-4 max-w-6xl">
           <div class="text-center mb-12">
@@ -128,7 +164,6 @@ const analyticsId = "G-H8RDXC45EX";
         </div>
       </section>
   
-      <!-- Section Histoire personnelle -->
       <section class="py-16 bg-white">
         <div class="container mx-auto px-4 max-w-6xl">
           <div class="grid lg:grid-cols-2 gap-12 items-center mb-16">
@@ -146,32 +181,22 @@ const analyticsId = "G-H8RDXC45EX";
                 Une passion devenue expertise
               </h2>
               <p class="text-[#5F4B3F] leading-relaxed mb-6 text-lg">
-                Depuis <strong>2014</strong>, Monica Mariage accompagne les futures mariées de Toulouse 
-                et sa région dans la création de leur robe de rêve. Spécialisée dans le 
-                <strong>sur-mesure</strong>, Monica met son expertise au service de chaque mariée pour 
-                créer une robe unique qui correspond parfaitement à sa personnalité et 
-                sa silhouette.
+                Monica a fondé Monica Mariage en <strong>2014</strong>, mue par son amour pour la robe de mariée et son désir d'accompagner chaque future mariée de Toulouse et sa région dans le choix de sa robe de rêve. Plutôt qu'une simple boutique, Monica a créé un lieu où la passion se mêle à l'expertise pour offrir une expérience sur-mesure inoubliable.
               </p>
               <p class="text-[#5F4B3F] leading-relaxed mb-6 text-lg">
-                Installée dans un <strong>showroom privé à Seysses</strong>, Monica privilégie un 
-                accompagnement personnalisé dans un cadre intimiste, loin de l'agitation 
-                des grands salons. Chaque rendez-vous est un moment privilégié où la 
-                future mariée est notre seule priorité.
+                Spécialisée dans le sur-mesure, Monica met son expertise au service de chaque mariée pour créer une robe unique qui correspond parfaitement à sa personnalité et à sa silhouette.
               </p>
               <div class="bg-[#FDF8F7] border-l-4 border-[#C99A9A] p-6 rounded-r-lg">
                 <p class="text-[#5F4B3F] italic font-medium">
-                  "Mon objectif ? Que chaque mariée se sente belle, confiante et unique 
-                  le jour de son mariage. C'est pour cela que je crée des robes sur-mesure 
-                  qui s'adaptent à chaque femme."
+                  "Mon objectif ? Que chaque mariée se sente belle, confiante et unique le jour de son mariage. C'est pour cela que je crée des robes sur-mesure qui s'adaptent à chaque femme."
                 </p>
-                <span class="text-[#af7749] font-semibold mt-2 block">— Monica</span>
+                <span class="text-[#af7749] font-semibold mt-2 block">― Monica</span>
               </div>
             </div>
           </div>
         </div>
       </section>
   
-      <!-- Section Savoir-faire -->
       <section class="py-16 bg-gradient-to-b from-[#FDF8F7] to-white">
         <div class="container mx-auto px-4 max-w-6xl">
           <div class="text-center mb-12">
@@ -179,8 +204,7 @@ const analyticsId = "G-H8RDXC45EX";
               Notre savoir-faire unique
             </h2>
             <p class="text-[#8B7569] text-lg max-w-2xl mx-auto">
-              Plus qu'une simple boutique, Monica Mariage offre une expérience sur-mesure 
-              complète pour créer la robe de vos rêves.
+              Plus qu'une simple boutique, Monica Mariage offre une expérience sur-mesure complète pour créer la robe de vos rêves.
             </p>
           </div>
           <div class="grid md:grid-cols-3 gap-8 mb-16">
@@ -188,8 +212,8 @@ const analyticsId = "G-H8RDXC45EX";
               <div class="w-20 h-20 bg-gradient-to-br from-[#C99A9A] to-[#af7749] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/><circle cx="12" cy="12" r="8" stroke="white" stroke-width="2" fill="none"/></svg>
               </div>
-              <h3 class="text-xl font-semibold text-[#5F4B3F] mb-3">Création 100% sur-mesure</h3>
-              <p class="text-[#8B7569] leading-relaxed">Chaque robe est créée selon vos mesures exactes, vos préférences de style et votre morphologie unique.</p>
+              <h3 class="text-xl font-semibold text-[#5F4B3F] mb-3">Tissus de haute qualité</h3>
+              <p class="text-[#8B7569] leading-relaxed">Nous collaborons avec des créateurs de renom comme Anna Sposa pour vous garantir des matières nobles et un confort exceptionnel.</p>
             </div>
             <div class="text-center group hover:scale-105 transition-transform duration-300">
               <div class="w-20 h-20 bg-gradient-to-br from-[#C99A9A] to-[#af7749] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl">
@@ -202,14 +226,13 @@ const analyticsId = "G-H8RDXC45EX";
               <div class="w-20 h-20 bg-gradient-to-br from-[#C99A9A] to-[#af7749] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
               </div>
-              <h3 class="text-xl font-semibold text-[#5F4B3F] mb-3">Showroom privé</h3>
-              <p class="text-[#8B7569] leading-relaxed">Rendez-vous exclusifs dans un cadre intimiste et chaleureux, sans contrainte de temps ni pression commerciale.</p>
+              <h3 class="text-xl font-semibold text-[#5F4B3F] mb-3">Showroom privatisé</h3>
+              <p class="text-[#8B7569] leading-relaxed">Profitez d'un cadre intime et chaleureux de plus de 80m², loin du stress, pour un essayage serein en toute tranquillité.</p>
             </div>
           </div>
         </div>
       </section>
   
-      <!-- Section Chiffres clés -->
       <section class="py-16 bg-[#af7749] text-white">
         <div class="container mx-auto px-4 max-w-6xl">
             <div class="text-center mb-12">
@@ -217,15 +240,34 @@ const analyticsId = "G-H8RDXC45EX";
                 <p class="text-white/90 text-lg">Plus de 10 ans d'expertise au service des futures mariées</p>
             </div>
             <div class="grid md:grid-cols-4 gap-8 text-center">
-                <div class="group"><div class="text-4xl md:text-5xl font-bold mb-2 text-[#FDE9E6]">11</div><div class="text-lg font-medium mb-1">Années</div><div class="text-white/80 text-sm">d'expérience depuis 2014</div></div>
-                <div class="group"><div class="text-4xl md:text-5xl font-bold mb-2 text-[#FDE9E6]">750€-1850€</div><div class="text-lg font-medium mb-1">Tarifs</div><div class="text-white/80 text-sm">transparents et justes</div></div>
+                <div class="group"><div class="text-4xl md:text-5xl font-bold mb-2 text-[#FDE9E6]">11+</div><div class="text-lg font-medium mb-1">Années</div><div class="text-white/80 text-sm">d'expérience depuis 2014</div></div>
+                <div class="group"><div class="text-4xl md:text-5xl font-bold mb-2 text-[#FDE9E6]">80m²</div><div class="text-lg font-medium mb-1">Showroom</div><div class="text-white/80 text-sm">espace intime et spacieux</div></div>
+                <div class="group"><div class="text-4xl md:text-5xl font-bold mb-2 text-[#FDE9E6]">50+</div><div class="text-lg font-medium mb-1">Robes</div><div class="text-white/80 text-sm">en exposition permanente</div></div>
                 <div class="group"><div class="text-4xl md:text-5xl font-bold mb-2 text-[#FDE9E6]">4.2★</div><div class="text-lg font-medium mb-1">Note Google</div><div class="text-white/80 text-sm">sur 151 avis clients</div></div>
-                <div class="group"><div class="text-4xl md:text-5xl font-bold mb-2 text-[#FDE9E6]">6</div><div class="text-lg font-medium mb-1">Semaines</div><div class="text-white/80 text-sm">délai de confection</div></div>
             </div>
         </div>
       </section>
-  
-      <!-- ... Reste du contenu de la page ... -->
+      
+      <section class="py-16 bg-white" aria-labelledby="faq-heading">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="text-center mb-12">
+                <h2 id="faq-heading" class="text-3xl md:text-4xl font-semibold text-[#5F4B3F] mb-6">
+                    Foire aux questions sur notre expertise
+                </h2>
+                <p class="text-[#8B7569] text-lg max-w-2xl mx-auto">
+                    Nous répondons aux questions les plus fréquentes pour vous aider à mieux comprendre notre approche.
+                </p>
+            </div>
+            <div class="space-y-6">
+                {faqItems.map(item => (
+                    <div class="bg-[#FDF8F7] p-6 rounded-lg shadow-sm">
+                        <h3 class="text-xl font-semibold text-[#5F4B3F] mb-2">{item.question}</h3>
+                        <p class="text-[#8B7569] leading-relaxed">{item.answer}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+      </section>
   
     </main>
 
@@ -233,7 +275,6 @@ const analyticsId = "G-H8RDXC45EX";
     <Footer />
     <AppointmentBar />
 
-    <!-- Script Google Analytics -->
     <script define:vars={{ analyticsId }}>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
