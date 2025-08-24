@@ -206,8 +206,9 @@ const breadcrumbs = [
         </a>
       </div>
 
-      <div class="relative w-full max-w-lg h-[1000px] lg:h-[1000px] mx-auto overflow-hidden">
-        <div class="swiper-container shadow-lg h-full">
+      <div class="relative w-full max-w-3xl mx-auto overflow-hidden">
+  <div class="swiper-container shadow-lg">
+
           <FavoriButton
             imageId={robe._id}
             robeSlug={slug}
@@ -220,19 +221,20 @@ const breadcrumbs = [
           <div class="swiper-wrapper">
             {
               robe.images.map((img, i) => (
-                <div class="swiper-slide overflow-hidden" key={i}>
-                  <div class="border border-[#C5A880] rounded-2xl h-full w-full overflow-hidden">
-                    <img
-  src={img.optimized.tablet}
-  alt={img.alt}
-  class="object-cover w-full h-full" // Changé de object-contain à object-cover
-  loading={i === 0 ? "eager" : "lazy"}
-  fetchpriority={i === 0 ? "high" : "auto"}
-  onclick={`openModal("${img.full}", "${img.alt}")`}
-  decoding={i === 0 ? "sync" : "async"}
-/>
-                  </div>
-                </div>
+             <div class="swiper-slide flex items-center justify-center" key={i}>
+  <div class="border border-[#C5A880] rounded-2xl w-full overflow-hidden">
+    <img
+      src={img.optimized.tablet}
+      alt={img.alt}
+      class="block object-contain w-full h-auto"
+      loading={i === 0 ? "eager" : "lazy"}
+      fetchpriority={i === 0 ? "high" : "auto"}
+      onclick={`openModal("${img.full}", "${img.alt}")`}
+      decoding={i === 0 ? "sync" : "async"}
+    />
+  </div>
+</div>
+
               ))
             }
           </div>
@@ -383,6 +385,7 @@ const breadcrumbs = [
         new Swiper(".swiper-container", {
           loop: true,
           slidesPerView: 1,
+          autoHeight: true,        
           autoplay: { 
             delay: 5000,
             disableOnInteraction: false 
