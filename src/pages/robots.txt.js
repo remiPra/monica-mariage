@@ -1,6 +1,6 @@
 // src/pages/robots.txt.js
 export function get() {
-  const baseUrl = "https://monicamariage.com"; // cohérent avec ton sitemap
+  const baseUrl = "https://www.monicamariage.com/"; // cohérent avec ton sitemap
 
   return {
     body: `# ================================

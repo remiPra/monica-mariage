@@ -26,7 +26,7 @@ import "../../../styles/global.css";
 const pageMetadata = {
   title: "Robes de Mariée Sirène à Toulouse | Monica Mariage",
   description: "Robes de mariée sirène à Toulouse. Silhouettes sculptantes et élégantes en dentelle stretch chez Monica Mariage. Essayages personnalisés sur-mesure.",
-  canonicalUrl: "https://monicamariage.com/robes-de-mariee/forme-sirene" // URL canonique spécifique à CETTE page
+  canonicalUrl: "https://www.monicamariage.com//robes-de-mariee/forme-sirene" // URL canonique spécifique à CETTE page
 };
 
 // 2) Récupération des robes depuis Sanity
@@ -75,14 +75,14 @@ const collectionData = {
     slug: robe.slug,
     sousCategorie: robe.sousCategorie,
     image: robe.images[0]?.optimizedImages?.gallery?.mobile,
-    url: `https://monicamariage.com/robes-de-mariee/${robe.sousCategorie}/${robe.slug}`
+    url: `https://www.monicamariage.com//robes-de-mariee/${robe.sousCategorie}/${robe.slug}`
   }))
 };
 
 // 6) Préparation des Breadcrumbs
 const breadcrumbs = [
-  { name: "Accueil", url: "https://monicamariage.com" },
-  { name: "Robes de mariée", url: "https://monicamariage.com/robes-de-mariee" },
+  { name: "Accueil", url: "https://www.monicamariage.com/" },
+  { name: "Robes de mariée", url: "https://www.monicamariage.com//robes-de-mariee" },
   { name: "Style Sirène", url: pageMetadata.canonicalUrl }
 ];
 
@@ -161,7 +161,7 @@ const jsonLdData = {
   <!-- Open Graph -->
   <meta property="og:title" content={pageMetadata.title} />
   <meta property="og:description" content={pageMetadata.description} />
-  <meta property="og:image" content="https://monicamariage.com/images/cover-robes.jpg" />
+  <meta property="og:image" content="https://www.monicamariage.com//images/cover-robes.jpg" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Monica Mariage" />
   
@@ -169,7 +169,7 @@ const jsonLdData = {
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={pageMetadata.title} />
   <meta name="twitter:description" content={pageMetadata.description} />
-  <meta name="twitter:image" content="https://monicamariage.com/images/cover-robes.jpg" />
+  <meta name="twitter:image" content="https://www.monicamariage.com//images/cover-robes.jpg" />
   
   <!-- Robots et autres meta -->
   <meta name="robots" content="index, follow" />

@@ -4,6 +4,6 @@ import icon from "astro-icon";
 import tailwind from "@astrojs/tailwind";
 
 export default defineConfig({
-  site: 'https://monicamariage.com', // Ajouter cette ligne pour cohérence
+  site: 'https://www.monicamariage.com/', // Ajouter cette ligne pour cohérence
   integrations: [tailwind(), icon({})],
 });

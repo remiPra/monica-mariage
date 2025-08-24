@@ -21,7 +21,7 @@ const {
 const analyticsId = "G-H8RDXC45EX";
 
 // 👇 Utiliser l'URL canonique passée, JAMAIS Astro.url.href en production
-const finalCanonicalUrl = canonicalUrl || 'https://monicamariage.com';
+const finalCanonicalUrl = canonicalUrl || 'https://www.monicamariage.com/';
 
 // Fonction pour nettoyer le HTML
 function cleanDescription(desc) {
@@ -49,7 +49,7 @@ if (collection && product?.items) {
   "item": {
     "@type": "Product",
     "name": item.dressName || item.name,
-    "url": `https://monicamariage.com/robes-de-mariee/${item.sousCategorie}/${item.slug}`,
+    "url": `https://www.monicamariage.com//robes-de-mariee/${item.sousCategorie}/${item.slug}`,
     "image": item.image || item.imagesCloudinary?.[0]?.url,
     "brand": { "@type": "Brand", "name": "Monica Mariage" },
     "category": "Robes de mariée",
@@ -85,7 +85,7 @@ if (collection && product?.items) {
     "brand": { 
       "@type": "Brand", 
       "name": "Monica Mariage", 
-      "url": "https://monicamariage.com" 
+      "url": "https://www.monicamariage.com/" 
     },
     "category": "Robes de mariée",
     "additionalProperty": [
@@ -108,7 +108,7 @@ if (collection && product?.items) {
       "seller": {
         "@type": "Organization", 
         "name": "Monica Mariage", 
-        "url": "https://monicamariage.com",
+        "url": "https://www.monicamariage.com/",
         "telephone": "+33668300960",
         "address": {
           "@type": "PostalAddress", 
@@ -123,7 +123,7 @@ if (collection && product?.items) {
     "manufacturer": { 
       "@type": "Organization", 
       "name": "Monica Mariage", 
-      "url": "https://monicamariage.com" 
+      "url": "https://www.monicamariage.com/" 
     },
     "aggregateRating": {
       "@type": "AggregateRating", 
@@ -155,7 +155,7 @@ if (collection && product?.items) {
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="https://monicamariage.com/images/cover-robes.jpg" />
+    <meta property="og:image" content="https://www.monicamariage.com//images/cover-robes.jpg" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Monica Mariage" />
     
@@ -163,7 +163,7 @@ if (collection && product?.items) {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="https://monicamariage.com/images/cover-robes.jpg" />
+    <meta name="twitter:image" content="https://www.monicamariage.com//images/cover-robes.jpg" />
     
     <!-- Robots et autres meta -->
     <meta name="robots" content="index, follow" />

@@ -1,5 +1,5 @@
 // src/utils/urls.js
-export const SITE_URL = 'https://monicamariage.com'; // Sans www
+export const SITE_URL = 'https://www.monicamariage.com/'; // Sans www
 
 export function buildCanonicalUrl(path) {
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
