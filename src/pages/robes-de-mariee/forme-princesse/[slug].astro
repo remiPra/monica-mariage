@@ -22,14 +22,18 @@ const { slug } = Astro.params;
 const canonicalUrl = buildProductUrl('robes-de-mariee', 'forme-princesse', slug);
 
 // 4) Fetch de tous les robes pour navigation
-const allRobes = await sanityClient.fetch(
-  `*[_type == "robe" && category == "robes-de-mariee" && sousCategorie == "forme-princesse"]{
-     "slug": slug.current,
-     dressName,
-     category,
-     sousCategorie
-  }`
-);
+const allRobes = await sanityClient.fetch(`
+  *[_type == "robe"
+    && category == "robes-de-mariee"
+    && sousCategorie == "forme-princesse"]
+  | order(coalesce(order, 9999) asc, _createdAt asc, slug.current asc) {
+    "slug": slug.current,
+    dressName,
+    category,
+    sousCategorie,
+    order
+  }
+`);
 
 // 5) RÃ©cupÃ©ration de la robe courante
 const robeData = await sanityClient.fetch(
@@ -206,7 +210,7 @@ const breadcrumbs = [
         </a>
       </div>
 
-      <div class="relative w-full max-w-3xl mx-auto overflow-hidden">
+      <div class="relative w-full max-w-3xl mx-auto overflow-hidden max-h-[600px">
   <div class="swiper-container shadow-lg">
 
           <FavoriButton
@@ -222,11 +226,11 @@ const breadcrumbs = [
             {
               robe.images.map((img, i) => (
              <div class="swiper-slide flex items-center justify-center" key={i}>
-  <div class="border border-[#C5A880] rounded-2xl w-full overflow-hidden">
+  <div class="border border-[#C5A880] rounded-2xl w-full md:w-[60%] overflow-hidden">
     <img
       src={img.optimized.tablet}
       alt={img.alt}
-      class="block object-contain w-full h-auto"
+      class="block object-contain w-full h-auto "
       loading={i === 0 ? "eager" : "lazy"}
       fetchpriority={i === 0 ? "high" : "auto"}
       onclick={`openModal("${img.full}", "${img.alt}")`}
