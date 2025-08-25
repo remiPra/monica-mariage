@@ -28,7 +28,7 @@ User-agent: CCBot
 Allow: /
 
 # Sitemap
-Sitemap: ${baseUrl}/sitemap.xml
+Sitemap: ${baseUrl}sitemap.xml
 `,
     headers: { "Content-Type": "text/plain" },
   };
