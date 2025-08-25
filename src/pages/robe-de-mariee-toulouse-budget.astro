@@ -1,0 +1,309 @@
+---
+// --- IMPORTATION DES COMPOSANTS ---
+import Header from "../components/Header.astro";
+import FolatingButtonWhatsapp from "../components/FolatingButtonWhatsapp.astro";
+import Footer from "../components/Footer.astro";
+import AppointmentBar from "../components/AppointmentBar.astro";
+import "../styles/global.css";
+
+// --- DÉFINITION DES VARIABLES SEO POUR LA PAGE BUDGET ---
+const pageTitle = "Robe de Mariée Toulouse : Comprendre le Budget | Monica Mariage";
+const pageDescription = "Comment définir le budget de votre robe de mariée sur-mesure à Toulouse ? Découvrez notre approche transparente. Créations uniques, valeur et accompagnement inclus.";
+const canonicalURL = "https://www.monicamariage.com/robe-de-mariee-toulouse-budget";
+const pageImage = "https://www.monicamariage.com/images/budget-robe-mariee-toulouse.webp"; // Pense à créer une image dédiée pour cette page
+const analyticsId = "G-H8RDXC45EX";
+
+// --- CONTENUS SPÉCIFIQUES À CETTE PAGE ---
+
+// Les éléments qui composent la VALEUR de la robe
+const valeurIncluseItems = [
+  {
+    icon: "💬",
+    title: "RDV Conseil Privatisé",
+    description: "Un moment d'échange privilégié dans notre showroom pour définir ensemble votre projet, sans engagement."
+  },
+  {
+    icon: "✍️",
+    title: "Conception 100% Sur-Mesure",
+    description: "Votre robe est créée à partir de vos mesures exactes pour une silhouette parfaitement dessinée."
+  },
+  {
+    icon: "🧵",
+    title: "Tissus de Qualité",
+    description: "Nous sélectionnons ensemble les matières qui sublimeront votre robe : dentelle de Calais, crêpe, tulle..."
+  },
+  {
+    icon: "✂️",
+    title: "Toutes Retouches Incluses",
+    description: "Notre engagement fondamental : le prix convenu sur le devis inclut tous les ajustements. Zéro surprise."
+  },
+  {
+    icon: "👗",
+    title: "Essayages Personnalisés",
+    description: "2 à 3 rendez-vous d'essayage dans notre atelier pour suivre chaque étape et parfaire chaque détail."
+  },
+  {
+    icon: "✨",
+    title: "L'Accompagnement d'une Créatrice",
+    description: "Profitez de 10 ans d'expertise pour vous guider, vous rassurer et faire de ce parcours un souvenir magique."
+  }
+];
+
+// Les facteurs qui expliquent la variation du budget
+const facteursBudgetItems = [
+  {
+    title: "Le Choix des Tissus",
+    description: "La valeur de votre robe dépendra des matières choisies. Une fine dentelle de Calais ou un satin Mikado n'auront pas la même incidence sur le budget qu'un tulle ou un crêpe plus simple, mais tout aussi élégant."
+  },
+  {
+    title: "La Complexité du Design",
+    description: "Le temps de confection est un facteur clé. Un bustier entièrement brodé de perles à la main ou un dos nu complexe demandent des dizaines d'heures de travail minutieux qui se reflètent dans la valeur finale de la création."
+  },
+  {
+    title: "Le Volume & la Silhouette",
+    description: "La quantité de matière nécessaire influence également le budget. Une jupe de princesse volumineuse avec de multiples couches de tulle sera naturellement différente d'une robe sirène fluide et épurée."
+  }
+];
+
+// La FAQ pour rassurer et se positionner sur des questions clés
+const faqBudgetItems = [
+   
+    {
+        question: "Comment puis-je être sûre de respecter le budget que je me suis fixé ?",
+        reponse: "Le budget est la toute première chose dont nous discutons lors de votre rendez-vous privé. C'est essentiel pour nous de comprendre votre projet. Nous vous orienterons toujours vers des designs, des tissus et des solutions qui correspondent à l'enveloppe que vous souhaitez allouer."
+    },
+    {
+        question: "Proposez-vous des robes de mariée 'pas chères' à Toulouse ?",
+        reponse: "Nous préférons parler de robes 'accessibles' et de 'juste prix'. Grâce à notre modèle sans intermédiaire, nous proposons des créations sur-mesure dès 750€. Pour les budgets les plus doux, notre section Déstockage est une excellente option pour trouver une pépite à un tarif avantageux."
+    },
+    {
+        question: "Le paiement en plusieurs fois est-il possible ?",
+        reponse: "Oui, tout à fait. Pour vous offrir plus de flexibilité, nous proposons un paiement en trois temps : un acompte de 50% à la commande, puis 25% lors du premier essayage technique, et le solde de 25% à la récupération de votre robe."
+    }
+];
+---
+
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalURL} />
+    
+    <!-- Open Graph & Twitter Cards -->
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={pageImage} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Monica Mariage" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={pageImage} />
+    
+    <!-- Schema.org JSON-LD Multicouches pour un SEO Expert -->
+    <script type="application/ld+json" set:html={JSON.stringify([
+      {
+        "@context": "https://schema.org",
+        "@type": "BridalShop",
+        "@id": "https://www.monicamariage.com",
+        "name": "Monica Mariage",
+        "url": "https://www.monicamariage.com",
+        "telephone": "+33668300960",
+        "address": {
+          "@type": "PostalAddress", "streetAddress": "1220 chemin de brouquere", "addressLocality": "Seysses", "postalCode": "31600", "addressCountry": "FR"
+        },
+        "priceRange": "€€",
+        "areaServed": { "@type": "City", "name": "Toulouse" }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "@id": canonicalURL,
+        "url": canonicalURL,
+        "name": pageTitle,
+        "description": pageDescription,
+        "isPartOf": { "@id": "https://www.monicamariage.com" }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqBudgetItems.map(item => ({
+          "@type": "Question",
+          "name": item.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": item.reponse
+          }
+        }))
+      }
+    ])} />
+
+    <!-- Le reste de l'en-tête (polices, icônes...) -->
+    <meta name="google-site-verification" content="rq53avWhuLrrx3ABvRJ12myweeaU47sTzsWdbNOatsU" />
+    <link rel="preload" href="/fonts/great-vibes-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/cormorant-garamond-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+</head>
+
+<body class="bg-white">
+    <Header />
+
+    <main class="pt-24 md:pt-32">
+      <!-- Section Hero -->
+      <section class="py-16 bg-gradient-to-b from-white to-[#FDE9E6]">
+        <div class="container mx-auto px-4 max-w-6xl text-center">
+            <h1 class="font-vibes text-4xl md:text-6xl text-[#af7749] mb-4">
+              Le Juste Prix de Votre Robe de Mariée à Toulouse
+            </h1>
+            <p class="text-lg md:text-xl text-[#5F4B3F] leading-relaxed max-w-3xl mx-auto mb-8">
+              Plus qu'un simple tarif, nous vous proposons une valeur : celle d'une création sur-mesure, d'un service irréprochable et d'un budget maîtrisé en toute transparence.
+            </p>
+            <div class="flex items-center justify-center gap-4 mb-8">
+              <span class="h-px w-16 bg-[#C5A880]"></span>
+              <p class="text-[#8B7569] text-sm md:text-base font-medium">NOTRE FOURCHETTE BUDGÉTAIRE : 750€ - 1850€</p>
+              <span class="h-px w-16 bg-[#C5A880]"></span>
+            </div>
+        </div>
+      </section>
+
+      <!-- Section "Ce qui est inclus" -->
+      <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 max-w-6xl">
+          <div class="text-center mb-12">
+            <h2 class="font-cormorant text-3xl md:text-4xl font-semibold text-[#5F4B3F] mb-4">
+              Notre Engagement : Un Budget Clair, Zéro Surprise
+            </h2>
+            <p class="text-[#8B7569] text-lg max-w-3xl mx-auto">
+              Le prix de votre robe est un investissement. Voici en détail tout ce qu'il comprend chez Monica Mariage.
+            </p>
+          </div>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {valeurIncluseItems.map(item => (
+              <div class="text-center p-6 bg-[#FDF8F7] rounded-xl border border-transparent hover:border-[#F0E6E2] hover:shadow-lg transition-all duration-300">
+                <div class="text-4xl mb-4">{item.icon}</div>
+                <h3 class="text-xl font-semibold text-[#5F4B3F] mb-3">{item.title}</h3>
+                <p class="text-[#8B7569] leading-relaxed">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- Section "Facteurs du Budget" -->
+       <section class="py-16 bg-gradient-to-b from-white to-[#FDE9E6]">
+        <div class="container mx-auto px-4 max-w-4xl">
+           <div class="text-center mb-12">
+            <h2 class="font-cormorant text-3xl md:text-4xl font-semibold text-[#5F4B3F] mb-4">
+              Comprendre ce qui Fait la Valeur de Votre Robe
+            </h2>
+            <p class="text-[#8B7569] text-lg max-w-3xl mx-auto">
+              Chaque robe est unique. Voici les 3 éléments clés qui personnalisent votre budget, vous permettant de créer une pièce qui vous ressemble vraiment.
+            </p>
+          </div>
+          <div class="grid md:grid-cols-3 gap-8">
+            {facteursBudgetItems.map(item => (
+                <div class="bg-white p-8 rounded-lg shadow-sm border border-[#F0E6E2]">
+                    <h3 class="text-xl font-semibold text-[#5F4B3F] mb-4">{item.title}</h3>
+                    <p class="text-[#8B7569]">{item.description}</p>
+                </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- Section "Solutions Budget & Maillage Interne" -->
+      <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 max-w-5xl">
+          <div class="text-center mb-12">
+            <h2 class="font-cormorant text-3xl md:text-4xl font-semibold text-[#5F4B3F] mb-4">
+              Des Solutions pour Chaque Projet de Mariage à Toulouse
+            </h2>
+            <p class="text-[#8B7569] text-lg max-w-3xl mx-auto">
+              Quel que soit votre budget, notre objectif est de trouver la robe qui vous sublimera. Découvrez nos collections à tarifs avantageux.
+            </p>
+          </div>
+          <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-gradient-to-br from-[#FDF8F7] to-[#fcebe8] p-8 rounded-lg text-center border border-[#F0E6E2]">
+              <h3 class="text-2xl font-semibold text-[#5F4B3F] mb-4">Nos Robes en Promotion</h3>
+              <p class="text-[#8B7569] mb-6">Découvrez une sélection de robes de nos collections actuelles à des conditions spéciales. L'opportunité de s'offrir une création récente à un prix plus doux.</p>
+              <a href="/promo" class="bg-[#af7749] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#9d6a42] transition-all transform hover:scale-105 shadow-lg">
+                Voir les Promotions
+              </a>
+            </div>
+            <div class="bg-gradient-to-br from-[#FDF8F7] to-[#fcebe8] p-8 rounded-lg text-center border border-[#F0E6E2]">
+              <h3 class="text-2xl font-semibold text-[#5F4B3F] mb-4">Notre Espace Déstockage</h3>
+              <p class="text-[#8B7569] mb-6">Offrez une seconde vie à des modèles d'exposition ou de collections précédentes. La qualité créateur à un prix vraiment accessible. Idéal pour les budgets les plus maîtrisés.</p>
+              <a href="/promo/robes-de-mariee-destockage" class="bg-[#af7749] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#9d6a42] transition-all transform hover:scale-105 shadow-lg">
+                Explorer le Déstockage
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Section FAQ -->
+      <section class="py-16 bg-gradient-to-b from-white to-[#FDE9E6]">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="text-center mb-12">
+                <h2 class="font-cormorant text-3xl md:text-4xl font-semibold text-[#5F4B3F] mb-4">
+                    Vos Questions sur le Budget de Votre Robe
+                </h2>
+                <p class="text-[#8B7569] text-lg">Les réponses à toutes vos interrogations pour préparer votre visite en toute sérénité.</p>
+            </div>
+            <div class="space-y-4">
+                {faqBudgetItems.map(item => (
+                    <details class="group bg-white p-6 rounded-lg shadow-sm border border-[#F0E6E2] cursor-pointer">
+                        <summary class="flex justify-between items-center font-semibold text-[#5F4B3F] list-none">
+                            <span class="text-lg">{item.question}</span>
+                            <span class="relative w-5 h-5 ml-4">
+                                <span class="absolute w-full h-0.5 bg-[#af7749] top-1/2 -translate-y-1/2 transition-transform duration-300"></span>
+                                <span class="absolute w-0.5 h-full bg-[#af7749] left-1/2 -translate-x-1/2 transition-transform duration-300 group-open:rotate-90"></span>
+                            </span>
+                        </summary>
+                        <p class="text-[#5F4B3F] mt-4 leading-relaxed border-t border-[#F0E6E2] pt-4">
+                            {item.reponse}
+                        </p>
+                    </details>
+                ))}
+            </div>
+        </div>
+      </section>
+
+      <!-- CTA Final -->
+      <section class="py-16 bg-gradient-to-r from-[#925c36] to-[#af7749] text-white text-center">
+        <div class="container mx-auto px-4 max-w-4xl">
+          <h2 class="text-3xl md:text-4xl font-semibold mb-4">
+            Prête à parler de votre projet ?
+          </h2>
+          <p class="text-xl mb-8 text-white/90 max-w-2xl mx-auto">
+            Discutons de votre vision et de votre budget. Réservez un rendez-vous conseil, c'est le premier pas vers la robe de vos rêves.
+          </p>
+          <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            <a 
+              href="https://wa.me/33668300960?text=Bonjour, je souhaite prendre rendez-vous pour discuter de mon projet de robe et de mon budget." 
+              target="_blank"
+              class="bg-white text-[#af7749] px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg inline-flex items-center justify-center gap-2"
+            >
+              💬 Discuter de mon Budget (WhatsApp)
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <FolatingButtonWhatsapp />
+    <Footer />
+    <AppointmentBar />
+
+</body>
+</html>
