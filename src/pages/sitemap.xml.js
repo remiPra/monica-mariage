@@ -16,7 +16,10 @@ export async function get() {
     "/conditions-generales-de-vente",
     "/pourquoi-nous-choisir",
     "/temoignages",
-    "/robes",
+  
+  "/boutique-robe-mariee-toulouse",
+  "/robe-de-mariee-toulouse-budget",
+  "/404",
     "/blog"
   ].map(path => generateUrlEntry(`${baseUrl}${path}`, new Date().toISOString()));
 
