@@ -59,11 +59,7 @@ import SocialIcons from "./SocialIcons.astro";
         Politique de confidentialité
       </a>
     </li>
-    <!-- <li class="mb-2">
-      <a href="/contact" class="hover:text-[#af7749]">
-        Contact
-      </a>
-    </li> -->
+   
   </ul>
 </div>
     <!-- 👗 PRODUITS -->
@@ -104,6 +100,40 @@ import SocialIcons from "./SocialIcons.astro";
     <p>&copy; 2014 - 2025 Monica Mariage Showroom – Tous droits réservés</p>
   </div>
   <script defer type="module" src="/js/register-sw.js"></script>
-  <!-- <script defer type="module" src="/js/pwa-install-prompt.js"></script> -->
+   <!-- Bouton PWA avec Tailwind -->
+   <!-- <button 
+   id="install-pwa" 
+   class="hidden fixed bottom-5 right-5 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg shadow-lg transition-colors duration-200 z-50"
+ >
+   📱 Installer l'app
+ </button> -->
 
+ <!-- Script PWA -->
+ <script is:inline>
+   let deferredPrompt;
+   const installBtn = document.getElementById('install-pwa');
+   
+   window.addEventListener('beforeinstallprompt', (e) => {
+     e.preventDefault();
+     deferredPrompt = e;
+     installBtn.classList.remove('hidden');
+     installBtn.classList.add('block');
+   });
+   
+   installBtn?.addEventListener('click', async () => {
+     if (!deferredPrompt) return;
+     
+     deferredPrompt.prompt();
+     await deferredPrompt.userChoice;
+     
+     deferredPrompt = null;
+     installBtn.classList.add('hidden');
+     installBtn.classList.remove('block');
+   });
+   
+   window.addEventListener('appinstalled', () => {
+     installBtn.classList.add('hidden');
+     installBtn.classList.remove('block');
+   });
+ </script>
 </footer>
