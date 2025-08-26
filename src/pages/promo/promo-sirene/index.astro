@@ -1,20 +1,16 @@
 ---
 // --- Imports et logique fusionnés ---
-
-// Imports de l'ancien Layout
 import Header from "../../../components/Header.astro";
 import FolatingButtonWhatsapp from "../../../components/FolatingButtonWhatsapp.astro";
 import Footer from "../../../components/Footer.astro";
 import AppointmentBar from "../../../components/AppointmentBar.astro";
-
-// Imports de la page
 import HeroSection from "../../../components/HeroSection.astro";
 import { sanityClient } from "../../../sanityClient";
 import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
 import "../../../styles/global.css";
 // --- Variables et Props ---
 const title = "Robes de Mariée Sirène en Promo à Toulouse | Monica Mariage";
-const description = "Robes de mariée sirène en promotion à Toulouse. Silhouettes élégantes et gainantes à petits prix chez Monica Mariage. Trouvez la robe sirène de vos rêves pour votre mariage.";
+const description = "Découvrez nos robes de mariée sirène en promotion à Toulouse. Collection exclusive à prix avantageux chez Monica Mariage. Essayage privé sur rendez-vous.";
 const analyticsId = "G-H8RDXC45EX";
 
 // --- Logique de récupération des données ---
@@ -51,9 +47,8 @@ const preloadImageUrls = robes
   .map((robe) => robe.images[0]?.optimizedImages.gallery.mobile)
   .filter(Boolean);
 
-// ✅ AJOUT : Préparation des Données Structurées (Schema.org)
+// --- Préparation des Données Structurées (Schema.org) ---
 const baseUrl = "https://www.monicamariage.com";
-
 const itemListElements = robes.map((robe, index) => ({
   "@type": "ListItem",
   "position": index + 1,
@@ -62,7 +57,7 @@ const itemListElements = robes.map((robe, index) => ({
     "name": robe.dressName.charAt(0).toUpperCase() + robe.dressName.slice(1).toLowerCase(),
     "url": `${baseUrl}/promo/${robe.sousCategorie}/${robe.slug}`,
     "image": robe.images[0]?.optimizedImages.gallery.mobile,
-    "description": `Découvrez la robe de mariée sirène en promotion ${robe.dressName}, une création unique disponible chez Monica Mariage à Toulouse.`,
+    "description": `Robe de mariée sirène en promotion modèle ${robe.dressName}. Une silhouette glamour à un prix exceptionnel chez Monica Mariage Toulouse.`,
     "brand": { "@type": "Brand", "name": "Monica Mariage" },
     "offers": {
       "@type": "Offer",
@@ -71,6 +66,7 @@ const itemListElements = robes.map((robe, index) => ({
       "price": robe.price,
       "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0], // Valide 1 an
       "url": `${baseUrl}/promo/${robe.sousCategorie}/${robe.slug}`,
+      "itemCondition": "https://schema.org/NewCondition"
     }
   }
 }));
@@ -93,7 +89,7 @@ const schemaData = {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Accueil", "item": `${baseUrl}/` },
-        { "@type": "ListItem", "position": 2, "name": "Robes en Promotion", "item": `${baseUrl}/promo/` },
+        { "@type": "ListItem", "position": 2, "name": "Robes en Promotion", "item": `${baseUrl}/promo` },
         { "@type": "ListItem", "position": 3, "name": "Robes Sirène en Promotion", "item": Astro.url.href }
       ]
     }
@@ -109,8 +105,6 @@ const schemaData = {
     <meta name="google-site-verification" content="rq53avWhuLrrx3ABvRJ12myweeaU47sTzsWdbNOatsU" />
     <title>{title}</title>
 
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#ffffff" />
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -122,18 +116,21 @@ const schemaData = {
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     
-    <!-- ✅ CORRECTION : La balise canonique est maintenant dynamique -->
     <link rel="canonical" href="https://www.monicamariage.com/promo/promo-sirene" />
 
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content="https://www.monicamariage.com/images/cover-robes.jpg">
     <meta name="robots" content="index, follow">
     <meta property="og:url" content={Astro.url.href}>
     
     {preloadImageUrls.map((url) => (
       <link rel="preload" href={url} as="image" fetchpriority="high" />
     ))}
-
-    <!-- ✅ AJOUT : Données structurées pour le SEO -->
+    
     <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
   </head>
   
@@ -182,9 +179,7 @@ const schemaData = {
                       </h3>
                       <span class="text-gray-600 font-bold">{robe.price} €</span>
                     </div>
-                    <button class="bg-[#C5A880] text-white px-6 py-2 text-sm rounded-full hover:bg-[#A27E5D] transition-all">
-                      Voir
-                    </button>
+                    <button class="bg-[#C5A880] text-white px-6 py-2 text-sm rounded-full hover:bg-[#A27E5D] transition-all">Voir</button>
                   </div>
                 </div>
               </a>
@@ -192,8 +187,7 @@ const schemaData = {
           </div>
         </div>
       </section>
-
-      <!-- ✅ AJOUT : Section de contenu pour le SEO -->
+      
       <section class="py-12 bg-gradient-to-b from-[#FDE9E6] to-white">
         <div class="container mx-auto px-4 max-w-6xl">
           <div class="flex flex-col items-center mb-8">
@@ -211,21 +205,18 @@ const schemaData = {
               La <strong>robe de mariée sirène</strong> est le choix parfait pour la mariée qui souhaite allier glamour et modernité. Nos modèles en <strong>promotion à Toulouse</strong> vous permettent d'accéder à cette coupe iconique sans compromettre votre budget. Chaque robe est conçue pour <strong>sculpter et sublimer vos formes</strong>, créant une silhouette inoubliable pour votre grand jour.
             </p>
             <p class="text-base md:text-lg mb-8">
-              Profitez de notre sélection de <strong>robes sirène pas chères</strong>, issues de collections précédentes ou de modèles de déstockage. Toutes nos robes en promotion bénéficient du même service d'essayage personnalisé et de nos conseils d'expertes dans notre showroom près de Toulouse.
+              Profitez de notre sélection de <strong>robes sirène pas chères</strong>, issues de collections précédentes ou de notre opération de déstockage. Toutes nos robes en promotion bénéficient du même service d'essayage personnalisé et de nos conseils d'expertes dans notre showroom près de Toulouse.
             </p>
           </div>
           <div class="max-w-3xl mx-auto">
             <div class="space-y-4">
-              <!-- Accordéon 1 -->
               <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-[#F0E6E2] hover:shadow-md transition-all duration-300">
                 <button class="w-full text-left px-6 py-5 text-[#5F4B3F] flex justify-between items-center accordion-trigger">
                   <div class="flex items-center gap-4">
                     <img src="/icons/monica-mariage-icon4.webp" alt="Icône styles" class="w-8 h-8 object-contain">
                     <h3 class="font-cormorant text-[#5F4B3F] font-medium text-lg text-left">L'Élégance de la Silhouette Sirène à Prix Doux</h3>
                   </div>
-                  <span class="w-8 h-8 flex items-center justify-center rounded-full bg-[#FDF8F7] border border-[#F0E6E2] text-[#af7749] transition-transform duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                  </span>
+                  <span class="w-8 h-8 flex items-center justify-center rounded-full bg-[#FDF8F7] border border-[#F0E6E2] text-[#af7749]"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg></span>
                 </button>
                 <div class="accordion-content max-h-0 opacity-0 overflow-hidden transition-all duration-300">
                   <div class="px-6 py-5 border-t border-[#F0E6E2] bg-[#FEFBFA]">
@@ -233,20 +224,17 @@ const schemaData = {
                   </div>
                 </div>
               </div>
-              <!-- Accordéon 2 -->
               <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-[#F0E6E2] hover:shadow-md transition-all duration-300">
                 <button class="w-full text-left px-6 py-5 text-[#5F4B3F] flex justify-between items-center accordion-trigger">
                   <div class="flex items-center gap-4">
                      <img src="/icons/monica-mariage-icon1.webp" alt="Icône essayage" class="w-8 h-8 object-contain">
                      <h3 class="font-cormorant text-[#5F4B3F] font-medium text-lg text-left">Essayage Personnalisé Garanti</h3>
                   </div>
-                  <span class="w-8 h-8 flex items-center justify-center rounded-full bg-[#FDF8F7] border border-[#F0E6E2] text-[#af7749] transition-transform duration-300">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                  </span>
+                  <span class="w-8 h-8 flex items-center justify-center rounded-full bg-[#FDF8F7] border border-[#F0E6E2] text-[#af7749]"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg></span>
                 </button>
                 <div class="accordion-content max-h-0 opacity-0 overflow-hidden transition-all duration-300">
                    <div class="px-6 py-5 border-t border-[#F0E6E2] bg-[#FEFBFA]">
-                      <p class="text-sm md:text-base">Même en promotion, chaque robe mérite une attention particulière. Nous vous offrons un essayage privé sur rendez-vous pour vous assurer que votre robe sirène est parfaitement ajustée. Les retouches nécessaires sont incluses pour un tombé parfait.</p>
+                      <p class="text-sm md:text-base">Même en promotion, chaque robe mérite une attention particulière. Nous vous offrons un essayage privé sur rendez-vous pour vous assurer que votre robe sirène est parfaitement ajustée. Les retouches nécessaires peuvent être effectuées pour un tombé parfait (service en supplément sur les modèles en promotion).</p>
                    </div>
                 </div>
               </div>
@@ -254,7 +242,7 @@ const schemaData = {
             <div class="text-center mt-10">
               <a href="/prendre-rendez-vous" class="inline-flex items-center px-8 py-3 bg-[#af7749] text-white font-medium rounded-full hover:bg-[#9d6841] transition-colors duration-300 shadow-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9,22 9,12 15,12 15,22"></polyline></svg>
-                Prendre rendez-vous
+                Réserver mon essayage
               </a>
             </div>
           </div>
@@ -267,7 +255,6 @@ const schemaData = {
     <AppointmentBar />
     
     <script>
-      // Animation fade-in au scroll
       document.addEventListener("DOMContentLoaded", () => {
         const observer = new IntersectionObserver((entries) => {
           entries.forEach((entry) => {
@@ -277,19 +264,16 @@ const schemaData = {
             }
           });
         });
-        document.querySelectorAll(".fade-in").forEach((el) => {
-          observer.observe(el);
-        });
-      });
+        document.querySelectorAll(".fade-in").forEach((el) => observer.observe(el));
 
-      // Script pour l'accordéon
-      document.querySelectorAll(".accordion-trigger").forEach((trigger) => {
-        trigger.addEventListener("click", function() {
-          const content = this.nextElementSibling;
-          const isExpanded = this.getAttribute("aria-expanded") === "true";
-          this.setAttribute("aria-expanded", !isExpanded);
-          content.style.maxHeight = isExpanded ? "0" : content.scrollHeight + "px";
-          content.style.opacity = isExpanded ? "0" : "1";
+        document.querySelectorAll(".accordion-trigger").forEach((trigger) => {
+          trigger.addEventListener("click", function() {
+            const content = this.nextElementSibling;
+            const isExpanded = this.getAttribute("aria-expanded") === "true";
+            this.setAttribute("aria-expanded", String(!isExpanded));
+            content.style.maxHeight = isExpanded ? "0" : content.scrollHeight + "px";
+            content.style.opacity = isExpanded ? "0" : "1";
+          });
         });
       });
     </script>
