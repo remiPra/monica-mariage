@@ -8,7 +8,7 @@ export function buildCanonicalUrl(path) {
 
 export function buildProductUrl(category, sousCategorie, slug) {
   if (category === "robes-de-mariee") {
-    return `${SITE_URL}/robes-de-mariee/${sousCategorie}/${slug}`;
+    return `${SITE_URL}robes-de-mariee/${sousCategorie}/${slug}`;
   } else if (category === "promo") {
     return `${SITE_URL}/promo/${sousCategorie}/${slug}`;
   }
