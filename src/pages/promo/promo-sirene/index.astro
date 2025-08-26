@@ -1,24 +1,23 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
+// --- Imports et logique fusionnés ---
+
+// Imports de l'ancien Layout
+import Header from "../../../components/Header.astro";
+import FolatingButtonWhatsapp from "../../../components/FolatingButtonWhatsapp.astro";
+import Footer from "../../../components/Footer.astro";
+import AppointmentBar from "../../../components/AppointmentBar.astro";
+
+// Imports de la page
 import HeroSection from "../../../components/HeroSection.astro";
 import { sanityClient } from "../../../sanityClient";
 import { optimizeCloudinaryUrl } from "../../../lib/optimizeCloudinaryUrl";
+import "../../../styles/global.css";
+// --- Variables et Props ---
+const title = "Robes de Mariée Sirène en Promo à Toulouse | Monica Mariage";
+const description = "Robes de mariée sirène en promotion à Toulouse. Silhouettes élégantes et gainantes à petits prix chez Monica Mariage. Trouvez la robe sirène de vos rêves pour votre mariage.";
+const analyticsId = "G-H8RDXC45EX";
 
-// 🔍 DEBUG : récupérer TOUTES les robes pour inspection
-const allDocs = await sanityClient.fetch(`
-  *[_type == "robe"]{
-    _id,
-    dressName,
-    category,
-    price,
-    sousCategorie,
-    "slug": slug.current,
-    imagesCloudinary[]{ url, alt }
-  }
-`);
-console.log("🚀 SANITY: allDocs =", JSON.stringify(allDocs, null, 2));
-
-// 1) Récupération des robes
+// --- Logique de récupération des données ---
 const robesData = await sanityClient.fetch(`       
   *[_type == "robe"
     && category == "promo"
@@ -35,136 +34,284 @@ const robesData = await sanityClient.fetch(`
   }
 `);
 
-// 2) Mapping et optimisation des images
 const robes = (robesData || []).map((robe) => ({
   ...robe,
   images: (robe.imagesCloudinary || []).map((img) => ({
     alt: img.alt,
     optimizedImages: {
       gallery: {
-        desktop: optimizeCloudinaryUrl(img.url, false), // mode desktop
-        tablet: optimizeCloudinaryUrl(img.url, false), // même chose pour tablet
-        mobile: optimizeCloudinaryUrl(img.url, "imageMobileGallery"), // celui-ci est correct
+        mobile: optimizeCloudinaryUrl(img.url, "imageMobileGallery"),
       },
     },
   })),
 }));
 
-// Préparer les URLs des premières images visibles pour le préchargement
 const preloadImageUrls = robes
   .slice(0, 4)
   .map((robe) => robe.images[0]?.optimizedImages.gallery.mobile)
   .filter(Boolean);
+
+// ✅ AJOUT : Préparation des Données Structurées (Schema.org)
+const baseUrl = "https://www.monicamariage.com";
+
+const itemListElements = robes.map((robe, index) => ({
+  "@type": "ListItem",
+  "position": index + 1,
+  "item": {
+    "@type": "Product",
+    "name": robe.dressName.charAt(0).toUpperCase() + robe.dressName.slice(1).toLowerCase(),
+    "url": `${baseUrl}/promo/${robe.sousCategorie}/${robe.slug}`,
+    "image": robe.images[0]?.optimizedImages.gallery.mobile,
+    "description": `Découvrez la robe de mariée sirène en promotion ${robe.dressName}, une création unique disponible chez Monica Mariage à Toulouse.`,
+    "brand": { "@type": "Brand", "name": "Monica Mariage" },
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock",
+      "priceCurrency": "EUR",
+      "price": robe.price,
+      "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0], // Valide 1 an
+      "url": `${baseUrl}/promo/${robe.sousCategorie}/${robe.slug}`,
+    }
+  }
+}));
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "name": title,
+      "url": Astro.url.href,
+      "description": description,
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": robes.length,
+        "itemListElement": itemListElements
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Accueil", "item": `${baseUrl}/` },
+        { "@type": "ListItem", "position": 2, "name": "Robes en Promotion", "item": `${baseUrl}/promo/` },
+        { "@type": "ListItem", "position": 3, "name": "Robes Sirène en Promotion", "item": Astro.url.href }
+      ]
+    }
+  ]
+};
 ---
 
-<Layout
-  title="Robes de Mariée Sirène en Promo à Toulouse | Monica Mariage"
-  description="Robes de mariée sirène en promotion à Toulouse. Silhouettes élégantes et gainantes à petits prix chez Monica Mariage. Trouvez la robe sirène de vos rêves pour votre mariage."
->
-  <!-- Préchargement des images critiques -->
-  {
-    preloadImageUrls.map((url) => (
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-site-verification" content="rq53avWhuLrrx3ABvRJ12myweeaU47sTzsWdbNOatsU" />
+    <title>{title}</title>
+
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://www.monicamariage.com/images/cover-robes.jpg" />
+    
+    <link rel="preload" href="/fonts/great-vibes-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/cormorant-garamond-v19-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    
+    <!-- ✅ CORRECTION : La balise canonique est maintenant dynamique -->
+    <link rel="canonical" href="https://www.monicamariage.com/promo/promo-sirene" />
+
+    <meta name="robots" content="index, follow">
+    <meta property="og:url" content={Astro.url.href}>
+    
+    {preloadImageUrls.map((url) => (
       <link rel="preload" href={url} as="image" fetchpriority="high" />
-    ))
-  }
+    ))}
 
-  <section
-    style="margin-top: 120px;"
-    class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]"
-  >
-    <HeroSection
-      title="Robes de Mariée Sirène en Promotion | Collection Exclusive Toulouse"
-      subtitle="Des créations élégantes à prix avantageux pour sublimer votre silhouette"
-      buttonText="Découvrir les robes"
-      scrollTarget="#robes-collection"
-      iconSrc="/image/iconerobe.png"
-    />
-    <div class="flex justify-center px-4">
-      <div
-        id="robes"
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full"
-      >
-        {
-          robes.map((robe, index) => (
-            <a
-              key={robe._id}
-              href={`/promo/${robe.sousCategorie}/${robe.slug}`}
-              class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] lg:h-[420px] shadow-md"
-              data-index={index}
-            >
-              {/* Overlay dégradé */}
-                            {/*    <div class="absolute w-full h-full inset-0 bg-[#af7749] opacity-20 z-10" />*/}
+    <!-- ✅ AJOUT : Données structurées pour le SEO -->
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+  </head>
+  
+  <body>
+    <Header />
 
-              {/* Image */}
-              {robe.images[0] ? (
-                <img
-                  src={robe.images[0].optimizedImages.gallery.mobile}
-                  alt={robe.images[0].alt || robe.dressName}
-                  width="300"
-                  height="500"
-                  fetchpriority={index < 2 ? "high" : "auto"}
-                  class="w-full absolute top-0 h-auto object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
-                  loading={index < 4 ? "eager" : "lazy"}
-                  decoding={index < 4 ? "sync" : "async"}
-                />
-              ) : (
-                <div class="absolute inset-0 bg-gray-200 flex items-center justify-center">
-                  <span class="text-gray-600">Image non disponible</span>
-                </div>
-              )}
-
-              {/* Contenu bas */}
-              <div class="absolute bottom-0 left-0 w-full bg-white/95 p-4 z-10">
-                <div class="flex justify-between items-center">
-                  <div>
-                    <h3 class="text-[#af7749] font-vibes text-2xl">
-                      {robe.dressName.charAt(0).toUpperCase() +
-                        robe.dressName.slice(1).toLowerCase()}
-                    </h3>
-                    <span class="text-gray-600">{robe.price} €</span>
+    <main>
+      <section style="margin-top: 120px;" class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]">
+        <HeroSection
+          title="Robes de Mariée Sirène en Promotion | Collection Exclusive Toulouse"
+          subtitle="Des créations élégantes à prix avantageux pour sublimer votre silhouette"
+          buttonText="Découvrir les robes"
+          scrollTarget="#robes"
+          iconSrc="/image/iconerobe.png"
+        />
+        <div class="flex justify-center px-4">
+          <div id="robes" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full mb-16">
+            {robes.map((robe, index) => (
+              <a
+                key={robe._id}
+                href={`/promo/${robe.sousCategorie}/${robe.slug}`}
+                class="relative text-center overflow-hidden border-[#C5A880] cursor-pointer fade-in border rounded-2xl h-[500px] lg:h-[420px] shadow-md"
+                data-index={index}
+              >
+                {robe.images[0] ? (
+                  <img
+                    src={robe.images[0].optimizedImages.gallery.mobile}
+                    alt={robe.images[0].alt || `Robe de mariée sirène en promotion ${robe.dressName}`}
+                    width="300"
+                    height="500"
+                    fetchpriority={index < 2 ? "high" : "auto"}
+                    class="w-full absolute top-0 h-auto object-cover rounded hover:scale-105 transition-transform duration-300 z-0"
+                    loading={index < 4 ? "eager" : "lazy"}
+                    decoding={index < 4 ? "sync" : "async"}
+                  />
+                ) : (
+                  <div class="absolute inset-0 bg-gray-200 flex items-center justify-center">
+                    <span class="text-gray-600">Image non disponible</span>
                   </div>
-                  <button class="bg-[#C5A880] text-white px-6 py-2 rounded-full hover:bg-[#A27E5D] transition-all">
-                    Voir
-                  </button>
+                )}
+                <div class="absolute bottom-0 left-0 w-full bg-white/95 p-4 z-10">
+                  <div class="flex justify-between items-center">
+                    <div>
+                      <h3 class="text-[#af7749] font-vibes text-2xl">
+                        {robe.dressName.charAt(0).toUpperCase() + robe.dressName.slice(1).toLowerCase()}
+                      </h3>
+                      <span class="text-gray-600 font-bold">{robe.price} €</span>
+                    </div>
+                    <button class="bg-[#C5A880] text-white px-6 py-2 text-sm rounded-full hover:bg-[#A27E5D] transition-all">
+                      Voir
+                    </button>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- ✅ AJOUT : Section de contenu pour le SEO -->
+      <section class="py-12 bg-gradient-to-b from-[#FDE9E6] to-white">
+        <div class="container mx-auto px-4 max-w-6xl">
+          <div class="flex flex-col items-center mb-8">
+            <h2 class="font-vibes text-center text-4xl md:text-5xl text-[#af7749] mb-2">
+              Une Silhouette de Rêve à Petit Prix
+            </h2>
+            <div class="flex items-center justify-center gap-4 mb-8">
+              <span class="h-px w-12 bg-[#C5A880]"></span>
+              <p class="text-[#8B7569] text-sm text-center font-medium">ÉLÉGANCE ET MODERNITÉ</p>
+              <span class="h-px w-12 bg-[#C5A880]"></span>
+            </div>
+          </div>
+          <div class="max-w-4xl mx-auto text-center font-lora text-[#5F4B3F] leading-relaxed mb-12">
+            <p class="text-base md:text-lg mb-8">
+              La <strong>robe de mariée sirène</strong> est le choix parfait pour la mariée qui souhaite allier glamour et modernité. Nos modèles en <strong>promotion à Toulouse</strong> vous permettent d'accéder à cette coupe iconique sans compromettre votre budget. Chaque robe est conçue pour <strong>sculpter et sublimer vos formes</strong>, créant une silhouette inoubliable pour votre grand jour.
+            </p>
+            <p class="text-base md:text-lg mb-8">
+              Profitez de notre sélection de <strong>robes sirène pas chères</strong>, issues de collections précédentes ou de modèles de déstockage. Toutes nos robes en promotion bénéficient du même service d'essayage personnalisé et de nos conseils d'expertes dans notre showroom près de Toulouse.
+            </p>
+          </div>
+          <div class="max-w-3xl mx-auto">
+            <div class="space-y-4">
+              <!-- Accordéon 1 -->
+              <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-[#F0E6E2] hover:shadow-md transition-all duration-300">
+                <button class="w-full text-left px-6 py-5 text-[#5F4B3F] flex justify-between items-center accordion-trigger">
+                  <div class="flex items-center gap-4">
+                    <img src="/icons/monica-mariage-icon4.webp" alt="Icône styles" class="w-8 h-8 object-contain">
+                    <h3 class="font-cormorant text-[#5F4B3F] font-medium text-lg text-left">L'Élégance de la Silhouette Sirène à Prix Doux</h3>
+                  </div>
+                  <span class="w-8 h-8 flex items-center justify-center rounded-full bg-[#FDF8F7] border border-[#F0E6E2] text-[#af7749] transition-transform duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                  </span>
+                </button>
+                <div class="accordion-content max-h-0 opacity-0 overflow-hidden transition-all duration-300">
+                  <div class="px-6 py-5 border-t border-[#F0E6E2] bg-[#FEFBFA]">
+                    <p class="text-sm md:text-base">Nos robes sirène en promotion sont sélectionnées pour leur coupe impeccable qui épouse les hanches et s'évase à partir des genoux. Qu'elles soient en dentelle, en crêpe ou en satin, elles offrent une allure sophistiquée et résolument féminine, maintenant accessible à un budget maîtrisé.</p>
+                  </div>
                 </div>
               </div>
-            </a>
-          ))
-        }
-      </div>
+              <!-- Accordéon 2 -->
+              <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-[#F0E6E2] hover:shadow-md transition-all duration-300">
+                <button class="w-full text-left px-6 py-5 text-[#5F4B3F] flex justify-between items-center accordion-trigger">
+                  <div class="flex items-center gap-4">
+                     <img src="/icons/monica-mariage-icon1.webp" alt="Icône essayage" class="w-8 h-8 object-contain">
+                     <h3 class="font-cormorant text-[#5F4B3F] font-medium text-lg text-left">Essayage Personnalisé Garanti</h3>
+                  </div>
+                  <span class="w-8 h-8 flex items-center justify-center rounded-full bg-[#FDF8F7] border border-[#F0E6E2] text-[#af7749] transition-transform duration-300">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                  </span>
+                </button>
+                <div class="accordion-content max-h-0 opacity-0 overflow-hidden transition-all duration-300">
+                   <div class="px-6 py-5 border-t border-[#F0E6E2] bg-[#FEFBFA]">
+                      <p class="text-sm md:text-base">Même en promotion, chaque robe mérite une attention particulière. Nous vous offrons un essayage privé sur rendez-vous pour vous assurer que votre robe sirène est parfaitement ajustée. Les retouches nécessaires sont incluses pour un tombé parfait.</p>
+                   </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-center mt-10">
+              <a href="/prendre-rendez-vous" class="inline-flex items-center px-8 py-3 bg-[#af7749] text-white font-medium rounded-full hover:bg-[#9d6841] transition-colors duration-300 shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9,22 9,12 15,12 15,22"></polyline></svg>
+                Prendre rendez-vous
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
 
-      <script defer>
-        // Amélioration du script d'animation pour ne pas retarder le LCP
-        document.addEventListener("DOMContentLoaded", () => {
-          // Initialiser immédiatement les images visibles
-          const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("active");
-                observer.unobserve(entry.target);
-              }
-            });
-          });
-
-          document.querySelectorAll(".fade-in").forEach((el) => {
-            observer.observe(el);
+    <FolatingButtonWhatsapp />
+    <Footer />
+    <AppointmentBar />
+    
+    <script>
+      // Animation fade-in au scroll
+      document.addEventListener("DOMContentLoaded", () => {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+              observer.unobserve(entry.target);
+            }
           });
         });
-      </script>
+        document.querySelectorAll(".fade-in").forEach((el) => {
+          observer.observe(el);
+        });
+      });
 
-      <style>
-        .fade-in {
-          opacity: 0;
-          transform: translateY(10px);
-          transition:
-            opacity 0.6s ease-in-out,
-            transform 0.6s ease-in-out;
-        }
-        .fade-in.active {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      </style>
-    </div>
-  </section>
-</Layout>
+      // Script pour l'accordéon
+      document.querySelectorAll(".accordion-trigger").forEach((trigger) => {
+        trigger.addEventListener("click", function() {
+          const content = this.nextElementSibling;
+          const isExpanded = this.getAttribute("aria-expanded") === "true";
+          this.setAttribute("aria-expanded", !isExpanded);
+          content.style.maxHeight = isExpanded ? "0" : content.scrollHeight + "px";
+          content.style.opacity = isExpanded ? "0" : "1";
+        });
+      });
+    </script>
+    
+    <style>
+      .fade-in { opacity: 0; transform: translateY(10px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+      .fade-in.active { opacity: 1; transform: translateY(0); }
+      .accordion-content { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; }
+    </style>
+  </body>
+
+  <script define:vars={{ analyticsId }}>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H8RDXC45EX');
+
+    setTimeout(() => {
+      const script = document.createElement("script");
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsId}`;
+      document.head.appendChild(script);
+    }, 4000);
+  </script>
+</html>
