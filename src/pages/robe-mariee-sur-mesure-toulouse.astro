@@ -139,13 +139,16 @@ const schemaData = {
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     
-    <link rel="canonical" href={pageUrl} />
-    <meta property="og:url" content={pageUrl}>
+   
+    <link rel="canonical" href="https://www.monicamariage.com/robe-mariee-sur-mesure-toulouse">
+<meta property="og:url" content="https://www.monicamariage.com/robe-mariee-sur-mesure-toulouse">
 
     {mainImageUrl && <ImagePreloader imageUrl={mainImageUrl} />}
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Robes de mariée à Toulouse — Boutique & Créatrice | Monica Mariage">
-    <meta name="twitter:description" content="Monica Mariage : boutique de robes de mariée sur-mesure à Toulouse...">
+    <meta name="twitter:title" content={title}>
+
+    <meta name="twitter:description" content={description}>
+
     <meta name="twitter:image" content="https://www.monicamariage.com/images/cover-robes.jpg">
     <meta name="robots" content="index, follow">
     
@@ -261,7 +264,7 @@ const schemaData = {
             </div>
           </div>
           <h2 class="font-vibes text-center text-4xl md:text-5xl text-[#af7749] mb-2">
-            Notre Collection Complète
+            Notre Collection Complète de Robes de Mariée Sur-mesure : matières, coupes et finitions
           </h2>
           <div class="flex items-center justify-center gap-4 mb-8">
             <span class="h-px w-12 bg-[#C5A880]"></span>

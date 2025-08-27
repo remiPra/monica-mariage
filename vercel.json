@@ -22,6 +22,16 @@
       "permanent": true
     },
     {
+      "source": "/robes-de-mariee-promotion",
+      "destination": "/promo/robes-de-mariee-promotion",
+      "permanent": true
+    },
+     {
+      "source": "/trouver-le-showroom",
+      "destination": "/trouver-boutique-robe-mariee-toulouse",
+      "permanent": true
+    },
+    {
       "source": "/robes-de-mariee-boheme-chic",
       "destination": "/promo/robes-de-mariee-boheme-chic",
       "permanent": true
