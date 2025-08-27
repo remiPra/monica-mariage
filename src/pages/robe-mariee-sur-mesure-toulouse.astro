@@ -1,5 +1,4 @@
 ---
-// --- Imports et logique fusionnés ---
 import Header from "../components/Header.astro";
 import '../styles/global.css';
 import FolatingButtonWhatsapp from "../components/FolatingButtonWhatsapp.astro";
@@ -12,10 +11,14 @@ import { optimizeCloudinaryUrl } from "../lib/optimizeCloudinaryUrl";
 import FavoriButton from "../components/FavoriButton.astro";
 
 // --- Variables et Props ---
-const title = "Robes de Mariée à Toulouse | Collection Complète | Monica Mariage";
-const description = "Découvrez toute notre collection de robes de mariée à Toulouse. Styles princesse, sirène, bohème-chic ou minimaliste. Créations sur-mesure pour sublimer chaque mariée.";
+const title = "Robe Mariée Sur-Mesure Toulouse | Créations Uniques | Monica Mariage";
+const description = "Robe de mariée sur-mesure à Toulouse : essayage privé, créations ajustées à votre morphologie (34–44), délais 3–4 mois  et paiement en 3 fois.";
 const mainImageUrl = "";
 const analyticsId = "G-H8RDXC45EX";
+
+const baseUrl = "https://www.monicamariage.com";
+const pagePath = "/robe-mariee-sur-mesure-toulouse";
+const pageUrl = `${baseUrl}${pagePath}`;
 
 // --- Logique de récupération des données ---
 const robesData = await sanityClient.fetch(`       
@@ -51,7 +54,6 @@ const preloadImageUrls = robes
   .filter(Boolean);
 
 // --- Préparation des Données Structurées (Schema.org) ---
-const baseUrl = "https://www.monicamariage.com";
 
 const itemListElements = robes.map((robe, index) => ({
   "@type": "ListItem",
@@ -105,8 +107,8 @@ const schemaData = {
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "Toutes nos robes de mariée",
-          "item": Astro.url.href
+          "name": "Robe de mariée sur-mesure à Toulouse",
+          "item": pageUrl
         }
       ]
     }
@@ -137,8 +139,8 @@ const schemaData = {
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     
-    <!-- ✅ CORRECTION : La balise canonique est maintenant dynamique -->
-    <link rel="canonical" href="https://www.monicamariage.com/toutes-nos-robes" />
+    <link rel="canonical" href={pageUrl} />
+    <meta property="og:url" content={pageUrl}>
 
     {mainImageUrl && <ImagePreloader imageUrl={mainImageUrl} />}
     <meta name="twitter:card" content="summary_large_image">
@@ -146,28 +148,56 @@ const schemaData = {
     <meta name="twitter:description" content="Monica Mariage : boutique de robes de mariée sur-mesure à Toulouse...">
     <meta name="twitter:image" content="https://www.monicamariage.com/images/cover-robes.jpg">
     <meta name="robots" content="index, follow">
-    <meta property="og:url" content={Astro.url.href}>
     
     {
       preloadImageUrls.map((url) => (
-        <link rel="preload" href={url} as="image" fetchpriority="high" />
+        // Conserver fetchpriority="high" uniquement pour l'image LCP réelle si elle est différente de celles de la grille
+        <link rel="preload" href={url} as="image" fetchpriority="auto" /> 
       ))
     }
+    
+    <!-- Précharge pour l'image LCP du Hero (si nécessaire, ici l'original est conservé) -->
+    <link rel="preload" as="image" href="/images/cover-robes.jpg" imagesizes="(max-width:768px) 100vw, 1200px" />
+
 
     <!-- ✅ AJOUT : Données structurées pour le SEO -->
     <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context":"https://schema.org",
+      "@type":"HowTo",
+      "name":"Processus robe de mariée sur-mesure à Toulouse",
+      "step":[
+        {"@type":"HowToStep","name":"Rendez-vous privé"},
+        {"@type":"HowToStep","name":"Prise de mesures"},
+        {"@type":"HowToStep","name":"Patron & prototype"},
+        {"@type":"HowToStep","name":"Essayages retouches"},
+        {"@type":"HowToStep","name":"Livraison"}
+      ]
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context":"https://schema.org",
+      "@type":"FAQPage",
+      "mainEntity":[
+        {"@type":"Question","name":"Quel prix pour une robe sur-mesure ?","acceptedAnswer":{"@type":"Answer","text":"De 750€ à 1850€ selon matières et finitions."}},
+        {"@type":"Question","name":"Quels délais ?","acceptedAnswer":{"@type":"Answer","text":"3–4 mois, avec planning d’essayages."}},
+        {"@type":"Question","name":"Tailles et morphologies ?","acceptedAnswer":{"@type":"Answer","text":"Du 34 au 44, adaptations possibles."}},
+        {"@type":"Question","name":"Paiement en plusieurs fois ?","acceptedAnswer":{"@type":"Answer","text":"Oui, en 3 fois."}}
+      ]
+    })} />
   </head>
   
   <body>
     <Header />
 
-    <section style="margin-top: 120px;" class="py-1 bg-gradient-to-b from-white to-[#FDE9E6]">
+    <section class="mt-[120px] py-1 bg-gradient-to-b from-white to-[#FDE9E6]">
       <HeroSection
-        title="Toutes nos Robes de Mariée | Catalogue Complet | Monica Mariage"
-        subtitle="Plus de 150 modèles disponibles dans notre showroom toulousain pour essayage sur rendez-vous"
-        buttonText="Découvrir toutes nos robes"
+        title="Robe de Mariée Sur-Mesure à Toulouse | Monica Mariage"
+        subtitle="Processus sur-mesure en 5 étapes, essayage privé , délais 3–4 mois"
+        buttonText="Réserver un essayage sur-mesure"
         iconSrc="/image/iconerobe.png"
       />
+
+    
 
       <div class="flex justify-center px-4">
         <div id="robes" class="grid mb-[100px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl w-full">
@@ -186,10 +216,10 @@ const schemaData = {
                     alt={robe.images[0].alt || robe.dressName || "Robe de mariée Monica Mariage"}
                     width="300"
                     height="500"
-                    fetchpriority={index < 2 ? "high" : "auto"}
+                    fetchpriority={index < 1 ? "high" : "auto"} // High seulement pour la première image de la grille
                     class="w-full absolute top-0 h-auto object-cover rounded hover:scale-105 transition-transform duration-300 z-[-1]"
                     loading={index < 4 ? "eager" : "lazy"}
-                    decoding={index < 4 ? "sync" : "async"}
+                    decoding="async" // Toujours async
                   />
                 ) : (
                   <div class="absolute inset-0 bg-gray-200 flex items-center justify-center">
@@ -210,6 +240,17 @@ const schemaData = {
         </div>
       </div>
     </section>
+      <!-- Section Processus sur-mesure -->
+      <section class="mx-auto max-w-6xl px-4 py-10">
+        <h2 class="text-2xl md:text-3xl font-semibold mb-6">Votre robe sur-mesure en 5 étapes</h2>
+        <ol class="grid gap-4 md:grid-cols-5 text-sm leading-relaxed">
+          <li><strong>1. Rendez-vous privé</strong><br/>Découverte des styles et essayage guidé.</li>
+          <li><strong>2. Prise de mesures</strong><br/>Mensurations exactes et choix des matières.</li>
+          <li><strong>3. Patron & prototype</strong><br/>Ajustements sur buste pour un tombé parfait.</li>
+          <li><strong>4. Essayages retouches</strong><br/>2 à 3 passages selon le modèle.</li>
+          <li><strong>5. Livraison</strong><br/>Finitions, conseils d’entretien, housse.</li>
+        </ol>
+      </section>
 
     <section class="py-12 bg-gradient-to-b from-[#FDE9E6] to-white">
       <div class="container mx-auto px-4 max-w-6xl">
@@ -234,7 +275,7 @@ const schemaData = {
             Découvrez <strong>toutes nos robes de mariée</strong> disponibles dans notre showroom toulousain. Notre <strong>collection complète</strong> réunit plus de 150 modèles soigneusement sélectionnés : <strong>robes princesse</strong> pour un style féerique, <strong>robes sirène</strong> pour une silhouette sculptée, <strong>créations bohème-chic</strong> pour un mariage naturel, et <strong>modèles minimalistes</strong> pour une élégance épurée.
           </p>
           <p class="text-base md:text-lg mb-8">
-            Chaque robe peut être <strong>essayée sur rendez-vous</strong> dans notre showroom de Seysses, au sud de Toulouse. Notre équipe vous accompagne pour trouver le modèle parfait selon votre morphologie, vos goûts et votre budget. <strong>Retouches incluses</strong> et <strong>service personnalisé</strong> pour un mariage unique.
+            Chaque robe peut être <strong>essayée sur rendez-vous</strong> dans notre showroom de Seysses, au sud de Toulouse. Notre équipe vous accompagne pour trouver le modèle parfait selon votre morphologie, vos goûts et votre budget et <strong>service personnalisé</strong> pour un mariage unique.
           </p>
         </div>
 
@@ -306,7 +347,6 @@ const schemaData = {
                  <div class="px-6 py-5 border-t border-[#F0E6E2] bg-[#FEFBFA]">
                   <ul class="max-w-2xl mx-auto text-sm md:text-base space-y-2">
                     <li class="flex items-center gap-3"><img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0"><span><strong>Gamme de prix</strong> : de 750€ à 1850€ pour tous les budgets</span></li>
-                    <li class="flex items-center gap-3"><img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0"><span><strong>Retouches incluses</strong> : ajustements pour un ajustement parfait</span></li>
                     <li class="flex items-center gap-3"><img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0"><span><strong>Accompagnement complet</strong> : de l'essayage à la livraison</span></li>
                     <li class="flex items-center gap-3"><img src="/icons/monica-mariage-icon6.webp" alt="Puce" class="w-5 h-5 flex-shrink-0"><span><strong>Facilités de paiement</strong> : échelonnement possible</span></li>
                   </ul>
@@ -314,6 +354,15 @@ const schemaData = {
               </div>
             </div>
           </div>
+
+          <!-- Section FAQ -->
+          <section class="mx-auto max-w-3xl px-4 py-10">
+            <h2 class="text-2xl md:text-3xl font-semibold mb-6">FAQ — Sur-mesure à Toulouse</h2>
+            <details class="mb-3"><summary>Quel prix pour une robe sur-mesure ?</summary><p>De 750€ à 1850€ selon matières et finitions.</p></details>
+            <details class="mb-3"><summary>Quels délais ?</summary><p>Comptez 3–4 mois, avec planning d’essayages.</p></details>
+            <details class="mb-3"><summary>Tailles et morphologies ?</summary><p>Du 34 au 44, adaptations possibles (bustier, longueur, manches).</p></details>
+            <details class="mb-3"><summary>Paiement en plusieurs fois ?</summary><p>Oui, en 3 fois. À valider lors de l’essayage.</p></details>
+          </section>
 
           <div class="text-center mt-10">
             <a href="/prendre-rendez-vous" class="inline-flex items-center px-8 py-3 bg-[#af7749] text-white font-medium rounded-full hover:bg-[#9d6841] transition-colors duration-300 shadow-lg hover:shadow-xl">
@@ -324,6 +373,17 @@ const schemaData = {
         </div>
       </div>
     </section>
+
+    <!-- Maillage interne -->
+    <nav class="mx-auto max-w-6xl px-4 py-8 text-sm">
+      <ul class="flex flex-wrap gap-3">
+        <li><a class="underline" href="/robes-de-mariee/princesse">Robe princesse</a></li>
+        <li><a class="underline" href="/robes-de-mariee/sirene">Robe sirène</a></li>
+        <li><a class="underline" href="/robes-de-mariee/boheme">Robe bohème</a></li>
+        <li><a class="underline" href="/robes-de-mariee/minimaliste">Robe minimaliste</a></li>
+        <li><a class="underline" href="/prendre-rendez-vous">Prendre rendez-vous</a></li>
+      </ul>
+    </nav>
 
     <!-- Scripts et Styles -->
     <script>
@@ -355,6 +415,15 @@ const schemaData = {
               this.setAttribute("aria-expanded", !isExpanded);
               content.style.maxHeight = isExpanded ? "0" : content.scrollHeight + "px";
               content.style.opacity = isExpanded ? "0" : "1";
+              // Ajout : rotation de l'icône plus/moins
+              const icon = this.querySelector('svg');
+              if (icon) {
+                  if (isExpanded) {
+                      icon.style.transform = 'rotate(0deg)';
+                  } else {
+                      icon.style.transform = 'rotate(45deg)';
+                  }
+              }
             });
           });
         }
@@ -370,6 +439,7 @@ const schemaData = {
       .fade-in { opacity: 0; transform: translateY(10px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
       .fade-in.active { opacity: 1; transform: translateY(0); }
       .accordion-content { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; }
+      .accordion-trigger span svg { transition: transform 0.3s ease-in-out; } /* Transition pour l'icône */
     </style>
     
     <FolatingButtonWhatsapp />

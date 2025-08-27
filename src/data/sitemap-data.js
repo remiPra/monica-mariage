@@ -6,7 +6,7 @@ export const siteStructure = {
     { url: "/prendre-rendez-vous", changefreq: "monthly", priority: 0.8 },
     { url: "/success", changefreq: "monthly", priority: 0.5 },
     { url: "/mentions-legales-robes", changefreq: "yearly", priority: 0.3 },
-    { url: "/toutes-nos-robes", changefreq: "weekly", priority: 0.9 },
+    { url: "/robe-mariee-sur-mesure-toulouse", changefreq: "weekly", priority: 0.9 },
     { url: "/trouver-le-showroom", changefreq: "monthly", priority: 0.8 },
   ],
 

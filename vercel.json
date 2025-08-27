@@ -38,6 +38,11 @@
       "permanent": true
     },
     {
+      "source": "/toutes-nos-robes",
+      "destination": "/robe-mariee-sur-mesure-toulouse",
+      "permanent": true
+    },
+    {
       "source": "/minimaliste",
       "destination": "/robes-de-mariee/minimaliste",
       "permanent": true
