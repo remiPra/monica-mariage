@@ -99,8 +99,18 @@ import SocialIcons from "./SocialIcons.astro";
   <div class="border-t border-gray-600 mt-6 pt-4 text-center text-sm">
     <p>&copy; 2014 - 2025 Monica Mariage Showroom – Tous droits réservés</p>
   </div>
-  <script defer type="module" src="/js/register-sw.js"></script>
-   <!-- Bouton PWA avec Tailwind -->
+  <!-- place ça à la fin de ton layout, juste avant </body> -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js'); // ou ton chemin réel
+    });
+  }
+</script>
+
+
+
+  <!-- Bouton PWA avec Tailwind -->
    <!-- <button 
    id="install-pwa" 
    class="hidden fixed bottom-5 right-5 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg shadow-lg transition-colors duration-200 z-50"
