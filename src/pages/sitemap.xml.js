@@ -9,7 +9,7 @@ export async function get() {
     "/success",
     "/prendre-rendez-vous", 
     "/robe-mariee-sur-mesure-toulouse",
-    "/trouver-le-showroom",
+    "/trouver-boutique-robe-mariee-toulouse",
     "/a-propos",
     "/politique-de-confidentialite",
     "/mentions-legales",

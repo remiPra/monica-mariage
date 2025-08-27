@@ -7,7 +7,7 @@ export const siteStructure = {
     { url: "/success", changefreq: "monthly", priority: 0.5 },
     { url: "/mentions-legales-robes", changefreq: "yearly", priority: 0.3 },
     { url: "/robe-mariee-sur-mesure-toulouse", changefreq: "weekly", priority: 0.9 },
-    { url: "/trouver-le-showroom", changefreq: "monthly", priority: 0.8 },
+    { url: "/trouver-boutique-robe-mariee-toulouse", changefreq: "monthly", priority: 0.8 },
   ],
 
   // Structure hiérarchique des catégories
