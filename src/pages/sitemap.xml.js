@@ -1,7 +1,7 @@
 import { sanityClient } from "../sanityClient";
 
 export async function get() {
-  const baseUrl = "https://www.monicamariage.com/";
+  const baseUrl = "https://www.monicamariage.com";
 
   // 1. Pages statiques (en excluant test.astro)
   const staticUrls = [
